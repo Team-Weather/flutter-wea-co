@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "126221191414",
+    "project_id": "weaco-f9878",
+    "storage_bucket": "weaco-f9878.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126221191414:android:be55a82fd5473a1a5c44d7",
+        "android_client_info": {
+          "package_name": "team.weather.weaco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm8pwYatNWlESmohWT-YuuwqTgQ9akLHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
