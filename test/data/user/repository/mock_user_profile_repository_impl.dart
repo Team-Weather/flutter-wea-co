@@ -5,7 +5,7 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
   Map<String, UserProfile> _fakeUserProfileMap = {};
 
   @override
-  Future<UserProfile?> getDetailUserProfile({required String email}) async {
+  Future<UserProfile?> getUserProfile({required String email}) async {
     return _fakeUserProfileMap[email];
   }
 
