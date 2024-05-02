@@ -2,7 +2,7 @@ import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 
 class Feed {
-  final int id;
+  final String id;
   final String imagePath;
   final String userEmail;
   final String description;
@@ -58,7 +58,7 @@ class Feed {
   }
 
   Feed copyWith({
-    int? id,
+    String? id,
     String? imagePath,
     String? userEmail,
     String? description,
