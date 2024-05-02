@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/domain/user/use_case/get_detail_user_profile_use_case.dart';
 
-import '../../../data/user/repository/mock_user_profile_repository_impl.dart';
+import '../../../mock/data/user/repository/mock_user_profile_repository_impl.dart';
 
 void main() {
   group('GetDetailProfileUseCase 클래스', () {
@@ -12,7 +12,8 @@ void main() {
 
     group('getDetailUserProfile 메서드는', () {
       setUp(() {
-        mockUserProfileRepository.initMockData();
+        mockUserProfileRepository.methodParameterMap.clear();
+        mockUserProfileRepository.resetProfile();
       });
 
       test("'user@email.com'을 반환한다.", () async {
@@ -40,7 +41,7 @@ void main() {
           createdAt: DateTime.parse('2024-05-01 14:27:00'),
         );
 
-        mockUserProfileRepository.addProfile(userProfile: expectedResult);
+        mockUserProfileRepository.addProfile(profile: expectedResult);
 
         // When
         final result = await useCase.execute(email: email);
