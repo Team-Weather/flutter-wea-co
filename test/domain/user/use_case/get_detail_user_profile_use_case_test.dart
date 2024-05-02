@@ -7,7 +7,7 @@ import '../../../data/user/repository/mock_user_profile_repository_impl.dart';
 void main() {
   group('GetDetailProfileUseCase 클래스', () {
     final mockUserProfileRepository = MockUserProfileRepositoryImpl();
-    GetDetailProfi  leUseCase useCase = GetDetailProfileUseCase(
+    GetDetailProfileUseCase useCase = GetDetailProfileUseCase(
         userProfileRepository: mockUserProfileRepository);
 
     group('getDetailUserProfile 메서드는', () {
