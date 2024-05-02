@@ -12,4 +12,5 @@ abstract interface class FeedRepository {
       int? weatherCode,
       int? minTemperature,
       int? maxTemperature});
+  Future<Feed?> getFeed({required String id});
 }
