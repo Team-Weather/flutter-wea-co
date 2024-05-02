@@ -16,7 +16,7 @@ void main() {
       mockUserProfileRepository.resetProfile();
     });
 
-    group('getUserProfile 메서드는', () {
+    group('execute 메서드는', () {
       test('UserProfileRepository.getUserProfile()을 한번 호출한다.', () async {
         // Given
         const expectCount = 1;
