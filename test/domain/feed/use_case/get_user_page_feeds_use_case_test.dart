@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/domain/feed/use_case/get_my_page_feeds_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_user_page_feeds_use_case.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
