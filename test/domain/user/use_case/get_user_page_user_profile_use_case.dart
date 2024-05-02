@@ -13,8 +13,8 @@ void main() {
     group('getUserProfile 메서드는', () {
       test('UserProfileRepository.getUserProfile()을 한번 호출한다.', () async {
         // Given
-        final expectCount = 1;
-        final email = 'hoogom87@gmail.com';
+        const expectCount = 1;
+        const email = 'hoogom87@gmail.com';
 
         // When
         await useCase.execute(userEmail: email);
@@ -25,8 +25,8 @@ void main() {
 
       test('이메일에 해당하는 프로필이 없는 경우 null을 반환한다.', () async {
         // Given
-        final expectProfile = null;
-        final invalidEmail = 'hoogom88@gmail.com';
+        const expectProfile = null;
+        const invalidEmail = 'hoogom88@gmail.com';
 
         // When
         final profile = await useCase.execute(userEmail: invalidEmail);
@@ -37,7 +37,7 @@ void main() {
 
       test('이메일에 해당하는 프로필이 있는 경우 해당 프로필을 반환한다.', () async {
         // Given
-        final validEmail = 'hoogom87@gmail.com';
+        const validEmail = 'hoogom87@gmail.com';
         final userProfile = UserProfile(email: 'hoogom87@gmail.com',
             nickname: '후곰',
             gender: 1,
