@@ -6,6 +6,8 @@ import 'package:weaco/domain/weather/model/weather.dart';
 
 import '../../../mock/data/feed/repository/mock_feed_repository_impl.dart';
 
+
+
 void main() {
   group('GetDetailFeedDetailUseCase 클래스', () {
     final feedRepository = MockFeedRepositoryImpl();
@@ -23,7 +25,7 @@ void main() {
         await getDetailFeedDetailUseCase.execute(id: expectedId);
 
         // Then
-        expect(feedRepository.getFeedParamId, expectedId);
+        expect(feedRepository.methodParameterMap[expectedId], expectedId);
       });
 
       test('FeedRepository.getFeed를 호출하고 반환 받은 값을 그대로 반환한다.', () async {

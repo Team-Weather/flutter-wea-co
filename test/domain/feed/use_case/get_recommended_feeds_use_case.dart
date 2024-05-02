@@ -3,7 +3,8 @@ import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
-import '../../../mock/data/feed/repository/mock_feed_repository.dart';
+
+import '../../../mock/data/feed/repository/mock_feed_repository_impl.dart';
 
 void main() {
   group('GetUserPageUserProfileUseCase 클래스', () {
@@ -11,11 +12,7 @@ void main() {
     final GetRecommendedFeedsUseCase useCase =
         GetRecommendedFeedsUseCase(feedRepository: mockFeedRepository);
 
-    setUp(() {
-      mockFeedRepository.getRecommendedFeedsCallCount = 0;
-      mockFeedRepository.methodParameterMap.clear();
-      mockFeedRepository.resetFeedList();
-    });
+    setUp(() => mockFeedRepository.initMockData());
 
     group('execute 메서드는', () {
       test('FeedRepository.getRecommendedFeeds()을 한번 호출한다.', () async {
@@ -58,7 +55,7 @@ void main() {
           () async {
         // Given
         final feed1 = Feed(
-            id: 0,
+            id: '0',
             imagePath: '',
             userEmail: 'hoogom87@gmail.com',
             description: '오늘의 OOTD',
