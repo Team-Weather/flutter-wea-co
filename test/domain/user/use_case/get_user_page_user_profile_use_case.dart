@@ -9,7 +9,13 @@ void main() {
     final GetUserPageUserProfileUseCase useCase =
         GetUserPageUserProfileUseCase(
             userProfileRepository: mockUserProfileRepository);
-    
+
+    setUp(() {
+      mockUserProfileRepository.getUserProfileCallCount = 0;
+      mockUserProfileRepository.methodParameterMap.clear();
+      mockUserProfileRepository.resetProfile();
+    });
+
     group('getUserProfile 메서드는', () {
       test('UserProfileRepository.getUserProfile()을 한번 호출한다.', () async {
         // Given
@@ -23,34 +29,37 @@ void main() {
         expect(mockUserProfileRepository.getUserProfileCallCount, expectCount);
       });
 
-      test('이메일에 해당하는 프로필이 없는 경우 null을 반환한다.', () async {
+      test('인자로 받은 필터링 조건을 UserProfileRepository.getUserProfile()에 그대로 전달한다.', ()  async {
         // Given
-        const expectProfile = null;
-        const invalidEmail = 'hoogom88@gmail.com';
+        const userEmail = 'hoogom87@gmail.com';
 
         // When
-        final profile = await useCase.execute(userEmail: invalidEmail);
+        await useCase.execute(userEmail: userEmail);
 
         // Then
-        expect(profile, expectProfile);
+        expect(mockUserProfileRepository.methodParameterMap['email'], userEmail);
       });
 
-      test('이메일에 해당하는 프로필이 있는 경우 해당 프로필을 반환한다.', () async {
+      test('UserProfileRepository.getUserProfile()를 호출하고 반환 받은 값을 그대로 반환한다.', () async {
         // Given
+        const expectNullProfile = null;
+        const invalidEmail = 'hoogom88@gmail.com';
         const validEmail = 'hoogom87@gmail.com';
-        final userProfile = UserProfile(email: 'hoogom87@gmail.com',
+        final expectProfile = UserProfile(email: validEmail,
             nickname: '후곰',
             gender: 1,
             profileImagePath: 'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
             feedCount: 0,
             createdAt: DateTime.parse('2024-05-01 13:27:00'));
-        mockUserProfileRepository.addProfile(profile: userProfile);
+        mockUserProfileRepository.addProfile(profile: expectProfile);
 
         // When
+        final nullProfile = await useCase.execute(userEmail: invalidEmail);
         final profile = await useCase.execute(userEmail: validEmail);
 
         // Then
-        expect(profile, userProfile);
+        expect(nullProfile, expectNullProfile);
+        expect(profile, expectProfile);
       });
     });
   });

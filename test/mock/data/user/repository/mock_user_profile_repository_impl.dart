@@ -3,6 +3,8 @@ import 'package:weaco/domain/user/repository/user_profile_repository.dart';
 
 class MockUserProfileRepositoryImpl implements UserProfileRepository {
   int getUserProfileCallCount = 0;
+  // 메서드 호출시 인자 확인을 위한 map
+  final Map<String, dynamic> methodParameterMap = {};
   final Map<String, UserProfile> _fakeUserProfileMap = {};
 
   /// [_fakeUserProfileMap]에서 이메일에 맞는 프로필을 찾아서 반환
@@ -11,6 +13,7 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
   @override
   Future<UserProfile?> getUserProfile({required String email}) {
     getUserProfileCallCount++;
+    methodParameterMap['email'] = email;
     return Future.value(_fakeUserProfileMap[email]);
   }
 
@@ -19,4 +22,8 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
     _fakeUserProfileMap[profile.email] = profile;
   }
 
+  /// [_fakeUserProfileMap]의 모든 프로필 삭제
+  void resetProfile() {
+    _fakeUserProfileMap.clear();
+  }
 }
