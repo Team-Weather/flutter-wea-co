@@ -11,13 +11,28 @@ void main() {
         userProfileRepository: mockUserProfileRepository);
 
     group('getDetailUserProfile 메서드는', () {
-      test('이메일에 해당하는 프로필이 없는 경우 null을 반환한다.', () async {
+      setUp(() {
+        mockUserProfileRepository.initMockData();
+      });
+
+      test("null을 반환한다.", () async {
         // Given
-        String email = 'wrong@email.com';
-        UserProfile? expectedResult;
+        String? expectedResult;
 
         // When
-        final result = await useCase.execute(email: email);
+        final result = await useCase.execute(email: expectedResult!);
+
+        // Then
+        expect(result, expectedResult);
+      });
+
+      test("'user@email.com'을 반환한다.", () async {
+        // Given
+        const String expectedResult = 'user@email.com';
+
+        // When
+        final UserProfile? result =
+            await useCase.execute(email: expectedResult);
 
         // Then
         expect(result, expectedResult);
