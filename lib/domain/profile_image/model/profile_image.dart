@@ -1,5 +1,5 @@
 class ProfileImage {
-  int id;
+  String id;
   String imagePath;
 
   ProfileImage({required this.id, required this.imagePath});
@@ -21,7 +21,7 @@ class ProfileImage {
   int get hashCode => id.hashCode ^ imagePath.hashCode;
 
   ProfileImage copyWith({
-    int? id,
+    String? id,
     String? imagePath,
   }) {
     return ProfileImage(
