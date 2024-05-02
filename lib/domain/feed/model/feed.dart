@@ -71,13 +71,37 @@ class Feed {
   @override
   int get hashCode {
     return id.hashCode ^
-        imagePath.hashCode ^
-        userEmail.hashCode ^
-        description.hashCode ^
-        weather.hashCode ^
-        seasonCode.hashCode ^
-        location.hashCode ^
-        createdAt.hashCode ^
-        deletedAt.hashCode;
+    imagePath.hashCode ^
+    userEmail.hashCode ^
+    description.hashCode ^
+    weather.hashCode ^
+    seasonCode.hashCode ^
+    location.hashCode ^
+    createdAt.hashCode ^
+    deletedAt.hashCode;
+  }
+
+  Feed copyWith({
+    int? id,
+    String? imagePath,
+    String? userEmail,
+    String? description,
+    Weather? weather,
+    int? seasonCode,
+    Location? location,
+    DateTime? createdAt,
+    DateTime? deletedAt,
+  }) {
+    return Feed(
+      id: id ?? this.id,
+      imagePath: imagePath ?? this.imagePath,
+      userEmail: userEmail ?? this.userEmail,
+      description: description ?? this.description,
+      weather: weather ?? this.weather,
+      seasonCode: seasonCode ?? this.seasonCode,
+      location: location ?? this.location,
+      createdAt: createdAt ?? this.createdAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+    );
   }
 }
