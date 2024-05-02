@@ -10,7 +10,7 @@ class GetMyPageFeedsUseCase {
 
   Future<List<Feed>> execute({
     required String email,
-    required DateTime createdAt,
+    required DateTime? createdAt,
     int? limit = 20,
   }) async {
     List<Feed> feedList = [];
