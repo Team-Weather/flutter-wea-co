@@ -8,30 +8,32 @@ import '../../../mock/data/feed/repository/mock_feed_repository_impl.dart';
 
 void main() {
   group('GetMyPageFeedsUseCase 클래스', () {
-    final mockFeedRepositoryImpl = MockFeedRepositoryImpl();
+    final mockFeedRepository = MockFeedRepositoryImpl();
     final GetMyPageFeedsUseCase useCase =
-        GetMyPageFeedsUseCase(feedRepository: mockFeedRepositoryImpl);
+        GetMyPageFeedsUseCase(feedRepository: mockFeedRepository);
 
-    group('getFeedList 메서드는', () {
+    group('execute 메서드는', () {
       setUp(
-        () => mockFeedRepositoryImpl.initMockData(),
+        () => mockFeedRepository.initMockData(),
       );
 
-      test('이메일에 해당하는 피드 목록이 없는 경우 null을 반환한다.', () async {
+      test('FeedRepository.getFeedList()를 한번 호출한다.', () async {
         // Given
-        const expectFeedList = null;
+        const expectCount = 1;
         const email = 'yoonji5809@gmail.com';
 
         // When
-        final feedList = await useCase.execute(email: email);
+        await useCase.execute(
+            email: email, createdAt: DateTime.now(), limit: 20);
 
         // Then
-        expect(feedList, expectFeedList);
+        expect(mockFeedRepository.getFeedListcallCount, expectCount);
       });
 
-      test('이메일에 해당하는 피드 목록이 있는 경우 해당 프로필을 반환한다.', () async {
+      test('FeedRepository.getFeedList()를 호출하고 반환 받은 값을 그대로 반환한다.', () async {
         // Given
         const email = 'yoonji5809@gmail.com';
+
         final expectFeedList = [
           Feed(
             id: 1,
@@ -61,7 +63,7 @@ void main() {
             description: 'OOTD 설명',
             weather: Weather(
               temperature: 11,
-              timeTemperature: DateTime.now(),
+              timeTemperature:  DateTime.parse('2024-05-01 13:27:00'),
               code: 1,
             ),
             seasonCode: 1,
@@ -69,9 +71,9 @@ void main() {
               lat: 113.1,
               lng: 213.1,
               city: '서울시',
-              createdAt: DateTime.now(),
+              createdAt:  DateTime.parse('2024-05-01 13:27:00'),
             ),
-            createdAt: DateTime.now(),
+            createdAt:  DateTime.parse('2024-05-01 13:27:00'),
           ),
           Feed(
             id: 3,
@@ -95,10 +97,11 @@ void main() {
           )
         ];
 
-        mockFeedRepositoryImpl.addFeedList(feedList: expectFeedList);
+        mockFeedRepository.addFeedList(feedList: expectFeedList);
 
         // When
-        final feedList = await useCase.execute(email: email);
+        final feedList = await useCase.execute(
+            email: email, createdAt: DateTime.now(), limit: 20);
 
         // Then
         expect(feedList, expectFeedList);
