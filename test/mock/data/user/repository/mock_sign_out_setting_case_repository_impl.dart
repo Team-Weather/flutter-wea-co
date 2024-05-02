@@ -2,7 +2,7 @@ import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 
 class MockSignOutSettingRepositoryImpl implements UserAuthRepository {
-  final Map<String, UserProfile> _fakeUserProfileMap = {};
+  Map<String, UserProfile> _fakeUserProfileMap = {};
   bool isSignOut = false;
 
   @override
@@ -18,6 +18,7 @@ class MockSignOutSettingRepositoryImpl implements UserAuthRepository {
   }
 
   void initMockData() {
+    _fakeUserProfileMap = {};
     isSignOut = false;
   }
 }
