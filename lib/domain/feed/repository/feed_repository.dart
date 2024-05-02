@@ -10,4 +10,5 @@ abstract interface class FeedRepository {
         int? minTemperature,
         int? maxTemperature});
 
+  Future<Feed?> deleteFeed({required String id});
 }
