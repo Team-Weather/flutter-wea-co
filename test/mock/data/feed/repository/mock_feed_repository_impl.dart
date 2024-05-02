@@ -12,6 +12,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
   final List<Feed> _fakeFeedList = [];
   Feed? getFeedResult;
 
+  // [getFeedList()] 의 인자 확인을 위한 Map
+  Map<String, dynamic> getFeedListParameterMap = {};
+
   @override
   Future<List<Feed>> getFeedList({
     required String email,
@@ -19,6 +22,11 @@ class MockFeedRepositoryImpl implements FeedRepository {
     required int? limit,
   }) async {
     getFeedListcallCount++;
+    getFeedListParameterMap = {
+      'email': email,
+      'limit': limit,
+      'createdAt': createdAt,
+    };
     return await Future.value(_fakeFeedList);
   }
 
@@ -34,6 +42,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
     methodParameterMap.clear();
     _fakeFeedList.clear();
     getFeedResult = null;
+    getFeedListParameterMap.clear();
   }
 
   /// [getFeedCallCount] + 1
@@ -54,7 +63,6 @@ class MockFeedRepositoryImpl implements FeedRepository {
       int? weatherCode,
       int? minTemperature,
       int? maxTemperature}) {
-
     getRecommendedFeedsCallCount++;
     methodParameterMap['seasonCode'] = seasonCode;
     methodParameterMap['weatherCode'] = weatherCode;
@@ -79,7 +87,6 @@ class MockFeedRepositoryImpl implements FeedRepository {
           .where((element) =>
               element.weather.temperature >= minTemperature &&
               element.weather.temperature <= maxTemperature)
-
           .toList();
     }
 
