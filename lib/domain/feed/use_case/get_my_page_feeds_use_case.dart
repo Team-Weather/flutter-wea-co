@@ -10,13 +10,18 @@ class GetMyPageFeedsUseCase {
 
   Future<List<Feed>> execute({
     required String email,
-    int? page = 1,
+    required DateTime createdAt,
+    int? limit = 20,
   }) async {
     List<Feed> feedList = [];
     try {
-      feedList = await _feedRepository.getFeedList(email: email, page: page);
+      feedList = await _feedRepository.getFeedList(
+        email: email,
+        createdAt: createdAt,
+        limit: limit,
+      );
     } catch (e) {
-      throw Exception(e);
+      Exception(e);
     }
     return feedList;
   }
