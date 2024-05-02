@@ -14,7 +14,7 @@ class GetMyPageFeedsUseCase {
   }) async {
     List<Feed> feedList = [];
     try {
-      feedList = await _feedRepository.getFeeds(email: email, page: page);
+      feedList = await _feedRepository.getFeedList(email: email, page: page);
     } catch (e) {
       throw Exception(e);
     }
