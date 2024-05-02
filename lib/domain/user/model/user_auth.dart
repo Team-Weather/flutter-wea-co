@@ -22,4 +22,14 @@ class UserAuth {
 
   @override
   int get hashCode => email.hashCode ^ password.hashCode;
+
+  UserAuth copyWith({
+    String? email,
+    String? password,
+  }) {
+    return UserAuth(
+      email: email ?? this.email,
+      password: password ?? this.password,
+    );
+  }
 }
