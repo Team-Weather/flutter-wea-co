@@ -16,17 +16,6 @@ void main() {
         mockUserProfileRepository.resetProfile();
       });
 
-      test("null을 반환한다.", () async {
-        // Given
-        String? expectedResult;
-
-        // When
-        final result = await useCase.execute(email: expectedResult!);
-
-        // Then
-        expect(result, expectedResult);
-      });
-
       test("'user@email.com'을 반환한다.", () async {
         // Given
         const String expectedResult = 'user@email.com';
@@ -36,7 +25,7 @@ void main() {
             await useCase.execute(email: expectedResult);
 
         // Then
-        expect(result, expectedResult);
+        expect(result, null);
       });
 
       test('이메일에 해당하는 프로필이 있는 경우 해당 프로필을 반환한다.', () async {

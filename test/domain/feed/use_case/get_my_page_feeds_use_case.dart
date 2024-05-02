@@ -36,7 +36,7 @@ void main() {
 
         final expectFeedList = [
           Feed(
-            id: 1,
+            id: '1',
             imagePath:
                 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
             userEmail: 'yoonji5809@gmail.com',
@@ -45,6 +45,7 @@ void main() {
               temperature: 11,
               timeTemperature: DateTime.now(),
               code: 1,
+              createdAt: DateTime.parse('2024-05-01 13:27:00'),
             ),
             seasonCode: 1,
             location: Location(
@@ -56,27 +57,27 @@ void main() {
             createdAt: DateTime.now(),
           ),
           Feed(
-            id: 2,
+            id: '2',
             imagePath:
                 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
             userEmail: 'yoonji5809@gmail.com',
             description: 'OOTD 설명',
             weather: Weather(
-              temperature: 11,
-              timeTemperature:  DateTime.parse('2024-05-01 13:27:00'),
-              code: 1,
-            ),
+                temperature: 11,
+                timeTemperature: DateTime.parse('2024-05-01 13:27:00'),
+                code: 1,
+                createdAt: DateTime.parse('2024-05-01 13:27:00')),
             seasonCode: 1,
             location: Location(
               lat: 113.1,
               lng: 213.1,
               city: '서울시',
-              createdAt:  DateTime.parse('2024-05-01 13:27:00'),
+              createdAt: DateTime.parse('2024-05-01 13:27:00'),
             ),
-            createdAt:  DateTime.parse('2024-05-01 13:27:00'),
+            createdAt: DateTime.parse('2024-05-01 13:27:00'),
           ),
           Feed(
-            id: 3,
+            id: '3',
             imagePath:
                 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
             userEmail: 'yoonji5809@gmail.com',
@@ -85,6 +86,7 @@ void main() {
               temperature: 11,
               timeTemperature: DateTime.now(),
               code: 1,
+              createdAt: DateTime.parse('2024-05-01 13:27:00'),
             ),
             seasonCode: 1,
             location: Location(
