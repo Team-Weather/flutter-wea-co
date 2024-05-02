@@ -29,4 +29,18 @@ class Location {
   @override
   int get hashCode =>
       lat.hashCode ^ lng.hashCode ^ city.hashCode ^ createdAt.hashCode;
+
+  Location copyWith({
+    double? lat,
+    double? lng,
+    String? city,
+    DateTime? createdAt,
+  }) {
+    return Location(
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
+      city: city ?? this.city,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

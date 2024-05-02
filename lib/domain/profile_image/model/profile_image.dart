@@ -1,5 +1,5 @@
 class ProfileImage {
-  int id;
+  String id;
   String imagePath;
 
   ProfileImage({required this.id, required this.imagePath});
@@ -19,4 +19,14 @@ class ProfileImage {
 
   @override
   int get hashCode => id.hashCode ^ imagePath.hashCode;
+
+  ProfileImage copyWith({
+    String? id,
+    String? imagePath,
+  }) {
+    return ProfileImage(
+      id: id ?? this.id,
+      imagePath: imagePath ?? this.imagePath,
+    );
+  }
 }
