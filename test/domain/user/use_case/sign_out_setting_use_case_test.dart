@@ -1,17 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
-import 'package:weaco/domain/user/use_case/log_out_setting_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_out_setting_use_case.dart';
 
-import '../../../mock/data/user/repository/mock_log_out_setting_case_repository_impl.dart';
+import '../../../mock/data/user/repository/mock_sign_out_setting_case_repository_impl.dart';
 
 void main() {
-  group('LogOutSettingUseCase 클래스', () {
-    final mockLogOutSettingRepositoryImpl = MockLogOutSettingRepositoryImpl();
-    final LogOutSettingUseCase useCase = LogOutSettingUseCase(
-        userAuthRepository: mockLogOutSettingRepositoryImpl);
+  group('SignOutSettingUseCase 클래스', () {
+    final mockSignOutSettingRepositoryImpl = MockSignOutSettingRepositoryImpl();
+    final SignOutSettingUseCase useCase = SignOutSettingUseCase(
+        userAuthRepository: mockSignOutSettingRepositoryImpl);
 
-    group('logOutSetting 메서드는', () {
-      setUp(() => mockLogOutSettingRepositoryImpl.initMockData());
+    group('signOutSetting 메서드는', () {
+      setUp(() => mockSignOutSettingRepositoryImpl.initMockData());
 
       test('유저 정보가 없을 경우, 회원 탈퇴에 실패한다.', () async {
         // Given
@@ -39,7 +39,7 @@ void main() {
           createdAt: DateTime.parse('2024-05-01 14:27:00'),
         );
 
-        mockLogOutSettingRepositoryImpl.addProfile(profile: profile);
+        mockSignOutSettingRepositoryImpl.addProfile(profile: profile);
 
         // When
         final result = await useCase.execute(email: email);
@@ -62,7 +62,7 @@ void main() {
           createdAt: DateTime.parse('2024-05-01 14:27:00'),
         );
 
-        mockLogOutSettingRepositoryImpl.addProfile(profile: profile);
+        mockSignOutSettingRepositoryImpl.addProfile(profile: profile);
 
         // When
         final result = await useCase.execute(email: email);

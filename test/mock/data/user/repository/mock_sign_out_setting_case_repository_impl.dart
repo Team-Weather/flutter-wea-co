@@ -1,16 +1,16 @@
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 
-class MockLogOutSettingRepositoryImpl implements UserAuthRepository {
+class MockSignOutSettingRepositoryImpl implements UserAuthRepository {
   final Map<String, UserProfile> _fakeUserProfileMap = {};
-  bool isLoggedOut = false;
+  bool isSignOut = false;
 
   @override
-  Future<bool> logOutSetting({required String email}) async {
+  Future<bool> signOutSetting({required String email}) async {
     if ( _fakeUserProfileMap[email] != null) {
-      isLoggedOut = true;
+      isSignOut = true;
     }
-    return isLoggedOut;
+    return isSignOut;
   }
 
   void addProfile({required UserProfile profile}) {
@@ -18,6 +18,6 @@ class MockLogOutSettingRepositoryImpl implements UserAuthRepository {
   }
 
   void initMockData() {
-    isLoggedOut = false;
+    isSignOut = false;
   }
 }
