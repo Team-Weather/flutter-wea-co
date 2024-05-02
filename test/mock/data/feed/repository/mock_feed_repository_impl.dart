@@ -6,6 +6,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   int getFeedCallCount = 0;
   int getRecommendedFeedsCallCount = 0;
   String getFeedParamId = '';
+
   // 메서드 호출시 인자 확인을 위한 map
   final Map<String, dynamic> methodParameterMap = {};
   final List<Feed> _fakeFeedList = [];
@@ -27,7 +28,6 @@ class MockFeedRepositoryImpl implements FeedRepository {
   }
 
   void initMockData() {
-    _fakeFeedList.clear();
     getFeedListcallCount = 0;
     getFeedCallCount = 0;
     getRecommendedFeedsCallCount = 0;
@@ -54,6 +54,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
       int? weatherCode,
       int? minTemperature,
       int? maxTemperature}) {
+
     getRecommendedFeedsCallCount++;
     methodParameterMap['seasonCode'] = seasonCode;
     methodParameterMap['weatherCode'] = weatherCode;
@@ -78,6 +79,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
           .where((element) =>
               element.weather.temperature >= minTemperature &&
               element.weather.temperature <= maxTemperature)
+
           .toList();
     }
 

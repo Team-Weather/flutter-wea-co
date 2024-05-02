@@ -48,3 +48,4 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
     return _fakeUserProfileMap['my'];
   }
 }
+
