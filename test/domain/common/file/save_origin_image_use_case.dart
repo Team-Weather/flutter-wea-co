@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/domain/common/file/use_case/SaveOriginImageUseCase.dart';
+import 'package:weaco/domain/common/file/use_case/save_origin_image_use_case.dart';
 
 import '../../../mock/data/common/repository/mock_file_repository_impl.dart';
 
