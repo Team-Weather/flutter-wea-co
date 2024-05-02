@@ -1,4 +1,3 @@
-import 'package:weaco/domain/feed/repository/feed_repository.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/location/repository/location_repository.dart';
 
