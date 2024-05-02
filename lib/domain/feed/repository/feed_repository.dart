@@ -1,6 +1,7 @@
 import 'package:weaco/domain/feed/model/feed.dart';
 
 abstract interface class FeedRepository {
+
   Future<Feed?> getFeed({required String id});
 
   Future<List<Feed>> getRecommendedFeeds(
@@ -8,4 +9,5 @@ abstract interface class FeedRepository {
         int? weatherCode,
         int? minTemperature,
         int? maxTemperature});
+
 }
