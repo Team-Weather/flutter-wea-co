@@ -44,4 +44,24 @@ class UserProfile {
       feedCount.hashCode ^
       createdAt.hashCode ^
       deletedAt.hashCode;
+
+  UserProfile copyWith({
+    String? email,
+    String? nickname,
+    int? gender,
+    String? profileImagePath,
+    int? feedCount,
+    DateTime? createdAt,
+    DateTime? deletedAt,
+  }) {
+    return UserProfile(
+      email: email ?? this.email,
+      nickname: nickname ?? this.nickname,
+      gender: gender ?? this.gender,
+      profileImagePath: profileImagePath ?? this.profileImagePath,
+      feedCount: feedCount ?? this.feedCount,
+      createdAt: createdAt ?? this.createdAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+    );
+  }
 }

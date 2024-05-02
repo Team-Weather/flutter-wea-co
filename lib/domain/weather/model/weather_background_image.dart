@@ -17,4 +17,12 @@ class WeatherBackgroundImage {
 
   @override
   int get hashCode => imagePath.hashCode;
+
+  WeatherBackgroundImage copyWith({
+    String? imagePath,
+  }) {
+    return WeatherBackgroundImage(
+      imagePath: imagePath ?? this.imagePath,
+    );
+  }
 }
