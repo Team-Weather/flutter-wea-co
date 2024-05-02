@@ -2,15 +2,33 @@ import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/repository/feed_repository.dart';
 
 class MockFeedRepositoryImpl implements FeedRepository {
-  int getRecommendedFeedsCallCount = 0;
+  int getFeedListcallCount = 0;
   int getFeedCallCount = 0;
+  int getRecommendedFeedsCallCount = 0;
+  String getFeedParamId = '';
 
   // 메서드 호출시 인자 확인을 위한 map
   final Map<String, dynamic> methodParameterMap = {};
   final List<Feed> _fakeFeedList = [];
   Feed? getFeedResult;
 
+  @override
+  Future<List<Feed>> getFeedList({
+    required String email,
+    required DateTime? createdAt,
+    required int? limit,
+  }) async {
+    getFeedListcallCount++;
+    return await Future.value(_fakeFeedList);
+  }
+
+  void addFeedList({required List<Feed> feedList}) {
+    _fakeFeedList.clear();
+    _fakeFeedList.addAll(feedList);
+  }
+
   void initMockData() {
+    getFeedListcallCount = 0;
     getFeedCallCount = 0;
     getRecommendedFeedsCallCount = 0;
     methodParameterMap.clear();
@@ -33,9 +51,10 @@ class MockFeedRepositoryImpl implements FeedRepository {
   @override
   Future<List<Feed>> getRecommendedFeeds(
       {int? seasonCode,
-        int? weatherCode,
-        int? minTemperature,
-        int? maxTemperature}) {
+      int? weatherCode,
+      int? minTemperature,
+      int? maxTemperature}) {
+
     getRecommendedFeedsCallCount++;
     methodParameterMap['seasonCode'] = seasonCode;
     methodParameterMap['weatherCode'] = weatherCode;
@@ -58,8 +77,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
     if (minTemperature != null && maxTemperature != null) {
       result = result
           .where((element) =>
-      element.weather.temperature >= minTemperature &&
-          element.weather.temperature <= maxTemperature)
+              element.weather.temperature >= minTemperature &&
+              element.weather.temperature <= maxTemperature)
+
           .toList();
     }
 

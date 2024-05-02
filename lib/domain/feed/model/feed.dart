@@ -47,14 +47,14 @@ class Feed {
   @override
   int get hashCode {
     return id.hashCode ^
-    imagePath.hashCode ^
-    userEmail.hashCode ^
-    description.hashCode ^
-    weather.hashCode ^
-    seasonCode.hashCode ^
-    location.hashCode ^
-    createdAt.hashCode ^
-    deletedAt.hashCode;
+        imagePath.hashCode ^
+        userEmail.hashCode ^
+        description.hashCode ^
+        weather.hashCode ^
+        seasonCode.hashCode ^
+        location.hashCode ^
+        createdAt.hashCode ^
+        deletedAt.hashCode;
   }
 
   Feed copyWith({
