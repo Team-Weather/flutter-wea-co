@@ -10,6 +10,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
   final List<Feed> _fakeFeedList = [];
   Feed? getFeedResult;
 
+  Feed? feed;
+  Map<String, dynamic> feedMap = {};
+
   void initMockData() {
     getFeedCallCount = 0;
     getRecommendedFeedsCallCount = 0;
@@ -33,9 +36,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
   @override
   Future<List<Feed>> getRecommendedFeeds(
       {int? seasonCode,
-        int? weatherCode,
-        int? minTemperature,
-        int? maxTemperature}) {
+      int? weatherCode,
+      int? minTemperature,
+      int? maxTemperature}) {
     getRecommendedFeedsCallCount++;
     methodParameterMap['seasonCode'] = seasonCode;
     methodParameterMap['weatherCode'] = weatherCode;
@@ -58,8 +61,8 @@ class MockFeedRepositoryImpl implements FeedRepository {
     if (minTemperature != null && maxTemperature != null) {
       result = result
           .where((element) =>
-      element.weather.temperature >= minTemperature &&
-          element.weather.temperature <= maxTemperature)
+              element.weather.temperature >= minTemperature &&
+              element.weather.temperature <= maxTemperature)
           .toList();
     }
 
@@ -74,5 +77,10 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [_fakeFeedList]의 모든 피드 삭제
   void resetFeedList() {
     _fakeFeedList.clear();
+  }
+
+  @override
+  Future<Feed?> deleteFeed({required String id}) async {
+    return feedMap.remove(id);
   }
 }
