@@ -9,7 +9,7 @@ class RefreshUserPageUseCase {
   }) : _feedRepository = feedRepository;
 
   /// 유저가 특정 UserPage 에서 pull-to-refresh 상호작용을 했을 때,
-  /// UserProfile 과 List<Feed> 를 반환.
+  /// List<Feed> 를 반환.
   ///
   /// @param email 필수 파라미터, 특정 User 의 email 값.
   /// @param limit 선택 파라미터, 받아오고자  하는 feed 의 개수.
