@@ -15,4 +15,5 @@ abstract interface class FeedRepository {
 
   Future<Feed?> getFeed({required String id});
 
+  Future<Feed?> deleteFeed({required String id});
 }
