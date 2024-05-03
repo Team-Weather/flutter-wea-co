@@ -7,11 +7,19 @@ abstract interface class FeedRepository {
     required DateTime? createdAt,
     required int? limit,
   });
+
   Future<List<Feed>> getRecommendedFeeds(
       {int? seasonCode,
       int? weatherCode,
       int? minTemperature,
       int? maxTemperature});
+
+  Future<List<Feed>> getSearchFeeds({
+    int? seasonCode,
+    int? weatherCode,
+    int? minTemperature,
+    int? maxTemperature,
+  });
 
   Future<Feed?> getFeed({required String id});
 
