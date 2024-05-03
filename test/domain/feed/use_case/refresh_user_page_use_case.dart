@@ -48,8 +48,7 @@ void main() {
           createdAt: expectedParameterMap['createdAt'],
         );
 
-        expect(mockFeedRepositoryImpl.getFeedListParameterMap,
-            expectedParameterMap);
+        expect(mockFeedRepositoryImpl.methodParameterMap, expectedParameterMap);
       });
       test('getFeedList() 메소드를 각각 호출하고 반환받은 값을 List 형태로 반환한다.', () async {
         final Map<String, dynamic> expectedParameterMap = {
