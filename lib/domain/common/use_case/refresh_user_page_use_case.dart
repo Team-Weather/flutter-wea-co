@@ -24,6 +24,7 @@ class RefreshUserPageUseCase {
   /// @return Map 으로 감싼 UserProfile, List<Feed>? 데이터.
   Future<Map<String, dynamic>> execute({
     required String email,
+    DateTime? createdAt,
     int? limit = 20,
   }) async {
     UserProfile? userProfile;
