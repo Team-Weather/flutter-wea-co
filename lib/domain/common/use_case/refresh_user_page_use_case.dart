@@ -18,10 +18,9 @@ class RefreshUserPageUseCase {
   ///
   /// @param [email] 필수 파라미터, 특정 User 의 email 값.
   /// @param [limit] 선택 파라미터, 받아오고자  하는 feed 의 개수.
-  /// @return Map<String, dynamic> RefreshUserPageUseCase 를 Facade 패턴으로
+  /// @return RefreshUserPageUseCase 를 Facade 패턴으로
   /// GetUserPageUserProfileUseCase, GetMyPageFeedsUseCase 를 사용하여
-  /// Map 콜렉션으로 감싼 UserProfile, List<Feed>? 데이터,
-  /// 데이터.
+  /// Map 콜렉션으로 감싼 UserProfile, List<Feed>? 데이터.
   Future<Map<String, dynamic>> execute({
     required String email,
     int? limit = 20,
