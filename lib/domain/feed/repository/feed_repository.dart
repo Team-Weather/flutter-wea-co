@@ -15,4 +15,7 @@ abstract interface class FeedRepository {
 
   Future<Feed?> getFeed({required String id});
 
+  /// OOTD 피드를 최신 순으로 가져옵니다.
+  Future<List<Feed>> getOOTDFeedsList({required DateTime? createdAt});
+
 }
