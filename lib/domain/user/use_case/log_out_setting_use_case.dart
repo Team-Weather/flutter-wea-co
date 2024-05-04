@@ -7,7 +7,7 @@ class LogOutSettingUseCase {
     required UserRepository userRepository,
   }) : _userRepository = userRepository;
 
-  Future<bool> execute({required String email}) async {
-    return await _userRepository.logOutSetting(email: email);
+  Future<bool> execute() async {
+    return await _userRepository.logOut();
   }
 }
