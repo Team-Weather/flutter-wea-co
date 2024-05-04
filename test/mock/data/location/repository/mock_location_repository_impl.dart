@@ -15,21 +15,13 @@ class MockLocationRepositoryImpl implements LocationRepository {
   /// geolocator 로 현재 위치 정보를 요청
   @override
   Future<Location> getRemoteLocation({
-    required double lat,
-    required double lng,
-    String city = 'city',
+    required Location location
   }) async {
     _remoteLocation = Location(
-      lat: lat,
-      lng: lng,
-      city: city,
-      createdAt: DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        DateTime.now().hour,
-        DateTime.now().minute,
-      ),
+      lat: location.lat,
+      lng: location.lng,
+      city: 'city',
+      createdAt: location.createdAt,
     );
 
     return _remoteLocation!;

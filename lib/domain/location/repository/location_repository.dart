@@ -4,7 +4,6 @@ abstract interface class LocationRepository {
   Future<Location?> getLocalLocation();
 
   Future<Location> getRemoteLocation({
-    required double lat,
-    required double lng,
+    required Location location
   });
 }

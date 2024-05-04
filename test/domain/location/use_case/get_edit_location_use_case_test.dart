@@ -28,10 +28,12 @@ void main() {
         // Given
         const double lat = 37.58;
         const double lng = 126.97;
+        const String city = 'city';
+
         final expectedResult = Location(
           lat: lat,
           lng: lng,
-          city: 'city',
+          city: city,
           createdAt: DateTime(
             DateTime.now().year,
             DateTime.now().month,
@@ -45,7 +47,7 @@ void main() {
 
         // When
         final actual =
-            await locationRepository.getRemoteLocation(lat: lat, lng: lng);
+            await locationRepository.getRemoteLocation(location: expectedResult);
 
         // Then
         expect(actual, expectedResult);
