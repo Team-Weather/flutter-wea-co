@@ -93,6 +93,8 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// 호출시 [getSearchFeedsCallCount] + 1
   @override
   Future<List<Feed>> getSearchFeeds({
+    int? limit = 20,
+    DateTime? createdAt,
     int? seasonCode,
     int? weatherCode,
     int? minTemperature,
@@ -123,6 +125,20 @@ class MockFeedRepositoryImpl implements FeedRepository {
               element.weather.temperature >= minTemperature &&
               element.weather.temperature <= maxTemperature)
           .toList();
+    }
+
+    if (createdAt != null) {
+      result = result
+          .where((e) =>
+              e.createdAt.isAtSameMomentAs(createdAt) ||
+              e.createdAt.isBefore(createdAt))
+          .toList();
+    }
+
+    if (limit != null) {
+      result = result.take(20).toList();
+    } else {
+      result = result.take(limit!).toList();
     }
 
     return Future.value(result);
