@@ -5,12 +5,14 @@ class MockFeedRepositoryImpl implements FeedRepository {
   int getFeedListcallCount = 0;
   int getFeedCallCount = 0;
   int getRecommendedFeedsCallCount = 0;
+  int getOOTDFeedsListCallCount = 0;
   String getFeedParamId = '';
 
   // 메서드 호출시 인자 확인을 위한 map
   final Map<String, dynamic> methodParameterMap = {};
   final List<Feed> _fakeFeedList = [];
   Feed? getFeedResult;
+  Feed? getOOTDFeedsResult;
 
   @override
   Future<List<Feed>> getFeedList({
@@ -34,6 +36,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
     methodParameterMap.clear();
     _fakeFeedList.clear();
     getFeedResult = null;
+    getOOTDFeedsResult = null;
   }
 
   /// [getFeedCallCount] + 1
@@ -94,5 +97,13 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [_fakeFeedList]의 모든 피드 삭제
   void resetFeedList() {
     _fakeFeedList.clear();
+  }
+
+  /// [getOOTDFeedsListCallCount] + 1
+  /// /// [getOOTDFeedsResult] 반환
+  @override
+  Future<List<Feed>> getOOTDFeedsList({required DateTime? createdAt}) async{
+    getOOTDFeedsListCallCount++;
+    return getOOTDFeedsResult == null ? [] : [getOOTDFeedsResult!];
   }
 }
