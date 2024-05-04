@@ -10,6 +10,6 @@ class GetEditLocationUseCase {
 
   /// 로컬 DB에 저장된 현재 위치 정보를 요청
   Future<Location?> execute() async {
-    return await _locationRepository.getLocalLocation();
+    return await _locationRepository.getLocation();
   }
 }

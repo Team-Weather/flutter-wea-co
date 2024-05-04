@@ -21,7 +21,7 @@ void main() {
         await useCase.execute();
 
         // Then
-        expect(await locationRepository.getLocalLocation(), expectedResult);
+        expect(await locationRepository.getLocation(), expectedResult);
       });
 
       test('로컬 DB에 저장된 값이 없을 경우, geolocator 로 현재 위치 정보를 얻어온다.', () async {

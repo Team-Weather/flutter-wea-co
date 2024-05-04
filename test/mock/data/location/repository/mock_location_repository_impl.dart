@@ -8,7 +8,7 @@ class MockLocationRepositoryImpl implements LocationRepository {
 
   /// 로컬 DB에 저장된 현재 위치 정보를 요청
   @override
-  Future<Location?> getLocalLocation() async {
+  Future<Location?> getLocation() async {
     return _localLocation;
   }
 
