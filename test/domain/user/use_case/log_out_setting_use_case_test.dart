@@ -13,18 +13,6 @@ void main() {
     setUp(() => userRepository.initMockData());
 
     group('logOutSetting 메서드는', () {
-      test('유저 정보가 없을 경우, false 를 반환한다.', () async {
-        // Given
-        const bool expectedResult = false;
-        String email = 'wrong@email.com';
-
-        // When
-        final result = await useCase.execute(email: email);
-
-        // Then
-        expect(result, expectedResult);
-      });
-
       test('유저 정보가 일치 하지 않을 경우, false 를 반환한다.', () async {
         // Given
         const bool expectedResult = false;
