@@ -13,7 +13,6 @@ class MockLocationRepositoryImpl implements LocationRepository {
   }
 
   /// geolocator 로 현재 위치 정보를 요청
-  @override
   Future<Location> getRemoteLocation({
     required Location location
   }) async {
