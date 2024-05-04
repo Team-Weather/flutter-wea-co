@@ -30,6 +30,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   }
 
   void initMockData() {
+    saveFeedCallCount = 0;
     getFeedListcallCount = 0;
     getFeedCallCount = 0;
     getRecommendedFeedsCallCount = 0;
