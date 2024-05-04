@@ -13,15 +13,21 @@ class GetSearchFeedsUseCase {
   /// @param minTemperature: 최저 기온
   /// @param maxTemperature: 최고 기온
   /// @return: 반환 받은 검색 피드 리스트
-  Future<List<Feed>> execute(
-      {int? seasonCode,
-      int? weatherCode,
-      int? minTemperature,
-      int? maxTemperature}) async {
+  Future<List<Feed>> execute({
+    int? limit,
+    DateTime? createdAt,
+    int? seasonCode,
+    int? weatherCode,
+    int? minTemperature,
+    int? maxTemperature,
+  }) async {
     return await _feedRepository.getSearchFeeds(
-        seasonCode: seasonCode,
-        weatherCode: weatherCode,
-        minTemperature: minTemperature,
-        maxTemperature: maxTemperature);
+      limit: limit,
+      createdAt: createdAt,
+      seasonCode: seasonCode,
+      weatherCode: weatherCode,
+      minTemperature: minTemperature,
+      maxTemperature: maxTemperature,
+    );
   }
 }
