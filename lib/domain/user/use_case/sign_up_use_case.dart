@@ -1,13 +1,13 @@
 import 'package:weaco/domain/user/model/user_auth.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
-import 'package:weaco/domain/user/repository/user_repository.dart';
+import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 
-class SignUpUserUseCase {
-  final UserRepository _userRepository;
+class SignUpUseCase {
+  final UserAuthRepository _userAuthRepository;
 
-  const SignUpUserUseCase({
-    required UserRepository userRepository,
-  }) : _userRepository = userRepository;
+  const SignUpUseCase({
+    required UserAuthRepository userAuthRepository,
+  }) : _userAuthRepository = userAuthRepository;
 
   /// 회원 가입 화면에서 정보기입 후 가입 요청을 보내는 Use Case
   /// [userAuth] : 회원 가입을 위한 이메일, 비밀번호 정보
@@ -18,10 +18,10 @@ class SignUpUserUseCase {
     // email을 중복 검사 한다.
     // 중복된 email이 있으면 exception을 발생시킨다.
     // 중복된 email이 없으면 회원 가입을 진행한다.
-    if (await _userRepository.isRegistered(email: userAuth.email)) {
+    if (await _userAuthRepository.isRegistered(email: userAuth.email)) {
       return false;
     }
-    return await _userRepository.signUp(
+    return await _userAuthRepository.signUp(
         userAuth: userAuth, userProfile: userProfile);
   }
 }

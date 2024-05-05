@@ -1,21 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/user/model/user_auth.dart';
-import 'package:weaco/domain/user/use_case/sign_in_user_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_in_use_case.dart';
 
 import '../../../mock/data/user/repository/mock_user_auth_repository_impl.dart';
 
 void main() {
-  final MockUserAuthRepositoryImpl mockUserAuthRepositoryImpl =
-      MockUserAuthRepositoryImpl();
+  final mockUserAuthRepositoryImpl = MockUserAuthRepositoryImpl();
 
-  final SignInUserUseCase signInUserUseCase =
-      SignInUserUseCase(userAuthRepository: mockUserAuthRepositoryImpl);
+  final SignInUseCase signInUseCase =
+      SignInUseCase(userAuthRepository: mockUserAuthRepositoryImpl);
 
   setUp(() {
     mockUserAuthRepositoryImpl.initMockData();
   });
 
-  group('SignInUserUseCase 클래스', () {
+  group('SignInUseCase 클래스', () {
     group('execute() 메소드는', () {
       test('UserAuthRepository.signIn() 메소드를 1회 호출한다.', () async {
         int expectCallCount = 1;
@@ -25,7 +24,7 @@ void main() {
           password: 'password',
         );
 
-        await signInUserUseCase.execute(userAuth: expectParameter);
+        await signInUseCase.execute(userAuth: expectParameter);
 
         expect(mockUserAuthRepositoryImpl.signInCallCount, expectCallCount);
       });
@@ -35,7 +34,7 @@ void main() {
           password: 'password',
         );
 
-        await signInUserUseCase.execute(userAuth: expectParameter);
+        await signInUseCase.execute(userAuth: expectParameter);
 
         expect(mockUserAuthRepositoryImpl.methodParameter, expectParameter);
       });
@@ -53,7 +52,7 @@ void main() {
         );
 
         final actualReturnValue =
-            await signInUserUseCase.execute(userAuth: expectParameter);
+            await signInUseCase.execute(userAuth: expectParameter);
 
         expect(actualReturnValue, false);
       });
@@ -71,7 +70,7 @@ void main() {
         );
 
         final actualReturnValue =
-            await signInUserUseCase.execute(userAuth: expectParameter);
+            await signInUseCase.execute(userAuth: expectParameter);
 
         expect(actualReturnValue, true);
       });
