@@ -1,8 +1,7 @@
 import 'package:weaco/domain/user/model/user_profile.dart';
-import 'package:weaco/domain/user/use_case/get_user_page_user_profile_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
 
-class MockGetUserPageUserProfileUseCase
-    implements GetUserPageUserProfileUseCase {
+class MockGetUserProfileUseCase implements GetUserProfileUseCase {
   int executeCallCount = 0;
   String methodParameter = '';
   UserProfile? returnValue;
@@ -18,9 +17,9 @@ class MockGetUserPageUserProfileUseCase
   /// [methodParameter] 에 전달 받은 인자 저장
   /// [returnValue] 반환
   @override
-  Future<UserProfile?> execute({required String userEmail}) async {
+  Future<UserProfile?> execute({required String email}) async {
     executeCallCount++;
-    methodParameter = userEmail;
+    methodParameter = email;
     return await Future.value(returnValue);
   }
 }

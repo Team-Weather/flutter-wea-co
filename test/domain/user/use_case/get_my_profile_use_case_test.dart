@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
-import 'package:weaco/domain/user/use_case/get_my_page_user_profile_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_my_profile_use_case.dart';
 import '../../../mock/data/user/repository/mock_user_profile_repository_impl.dart';
 
 void main() {
