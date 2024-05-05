@@ -12,10 +12,7 @@ class GetLocationFromCoordinateUseCase {
   /// @param [lat] 위도
   /// @param [lng] 경도
   /// @return [Location] 위치 정보
-  Future<Location?> execute({
-    required double lat,
-    required double lng,
-  }) async {
-    return await _locationRepository.getLocation(lat: lat, lng: lng);
+  Future<Location?> execute() async {
+    return await _locationRepository.getLocation();
   }
 }
