@@ -29,26 +29,27 @@ void main() {
       test('인자로 받은 필터링 조건을 FeedRepository.getSearchFeeds()에 그대로 전달한다.',
           () async {
         // Given
-        const seasonCode = 0;
-        const weatherCode = 0;
-        const minTemperature = 20;
-        const maxTemperature = 25;
+        final Map<String, dynamic> expectParameter = {
+          'limit': 20,
+          'createdAt': null,
+          'seasonCode': 0,
+          'weatherCode': 0,
+          'minTemperature': 20,
+          'maxTemperature': 25,
+        };
 
         // When
         await getSearchFeedsUseCase.execute(
-            seasonCode: seasonCode,
-            weatherCode: weatherCode,
-            minTemperature: minTemperature,
-            maxTemperature: maxTemperature);
+          limit: expectParameter['limit'],
+          createdAt: expectParameter['createdAt'],
+          seasonCode: expectParameter['seasonCode'],
+          weatherCode: expectParameter['weatherCode'],
+          minTemperature: expectParameter['minTemperature'],
+          maxTemperature: expectParameter['maxTemperature'],
+        );
 
         // Then
-        expect(mockFeedRepository.methodParameterMap['seasonCode'], seasonCode);
-        expect(
-            mockFeedRepository.methodParameterMap['weatherCode'], weatherCode);
-        expect(mockFeedRepository.methodParameterMap['minTemperature'],
-            minTemperature);
-        expect(mockFeedRepository.methodParameterMap['maxTemperature'],
-            maxTemperature);
+        expect(mockFeedRepository.methodParameterMap, expectParameter);
       });
 
       test('FeedRepository.getSearchFeeds()를 호출하고 반환 받은 값을 그대로 반환한다.',
