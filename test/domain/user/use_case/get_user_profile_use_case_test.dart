@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
-import 'package:weaco/domain/user/use_case/get_detail_user_profile_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
 
 import '../../../mock/data/user/repository/mock_user_profile_repository_impl.dart';
 
 void main() {
-  group('GetDetailProfileUseCase 클래스', () {
+  group('GetUserProfileUseCase 클래스', () {
     final mockUserProfileRepository = MockUserProfileRepositoryImpl();
-    GetDetailProfileUseCase useCase = GetDetailProfileUseCase(
-        userProfileRepository: mockUserProfileRepository);
+    GetUserProfileUseCase useCase =
+        GetUserProfileUseCase(userProfileRepository: mockUserProfileRepository);
 
     group('getDetailUserProfile 메서드는', () {
       setUp(() {
@@ -52,4 +52,3 @@ void main() {
     });
   });
 }
-
