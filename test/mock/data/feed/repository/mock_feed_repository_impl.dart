@@ -165,9 +165,10 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [getOotdFeedsListCallCount] + 1
   /// [getOotdFeedsResult] 반환
   @override
-  Future<List<Feed>> getOotdFeedsList({required DateTime? createdAt}) async{
+  Future<List<Feed>> getOotdFeedsList({required DateTime? createdAt}) async {
     getOotdFeedsListCallCount++;
     return getOotdFeedsResult == null ? [] : [getOotdFeedsResult!];
+  }
 
   @override
   Future<Feed?> deleteFeed({required String id}) async {
