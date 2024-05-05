@@ -6,14 +6,13 @@ class MockFeedRepositoryImpl implements FeedRepository {
   int getFeedCallCount = 0;
   int getRecommendedFeedsCallCount = 0;
   String getFeedParamId = '';
-
   // 메서드 호출시 인자 확인을 위한 map
   final Map<String, dynamic> methodParameterMap = {};
   final List<Feed> _fakeFeedList = [];
   Feed? getFeedResult;
-
   Feed? feed;
   Map<String, dynamic> feedMap = {};
+  int saveFeedCallCount = 0;
 
   @override
   Future<List<Feed>> getFeedList({
@@ -34,6 +33,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   }
 
   void initMockData() {
+    saveFeedCallCount = 0;
     getFeedListcallCount = 0;
     getFeedCallCount = 0;
     getRecommendedFeedsCallCount = 0;
@@ -103,5 +103,13 @@ class MockFeedRepositoryImpl implements FeedRepository {
   @override
   Future<Feed?> deleteFeed({required String id}) async {
     return feedMap.remove(id);
+  }
+
+  @override
+  Future<bool> saveFeed({required Feed editedFeed}) async {
+    saveFeedCallCount++;
+    feed = editedFeed;
+    if (editedFeed.id!.isNotEmpty) return true;
+    return true;
   }
 }
