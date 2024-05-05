@@ -9,8 +9,6 @@ class GetLocationUseCase {
   }) : _locationRepository = locationRepository;
 
   /// 위도, 경도로 위치 정보를 가져오기 위한 Use Case
-  /// @param [lat] 위도
-  /// @param [lng] 경도
   /// @return [Location] 위치 정보
   Future<Location?> execute() async {
     return await _locationRepository.getLocation();
