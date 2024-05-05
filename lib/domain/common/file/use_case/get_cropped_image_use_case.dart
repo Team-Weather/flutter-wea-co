@@ -10,7 +10,7 @@ class GetCroppedImageUseCase {
   /// 레포지토리에 저장된 크롭 후 이미지를 요청
   /// @param data: 저장된 이미지 데이터
   /// @return: 크롭 후 이미지 파일, 없을 경우 null 반환
-  Future<File?> execute({required List<int> data}) async {
-    return await _fileRepository.getCroppedImage(data: data);
+  Future<File?> execute() async {
+    return await _fileRepository.getCroppedImage();
   }
 }
