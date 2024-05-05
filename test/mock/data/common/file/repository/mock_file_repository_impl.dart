@@ -1,14 +1,24 @@
+import 'dart:io';
 import 'package:weaco/domain/common/file/repository/file_repository.dart';
 
+
 class MockFileRepositoryImpl implements FileRepository {
+  int getOriginImageCallCount = 0;
   int saveDataCallCount = 0;
   final Map<String, dynamic> methodParameterMap = {};
+  File? getOriginImageResult;
   bool fakeSaveDataResult = false;
 
   void initMockData() {
-    saveDataCallCount = 0;
+    getOriginImageCallCount = 0;
     methodParameterMap.clear();
-    fakeSaveDataResult = false;
+    getOriginImageResult = null;
+  }
+
+  @override
+  Future<File?> getOriginImage() async {
+    getOriginImageCallCount++;
+    return getOriginImageResult;
   }
 
   @override
