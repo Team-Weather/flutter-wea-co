@@ -10,39 +10,18 @@ void main() {
   group('SaveCroppedImageUseCase 클래스', () {
     final mockImageRepository = MockImageRepositoryImpl();
     final SaveCroppedImageUseCase useCase =
-        SaveCroppedImageUseCase(mockImageRepository);
+        SaveCroppedImageUseCase(imageRepository: mockImageRepository);
 
     group('execute 메서드는', () {
-      test('saveCroppedImage()을 호출하면 Feed Image를 반환해야 합니다.', () async {
+      test('saveCroppedImage 메서드를 호출하여 이미지를 저장한다.', () async {
         // Given
-        String testImagePath = 'testImagePath';
-        final Feed testFeed =Feed(
-          id: '1',
-          imagePath: testImagePath,
-          userEmail: 'test@email.com',
-          description: 'description',
-          weather: Weather(
-            temperature: 1.0,
-            timeTemperature: DateTime.now(),
-            code: 1,
-            createdAt: DateTime.now(),
-          ),
-          seasonCode: 1,
-          location: Location(
-            lat: 1.0,
-            lng: 1.0,
-            city: '서울시, 노원구',
-            createdAt: DateTime.now(),
-          ),
-          createdAt: DateTime.now(),
-        );
+        final data = [1, 2, 3, 4];
 
         // When
-        final result = await useCase.execute(testImagePath);
+        final result = await useCase.execute(data: data);
 
         // Then
-        expect(result.id, testFeed.id);
-        expect(testFeed.imagePath, testImagePath);
+        expect(result, true);
       });
     });
   });
