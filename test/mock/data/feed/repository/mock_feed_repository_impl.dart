@@ -61,7 +61,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [_fakeFeedList]에서 조건에 맞는 피드 데이터를 찾아서 리스트로 반환
   /// 호출시 [getRecommendedFeedsCallCount] + 1
   @override
-  Future<List<Feed>> getRecommendedFeeds() {
+  Future<List<Feed>> getRecommendedFeedList() {
     getRecommendedFeedsCallCount++;
 
     List<Feed> result = _fakeFeedList;
