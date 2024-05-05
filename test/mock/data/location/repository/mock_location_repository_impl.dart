@@ -3,32 +3,27 @@ import 'package:weaco/domain/location/repository/location_repository.dart';
 
 class MockLocationRepositoryImpl implements LocationRepository {
   Map<String, dynamic> methodParameterMap = {};
-  Location? _localLocation;
-  Location? _remoteLocation;
-
-  /// 로컬 DB에 저장된 현재 위치 정보를 요청
-  @override
-  Future<Location?> getLocation() async {
-    return _localLocation;
-  }
-
-  /// geolocator 로 현재 위치 정보를 요청
-  Future<Location> getRemoteLocation({
-    required Location location
-  }) async {
-    _remoteLocation = Location(
-      lat: location.lat,
-      lng: location.lng,
-      city: 'city',
-      createdAt: location.createdAt,
-    );
-
-    return _remoteLocation!;
-  }
+  int getLocationCallCount = 0;
+  Location? getLocationResult;
+  double? lat;
+  double? lng;
 
   void initMockData() {
+    getLocationCallCount = 0;
+    getLocationResult = null;
     methodParameterMap = {};
-    _localLocation = null;
-    _remoteLocation = null;
+    lat = null;
+    lng = null;
+  }
+
+  /// 파라미터가 널러블일 경우 로컬 DB에 저장된 현재 위치 정보를 요청
+  /// 파라미터가 널러블이 아닐 경우 geolocator 로 현재 위치 정보를 요청
+  @override
+  Future<Location?> getLocation({double? lat, double? lng}) async {
+    getLocationCallCount++;
+    this.lat = lat;
+    this.lng = lng;
+
+    return getLocationResult;
   }
 }
