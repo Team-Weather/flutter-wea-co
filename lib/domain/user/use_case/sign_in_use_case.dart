@@ -1,10 +1,10 @@
 import 'package:weaco/domain/user/model/user_auth.dart';
 import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 
-class SignInUserUseCase {
+class SignInUseCase {
   final UserAuthRepository _userAuthRepository;
 
-  const SignInUserUseCase({
+  const SignInUseCase({
     required UserAuthRepository userAuthRepository,
   }) : _userAuthRepository = userAuthRepository;
 
