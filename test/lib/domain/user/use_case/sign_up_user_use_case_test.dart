@@ -17,7 +17,6 @@ void main() {
         // Given
         const existingEmail = 'existingUser@email.com';
         const newEmail = 'newUser@email.com';
-        const newEmailDuplicated = 'existingUser@email.com';
         final existingUserAuth =
             UserAuth(email: existingEmail, password: 'password');
         final existingUserProfile = UserProfile(
@@ -37,8 +36,6 @@ void main() {
           feedCount: 0,
           createdAt: DateTime.parse('2024-05-05'),
         );
-        final newUserAuth2 =
-            UserAuth(email: newEmailDuplicated, password: 'password');
 
         // When
         signUpUserUseCase.execute(
