@@ -25,7 +25,7 @@ class MockFileRepositoryImpl implements FileRepository {
   }
 
   @override
-  Future<File?> getCroppedImage({required List<int> data}) async {
+  Future<File?> getCroppedImage() async {
     getCroppedImageCallCount++;
     return getCroppedImageResult;
   }
