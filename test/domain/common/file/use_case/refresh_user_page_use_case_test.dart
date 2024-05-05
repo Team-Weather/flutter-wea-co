@@ -7,8 +7,6 @@ import 'package:weaco/domain/weather/model/weather.dart';
 
 import '../../../../mock/data/feed/use_case/mock_get_user_page_feeds_use_case.dart';
 import '../../../../mock/data/user/use_case/mock_get_user_profile_use_case.dart';
-import '../../../../mock/data/feed/use_case/mock_get_user_page_feeds_use_case.dart';
-import '../../../../mock/data/user/use_case/mock_get_user_page_user_profile_use_case.dart';
 
 void main() {
   group('RefreshUserPageUseCase 클래스', () {
