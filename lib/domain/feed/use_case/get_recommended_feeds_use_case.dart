@@ -18,10 +18,6 @@ class GetRecommendedFeedsUseCase {
       int? weatherCode,
       int? minTemperature,
       int? maxTemperature}) async {
-    return await _feedRepository.getRecommendedFeeds(
-        seasonCode: seasonCode,
-        weatherCode: weatherCode,
-        minTemperature: minTemperature,
-        maxTemperature: maxTemperature);
+    return await _feedRepository.getRecommendedFeedList();
   }
 }
