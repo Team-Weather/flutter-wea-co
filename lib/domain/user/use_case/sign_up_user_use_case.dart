@@ -13,32 +13,15 @@ class SignUpUserUseCase {
   /// [userAuth] : 회원 가입을 위한 이메일, 비밀번호 정보
   /// [userProfile] : 회원 가입을 위한 프로필 정보
   /// 회원 가입 성공시 true 반환, 실패시 false 반환
-  Future<bool?> execute(UserAuth userAuth, UserProfile userProfile, String email)
-  async {
-    final List<UserProfile> userProfileList = [];
-    if (isRegistered(userProfile, email)) {
+  Future<bool> execute(
+      {required UserAuth userAuth, required UserProfile userProfile}) async {
+    // email을 중복 검사 한다.
+    // 중복된 email이 있으면 exception을 발생시킨다.
+    // 중복된 email이 없으면 회원 가입을 진행한다.
+    if (await _userRepository.isRegistered(email: userAuth.email)) {
       return false;
     }
-
-    userProfileList.add(UserProfile(
-      email: userProfile.email,
-      nickname: userProfile.nickname,
-      gender: userProfile.gender,
-      profileImagePath: userProfile.profileImagePath,
-      feedCount: 0,
-      createdAt: DateTime.now(),
-      deletedAt: null,
-    ));
-    return null;
-  }
-
-  bool isRegistered(UserProfile userProfile, String email) {
-    final List<UserProfile> userProfileList = [];
-    for (var userProfile in userProfileList) {
-      if (userProfile.email != email) {
-        return true;
-      }
-    }
-    return false;
+    return await _userRepository.signUp(
+        userAuth: userAuth, userProfile: userProfile);
   }
 }
