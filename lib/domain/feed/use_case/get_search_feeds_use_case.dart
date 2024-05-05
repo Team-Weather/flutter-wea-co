@@ -21,7 +21,7 @@ class GetSearchFeedsUseCase {
     int? minTemperature,
     int? maxTemperature,
   }) async {
-    return await _feedRepository.getSearchFeeds(
+    return await _feedRepository.getSearchFeedList(
       limit: limit,
       createdAt: createdAt,
       seasonCode: seasonCode,

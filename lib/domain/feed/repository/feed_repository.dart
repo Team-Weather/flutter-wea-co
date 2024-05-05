@@ -14,7 +14,7 @@ abstract interface class FeedRepository {
       int? minTemperature,
       int? maxTemperature});
 
-  Future<List<Feed>> getSearchFeeds({
+  Future<List<Feed>> getSearchFeedList({
     int? limit = 20,
     DateTime? createdAt,
     int? seasonCode,
