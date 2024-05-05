@@ -26,31 +26,6 @@ void main() {
         expect(mockFeedRepository.getRecommendedFeedsCallCount, expectCount);
       });
 
-      test('인자로 받은 필터링 조건을 FeedRepository.getRecommendedFeeds()에 그대로 전달한다.',
-          () async {
-        // Given
-        const seasonCode = 0;
-        const weatherCode = 0;
-        const minTemperature = 20;
-        const maxTemperature = 25;
-
-        // When
-        await useCase.execute(
-            seasonCode: seasonCode,
-            weatherCode: weatherCode,
-            minTemperature: minTemperature,
-            maxTemperature: maxTemperature);
-
-        // Then
-        expect(mockFeedRepository.methodParameterMap['seasonCode'], seasonCode);
-        expect(
-            mockFeedRepository.methodParameterMap['weatherCode'], weatherCode);
-        expect(mockFeedRepository.methodParameterMap['minTemperature'],
-            minTemperature);
-        expect(mockFeedRepository.methodParameterMap['maxTemperature'],
-            maxTemperature);
-      });
-
       test('FeedRepository.getRecommendedFeeds()를 호출하고 반환 받은 값을 그대로 반환한다.',
           () async {
         // Given
@@ -98,30 +73,10 @@ void main() {
         mockFeedRepository.addFeed(feed: feed4);
 
         // When
-        final result1 = await useCase.execute();
-        final result2 = await useCase.execute(seasonCode: 0);
-        final result3 = await useCase.execute(seasonCode: 1);
-        final result4 =
-            await useCase.execute(minTemperature: 0, maxTemperature: 10);
-        final result5 =
-            await useCase.execute(minTemperature: 10, maxTemperature: 20);
-        final result6 =
-            await useCase.execute(minTemperature: 0, maxTemperature: 20);
-        final result7 = await useCase.execute(
-            seasonCode: 2, minTemperature: 0, maxTemperature: 20);
-        final result8 = await useCase.execute(weatherCode: 3);
-        final result9 = await useCase.execute(weatherCode: 4);
+        final result = await useCase.execute();
 
         // Then
-        expect(result1, [feed1, feed2, feed3, feed4]);
-        expect(result2, [feed1, feed2]);
-        expect(result3, [feed3]);
-        expect(result4, [feed4]);
-        expect(result5, [feed3]);
-        expect(result6, [feed3, feed4]);
-        expect(result7, [feed4]);
-        expect(result8, [feed4]);
-        expect(result9, []);
+        expect(result, [feed1, feed2, feed3, feed4]);
       });
     });
   });
