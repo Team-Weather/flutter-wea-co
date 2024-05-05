@@ -4,19 +4,25 @@ import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 class MockUserAuthRepositoryImpl implements UserAuthRepository {
   int signInCallCount = 0;
   UserAuth? methodParameter;
-  bool? returnValue;
+
+  List<UserAuth> _fakeUserList = [];
 
   void initMockData() {
     signInCallCount = 0;
     methodParameter = null;
-    returnValue = null;
+    _fakeUserList.clear();
+  }
+
+  void addUserAuth(UserAuth userAuth) {
+    _fakeUserList.add(userAuth);
   }
 
   @override
-  Future<bool> signIn({required UserAuth userAuth}) {
+  Future<bool> signIn({required UserAuth userAuth}) async {
     signInCallCount++;
     methodParameter = userAuth;
-    return Future.value(returnValue);
+    return _fakeUserList.any(
+        (e) => e.email == userAuth.email && e.password == userAuth.password);
   }
 
   @override
