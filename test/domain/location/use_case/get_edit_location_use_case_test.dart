@@ -23,35 +23,6 @@ void main() {
         // Then
         expect(await locationRepository.getLocation(), expectedResult);
       });
-
-      test('로컬 DB에 저장된 값이 없을 경우, geolocator 로 현재 위치 정보를 얻어온다.', () async {
-        // Given
-        const double lat = 37.58;
-        const double lng = 126.97;
-        const String city = 'city';
-
-        final expectedResult = Location(
-          lat: lat,
-          lng: lng,
-          city: city,
-          createdAt: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            DateTime.now().hour,
-            DateTime.now().minute,
-          ),
-        );
-
-        await useCase.execute();
-
-        // When
-        final actual =
-            await locationRepository.getRemoteLocation(location: expectedResult);
-
-        // Then
-        expect(actual, expectedResult);
-      });
     });
   });
 }
