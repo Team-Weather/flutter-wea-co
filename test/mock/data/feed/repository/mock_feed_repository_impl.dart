@@ -104,6 +104,8 @@ class MockFeedRepositoryImpl implements FeedRepository {
     int? maxTemperature,
   }) {
     getSearchFeedsCallCount++;
+    methodParameterMap['limit'] = limit;
+    methodParameterMap['createdAt'] = createdAt;
     methodParameterMap['seasonCode'] = seasonCode;
     methodParameterMap['weatherCode'] = weatherCode;
     methodParameterMap['minTemperature'] = minTemperature;
