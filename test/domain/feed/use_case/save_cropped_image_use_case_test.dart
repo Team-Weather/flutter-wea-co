@@ -1,9 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/common/use_case/save_cropped_image_use_case.dart';
-import 'package:weaco/domain/location/model/location.dart';
-import 'package:weaco/domain/weather/model/weather.dart';
-
 import '../../../mock/data/feed/repository/mock_image_repository_impl.dart';
 
 void main() {
