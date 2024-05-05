@@ -22,6 +22,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
     required int? limit,
   }) async {
     getFeedListcallCount++;
+    methodParameterMap['email'] = email;
+    methodParameterMap['limit'] = limit;
+    methodParameterMap['createdAt'] = createdAt;
     return await Future.value(_fakeFeedList);
   }
 
@@ -57,7 +60,6 @@ class MockFeedRepositoryImpl implements FeedRepository {
       int? weatherCode,
       int? minTemperature,
       int? maxTemperature}) {
-
     getRecommendedFeedsCallCount++;
     methodParameterMap['seasonCode'] = seasonCode;
     methodParameterMap['weatherCode'] = weatherCode;
