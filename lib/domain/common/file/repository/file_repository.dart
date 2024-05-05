@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:weaco/domain/common/file/model/profile_image.dart';
+import 'package:weaco/domain/weather/model/weather_background_image.dart';
 
 abstract interface class FileRepository {
-  Future<bool> saveData({required List<int> data});
+  Future<File?> getImage({required bool isOrigin});
 
-  Future<File?> getCroppedImage();
+  Future<bool> saveImage({required bool isOrigin, required File file});
 
-  Future<File?> getOriginImage();
+  Future<List<WeatherBackgroundImage>> getWeatherBackgroundImageList();
+
+  Future<List<ProfileImage>> getProfileImageList();
 }
