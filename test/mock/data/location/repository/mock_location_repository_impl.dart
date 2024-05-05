@@ -5,24 +5,28 @@ class MockLocationRepositoryImpl implements LocationRepository {
   Map<String, dynamic> methodParameterMap = {};
   int getLocationCallCount = 0;
   Location? getLocationResult;
-  double? lat;
-  double? lng;
 
   void initMockData() {
     getLocationCallCount = 0;
     getLocationResult = null;
-    methodParameterMap = {};
-    lat = null;
-    lng = null;
+    methodParameterMap.clear();
   }
 
-  /// 파라미터가 널러블일 경우 로컬 DB에 저장된 현재 위치 정보를 요청
-  /// 파라미터가 널러블이 아닐 경우 geolocator 로 현재 위치 정보를 요청
+  /// 위도, 경도를 인자로 Location 객체를 반환
+  ///
+  /// @param [lat] 위도
+  /// @param [lng] 경도
+  /// @return [Location?] geolocator 로 반환 받은 값을 이용하여 생성한 [Location] 객체
   @override
-  Future<Location?> getLocation({double? lat, double? lng}) async {
+  Future<Location?> getLocation({
+    required double lat,
+    required double lng,
+  }) async {
     getLocationCallCount++;
-    this.lat = lat;
-    this.lng = lng;
+    methodParameterMap = {
+      'lat': lat,
+      'lng': lng,
+    };
 
     return getLocationResult;
   }
