@@ -10,14 +10,14 @@ import '../../../mock/data/user/use_case/mock_get_user_page_user_profile_use_cas
 
 void main() {
   group('RefreshUserPageUseCase 클래스', () {
-    final MockGetUserPageUserProfileUseCase mockGetUserPageUserProfileUseCase =
-        MockGetUserPageUserProfileUseCase();
+    final MockGetUserProfileUseCase mockGetUserProfileUseCase =
+        MockGetUserProfileUseCase();
     final MockGetUserPageFeedsUseCase mockGetUserPageFeedsUseCase =
         MockGetUserPageFeedsUseCase();
 
     final RefreshUserPageUseCase refreshUserPageUseCase =
         RefreshUserPageUseCase(
-            getUserPageUserProfileUseCase: mockGetUserPageUserProfileUseCase,
+            getUserProfileUseCase: mockGetUserProfileUseCase,
             getUserPageFeedsUseCase: mockGetUserPageFeedsUseCase);
 
     final Map<String, dynamic> expectedParameterMap = {
@@ -102,13 +102,13 @@ void main() {
     ];
 
     setUp(() {
-      mockGetUserPageUserProfileUseCase.initMockData();
+      mockGetUserProfileUseCase.initMockData();
       mockGetUserPageFeedsUseCase.initMockData();
     });
 
     group('execute() 메소드는', () {
       test(
-          'mockGetUserPageUserProfileUseCase.execute(), '
+          'mockGetUserProfileUseCase.execute(), '
           'mockGetUserPageFeedsUseCase.execute() 메소드를 각 1회 호출한다.', () async {
         const int expectCallCount = 1;
 
@@ -118,13 +118,12 @@ void main() {
           limit: expectedParameterMap['limit'],
         );
 
-        expect(mockGetUserPageUserProfileUseCase.executeCallCount,
-            expectCallCount);
+        expect(mockGetUserProfileUseCase.executeCallCount, expectCallCount);
         expect(mockGetUserPageFeedsUseCase.executeCallCount, expectCallCount);
       });
       test(
           '전달 받은 인자를'
-          'mockGetUserPageUserProfileUseCase.execute() 와 '
+          'mockGetUserProfileUseCase.execute() 와 '
           'mockGetUserPageFeedsUseCase.execute() 메소드에 그대로 각각 전달한다.', () async {
         await refreshUserPageUseCase.execute(
           email: expectedParameterMap['email'],
@@ -132,16 +131,16 @@ void main() {
           limit: expectedParameterMap['limit'],
         );
 
-        expect(mockGetUserPageUserProfileUseCase.methodParameter,
+        expect(mockGetUserProfileUseCase.methodParameter,
             expectedParameterMap['email']);
         expect(mockGetUserPageFeedsUseCase.methodParameterMap,
             expectedParameterMap);
       });
       test(
-          'mockGetUserPageUserProfileUseCase.execute() 와 '
+          'mockGetUserProfileUseCase.execute() 와 '
           'mockGetUserPageFeedsUseCase.execute() 메소드를 호출하고 전달받은 반환값을 '
           'Map 형태로 감싸 반환한다.', () async {
-        mockGetUserPageUserProfileUseCase.returnValue = expectProfile;
+        mockGetUserProfileUseCase.returnValue = expectProfile;
         mockGetUserPageFeedsUseCase.returnValue = expectFeedList;
 
         final expectReturnValue = {
