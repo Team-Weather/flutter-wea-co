@@ -5,7 +5,7 @@ class MockUserAuthRepositoryImpl implements UserAuthRepository {
   int signInCallCount = 0;
   UserAuth? methodParameter;
 
-  List<UserAuth> _fakeUserList = [];
+  final List<UserAuth> _fakeUserList = [];
 
   void initMockData() {
     signInCallCount = 0;
