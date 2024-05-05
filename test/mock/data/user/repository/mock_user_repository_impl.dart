@@ -10,6 +10,7 @@ class MockUserRepositoryImpl implements UserRepository {
     'test3@email.com',
   ];
   final List<UserProfile> _userProfileList = [];
+  bool isRegisteredReturnValue = false;
 
   @override
   Future<bool> logOut() async {
@@ -18,16 +19,22 @@ class MockUserRepositoryImpl implements UserRepository {
 
   void initMockData() {
     isLoggedOut = false;
+    isRegisteredReturnValue = false;
   }
 
   @override
   Future<bool> signUp(
-      UserAuth userAuth, UserProfile userProfile, String email) async {
+      {required UserAuth userAuth, required UserProfile userProfile}) async {
     for (UserProfile userProfile in _userProfileList) {
-      if (userProfile.email == email) {
+      if (userProfile.email == userAuth.email) {
         return false;
       }
     }
     return true;
+  }
+
+  @override
+  Future<bool> isRegistered({required String email}) async{
+    return isRegisteredReturnValue;
   }
 }
