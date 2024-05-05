@@ -1,10 +1,10 @@
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/location/repository/location_repository.dart';
 
-class GetLocationFromCoordinateUseCase {
+class GetLocationUseCase {
   final LocationRepository _locationRepository;
 
-  GetLocationFromCoordinateUseCase({
+  GetLocationUseCase({
     required LocationRepository locationRepository,
   }) : _locationRepository = locationRepository;
 

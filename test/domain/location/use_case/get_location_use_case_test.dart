@@ -1,17 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/location/model/location.dart';
-import 'package:weaco/domain/location/use_case/get_location_from_coordinate_use_case.dart';
+import 'package:weaco/domain/location/use_case/get_location_use_case.dart';
 
 import '../../../mock/data/location/repository/mock_location_repository_impl.dart';
 
 void main() {
-  group('GetLocationFromCoordinateUseCase 클래스', () {
+  group('GetLocationUseCase 클래스', () {
     final MockLocationRepositoryImpl mockLocationRepositoryImpl =
         MockLocationRepositoryImpl();
 
-    final GetLocationFromCoordinateUseCase getLocationFromCoordinateUseCase =
-        GetLocationFromCoordinateUseCase(
-            locationRepository: mockLocationRepositoryImpl);
+    final GetLocationUseCase getLocationUseCase =
+        GetLocationUseCase(locationRepository: mockLocationRepositoryImpl);
 
     setUp(() => mockLocationRepositoryImpl.initMockData());
 
@@ -20,7 +19,7 @@ void main() {
         // Given
         const expectCount = 1;
         // When
-        await getLocationFromCoordinateUseCase.execute();
+        await getLocationUseCase.execute();
 
         // Then
         expect(mockLocationRepositoryImpl.getLocationCallCount, expectCount);
@@ -39,7 +38,7 @@ void main() {
         mockLocationRepositoryImpl.getLocationResult = expectLocation;
 
         // When
-        final actualLocation = await getLocationFromCoordinateUseCase.execute();
+        final actualLocation = await getLocationUseCase.execute();
 
         // Then
         expect(actualLocation, expectLocation);
