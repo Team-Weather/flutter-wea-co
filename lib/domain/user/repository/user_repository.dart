@@ -1,1 +1,3 @@
-abstract interface class UserRepository {}
+abstract interface class UserRepository {
+  Future<bool> logOut();
+}
