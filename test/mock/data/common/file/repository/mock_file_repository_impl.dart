@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:weaco/domain/common/file/repository/file_repository.dart';
 
-
 class MockFileRepositoryImpl implements FileRepository {
   int getOriginImageCallCount = 0;
   int saveDataCallCount = 0;
