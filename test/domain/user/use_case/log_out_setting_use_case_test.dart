@@ -3,6 +3,7 @@ import 'package:weaco/domain/user/use_case/log_out_setting_use_case.dart';
 
 import '../../../mock/data/user/repository/mock_user_repository_impl.dart';
 
+
 void main() {
   group('LogOutSettingUseCase 클래스', () {
     final userRepository = MockUserRepositoryImpl();
