@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/common/file/use_case/get_cropped_image_use_case.dart';
-
 import '../../../mock/data/common/repository/mock_file_repository_impl.dart';
 
 void main() {
@@ -17,7 +16,7 @@ void main() {
         const expectCount = 1;
 
         // When
-        await useCase.execute(data: [1, 2, 3]);
+        await useCase.execute();
 
         // Then
         expect(mockFileRepository.getCroppedImageCallCount, expectCount);
