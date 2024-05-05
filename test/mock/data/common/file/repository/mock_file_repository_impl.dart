@@ -1,41 +1,49 @@
 import 'dart:io';
+import 'package:weaco/domain/common/file/model/profile_image.dart';
 import 'package:weaco/domain/common/file/repository/file_repository.dart';
+import 'package:weaco/domain/weather/model/weather_background_image.dart';
 
 class MockFileRepositoryImpl implements FileRepository {
-  int getOriginImageCallCount = 0;
-  int saveDataCallCount = 0;
-  int getCroppedImageCallCount = 0;
+  int getImageCallCount = 0;
+  int saveImageCallCount = 0;
+  int getProfileImageListCallCount = 0;
+  int getWeatherBackgroundImageListCallCount = 0;
   final Map<String, dynamic> methodParameterMap = {};
-  File? getOriginImageResult;
-  bool fakeSaveDataResult = false;
-  File? getCroppedImageResult;
+  File? getImageResult;
+  bool saveImageResult = false;
+  List<ProfileImage> getProfileImageResult = [];
+  List<WeatherBackgroundImage> getWeatherBackgroundImageListResult = [];
 
   void initMockData() {
-    saveDataCallCount = 0;
-    getCroppedImageCallCount = 0;
-    getOriginImageCallCount = 0;
+    getImageCallCount = 0;
+    saveImageCallCount = 0;
+    getProfileImageListCallCount = 0;
+    getWeatherBackgroundImageListCallCount = 0;
     methodParameterMap.clear();
-    fakeSaveDataResult = false;
-    getCroppedImageResult = null;
-    getOriginImageResult = null;
   }
 
   @override
-  Future<File?> getOriginImage() async {
-    getOriginImageCallCount++;
-    return getOriginImageResult;
+  Future<File?> getImage({required bool isOrigin}) async {
+    getImageCallCount++;
+    return getImageResult;
   }
 
   @override
-  Future<bool> saveData({required List<int> data}) async {
-    saveDataCallCount++;
-    methodParameterMap['data'] = data;
-    return fakeSaveDataResult;
+  Future<bool> saveImage({required bool isOrigin, required File file}) async {
+    saveImageCallCount++;
+    methodParameterMap['data'] = file;
+    return saveImageResult;
   }
 
   @override
-  Future<File?> getCroppedImage() async {
-    getCroppedImageCallCount++;
-    return getCroppedImageResult;
+  Future<List<ProfileImage>> getProfileImageList() async {
+    getProfileImageListCallCount++;
+    return getProfileImageResult;
+  }
+
+  @override
+  Future<List<WeatherBackgroundImage>> getWeatherBackgroundImageList() async {
+    getWeatherBackgroundImageListCallCount++;
+    return getWeatherBackgroundImageListResult;
   }
 }
