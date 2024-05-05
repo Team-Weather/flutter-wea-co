@@ -23,6 +23,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
     required int? limit,
   }) async {
     getFeedListcallCount++;
+    methodParameterMap['email'] = email;
+    methodParameterMap['limit'] = limit;
+    methodParameterMap['createdAt'] = createdAt;
     return await Future.value(_fakeFeedList);
   }
 
