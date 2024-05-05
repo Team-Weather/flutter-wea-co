@@ -2,21 +2,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
-import 'package:weaco/domain/weather/use_case/get_home_weather_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 
-import '../../../mock/data/weather/mock_weather_repository_impl.dart';
+
+import '../../../mock/data/weather/mock_daily_location_weather_repository_impl.dart';
 
 void main() {
-  group('GetHomeWeatherUseCase 클래스', () {
-    final mockDailyWeatherRepository = MockDailyWeatherRepositoryImpl();
-    final GetHomeWeatherUseCase useCase =
-        GetHomeWeatherUseCase(weatherRepository: mockDailyWeatherRepository);
+  group('GetDailyLocationWeatherUseCase 클래스', () {
+    final mockDailyLocationWeatherRepository = MockDailyLocationWeatherRepositoryImpl();
+    final GetDailyLocationWeatherUseCase useCase =
+        GetDailyLocationWeatherUseCase(dailyLocationWeatherRepository: mockDailyLocationWeatherRepository);
 
     setUp(() {
-      mockDailyWeatherRepository.initMockData();
+      mockDailyLocationWeatherRepository.initMockData();
     });
     group('execute 메서드는', () {
-      test('DailyWeatherRepository.getDailyLocationWeather()을 한번 호출한다.',
+      test('DailyLocationWeatherRepository.getDailyLocationWeather()을 한번 호출한다.',
           () async {
         // Given
         const expectedCallCount = 1;
@@ -35,7 +36,7 @@ void main() {
         );
 
         // Then
-        expect(mockDailyWeatherRepository.dailyLocationWeatherCallCount,
+        expect(mockDailyLocationWeatherRepository.dailyLocationWeatherCallCount,
             expectedCallCount);
       });
 
@@ -52,7 +53,7 @@ void main() {
           createdAt: DateTime.now(),
         );
 
-        final dailyLocationWeather = DailyLocationWeather(
+        final expectedDailyLocationWeather = DailyLocationWeather(
           highTemperature: 15,
           lowTemperature: 12,
           weatherList: [
@@ -78,18 +79,20 @@ void main() {
           createdAt: DateTime.now(),
         );
 
-        mockDailyWeatherRepository.dailyLocationWeatherResult =
-            dailyLocationWeather;
+        mockDailyLocationWeatherRepository.dailyLocationWeatherResult =
+            expectedDailyLocationWeather;
         // When
-        final weatherInfo = await useCase.execute(
+        final actualWeatherInfo = await useCase.execute(
           date: date,
           location: location,
         );
 
         // Then
-        expect(weatherInfo, dailyLocationWeather);
+        expect(actualWeatherInfo, expectedDailyLocationWeather);
+        expect(mockDailyLocationWeatherRepository.methodParameterMap['date'], date);
+        expect(mockDailyLocationWeatherRepository.methodParameterMap['location'], location);
         expect(
-          mockDailyWeatherRepository.dailyLocationWeatherCallCount,
+          mockDailyLocationWeatherRepository.dailyLocationWeatherCallCount,
           expectedCallCount,
         );
       });
