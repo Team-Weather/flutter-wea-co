@@ -14,7 +14,7 @@ abstract interface class FeedRepository {
 
   Future<bool> saveFeed({required Feed editedFeed});
 
-  Future<List<Feed>> getRecommendedFeeds();
+  Future<List<Feed>> getRecommendedFeedList();
 
   Future<List<Feed>> getSearchFeedList({
     DateTime? createdAt,
