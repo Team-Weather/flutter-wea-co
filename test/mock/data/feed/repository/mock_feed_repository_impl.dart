@@ -141,9 +141,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
     }
 
     if (limit != null) {
-      result = result.take(20).toList();
+      result = result.take(limit).toList();
     } else {
-      result = result.take(limit!).toList();
+      result = result.take(20).toList();
     }
 
     return Future.value(result);
