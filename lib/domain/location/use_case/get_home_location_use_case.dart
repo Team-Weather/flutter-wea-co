@@ -12,7 +12,7 @@ class GetHomeLocationUseCase {
   /// [lat] 위도
   /// [lng] 경도
   /// return [Location] 위치 정보
-  Future<Location> execute({required double lat, required double lng}) async {
+  Future<Location?> execute({required double lat, required double lng}) async {
     return await _locationRepository.getLocation(lat: lat, lng: lng);
   }
 }
