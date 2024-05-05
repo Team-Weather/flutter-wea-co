@@ -19,47 +19,19 @@ void main() {
       test('LocationRepository.getLocation()을 한번 호출한다.', () async {
         // Given
         const expectCount = 1;
-        final Map<String, double> expectParameter = {
-          'lat': 40.3,
-          'lng': 127.3,
-        };
-
         // When
-        await getLocationFromCoordinateUseCase.execute(
-          lat: expectParameter['lat']!,
-          lng: expectParameter['lng']!,
-        );
+        await getLocationFromCoordinateUseCase.execute();
 
         // Then
         expect(mockLocationRepositoryImpl.getLocationCallCount, expectCount);
       });
 
-      test('인자로 받은 lat, lng를 LocationRepository.getLocation()에 그대로 전달한다.',
-          () async {
-        // When
-        final Map<String, double> expectParameter = {
-          'lat': 40.3,
-          'lng': 127.3,
-        };
-        await getLocationFromCoordinateUseCase.execute(
-          lat: expectParameter['lat']!,
-          lng: expectParameter['lng']!,
-        );
-
-        // Then
-        expect(mockLocationRepositoryImpl.methodParameterMap, expectParameter);
-      });
-
       test('LocationRepository.getLocation()를 호출하고 반환 받은 값을 그대로 반환한다.',
           () async {
         // Given
-        final Map<String, double> expectParameter = {
-          'lat': 40.3,
-          'lng': 127.3,
-        };
         final expectLocation = Location(
-          lat: expectParameter['lat']!,
-          lng: expectParameter['lng']!,
+          lat: 40.3,
+          lng: 127.3,
           city: 'Seoul',
           createdAt: DateTime.parse('2024-05-01 13:27:00'),
         );
@@ -67,10 +39,7 @@ void main() {
         mockLocationRepositoryImpl.getLocationResult = expectLocation;
 
         // When
-        final actualLocation = await getLocationFromCoordinateUseCase.execute(
-          lat: expectParameter['lat']!,
-          lng: expectParameter['lng']!,
-        );
+        final actualLocation = await getLocationFromCoordinateUseCase.execute();
 
         // Then
         expect(actualLocation, expectLocation);
