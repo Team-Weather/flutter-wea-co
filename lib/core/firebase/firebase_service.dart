@@ -9,26 +9,30 @@ class FirebaseService {
   UserCredential? get userCredential => _userCredential;
 
   // 회원가입
-  Future<void> signUp({
+  Future<UserCredential?> signUp({
     required String email,
     required String password,
   }) async {
     try {
       _userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      return _userCredential;
     } on FirebaseAuthException {
       rethrow;
     }
   }
 
   // 로그인
-  Future<void> signIn({
+  Future<UserCredential?> signIn({
     required String email,
     required String password,
   }) async {
     try {
       _userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      
+      return _userCredential;
     } on FirebaseAuthException {
       rethrow;
     }
