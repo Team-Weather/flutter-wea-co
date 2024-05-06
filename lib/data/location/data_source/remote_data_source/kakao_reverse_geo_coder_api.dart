@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:weaco/core/dio/base_dio.dart';
+import 'package:weaco/core/dio/base_response.dart';
 import 'package:weaco/core/exception/network_exception.dart';
 import 'package:weaco/data/location/data_source/remote_data_source/remote_location_data_source.dart';
-import 'package:weaco/data/response/response.dart';
 
 class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
   final BaseDio _dio;

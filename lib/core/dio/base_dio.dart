@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:weaco/data/response/response.dart';
+import 'base_response.dart';
 
 class BaseDio {
   final _dio = Dio();
