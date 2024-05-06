@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class FireBaseDataSource {
+class FirebaseService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   UserCredential? _userCredential;
 
@@ -35,7 +35,7 @@ class FireBaseDataSource {
   }
 
   // 로그아웃
-  Future<void> logOut({required String email}) async {
+  Future<void> logOut() async {
     await _firebaseAuth.signOut();
   }
 
