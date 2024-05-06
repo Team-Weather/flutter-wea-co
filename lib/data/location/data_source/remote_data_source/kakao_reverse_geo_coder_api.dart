@@ -29,15 +29,17 @@ class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
           receiveTimeout: const Duration(seconds: 2));
       if (result.statusCode == 200) {
         if (result.body['meta']['total_count'] == 0) {
-          throw NetworkException.noData();
+          throw NetworkException.noData(
+              code: 'EmptyData', message: '응답 데이터 없음');
         } else {
           return result.body['documents'][0]['address_name'];
         }
       }
-      throw NetworkException.errorCode(code: result.statusCode.toString());
+      throw NetworkException.errorCode(
+          code: result.statusCode.toString(), message: '네트워크 응답 에러');
     } catch (e) {
       log(e.toString(), name: 'ReverseGeoCoderHelper.getDong()');
-      throw NetworkException.unknown(message: e.toString());
+      throw NetworkException.unknown(code: 'Unknown', message: e.toString());
     }
   }
 }
