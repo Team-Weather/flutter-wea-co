@@ -1,0 +1,44 @@
+import 'dart:developer';
+import 'package:dio/dio.dart';
+import 'package:weaco/core/dio/base_dio.dart';
+import 'package:weaco/core/exception/network_exception.dart';
+import 'location_remote_data_source.dart';
+
+class KakaoReverseGeoCoderApi implements LocationRemoteDataSource {
+  final BaseDio _dio;
+  final String _apiKey;
+  final String _basePath =
+      'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json';
+
+  KakaoReverseGeoCoderApi({required BaseDio dio, required String apiKey})
+      : _dio = dio,
+        _apiKey = apiKey;
+
+
+  /// 위도, 경도를 동주소로 변경 요청
+  /// @param lat: 위도
+  /// @param lng: 경도
+  /// @return String: 변환된 동주소
+  @override
+  Future<String> getDong({required double lat, required double lng}) async {
+    try {
+      Response result = await _dio.get(
+          path: _basePath,
+          queryParameters: {'x': lng.toString(), 'y': lat.toString()},
+          headers: {'Authorization': 'KakaoAK $_apiKey'},
+          connectTimeout: const Duration(seconds: 3),
+          receiveTimeout: const Duration(seconds: 2));
+      if (result.statusCode == 200) {
+        if (result.data['meta']['total_count'] == 0) {
+          throw NetworkException.noData();
+        } else {
+          return result.data['documents'][0]['address_name'];
+        }
+      }
+      throw  NetworkException.errorCode(code: result.statusCode.toString());
+    } catch (e) {
+      log(e.toString(), name: 'ReverseGeoCoderHelper.getDong()');
+      throw NetworkException.unknown(message: e.toString());
+    }
+  }
+}
