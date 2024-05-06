@@ -1,8 +1,8 @@
 import 'dart:developer';
-import 'package:dio/dio.dart';
 import 'package:weaco/core/dio/base_dio.dart';
 import 'package:weaco/core/exception/network_exception.dart';
 import 'package:weaco/data/location/data_source/remote_data_source/remote_location_data_source.dart';
+import 'package:weaco/data/response/response.dart';
 
 class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
   final BaseDio _dio;
@@ -21,17 +21,17 @@ class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
   @override
   Future<String> getDong({required double lat, required double lng}) async {
     try {
-      Response result = await _dio.get(
+      BaseResponse result = await _dio.get(
           path: _basePath,
           queryParameters: {'x': lng.toString(), 'y': lat.toString()},
           headers: {'Authorization': 'KakaoAK $_apiKey'},
           connectTimeout: const Duration(seconds: 3),
           receiveTimeout: const Duration(seconds: 2));
       if (result.statusCode == 200) {
-        if (result.data['meta']['total_count'] == 0) {
+        if (result.body['meta']['total_count'] == 0) {
           throw NetworkException.noData();
         } else {
-          return result.data['documents'][0]['address_name'];
+          return result.body['documents'][0]['address_name'];
         }
       }
       throw NetworkException.errorCode(code: result.statusCode.toString());

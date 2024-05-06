@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:weaco/data/response/response.dart';
 
 class BaseDio {
   final _dio = Dio();
@@ -16,17 +17,18 @@ class BaseDio {
   /// @param connectTimeout: 유효 연결 시간
   /// @param receiveTimeout: 유효 응답 시간
   /// @return Response: Get 요청에 대한 응답
-  Future<Response> get(
+  Future<BaseResponse> get(
       {required String path,
       Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers,
       Duration? connectTimeout,
       Duration? receiveTimeout}) async {
-    return await _dio.get(path,
+    Response result = await _dio.get(path,
         queryParameters: queryParameters,
         options: Options(
             headers: headers,
             receiveTimeout: receiveTimeout,
             sendTimeout: connectTimeout));
+    return BaseResponse(statusCode: result.statusCode, body: result.data);
   }
 }
