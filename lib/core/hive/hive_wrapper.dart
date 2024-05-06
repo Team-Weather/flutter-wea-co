@@ -1,7 +1,7 @@
 import 'package:weaco/main.dart';
 
 class HiveWrapper {
-  Future<void> writeData<E>(String key, E value) async {
+  Future<void> writeData(String key, String value) async {
     await dataBox.put(key, value);
   }
 

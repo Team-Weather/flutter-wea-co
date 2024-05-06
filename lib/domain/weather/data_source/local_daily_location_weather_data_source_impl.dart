@@ -17,7 +17,10 @@ class LocalDailyLocationWeatherDataSourceImpl
   Future<void> saveLocalDailyLocationWeather({
     required DailyLocationWeather dailyLocationWeather,
   }) async {
-    await _hiveWrapper.writeData(dailyLocationWeatherKey, dailyLocationWeather);
+    await _hiveWrapper.writeData(
+      dailyLocationWeatherKey,
+      jsonEncode(dailyLocationWeather.toJson()),
+    );
   }
 
   @override
