@@ -61,8 +61,8 @@ class DailyLocationWeather {
     return {
       'highTemperature': highTemperature,
       'lowTemperature': lowTemperature,
-      'weatherList': weatherList,
-      'location': location,
+      'weatherList': weatherList.map((weather) => weather.toJson()).toList(),
+      'location': location.toJson(),
       'createdAt': createdAt,
     };
   }
