@@ -4,12 +4,15 @@ sealed class NetworkException implements Exception {
 
   NetworkException({required this.code, required this.message});
 
-  factory NetworkException.noData({required String code, required String message}) = NoDataException;
+  factory NetworkException.noData(
+      {required String code, required String message}) = NoDataException;
 
-  factory NetworkException.errorCode({required String code, required String message}) = ErrorResponseCodeException;
+  factory NetworkException.errorCode(
+      {required String code,
+      required String message}) = ErrorResponseCodeException;
 
-  factory NetworkException.unknown({required String code, required String message}) =
-      UnknownException;
+  factory NetworkException.unknown(
+      {required String code, required String message}) = UnknownException;
 }
 
 class NoDataException extends NetworkException {
@@ -18,7 +21,6 @@ class NoDataException extends NetworkException {
 
 class ErrorResponseCodeException extends NetworkException {
   ErrorResponseCodeException({required super.code, required super.message});
-
 }
 
 class UnknownException extends NetworkException {
