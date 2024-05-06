@@ -12,6 +12,9 @@ class MeteoWeatherApi implements RemoteWeatherDataSource {
 
   MeteoWeatherApi({required BaseDio dio}) : _dio = dio;
 
+  /// meteo open api 이용하여 날씨 받아오는 메서드
+  /// @param lat: 위도
+  /// @param lng: 경도
   @override
   Future<WeatherDto> getWeather(
       {required double lat, required double lng}) async {
