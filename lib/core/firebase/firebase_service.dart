@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseService {
@@ -18,7 +20,8 @@ class FirebaseService {
           email: email, password: password);
 
       return _userCredential;
-    } on FirebaseAuthException {
+    } on Exception catch (e) {
+      log(e.toString(), name: 'FirebaseService.signUp()');
       rethrow;
     }
   }
@@ -31,23 +34,30 @@ class FirebaseService {
     try {
       _userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      
+
       return _userCredential;
-    } on FirebaseAuthException {
+    } on Exception catch (e) {
+      log(e.toString(), name: 'FirebaseService.signIn()');
       rethrow;
     }
   }
 
   // 로그아웃
   Future<void> logOut() async {
-    await _firebaseAuth.signOut();
+    try {
+      await _firebaseAuth.signOut();
+    } on Exception catch (e) {
+      log(e.toString(), name: 'FirebaseService.logOut()');
+      rethrow;
+    }
   }
 
   // 회원탈퇴
   Future<void> signOut() async {
     try {
       await _userCredential!.user!.delete();
-    } on FirebaseAuthException {
+    } on Exception catch (e) {
+      log(e.toString(), name: 'FirebaseService.signOut()');
       rethrow;
     }
   }
