@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:weaco/core/dio/base_dio.dart';
 import 'package:weaco/core/exception/network_exception.dart';
-import 'location_remote_data_source.dart';
+import 'package:weaco/data/location/data_source/remote_data_source/remote_location_data_source.dart';
 
-class KakaoReverseGeoCoderApi implements LocationRemoteDataSource {
+class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
   final BaseDio _dio;
   final String _apiKey;
   final String _basePath =
@@ -13,7 +13,6 @@ class KakaoReverseGeoCoderApi implements LocationRemoteDataSource {
   KakaoReverseGeoCoderApi({required BaseDio dio, required String apiKey})
       : _dio = dio,
         _apiKey = apiKey;
-
 
   /// 위도, 경도를 동주소로 변경 요청
   /// @param lat: 위도
@@ -35,7 +34,7 @@ class KakaoReverseGeoCoderApi implements LocationRemoteDataSource {
           return result.data['documents'][0]['address_name'];
         }
       }
-      throw  NetworkException.errorCode(code: result.statusCode.toString());
+      throw NetworkException.errorCode(code: result.statusCode.toString());
     } catch (e) {
       log(e.toString(), name: 'ReverseGeoCoderHelper.getDong()');
       throw NetworkException.unknown(message: e.toString());
