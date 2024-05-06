@@ -17,7 +17,6 @@ class DailyLocationWeather {
     required this.createdAt,
   });
 
-
   @override
   String toString() {
     return 'DailyLocationWeather{highTemperature: $highTemperature, lowTemperature: $lowTemperature, weatherList: $weatherList, location: $location, createdAt: $createdAt}';
@@ -55,6 +54,28 @@ class DailyLocationWeather {
       weatherList: weatherList ?? this.weatherList,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'highTemperature': highTemperature,
+      'lowTemperature': lowTemperature,
+      'weatherList': weatherList,
+      'location': location,
+      'createdAt': createdAt,
+    };
+  }
+
+  factory DailyLocationWeather.fromJson(Map<String, dynamic> json) {
+    return DailyLocationWeather(
+      highTemperature: json['highTemperature'] as double,
+      lowTemperature: json['lowTemperature'] as double,
+      weatherList: (json['weatherList'] as List)
+          .map((e) => Weather.fromJson(e))
+          .toList(),
+      location: Location.fromJson(json['location']),
+      createdAt: json['createdAt'] as DateTime,
     );
   }
 }

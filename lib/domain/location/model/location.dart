@@ -43,4 +43,22 @@ class Location {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'lat': lat,
+      'lng': lng,
+      'city': city,
+      'createdAt': createdAt,
+    };
+  }
+
+  factory Location.fromJson(Map<String, dynamic> json) {
+    return Location(
+      lat: json['lat'] as double,
+      lng: json['lng'] as double,
+      city: json['city'] as String,
+      createdAt: json['createdAt'] as DateTime,
+    );
+  }
 }
