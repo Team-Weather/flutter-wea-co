@@ -16,7 +16,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.x
-          
+
+      - name: Make dotenv
+        run: |
+          touch .env
+          echo "${{ secrets.ENV }}" > .env
+          ls
+        shell: bash    
+      
       - name: Install packages
         run: flutter pub get
         
@@ -31,6 +38,13 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.x
+
+      - name: Make dotenv
+        run: |
+          touch .env
+          echo "${{ secrets.ENV }}" > .env
+          ls
+        shell: bash    
           
       - name: Install packages
         run: flutter pub get
