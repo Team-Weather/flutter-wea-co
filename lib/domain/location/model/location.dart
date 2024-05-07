@@ -51,7 +51,7 @@ class Location {
       'lat': lat,
       'lng': lng,
       'city': city,
-      'created_at': createdAt,
+      'created_at': convertDateTimeToTimestamp(createdAt),
     };
   }
 

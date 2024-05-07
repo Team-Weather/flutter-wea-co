@@ -54,7 +54,7 @@ class Weather {
       'temperature': temperature,
       'time_temperature': timeTemperature,
       'code': code,
-      'created_at': createdAt,
+      'created_at': convertDateTimeToTimestamp(createdAt),
     };
   }
 
