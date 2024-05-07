@@ -18,6 +18,14 @@ void main() {
       test('LocationRepository.getLocation()을 한번 호출한다.', () async {
         // Given
         const expectCount = 1;
+        final expectLocation = Location(
+          lat: 40.3,
+          lng: 127.3,
+          city: 'Seoul',
+          createdAt: DateTime.parse('2024-05-01 13:27:00'),
+        );
+        mockLocationRepositoryImpl.getLocationResult = expectLocation;
+
         // When
         await getLocationUseCase.execute();
 
@@ -34,7 +42,6 @@ void main() {
           city: 'Seoul',
           createdAt: DateTime.parse('2024-05-01 13:27:00'),
         );
-
         mockLocationRepositoryImpl.getLocationResult = expectLocation;
 
         // When

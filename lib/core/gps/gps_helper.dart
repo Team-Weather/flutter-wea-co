@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:geolocator/geolocator.dart';
 import 'package:weaco/core/gps/gps_permission_status.dart';
+import 'package:weaco/core/gps/gps_position.dart';
 
 class GpsHelper {
   /// 위치 권한 요청
@@ -34,17 +35,15 @@ class GpsHelper {
   }
 
   /// GPS 좌표 요청
-  /// @return: 위치 권한이 있을 경우 = Position, 없거나 예외 발생 = null
-  Future<Position?> getPosition() async {
-    try {
-      GpsPermissionStatus permission = await getPermission();
-      if (permission == GpsPermissionStatus.forever ||
-          permission == GpsPermissionStatus.whileInUse) {
-        return await Geolocator.getCurrentPosition();
-      }
-    } catch (e) {
-      log(e.toString(), name: 'GpsHelper.getPosition()');
+  /// @return: 위치 권한이 있을 경우 = Position, 없으면 = null
+  Future<GpsPosition> getPosition() async {
+    GpsPermissionStatus permission = await getPermission();
+    if (permission == GpsPermissionStatus.forever ||
+        permission == GpsPermissionStatus.whileInUse) {
+      Position position = await Geolocator.getCurrentPosition();
+      return GpsPosition(lat: position.latitude, lng: position.longitude);
     }
-    return null;
+    // Todo: 커스텀 Exception으로 리팩토링 필요
+    throw Exception('권한 없음');
   }
 }
