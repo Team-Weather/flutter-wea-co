@@ -47,4 +47,22 @@ class Weather {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'temperature': temperature,
+      'timeTemperature': timeTemperature,
+      'code': code,
+      'createdAt': createdAt,
+    };
+  }
+
+  factory Weather.fromJson(Map<String, dynamic> json) {
+    return Weather(
+      temperature: json['temperature'] as double,
+      timeTemperature: json['timeTemperature'] as DateTime,
+      code: json['code'] as int,
+      createdAt: json['createdAt'] as DateTime,
+    );
+  }
 }
