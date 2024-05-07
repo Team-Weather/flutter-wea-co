@@ -32,18 +32,19 @@ class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
           throw NetworkException.noData(
               code: 'EmptyData', message: '응답 데이터 없음');
         } else {
-          return result.body['documents'][0]['address_name'];
+          return '${result.body['documents'][0]['region_1depth_name']} ${result.body['documents'][0]['region_2depth_name']}';
         }
       }
       throw NetworkException.errorCode(
           code: result.statusCode.toString(), message: '네트워크 응답 에러');
     } catch (e) {
       log(e.toString(), name: 'ReverseGeoCoderHelper.getDong()');
-      switch(e) {
+      switch (e) {
         case NoDataException _ || ErrorResponseCodeException _:
           rethrow;
         default:
-          throw NetworkException.unknown(code: 'Unknown', message: e.toString());
+          throw NetworkException.unknown(
+              code: 'Unknown', message: e.toString());
       }
     }
   }
