@@ -1,3 +1,5 @@
+import 'package:weaco/common/convertor.dart';
+
 class Location {
   final double lat;
   final double lng;
@@ -41,6 +43,24 @@ class Location {
       lng: lng ?? this.lng,
       city: city ?? this.city,
       createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'lat': lat,
+      'lng': lng,
+      'city': city,
+      'created_at': createdAt,
+    };
+  }
+
+  factory Location.fromJson(Map<String, dynamic> json) {
+    return Location(
+      lat: json['lat'] as double,
+      lng: json['lng'] as double,
+      city: json['city'] as String,
+      createdAt: convertTimestampToDateTime(json['created_at']),
     );
   }
 }
