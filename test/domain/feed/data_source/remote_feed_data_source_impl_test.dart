@@ -17,7 +17,7 @@ void main() {
       group(
         'saveFeed는',
         () {
-          test('saveFeed는 true를 반환해야 한다', () async {
+          test('Firestore에 Feed를 저장하고, true를 반환해야 한다', () async {
             // Given
             Weather mockWeather = Weather(
               temperature: 31,
@@ -49,7 +49,7 @@ void main() {
             expect(result, true);
           });
           test(
-            'saveFeed는 Firestore에 데이터를 추가해야 한다.',
+            'Firestore에 데이터를 추가해야 한다.',
             () async {
               // Given
               Weather mockWeather = Weather(
@@ -91,7 +91,59 @@ void main() {
           );
         },
       );
+      group('getFeed는', () {
+        test('firestore에 id를 전달하면, firebase는 Json을 반환해야 한다', () async {
+          // Given
+          const testId = 'testId';
+          const testData = {'key': 'value'};
+          await fakeFirestore.collection('feeds').doc(testId).set(testData);
 
+          // When
+          final result = await dataSource.getFeed(id: testId);
+
+          // Then
+          expect(result, testData);
+          expect(result['key'], 'value');
+        });
+      });
+      group('getFeedList는', () {
+        test('firestore에 email을 전달하면, firebase는 List<Feed>를 반환해야 한다', () async {
+          // Given
+          String testEmail = 'test@email.com';
+          var testData = [
+            {'email': testEmail, 'id': 'value1'},
+            {'email': 'test2@email.com', 'id': 'value2'},
+            {'email': 'test3@email.com', 'id': 'value3'}
+          ];
+          for (final data in testData) {
+            await fakeFirestore.collection('feeds').add(data);
+          }
+
+          // When
+          final result = await dataSource.getFeedList(
+              email: testEmail, limit: 20, createdAt: DateTime.now());
+
+          // Then
+          expect(result, isA<List<Feed>>());
+        });
+      });
+      group('deletedFeed는', () {
+        test('id값을 전달하면, 특정 Feed를 삭제하고 true를 반환해야 한다', () async {
+          // Given
+          const testId = 'testId';
+          final testSet = {'id': testId, 'key': 'value'};
+          await fakeFirestore.collection('feeds').doc(testId).set(testSet);
+
+          // When
+          final result = await dataSource.deleteFeed(id: testId);
+          final docResult =
+              await fakeFirestore.collection('feeds').doc(testId).get();
+
+          // Then
+          expect(result, true);
+          expect(docResult.exists, false);
+        });
+      });
       group('getSearchFeedList는', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           // Given
