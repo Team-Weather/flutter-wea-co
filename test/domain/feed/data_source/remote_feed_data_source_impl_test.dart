@@ -1,23 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
+import 'package:weaco/data/feed/data_source/remote_feed_data_source_impl.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 
-import '../../../mock/data/feed/data_source/mock_remote_feed_data_source_impl.dart';
-
 void main() {
+  final fakeFirestore = FakeFirebaseFirestore();
+  final RemoteFeedDataSource dataSource =
+      RemoteFeedDataSourceImpl(fireStore: fakeFirestore);
   group(
     'RemoteFeedDataSourceImpl 클래스',
     () {
-      late MockRemoteFeedDataSource dataSource;
-      late FakeFirebaseFirestore fakeFirestore;
-
-      setUp(() {
-        fakeFirestore = FakeFirebaseFirestore();
-        dataSource = MockRemoteFeedDataSource(fakeFirestore: fakeFirestore);
-      });
-
       group(
         'saveFeed는',
         () {
@@ -95,9 +91,44 @@ void main() {
           );
         },
       );
-      group('getFeed는', () {
-        test('getFeed는 Json을 반환해야 한다', () async {
+      group('getSearchFeedList는', () {
+        test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
+          // Given
+          for (int i = 0; i < 3; i++) {
+            await fakeFirestore.collection('feeds').add({
+              'weather': {
+                'code': i, // 날씨 코드
+                'temperature': 22.0, // 온도
+                'time_temperature': DateTime.parse('2024-05-01 13:27:00'),
+                'created_at': DateTime.parse('2024-05-01 13:27:00'),
+              },
+              'location': {
+                'lat': 35.234,
+                'lng': 131.1,
+                'city': '서울시 구로구',
+                'created_at': Timestamp.now(),
+              },
+              'created_at': DateTime.parse('2024-05-01 13:27:00'),
+              'description': 'desc',
+              'image_path':
+                  'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+              'season_code': 0,
+              'user_email': 'hoogom87@gmail.com',
+            });
+          }
 
+          // When
+          final res = await dataSource.getSearchFeedList(
+            createdAt: DateTime.now(),
+            limit: 20,
+            seasonCode: 0,
+            weatherCode: 0,
+            minTemperature: 20,
+            maxTemperature: 25,
+          );
+
+          // Then
+          expect(res.length, 1);
         });
       });
     },
