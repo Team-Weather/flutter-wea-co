@@ -42,11 +42,11 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
+  Future<bool> updateUserProfile({UserProfile? userProfile}) async {
     try {
       final originProfileDocument = await _firestore
           .collection('user_profiles')
-          .where('email', isEqualTo: userProfile.email)
+          .where('email', isEqualTo: userProfile!.email)
           .get();
 
       return await _firestore
@@ -63,7 +63,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<bool> removeUserProfile({required String email}) async {
+  Future<bool> removeUserProfile({String? email}) async {
     try {
       final originProfileDocument = await _firestore
           .collection('user_profiles')
