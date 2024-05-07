@@ -24,7 +24,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<UserProfile> getUserProfile({required String email}) async {
+  Future<UserProfile> getUserProfile({String? email}) async {
     try {
       QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('user_profiles')
