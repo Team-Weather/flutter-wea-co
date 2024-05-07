@@ -13,7 +13,7 @@ class DailyDto {
     _temperature2mMin = temperature2mMin ?? [];
   }
 
-  DailyDto.fromJson(dynamic json) {
+  DailyDto.fromJson({required dynamic json}) {
     _time = json['time'] != null ? json['time'].cast<String>() : [];
     _temperature2mMax = json['temperature_2m_max'] != null
         ? json['temperature_2m_max'] as List<num>

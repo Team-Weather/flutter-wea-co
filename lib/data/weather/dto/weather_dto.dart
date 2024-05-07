@@ -19,12 +19,14 @@ class WeatherDto {
     _daily = daily;
   }
 
-  WeatherDto.fromJson(dynamic json) {
+  WeatherDto.fromJson({required dynamic json}) {
     _latitude = json['latitude'];
     _longitude = json['longitude'];
-    _hourly =
-        json['hourly'] != null ? HourlyDto.fromJson(json['hourly']) : null;
-    _daily = json['daily'] != null ? DailyDto.fromJson(json['daily']) : null;
+    _hourly = json['hourly'] != null
+        ? HourlyDto.fromJson(json: json['hourly'])
+        : null;
+    _daily =
+        json['daily'] != null ? DailyDto.fromJson(json: json['daily']) : null;
   }
 
   WeatherDto copyWith({

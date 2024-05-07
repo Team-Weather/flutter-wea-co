@@ -28,6 +28,6 @@ class MeteoWeatherApi implements RemoteWeatherDataSource {
 
       throw statusCodeHandler(code: response.statusCode);
     }
-    return WeatherDto.fromJson(response.body);
+    return WeatherDto.fromJson(json: response.body);
   }
 }

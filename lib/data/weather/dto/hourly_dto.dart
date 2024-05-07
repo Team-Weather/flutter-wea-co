@@ -13,7 +13,7 @@ class HourlyDto {
     _weathercode = weathercode ?? [];
   }
 
-  HourlyDto.fromJson(dynamic json) {
+  HourlyDto.fromJson({required dynamic json}) {
     _time = json['time'] != null ? json['time'].cast<String>() : [];
     _temperature2m = json['temperature_2m'] != null
         ? json['temperature_2m'] as List<num>

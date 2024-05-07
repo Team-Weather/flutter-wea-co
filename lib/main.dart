@@ -9,7 +9,6 @@ late Box dataBox;
 void main() async {
   await Hive.initFlutter();
   dataBox = await Hive.openBox('weacoBox');
-
   await dotenv.load(fileName: '.env');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
