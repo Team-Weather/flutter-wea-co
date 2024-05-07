@@ -6,11 +6,11 @@ abstract interface class RemoteUserProfileDataSource {
   Future<UserProfile> getUserProfile({String email});
 
   /// 유저 프로필 업데이트 (피드 갯수 수정 할 때 주로 쓰임)
-  Future<bool> updateUserProfile({UserProfile userProfile});
+  Future<bool> updateUserProfile({required UserProfile userProfile});
 
   /// 유저 프로필 저장
   Future<bool> saveUserProfile({required UserProfile userProfile});
 
   /// 유저 프로필 삭제
-  Future<bool> removeUserProfile({String email});
+  Future<bool> removeUserProfile({required String email});
 }
