@@ -30,10 +30,10 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// [OOTD 피드 상세 페이지]:
   /// 피드 데이터 요청 (id) -> 파베 / 피드 데이터 반환(json) ← 파베
   @override
-  Future<Map<String, dynamic>> getFeed({required String id}) async {
-    DocumentSnapshot docSnapshot =
-        await _fireStore.collection('feeds').doc(id).get();
-    return docSnapshot.data() as Map<String, dynamic>;
+  Future<Feed> getFeed({required String id}) async {
+    final docSnapshot = await _fireStore.collection('feeds').doc(id).get();
+
+    return Feed.fromJson(docSnapshot.data()!);
   }
 
   /// [유저 페이지/마이 페이지]:

@@ -95,15 +95,42 @@ void main() {
         test('firestore에 id를 전달하면, firebase는 Json을 반환해야 한다', () async {
           // Given
           const testId = 'testId';
-          const testData = {'key': 'value'};
-          await fakeFirestore.collection('feeds').doc(testId).set(testData);
+          Weather mockWeather = Weather(
+            temperature: 31,
+            timeTemperature: DateTime.parse('2024-05-06'),
+            code: 1,
+            createdAt: DateTime.parse('2024-05-06'),
+          );
+
+          Location mockLocation = Location(
+            lat: 31.23,
+            lng: 29.48,
+            city: '서울시, 노원구',
+            createdAt: DateTime.parse('2024-05-06'),
+          );
+          DateTime dateTime = DateTime.now();
+
+          final mockFeed = Feed(
+            id: 'gyubro',
+            imagePath: 'imagePath',
+            userEmail: 'test@email.com',
+            description: 'This is a test feed',
+            weather: mockWeather,
+            seasonCode: 2,
+            location: mockLocation,
+            createdAt: dateTime,
+          );
+
+          await fakeFirestore
+              .collection('feeds')
+              .doc(testId)
+              .set(mockFeed.toJson());
 
           // When
           final result = await dataSource.getFeed(id: testId);
 
           // Then
-          expect(result, testData);
-          expect(result['key'], 'value');
+          expect(result, mockFeed);
         });
       });
       group('getFeedList는', () {

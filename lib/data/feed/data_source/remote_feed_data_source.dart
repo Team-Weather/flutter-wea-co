@@ -7,7 +7,7 @@ abstract interface class RemoteFeedDataSource {
   Future<bool> saveFeed({required Feed feed});
 
   /// OOTD 피드 [상세 페이지] : 피드 데이터 요청 (id) -> 파베 / 피드 데이터 반환(json) ← 파베
-  Future<Map<String, dynamic>> getFeed({required String id});
+  Future<Feed> getFeed({required String id});
 
   /// [유저 페이지/마이 페이지] :  피드 데이터 요청 (email) -> 파베 / 피드 데이터 반환(List<Feed>)← 파베
   Future<List<Feed>> getFeedList(
@@ -17,17 +17,15 @@ abstract interface class RemoteFeedDataSource {
   Future<bool> deleteFeed({required String id});
 
   /// [홈 화면] 하단 OOTD 추천 목록:
-  /// 
+  ///
   /// 유저의 위치와 기온을 기반으로 피드 목록을 불러옵니다.
   /// @param city: 유저 위치의 도시명
   /// @param temperature: 날씨 온도
-  Future<List<Feed>> getRecommendedFeedList({
-    required String city,
-    required double temperature
-  });
+  Future<List<Feed>> getRecommendedFeedList(
+      {required String city, required double temperature});
 
   /// [검색 페이지] 피드 검색:
-  /// 
+  ///
   /// 유저가 선택한 검색 조건으로 피드 목록을 불러옵니다.
   /// @param createAt: 페이징을 위한 피드의 생성날짜. 이 값을 기준으로 다음 목록을 가져온다.
   /// @param limit: 한 페이지당 불러올 피드 갯수
