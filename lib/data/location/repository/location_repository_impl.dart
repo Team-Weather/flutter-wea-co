@@ -14,6 +14,8 @@ class LocationRepositoryImpl implements LocationRepository {
       : _gpsHelper = gpsHelper,
         _remoteDataSource = remoteDataSource;
 
+  // 현재 위치에 대한 Location(위치 좌표, 주소) 요청
+  // @return: 현재 위치에 대한 GPS 좌표와 주소를 포함한 Location
   @override
   Future<Location> getLocation() async {
     final GpsPosition position = await _gpsHelper.getPosition();
