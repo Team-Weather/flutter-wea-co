@@ -64,4 +64,30 @@ class UserProfile {
       deletedAt: deletedAt ?? this.deletedAt,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'nickname': nickname,
+      'gender': gender,
+      'profile_image_path': profileImagePath,
+      'feed_count': feedCount,
+      'created_at': createdAt.toIso8601String(),
+      'deleted_at': deletedAt?.toIso8601String(),
+    };
+  }
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      email: json['email'],
+      nickname: json['nickname'],
+      gender: json['gender'],
+      profileImagePath: json['profile_image_path'],
+      feedCount: json['feed_count'],
+      createdAt: DateTime.parse(json['created_at']),
+      deletedAt: json['deleted_at'] != null
+          ? DateTime.parse(json['deleted_at'])
+          : null,
+    );
+  }
 }
