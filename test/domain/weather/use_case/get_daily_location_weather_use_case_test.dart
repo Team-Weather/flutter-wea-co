@@ -40,6 +40,20 @@ void main() {
               createdAt: DateTime.now(),
             )
           ],
+          yesterDayWeatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            )
+          ],
           location: Location(
             lat: 113.1,
             lng: 213.1,
@@ -69,6 +83,20 @@ void main() {
           highTemperature: 15,
           lowTemperature: 12,
           weatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            )
+          ],
+          yesterDayWeatherList: [
             Weather(
               temperature: 1,
               timeTemperature: DateTime.now(),
