@@ -10,7 +10,7 @@ abstract interface class RemoteFeedDataSource {
   Future<Feed> getFeed({required String id});
 
   /// [유저 페이지/마이 페이지] :  피드 데이터 요청 (email) -> 파베 / 피드 데이터 반환(List<Feed>)← 파베
-  Future<List<Feed>> getFeedList(
+  Future<List<Feed>> getUserFeedList(
       {required String email, required DateTime createdAt, required int limit});
 
   /// [마이페이지] 피드 삭제: 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) from FB

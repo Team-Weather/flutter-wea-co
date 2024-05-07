@@ -16,12 +16,12 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   Future<bool> saveFeed({required Feed feed}) async {
     return await _fireStore.collection('feeds').add({
       'id': feed.id,
-      'imagePath': feed.imagePath,
-      'userEmail': feed.userEmail,
+      'image_path': feed.imagePath,
+      'user_email': feed.userEmail,
       'description': feed.description,
-      'seasonCode': feed.seasonCode,
-      'createdAt': feed.createdAt,
-      'deletedAt': feed.deletedAt,
+      'season_code': feed.seasonCode,
+      'created_at': feed.createdAt,
+      'deleted_at': feed.deletedAt,
       'weather': feed.weather.toJson(),
       'location': feed.location.toJson(),
     }).then((value) => true);
@@ -39,14 +39,14 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// [유저 페이지/마이 페이지]:
   /// 피드 데이터 요청 (email) -> 파베 / 피드 데이터 반환(List<Feed>)← 파베
   @override
-  Future<List<Feed>> getFeedList({
+  Future<List<Feed>> getUserFeedList({
     required String email,
     required DateTime createdAt,
     required int limit,
   }) async {
     final querySnapshot = await _fireStore
         .collection('feeds')
-        .where('userEmail', isEqualTo: email)
+        .where('user_email', isEqualTo: email)
         .orderBy(createdAt)
         .limit(limit)
         .get();
