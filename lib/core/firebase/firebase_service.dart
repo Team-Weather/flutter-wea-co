@@ -55,7 +55,7 @@ class FirebaseService {
   // 회원탈퇴
   Future<void> signOut() async {
     try {
-      await _userCredential!.user!.delete();
+      await _userCredential?.user?.delete();
     } on Exception catch (e) {
       log(e.toString(), name: 'FirebaseService.signOut()');
       rethrow;
