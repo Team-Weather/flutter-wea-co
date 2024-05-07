@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/domain/location/model/location.dart';
-import 'package:weaco/domain/weather/model/weather.dart';
 
 class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   final FirebaseFirestore _fireStore;
@@ -16,7 +14,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// OOTD 편집 완료 후 [마이 페이지]: 위와 동일.*피드 업데이트
   @override
   Future<bool> saveFeed({required Feed feed}) async {
-    DocumentReference docRef = await _fireStore.collection('feeds').add({
+    return await _fireStore.collection('feeds').add({
       'id': feed.id,
       'imagePath': feed.imagePath,
       'userEmail': feed.userEmail,
@@ -24,22 +22,9 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
       'seasonCode': feed.seasonCode,
       'createdAt': feed.createdAt,
       'deletedAt': feed.deletedAt,
-    });
-
-    await docRef.collection('location').add({
-      'lat': feed.location.lat,
-      'lng': feed.location.lng,
-      'city': feed.location.city,
-      'createdAt': feed.location.createdAt,
-    });
-    await docRef.collection('weather').add({
-      'temperature': feed.weather.temperature,
-      'timeTemperature': feed.weather.timeTemperature,
-      'code': feed.weather.code,
-      'createdAt': feed.weather.createdAt,
-    });
-
-    return true;
+      'weather': feed.weather.toJson(),
+      'location': feed.location.toJson(),
+    }).then((value) => true);
   }
 
   /// [OOTD 피드 상세 페이지]:
