@@ -14,9 +14,9 @@ class MockLocationRepositoryImpl implements LocationRepository {
   ///
   /// @return [Location?] geolocator 로 반환 받은 값을 이용하여 생성한 [Location] 객체
   @override
-  Future<Location?> getLocation() async {
+  Future<Location> getLocation() async {
     getLocationCallCount++;
 
-    return getLocationResult;
+    return getLocationResult ?? (throw Exception('위치 반환 실패'));
   }
 }
