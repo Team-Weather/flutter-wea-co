@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:weaco/common/convertor.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 
@@ -78,6 +80,36 @@ class Feed {
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
       deletedAt: deletedAt ?? this.deletedAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'image_path': imagePath,
+      'user_email': userEmail,
+      'description': description,
+      'weather': weather.toJson(),
+      'season_code': seasonCode,
+      'location': location.toJson(),
+      'created_at': createdAt,
+      'deleted_at': deletedAt,
+    };
+  }
+
+  factory Feed.fromJson(Map<String, dynamic> json) {
+    return Feed(
+      id: json['id'],
+      imagePath: json['image_path'],
+      userEmail: json['user_email'],
+      description: json['description'],
+      weather: Weather.fromJson(json['weather']),
+      seasonCode: json['season_code'],
+      location: Location.fromJson(json['location']),
+      createdAt: convertTimestampToDateTime(json['created_at']),
+      deletedAt: json['deleted_at'] != null
+          ? convertTimestampToDateTime(json['deleted_at'])
+          : null,
     );
   }
 }
