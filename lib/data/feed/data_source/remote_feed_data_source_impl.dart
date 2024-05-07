@@ -71,17 +71,21 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   }
 
   /// [홈 페이지] 하단 OOTD 추천:
-  /// 피드 데이터 요청 (위치, 날씨) ->
+  /// 피드 데이터 요청 (위치, 날씨) -> 파베
   /// 피드 데이터 반환(List<Feed>) <- 파베
   @override
-  Future<List<Feed>> getRecommendedFeedList(
-      {required Location location, required Weather weather}) async {
-    QuerySnapshot querySnapshot = await _fireStore
-        .collection("feeds")
-        .where('location', isEqualTo: location)
-        .where('weather', isEqualTo: weather)
+  Future<List<Feed>> getRecommendedFeedList({
+    required String city,
+    required double temperature
+  }) async {
+    final querySnapshot = await _fireStore
+        .collection('feeds')
+        .where('location.city', isEqualTo: city)
+        .where('weather.temperature', isEqualTo: temperature)
+        .limit(10)
         .get();
-    return querySnapshot.docs.map((e) => e.data()) as List<Feed>;
+
+    return querySnapshot.docs.map((e) => Feed.fromJson(e.data())).toList();
   }
 
   /// [검색 페이지] 피드 검색:

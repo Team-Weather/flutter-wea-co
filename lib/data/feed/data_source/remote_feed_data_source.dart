@@ -1,6 +1,4 @@
 import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/domain/location/model/location.dart';
-import 'package:weaco/domain/weather/model/weather.dart';
 
 abstract interface class RemoteFeedDataSource {
   /// OOTD 피드 작성 성공 시 : 피드 업로드 요청(Feed) -> / 업로드 완료(bool) ← 파베
@@ -17,11 +15,14 @@ abstract interface class RemoteFeedDataSource {
   /// [마이페이지] 피드 삭제: 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) from FB
   Future<bool> deleteFeed({required String id});
 
-  /// [홈 페이지] 하단 OOTD 추천:  피드 데이터 요청 (위치, 날씨) -> 피드 데이터 반환(List<Feed>) from FB
-  /// [OOTD 피드 페이지] 카드뷰:  피드 예보 요청 (위치, 날씨) -> 피드 예보 반환(List<Feed>) from FB
+  /// [홈 화면] 하단 OOTD 추천 목록:
+  /// 
+  /// 유저의 위치와 기온을 기반으로 피드 목록을 불러옵니다.
+  /// @param city: 유저 위치의 도시명
+  /// @param temperature: 날씨 온도
   Future<List<Feed>> getRecommendedFeedList({
-    required Location location,
-    required Weather weather,
+    required String city,
+    required double temperature
   });
 
   /// [검색 페이지] 피드 검색:
