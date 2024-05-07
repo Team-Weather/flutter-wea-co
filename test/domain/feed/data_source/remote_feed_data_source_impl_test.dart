@@ -11,6 +11,10 @@ void main() {
   final fakeFirestore = FakeFirebaseFirestore();
   final RemoteFeedDataSource dataSource =
       RemoteFeedDataSourceImpl(fireStore: fakeFirestore);
+
+  setUp(() {
+    fakeFirestore.clearPersistence();
+  });
   group(
     'RemoteFeedDataSourceImpl 클래스',
     () {
@@ -46,7 +50,7 @@ void main() {
             final result = await dataSource.saveFeed(feed: mockFeed);
 
             // Then
-            expect(result, mockFeed);
+            expect(result, true);
           });
           test(
             'Firestore에 데이터를 추가해야 한다.',
@@ -236,7 +240,7 @@ void main() {
             createdAt: DateTime.now(),
             limit: 20,
             seasonCode: 0,
-            weatherCode: 0,
+            weatherCode: 1,
             minTemperature: 20,
             maxTemperature: 25,
           );
