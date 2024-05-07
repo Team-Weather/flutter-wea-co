@@ -16,14 +16,14 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// OOTD 편집 완료 후 [마이 페이지]: 위와 동일.*피드 업데이트
   @override
   Future<bool> saveFeed({required Feed feed}) async {
-    DocumentReference docRef = await _fireStore.collection("feeds").add({
+    DocumentReference docRef = await _fireStore.collection('feeds').add({
       'id': feed.id,
+      'imagePath': feed.imagePath,
+      'userEmail': feed.userEmail,
+      'description': feed.description,
+      'seasonCode': feed.seasonCode,
       'createdAt': feed.createdAt,
       'deletedAt': feed.deletedAt,
-      'description': feed.description,
-      'imagePath': feed.imagePath,
-      'seasonCode': feed.seasonCode,
-      'userEmail': feed.userEmail,
     });
 
     await docRef.collection('location').add({
@@ -47,26 +47,33 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   @override
   Future<Map<String, dynamic>> getFeed({required String id}) async {
     DocumentSnapshot docSnapshot =
-        await _fireStore.collection("feeds").doc(id).get();
+        await _fireStore.collection('feeds').doc(id).get();
     return docSnapshot.data() as Map<String, dynamic>;
   }
 
   /// [유저 페이지/마이 페이지]:
   /// 피드 데이터 요청 (email) -> 파베 / 피드 데이터 반환(List<Feed>)← 파베
   @override
-  Future<List<Feed>> getFeedList({required String email}) async {
-    QuerySnapshot querySnapshot = _fireStore
-        .collection("feeds")
-        .where('email', isEqualTo: email)
-        .get() as QuerySnapshot;
-    return querySnapshot.docs.map((e) => e.data()) as List<Feed>;
+  Future<List<Feed>> getFeedList({
+    required String email,
+    required DateTime createdAt,
+    required int limit,
+  }) async {
+    final querySnapshot = await _fireStore
+        .collection('feeds')
+        .where('userEmail', isEqualTo: email)
+        .orderBy(createdAt)
+        .limit(limit)
+        .get();
+
+    return querySnapshot.docs.map((e) => Feed.fromJson(e.data())).toList();
   }
 
   /// [마이페이지] 피드 삭제:
   /// 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) <- 파베
   @override
   Future<bool> deleteFeed({required String id}) async {
-    _fireStore.collection("feeds").doc(id).delete();
+    await _fireStore.collection('feeds').doc(id).delete();
     return true;
   }
 
@@ -74,10 +81,8 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// 피드 데이터 요청 (위치, 날씨) -> 파베
   /// 피드 데이터 반환(List<Feed>) <- 파베
   @override
-  Future<List<Feed>> getRecommendedFeedList({
-    required String city,
-    required double temperature
-  }) async {
+  Future<List<Feed>> getRecommendedFeedList(
+      {required String city, required double temperature}) async {
     final querySnapshot = await _fireStore
         .collection('feeds')
         .where('location.city', isEqualTo: city)
