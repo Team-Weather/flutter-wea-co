@@ -14,11 +14,10 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
   // 회원가입
   @override
   Future<bool> signUp({required String email, required String password}) async {
-    final UserCredential? userCredential;
     bool isSignUpSuccess = false;
 
     try {
-      userCredential =
+      final userCredential =
           await _firebaseService.signUp(email: email, password: password);
 
       isSignUpSuccess = userCredential?.user != null;
@@ -37,13 +36,14 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
     bool isSignInSuccess = false;
 
     try {
-      _firebaseService.firebaseAuth.userChanges().listen((User? user) {
+      _firebaseService.firebaseAuth.userChanges().listen((User? user) async {
         if (user != null) {
           isSignInSuccess = true;
         }
+
+        await _firebaseService.signIn(email: email, password: password);
       });
 
-      await _firebaseService.signIn(email: email, password: password);
     } on Exception catch (e) {
       isSignInSuccess = false;
       log(e.toString(), name: 'FirebaseUserAuthDataSource.signIn()');
@@ -59,12 +59,13 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
     bool isLogOutSuccess = false;
 
     try {
-      _firebaseService.firebaseAuth.userChanges().listen((User? user) {
+      _firebaseService.firebaseAuth.userChanges().listen((User? user) async {
         if (user == null) {
           isLogOutSuccess = true;
         }
+
+        await _firebaseService.logOut();
       });
-      await _firebaseService.logOut();
     } on Exception catch (e) {
       isLogOutSuccess = false;
       log(e.toString(), name: 'FirebaseUserAuthDataSource.logOut()');
