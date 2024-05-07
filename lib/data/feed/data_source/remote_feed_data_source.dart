@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 
 abstract interface class RemoteFeedDataSource {

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/common/convertor.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
