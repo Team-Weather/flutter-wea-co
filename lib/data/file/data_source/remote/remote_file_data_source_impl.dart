@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,14 +10,9 @@ class RemoteFileDataSourceImpl implements RemoteFileDataSource {
 
   @override
   Future<String?> saveImage(File image) async {
-    try {
-      final feedImageRef = _firebaseStorage.ref().child("feed_images");
-      await feedImageRef.putFile(image);
+    final feedImageRef = _firebaseStorage.ref().child("feed_images");
+    await feedImageRef.putFile(image);
 
-      return await feedImageRef.getDownloadURL();
-    } on Exception catch (e) {
-      log(e.toString(), name: 'RemoteFileDataSourceImpl.saveImage()');
-      return null;
-    }
+    return await feedImageRef.getDownloadURL();
   }
 }
