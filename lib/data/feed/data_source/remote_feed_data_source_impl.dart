@@ -85,16 +85,31 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   }
 
   /// [검색 페이지] 피드 검색:
-  /// 피드 데이터 요청(계절,날씨,온도) -> FB / 피드 데이터 반환(List<Feed>) <- FB
+  /// 피드 데이터 요청(계절,날씨,온도) -> FB
+  /// 피드 데이터 반환(List<Feed>) <- FB
+
   @override
-  Future<List<Feed>> getSearchFeedList(
-      {int? seasonCode, Weather? weather}) async {
-    QuerySnapshot querySnapshot = await _fireStore
-        .collection("feeds")
-        .where('weather', isEqualTo: weather?.code)
-        .where('temperature', isLessThanOrEqualTo: weather?.temperature)
-        .where('seasonCode', isEqualTo: seasonCode)
+  Future<List<Feed>> getSearchFeedList({
+    required DateTime createdAt,
+    required int limit,
+    int? seasonCode,
+    int? weatherCode,
+    int? minTemperature,
+    int? maxTemperature,
+  }) async {
+    final querySnapshot = await _fireStore
+        .collection('feeds')
+        .where('weather.code', isEqualTo: weatherCode)
+        .where(
+          'weather.temperature',
+          isLessThanOrEqualTo: maxTemperature,
+          isGreaterThanOrEqualTo: minTemperature,
+        )
+        .where('season_code', isEqualTo: seasonCode)
+        .orderBy('created_at', descending: false)
+        .limit(10)
         .get();
-    return querySnapshot.docs.map((e) => e.data()) as List<Feed>;
+
+    return querySnapshot.docs.map((e) => Feed.fromJson(e.data())).toList();
   }
 }
