@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:weaco/domain/user/data_source/remote_user_profile_data_source.dart';
+import 'package:weaco/data/user/data_source/remote_user_profile_data_source.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 
 class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {

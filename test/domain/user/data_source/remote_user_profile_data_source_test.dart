@@ -1,7 +1,7 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/domain/user/data_source/remote_user_profile_data_source.dart';
-import 'package:weaco/domain/user/data_source/remote_user_profile_date_source_impl.dart';
+import 'package:weaco/data/user/data_source/remote_user_profile_data_source.dart';
+import 'package:weaco/data/user/data_source/remote_user_profile_date_source_impl.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 
 void main() {
