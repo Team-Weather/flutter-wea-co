@@ -91,6 +91,7 @@ void main() {
           );
         },
       );
+
       group('getSearchFeedList는', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           // Given
@@ -129,6 +130,46 @@ void main() {
 
           // Then
           expect(res.length, 1);
+        });
+      });
+
+      group('getRecommendedFeedList', () {
+        test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
+          Weather mockWeather = Weather(
+            temperature: 31,
+            timeTemperature: DateTime.parse('2024-05-06'),
+            code: 1,
+            createdAt: DateTime.parse('2024-05-06'),
+          );
+          Location mockLocation = Location(
+            lat: 31.23,
+            lng: 29.48,
+            city: '서울시, 노원구',
+            createdAt: DateTime.parse('2024-05-06'),
+          );
+
+          // Given
+          for (int i = 0; i < 3; i++) {
+            await fakeFirestore.collection('feeds').add({
+              'weather': mockWeather.toJson(),
+              'location': mockLocation.toJson(),
+              'created_at': DateTime.parse('2024-05-01 13:27:00'),
+              'description': 'desc',
+              'image_path':
+                  'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+              'season_code': i + 1,
+              'user_email': 'hoogom87@gmail.com',
+            });
+          }
+
+          // When
+          final res = await dataSource.getRecommendedFeedList(
+            city: mockLocation.city,
+            temperature: mockWeather.temperature,
+          );
+
+          // Then
+          expect(res.length, 3);
         });
       });
     },
