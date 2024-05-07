@@ -19,12 +19,26 @@ abstract interface class RemoteFeedDataSource {
 
   /// [홈 페이지] 하단 OOTD 추천:  피드 데이터 요청 (위치, 날씨) -> 피드 데이터 반환(List<Feed>) from FB
   /// [OOTD 피드 페이지] 카드뷰:  피드 예보 요청 (위치, 날씨) -> 피드 예보 반환(List<Feed>) from FB
-  Future<List<Feed>> getRecommendedFeedList(
-      {required Location location, required Weather weather});
+  Future<List<Feed>> getRecommendedFeedList({
+    required Location location,
+    required Weather weather,
+  });
 
   /// [검색 페이지] 피드 검색:
-  /// 피드 데이터 요청(계절,날씨,온도) -> FB
-  /// 피드 데이터 반환(List<Feed>) <- FB
-  Future<List<Feed>> getSearchFeedList(
-      {int? seasonCode, Weather? weather});
+  /// 
+  /// 유저가 선택한 검색 조건으로 피드 목록을 불러옵니다.
+  /// @param createAt: 페이징을 위한 피드의 생성날짜. 이 값을 기준으로 다음 목록을 가져온다.
+  /// @param limit: 한 페이지당 불러올 피드 갯수
+  /// @param seasonCode: 계절 코드
+  /// @param weatherCode: 날씨 코드
+  /// @param minTemperature: 검색을 위한 최소 온도
+  /// @param maxTemperature: 검색을 위한 최대 온도
+  Future<List<Feed>> getSearchFeedList({
+    required DateTime createdAt,
+    required int limit,
+    int? seasonCode,
+    int? weatherCode,
+    int? minTemperature,
+    int? maxTemperature,
+  });
 }
