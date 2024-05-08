@@ -4,11 +4,11 @@ import 'package:weaco/core/path_provider/path_provider_service.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source_impl.dart';
 
-import '../../../mock/data/common/file/repository/mock_path_provider_service.dart';
+import '../../../mock/data/common/file/repository/mock_path_provider_service_impl.dart';
 
 void main() {
   group('LocalFileDataSourceImpl 클래스', () {
-    final PathProviderService mockPathProvider = MockPathProviderService();
+    final PathProviderService mockPathProvider = MockPathProviderServiceImpl();
     final LocalFileDataSource dataSource =
         LocalFileDataSourceImpl(pathProvider: mockPathProvider);
 
