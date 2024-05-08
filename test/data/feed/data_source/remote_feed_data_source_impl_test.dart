@@ -5,6 +5,7 @@ import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source_impl.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/location/model/location.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 
 void main() {
@@ -259,11 +260,24 @@ void main() {
             code: 1,
             createdAt: DateTime.parse('2024-05-06'),
           );
+
           Location mockLocation = Location(
             lat: 31.23,
             lng: 29.48,
             city: '서울시, 노원구',
             createdAt: DateTime.parse('2024-05-06'),
+          );
+
+          final mockDailyLocationWeather = DailyLocationWeather(
+            highTemperature: 15,
+            lowTemperature: 12,
+            weatherList: [
+              mockWeather,
+              mockWeather,
+              mockWeather,
+            ],
+            location: mockLocation,
+            createdAt: DateTime.now(),
           );
 
           // Given
@@ -282,9 +296,7 @@ void main() {
 
           // When
           final res = await dataSource.getRecommendedFeedList(
-            city: mockLocation.city,
-            temperature: mockWeather.temperature,
-          );
+              dailyLocationWeather: mockDailyLocationWeather);
 
           // Then
           expect(res.length, 3);

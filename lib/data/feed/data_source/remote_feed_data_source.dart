@@ -1,4 +1,5 @@
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 abstract interface class RemoteFeedDataSource {
   /// OOTD 피드 작성 성공 시 : 피드 업로드 요청(Feed) -> / 업로드 완료(bool) ← 파베
@@ -21,8 +22,9 @@ abstract interface class RemoteFeedDataSource {
   /// 유저의 위치와 기온을 기반으로 피드 목록을 불러옵니다.
   /// @param city: 유저 위치의 도시명
   /// @param temperature: 날씨 온도
-  Future<List<Feed>> getRecommendedFeedList(
-      {required String city, required double temperature});
+  Future<List<Feed>> getRecommendedFeedList({
+    required DailyLocationWeather dailyLocationWeather,
+  });
 
   /// [검색 페이지] 피드 검색:
   ///

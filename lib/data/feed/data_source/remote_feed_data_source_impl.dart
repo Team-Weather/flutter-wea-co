@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   final FirebaseFirestore _fireStore;
@@ -66,12 +67,17 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// 피드 데이터 요청 (위치, 날씨) -> 파베
   /// 피드 데이터 반환(List<Feed>) <- 파베
   @override
-  Future<List<Feed>> getRecommendedFeedList(
-      {required String city, required double temperature}) async {
+  Future<List<Feed>> getRecommendedFeedList({
+    required DailyLocationWeather dailyLocationWeather,
+  }) async {
     final querySnapshot = await _fireStore
         .collection('feeds')
-        .where('location.city', isEqualTo: city)
-        .where('weather.temperature', isEqualTo: temperature)
+        .where('location.city', isEqualTo: dailyLocationWeather.location.city)
+        .where(
+          'weather.temperature',
+          isLessThanOrEqualTo: dailyLocationWeather.highTemperature,
+          isGreaterThanOrEqualTo: dailyLocationWeather.lowTemperature,
+        )
         .orderBy('created_at', descending: true)
         .limit(10)
         .get();
