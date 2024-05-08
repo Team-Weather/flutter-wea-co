@@ -6,7 +6,6 @@ import 'package:weaco/data/weather/mapper/daily_location_weather_mapper.dart';
 import 'package:weaco/data/weather/repository/daily_location_weather_repository_impl.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
-import 'package:weaco/domain/weather/model/weather.dart';
 import 'package:weaco/domain/weather/repository/daily_location_weather_repository.dart';
 
 import '../../../mock/data/location/repository/mock_location_repository_impl.dart';

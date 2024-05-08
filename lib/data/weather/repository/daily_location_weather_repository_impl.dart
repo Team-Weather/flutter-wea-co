@@ -58,9 +58,9 @@ class DailyLocationWeatherRepositoryImpl
   /// 날씨와 위치를 가져와서 DailyLocationWeather로 변환한다.
   /// 변환한 데이터를 로컬에 캐싱하고 반환한다.
   Future<DailyLocationWeather> _fetchAndCacheDailyLocationWeather() async {
-    Location? location = await _locationRepository.getLocation();
+    Location location = await _locationRepository.getLocation();
     WeatherDto weatherDto = await _remoteWeatherDataSource.getWeather(
-        lat: location!.lat, lng: location.lng);
+        lat: location.lat, lng: location.lng);
 
     DailyLocationWeather dailyLocationWeather =
         weatherDto.toDailyLocationWeather(location: location);
