@@ -73,14 +73,14 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
     final weather = dailyLocationWeather.weatherList[0];
     final querySnapshot = await _fireStore
         .collection('feeds')
-        .where('weather.season_code', isEqualTo: weather.code)
-        .where('weather.season_code', isEqualTo: weather.code)
+        .where('weather.code', isEqualTo: weather.code)
+        .where('season_code', isEqualTo: dailyLocationWeather.seasonCode)
         .where(
           'weather.temperature',
           isLessThanOrEqualTo: dailyLocationWeather.highTemperature,
           isGreaterThanOrEqualTo: dailyLocationWeather.lowTemperature,
         )
-        .where('deleted_at', isEqualTo: null)
+        .where('deleted_at', isNull: true)
         .orderBy('created_at', descending: true)
         .limit(10)
         .get();
