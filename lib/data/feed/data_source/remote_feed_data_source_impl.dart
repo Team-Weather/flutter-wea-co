@@ -57,12 +57,14 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
     return querySnapshot.docs.map((e) => Feed.fromJson(e.data())).toList();
   }
 
-  /// [마이페이지] 피드 삭제:
-  /// 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) <- 파베
+  /// [마이페이지] 피드 삭제
   /// soft delete 처리
   @override
   Future<bool> deleteFeed({required String id}) async {
-    await _fireStore.collection('feeds').doc(id).delete();
+    await _fireStore
+        .collection('feeds')
+        .doc(id)
+        .update({'deleted_at': Timestamp.fromDate(DateTime.now())});
     return true;
   }
 

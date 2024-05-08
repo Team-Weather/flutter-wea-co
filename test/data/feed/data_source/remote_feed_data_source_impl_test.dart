@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source_impl.dart';
@@ -206,9 +207,11 @@ void main() {
           final docResult =
               await fakeFirestore.collection('feeds').doc(testId).get();
 
+          final feedDeletedAt = Feed.fromJson(docResult.data()!).deletedAt;
+          debugPrint(feedDeletedAt.toString());
+
           // Then
-          expect(result, true);
-          expect(docResult.exists, false);
+          expect(result, feedDeletedAt != null);
         });
       });
       group('getSearchFeedList는', () {
