@@ -24,6 +24,7 @@ void main() {
         const expectedCallCount = 1;
 
         final expectedDailyLocationWeather = DailyLocationWeather(
+          seasonCode: 0,
           highTemperature: 15,
           lowTemperature: 12,
           weatherList: [
@@ -66,6 +67,7 @@ void main() {
         const expectedCallCount = 1;
 
         final expectedDailyLocationWeather = DailyLocationWeather(
+          seasonCode: 0,
           highTemperature: 15,
           lowTemperature: 12,
           weatherList: [
