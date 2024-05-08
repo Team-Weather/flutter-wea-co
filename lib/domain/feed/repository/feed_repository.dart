@@ -1,4 +1,5 @@
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 abstract interface class FeedRepository {
   /// 유저의 피드를 가져옵니다.
@@ -14,7 +15,9 @@ abstract interface class FeedRepository {
 
   Future<bool> saveFeed({required Feed editedFeed});
 
-  Future<List<Feed>> getRecommendedFeedList();
+  Future<List<Feed>> getRecommendedFeedList({
+    required DailyLocationWeather dailyLocationWeather,
+  });
 
   Future<List<Feed>> getSearchFeedList({
     DateTime? createdAt,

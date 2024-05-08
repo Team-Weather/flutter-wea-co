@@ -4,7 +4,7 @@ import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 
-import '../../../mock/data/weather/mock_daily_location_weather_repository_impl.dart';
+import '../../../mock/data/weather/repository/mock_daily_location_weather_repository_impl.dart';
 
 void main() {
   group('GetDailyLocationWeatherUseCase 클래스', () {
@@ -24,9 +24,24 @@ void main() {
         const expectedCallCount = 1;
 
         final expectedDailyLocationWeather = DailyLocationWeather(
+          seasonCode: 0,
           highTemperature: 15,
           lowTemperature: 12,
           weatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            )
+          ],
+          yesterDayWeatherList: [
             Weather(
               temperature: 1,
               timeTemperature: DateTime.now(),
@@ -66,9 +81,24 @@ void main() {
         const expectedCallCount = 1;
 
         final expectedDailyLocationWeather = DailyLocationWeather(
+          seasonCode: 0,
           highTemperature: 15,
           lowTemperature: 12,
           weatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            )
+          ],
+          yesterDayWeatherList: [
             Weather(
               temperature: 1,
               timeTemperature: DateTime.now(),

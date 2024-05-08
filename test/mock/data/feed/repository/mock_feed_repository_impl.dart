@@ -1,5 +1,6 @@
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/repository/feed_repository.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 class MockFeedRepositoryImpl implements FeedRepository {
   int getFeedListcallCount = 0;
@@ -12,6 +13,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   // 메서드 호출시 인자 확인을 위한 map
   final Map<String, dynamic> methodParameterMap = {};
   final List<Feed> _fakeFeedList = [];
+  DailyLocationWeather? dailyLocationWeather;
   Feed? getFeedResult;
   Feed? getOotdFeedsResult;
   Feed? feed;
@@ -61,7 +63,9 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [_fakeFeedList]에서 조건에 맞는 피드 데이터를 찾아서 리스트로 반환
   /// 호출시 [getRecommendedFeedsCallCount] + 1
   @override
-  Future<List<Feed>> getRecommendedFeedList() {
+  Future<List<Feed>> getRecommendedFeedList({
+    required DailyLocationWeather dailyLocationWeather,
+  }) {
     getRecommendedFeedsCallCount++;
 
     List<Feed> result = _fakeFeedList;

@@ -1,3 +1,5 @@
+import 'package:weaco/common/convertor.dart';
+
 class Weather {
   final double temperature;
   final DateTime timeTemperature;
@@ -10,7 +12,6 @@ class Weather {
     required this.code,
     required this.createdAt,
   });
-
 
   @override
   String toString() {
@@ -51,18 +52,18 @@ class Weather {
   Map<String, dynamic> toJson() {
     return {
       'temperature': temperature,
-      'timeTemperature': timeTemperature,
+      'time_temperature': timeTemperature,
       'code': code,
-      'createdAt': createdAt,
+      'created_at': convertDateTimeToTimestamp(createdAt),
     };
   }
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       temperature: json['temperature'] as double,
-      timeTemperature: json['timeTemperature'] as DateTime,
+      timeTemperature: convertTimestampToDateTime(json['time_temperature']),
       code: json['code'] as int,
-      createdAt: json['createdAt'] as DateTime,
+      createdAt: convertTimestampToDateTime(json['created_at']),
     );
   }
 }
