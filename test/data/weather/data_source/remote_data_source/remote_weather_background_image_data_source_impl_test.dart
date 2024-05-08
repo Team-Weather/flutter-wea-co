@@ -1,7 +1,7 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/data/weather/data_soruce/remote_weather_background_image_data_source.dart';
-import 'package:weaco/data/weather/data_soruce/remote_weather_background_image_data_source_impl.dart';
+import 'package:weaco/data/weather/data_source/remote_data_source/remote_weather_background_image_data_source.dart';
+import 'package:weaco/data/weather/data_source/remote_data_source/remote_weather_background_image_data_source_impl.dart';
 
 void main() {
   group('RemoteWeatherBackgroundImageDataSourceImpl 클래스', () {

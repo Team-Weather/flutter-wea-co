@@ -280,6 +280,11 @@ void main() {
               mockWeather,
               mockWeather,
             ],
+            yesterDayWeatherList: [
+              mockWeather,
+              mockWeather,
+              mockWeather,
+            ],
             location: mockLocation,
             createdAt: DateTime.now(),
           );

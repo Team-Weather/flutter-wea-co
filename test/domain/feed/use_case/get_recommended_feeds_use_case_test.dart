@@ -34,6 +34,20 @@ void main() {
             createdAt: DateTime.now(),
           )
         ],
+        yesterDayWeatherList: [
+          Weather(
+            temperature: 1,
+            timeTemperature: DateTime.now(),
+            code: 1,
+            createdAt: DateTime.now(),
+          ),
+          Weather(
+            temperature: 1,
+            timeTemperature: DateTime.now(),
+            code: 1,
+            createdAt: DateTime.now(),
+          )
+        ],
         location: Location(
           lat: 113.1,
           lng: 213.1,
