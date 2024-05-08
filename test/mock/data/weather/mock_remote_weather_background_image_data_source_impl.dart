@@ -1,4 +1,4 @@
-import 'package:weaco/data/weather/data_soruce/remote_weather_background_image_data_source.dart';
+import 'package:weaco/data/weather/data_source/remote_data_source/remote_weather_background_image_data_source.dart';
 import 'package:weaco/domain/weather/model/weather_background_image.dart';
 
 class MockRemoteWeatherBackgroundImageDataSourceImpl
