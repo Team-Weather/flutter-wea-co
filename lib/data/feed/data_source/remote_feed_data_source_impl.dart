@@ -10,22 +10,23 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
     required FirebaseFirestore fireStore,
   }) : _fireStore = fireStore;
 
-  /// OOTD 피드 작성 성공 시 : 피드 업로드 요청(Feed) -> / 업로드 완료(bool) ← 파베
-  /// OOTD 편집 완료 후 [상세 페이지]:  위와 동일.
-  /// OOTD 편집 완료 후 [마이 페이지]: 위와 동일.*피드 업데이트
+  /// OOTD 피드 작성 또는 편집 후 저장
   @override
   Future<bool> saveFeed({required Feed feed}) async {
-    return await _fireStore.collection('feeds').add({
-      'id': feed.id,
-      'image_path': feed.imagePath,
-      'user_email': feed.userEmail,
-      'description': feed.description,
-      'season_code': feed.seasonCode,
-      'created_at': feed.createdAt,
-      'deleted_at': feed.deletedAt,
-      'weather': feed.weather.toJson(),
-      'location': feed.location.toJson(),
-    }).then((value) => true);
+    // 피드를 수정 할 경우
+    if (feed.id != null) {
+      return await _fireStore
+          .collection('feeds')
+          .doc(feed.id)
+          .set(feed.toJson())
+          .then((value) => true);
+    }
+
+    // 새 피드를 저장 할 경우
+    return await _fireStore
+        .collection('feeds')
+        .add(feed.toJson())
+        .then((value) => true);
   }
 
   /// [OOTD 피드 상세 페이지]:
