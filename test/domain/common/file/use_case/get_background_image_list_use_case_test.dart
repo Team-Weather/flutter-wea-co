@@ -29,10 +29,8 @@ void main() {
           'WeatherBackgroundImageRepository.getWeatherBackgroundImageList()의 반환값을 반환한다',
           () async {
         // Given
-        final expected = [WeatherBackgroundImage(imagePath: 'test')];
-        mockFileRepository.getWeatherBackgroundImageListResult = [
-          WeatherBackgroundImage(imagePath: 'test')
-        ];
+        final expected = [WeatherBackgroundImage(code: 0, imagePath: 'test')];
+        mockFileRepository.getWeatherBackgroundImageListResult = expected;
 
         // When
         final actual = await getHomeBackgroundImageListUseCase.execute();
