@@ -1,5 +1,6 @@
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/repository/feed_repository.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 class GetRecommendedFeedsUseCase {
   final FeedRepository _feedRepository;
@@ -13,11 +14,11 @@ class GetRecommendedFeedsUseCase {
   /// @param minTemperature: 최저 기온
   /// @param maxTemperature: 최고 기온
   /// @return: 반환 받은 추천 피드 리스트
-  Future<List<Feed>> execute(
-      {int? seasonCode,
-      int? weatherCode,
-      int? minTemperature,
-      int? maxTemperature}) async {
-    return await _feedRepository.getRecommendedFeedList();
+  Future<List<Feed>> execute({
+    required DailyLocationWeather dailyLocationWeather,
+  }) async {
+    return await _feedRepository.getRecommendedFeedList(
+      dailyLocationWeather: dailyLocationWeather,
+    );
   }
 }

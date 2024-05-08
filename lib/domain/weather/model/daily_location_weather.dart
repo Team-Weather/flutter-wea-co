@@ -9,6 +9,7 @@ class DailyLocationWeather {
   final List<Weather> yesterDayWeatherList;
   final Location location;
   final DateTime createdAt;
+  final int seasonCode;
 
   const DailyLocationWeather({
     required this.highTemperature,
@@ -17,11 +18,12 @@ class DailyLocationWeather {
     required this.yesterDayWeatherList,
     required this.location,
     required this.createdAt,
+    required this.seasonCode,
   });
 
   @override
   String toString() {
-    return 'DailyLocationWeather{highTemperature: $highTemperature, lowTemperature: $lowTemperature, weatherList: $weatherList, yesterDayWeatherList: $yesterDayWeatherList, location: $location, createdAt: $createdAt}';
+    return 'DailyLocationWeather{highTemperature: $highTemperature, lowTemperature: $lowTemperature, weatherList: $weatherList, yesterDayWeatherList: $yesterDayWeatherList, location: $location, createdAt: $createdAt, seasonCode: $seasonCode}';
   }
 
   @override
@@ -34,7 +36,8 @@ class DailyLocationWeather {
           weatherList.equals(other.weatherList) &&
           yesterDayWeatherList.equals(other.yesterDayWeatherList) &&
           location == other.location &&
-          createdAt == other.createdAt;
+          createdAt == other.createdAt &&
+          seasonCode == other.seasonCode;
 
   @override
   int get hashCode =>
@@ -44,7 +47,8 @@ class DailyLocationWeather {
       yesterDayWeatherList.fold(
           1, (prev, next) => prev.hashCode ^ next.hashCode) ^
       location.hashCode ^
-      createdAt.hashCode;
+      createdAt.hashCode ^
+      seasonCode.hashCode;
 
   DailyLocationWeather copyWith({
     double? highTemperature,
@@ -53,6 +57,7 @@ class DailyLocationWeather {
     List<Weather>? yesterDayWeatherList,
     Location? location,
     DateTime? createdAt,
+    int? seasonCode,
   }) {
     return DailyLocationWeather(
       highTemperature: highTemperature ?? this.highTemperature,
@@ -61,6 +66,7 @@ class DailyLocationWeather {
       yesterDayWeatherList: yesterDayWeatherList ?? this.yesterDayWeatherList,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
+      seasonCode: seasonCode ?? this.seasonCode,
     );
   }
 
@@ -73,6 +79,7 @@ class DailyLocationWeather {
           yesterDayWeatherList.map((weather) => weather.toJson()).toList(),
       'location': location.toJson(),
       'createdAt': createdAt,
+      'seasonCode': seasonCode,
     };
   }
 
@@ -87,7 +94,8 @@ class DailyLocationWeather {
           .map((e) => Weather.fromJson(e))
           .toList(),
       location: Location.fromJson(json['location']),
-      createdAt: json['createdAt'] as DateTime,
+      createdAt: json['created_at'] as DateTime,
+      seasonCode: json['season_code'] as int,
     );
   }
 }

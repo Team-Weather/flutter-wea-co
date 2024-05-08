@@ -1,3 +1,4 @@
+import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/data/weather/dto/weather_dto.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -11,6 +12,7 @@ extension DailyLocationWeatherMapper on WeatherDto {
     int unknownCode = -99;
 
     return DailyLocationWeather(
+        seasonCode: SeasonCode.fromMonth(now.month).value,
         highTemperature:
             daily?.temperature2mMax?.last.toDouble() ?? unknownTemperature,
         lowTemperature:
