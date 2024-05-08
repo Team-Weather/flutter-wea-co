@@ -10,7 +10,7 @@ class RemoteFileDataSourceImpl implements RemoteFileDataSource {
 
   @override
   Future<String?> saveImage(File image) async {
-    final feedImageRef = _firebaseStorage.ref().child("feed_images");
+    final feedImageRef = _firebaseStorage.ref().child('feed_images');
     await feedImageRef.putFile(image);
 
     return await feedImageRef.getDownloadURL();
