@@ -72,6 +72,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .collection('feeds')
         .where('location.city', isEqualTo: city)
         .where('weather.temperature', isEqualTo: temperature)
+        .orderBy('created_at', descending: true)
         .limit(10)
         .get();
 
