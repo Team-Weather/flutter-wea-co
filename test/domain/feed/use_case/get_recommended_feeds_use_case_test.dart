@@ -17,6 +17,7 @@ void main() {
       mockFeedRepository.initMockData();
 
       final expectedDailyLocationWeather = DailyLocationWeather(
+        seasonCode: 0,
         highTemperature: 15,
         lowTemperature: 12,
         weatherList: [

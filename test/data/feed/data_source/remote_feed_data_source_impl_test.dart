@@ -255,7 +255,7 @@ void main() {
       group('getRecommendedFeedList', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           Weather mockWeather = Weather(
-            temperature: 31,
+            temperature: 25,
             timeTemperature: DateTime.parse('2024-05-06'),
             code: 1,
             createdAt: DateTime.parse('2024-05-06'),
@@ -269,8 +269,9 @@ void main() {
           );
 
           final mockDailyLocationWeather = DailyLocationWeather(
-            highTemperature: 15,
-            lowTemperature: 12,
+            seasonCode: 0,
+            highTemperature: 30,
+            lowTemperature: 20,
             weatherList: [
               mockWeather,
               mockWeather,
@@ -289,8 +290,9 @@ void main() {
               'description': 'desc',
               'image_path':
                   'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
-              'season_code': i + 1,
+              'season_code': 0,
               'user_email': 'hoogom87@gmail.com',
+              'deleted_at': null,
             });
           }
 
