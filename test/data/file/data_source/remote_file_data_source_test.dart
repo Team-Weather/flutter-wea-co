@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/core/path_provider/path_provider_service.dart';
@@ -30,6 +29,7 @@ void main() {
       test('File 객체를 인자로 받아 업로드하고 다운로드 경로를 반환한다.', () async {
         // Given
         const isOrigin = false;
+        const email = 'hoogom87@gmail.com';
         File('test/mock/assets/cropped.png').writeAsBytesSync(
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
@@ -39,12 +39,9 @@ void main() {
         File? file = await localFileDataSource.getImagePath(isOrigin: isOrigin);
 
         if (file != null) {
-          final splitImagePath = file.path.split('/');
-          final imageName = splitImagePath[splitImagePath.length - 1];
-
-          final path = await remoteFileDataSource.saveImage(image: file);
-
-          expect(path, '${bucketPath}feed_images/$imageName');
+          final path =
+              await remoteFileDataSource.saveImage(image: file, email: email);
+          expect(path.startsWith('${bucketPath}feed_images/$email'), true);
         }
       });
     });
