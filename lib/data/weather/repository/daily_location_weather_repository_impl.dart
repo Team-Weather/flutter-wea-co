@@ -29,30 +29,22 @@ class DailyLocationWeatherRepositoryImpl
   /// 로컬 DailyLocationWeather가 없거나 만료된 데이터인 경우 새로운 데이터를 가져와서 반환한다.
   @override
   Future<DailyLocationWeather> getDailyLocationWeather() async {
-    DailyLocationWeather result;
     final DailyLocationWeather? localData =
         await _localDailyLocationWeatherDataSource
             .getLocalDailyLocationWeather();
 
-    if (_isOldDataOrExpired(localData)) {
-      result = await _fetchAndCacheDailyLocationWeather();
-    } else {
-      result = localData!;
-    }
-
-    return result;
+    return _isOldDataOrExpired(localData)
+        ? await _fetchAndCacheDailyLocationWeather()
+        : localData!;
   }
 
   /// 로컬 데이터가 없거나 만료된 데이터인지 확인한다.
   bool _isOldDataOrExpired(DailyLocationWeather? localData) {
-    bool result = false;
-    if (localData == null ||
-        localData.createdAt
-            .isBefore(DateTime.now().subtract(const Duration(hours: 3)))) {
-      result = true;
-    }
-
-    return result;
+    return (localData == null ||
+            localData.createdAt
+                .isBefore(DateTime.now().subtract(const Duration(hours: 3))))
+        ? true
+        : false;
   }
 
   /// 날씨와 위치를 가져와서 DailyLocationWeather로 변환한다.

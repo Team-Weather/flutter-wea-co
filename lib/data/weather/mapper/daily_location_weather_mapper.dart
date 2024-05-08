@@ -7,27 +7,35 @@ extension DailyLocationWeatherMapper on WeatherDto {
   DailyLocationWeather toDailyLocationWeather({required Location location}) {
     DateTime now = DateTime.now();
     int length = (hourly?.temperature2m?.length ?? 0) ~/ 2;
+    double unknownTemperature = -99.0;
+    int unknownCode = -99;
+
     return DailyLocationWeather(
-        highTemperature: daily?.temperature2mMax?.last.toDouble() ?? 0.0,
-        lowTemperature: daily?.temperature2mMin?.last.toDouble() ?? 0.0,
+        highTemperature:
+            daily?.temperature2mMax?.last.toDouble() ?? unknownTemperature,
+        lowTemperature:
+            daily?.temperature2mMin?.last.toDouble() ?? unknownTemperature,
         weatherList: List.generate(
             length,
             (index) => Weather(
                   temperature:
-                      hourly?.temperature2m?.elementAt(index).toDouble() ?? 0.0,
+                      hourly?.temperature2m?.elementAt(index).toDouble() ??
+                          unknownTemperature,
                   timeTemperature:
-                      DateTime.parse(hourly?.time?.elementAt(index) ?? ''),
-                  code: hourly?.weathercode?.elementAt(index).toInt() ?? 0,
+                      DateTime.tryParse(hourly?.time?.elementAt(index) ?? '') ??
+                          now,
+                  code: hourly?.weathercode?.elementAt(index).toInt() ??
+                      unknownCode,
                   createdAt: now,
                 )),
         yesterDayWeatherList: List.generate(length, (index) {
           index = index + 24;
           return Weather(
-            temperature:
-                hourly?.temperature2m?.elementAt(index).toDouble() ?? 0.0,
+            temperature: hourly?.temperature2m?.elementAt(index).toDouble() ??
+                unknownTemperature,
             timeTemperature:
-                DateTime.parse(hourly?.time?.elementAt(index) ?? ''),
-            code: hourly?.weathercode?.elementAt(index).toInt() ?? 0,
+                DateTime.tryParse(hourly?.time?.elementAt(index) ?? '') ?? now,
+            code: hourly?.weathercode?.elementAt(index).toInt() ?? unknownCode,
             createdAt: now,
           );
         }),
