@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/common/convertor.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
@@ -108,6 +109,22 @@ class Feed {
       createdAt: convertTimestampToDateTime(json['created_at']),
       deletedAt: json['deleted_at'] != null
           ? convertTimestampToDateTime(json['deleted_at'])
+          : null,
+    );
+  }
+  factory Feed.fromDocumentSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    return Feed(
+      id: doc.id,
+      imagePath: doc.data()!['image_path'],
+      userEmail: doc.data()!['user_email'],
+      description: doc.data()!['description'],
+      weather: Weather.fromJson(doc.data()!['weather']),
+      seasonCode: doc.data()!['season_code'],
+      location: Location.fromJson(doc.data()!['location']),
+      createdAt: convertTimestampToDateTime(doc.data()!['created_at']),
+      deletedAt: doc.data()?['deleted_at'] != null
+          ? convertTimestampToDateTime(doc.data()!['deleted_at'])
           : null,
     );
   }
