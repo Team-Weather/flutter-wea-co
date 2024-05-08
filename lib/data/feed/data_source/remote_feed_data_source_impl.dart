@@ -47,7 +47,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
     final querySnapshot = await _fireStore
         .collection('feeds')
         .where('user_email', isEqualTo: email)
-        .orderBy(createdAt, descending: false)
+        .orderBy(createdAt, descending: true)
         .limit(limit)
         .get();
 
@@ -100,7 +100,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
           isGreaterThanOrEqualTo: minTemperature,
         )
         .where('season_code', isEqualTo: seasonCode)
-        .orderBy('created_at', descending: false)
+        .orderBy('created_at', descending: true)
         .limit(10)
         .get();
 
