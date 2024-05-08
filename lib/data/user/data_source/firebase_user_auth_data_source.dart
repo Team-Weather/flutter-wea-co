@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weaco/core/firebase/firebase_service.dart';
+import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/data/user/data_source/user_auth_data_source.dart';
 
 class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
-  final FirebaseService _firebaseService;
+  final FirebaseAuthService _firebaseService;
 
   const FirebaseUserAuthDataSourceImpl({
-    required FirebaseService firebaseService,
+    required FirebaseAuthService firebaseService,
   }) : _firebaseService = firebaseService;
 
   // 회원가입
@@ -43,7 +43,6 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
 
         await _firebaseService.signIn(email: email, password: password);
       });
-
     } on Exception catch (e) {
       isSignInSuccess = false;
       log(e.toString(), name: 'FirebaseUserAuthDataSource.signIn()');
