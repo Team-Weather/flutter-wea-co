@@ -48,6 +48,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
     final querySnapshot = await _fireStore
         .collection('feeds')
         .where('user_email', isEqualTo: email)
+        .where('deleted_at', isNull: true)
         .orderBy(createdAt, descending: true)
         .limit(limit)
         .get();
@@ -57,6 +58,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
 
   /// [마이페이지] 피드 삭제:
   /// 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) <- 파베
+  /// soft delete 처리
   @override
   Future<bool> deleteFeed({required String id}) async {
     await _fireStore.collection('feeds').doc(id).delete();
@@ -64,7 +66,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   }
 
   /// [홈 페이지] 하단 OOTD 추천:
-  /// 피드 데이터 요청 (위치, 날씨) -> 파베
+  /// 피드 데이터 요청 (날씨) -> 파베
   /// 피드 데이터 반환(List<Feed>) <- 파베
   @override
   Future<List<Feed>> getRecommendedFeedList({
@@ -126,6 +128,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
           descending: true,
         )
         .limit(limit)
+        .where('deleted_at', isNull: true)
         .get();
 
     return querySnapshot.docs.map((e) => Feed.fromDocumentSnapshot(e)).toList();
