@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:weaco/core/exception/not_found_exception.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -34,6 +35,13 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   @override
   Future<Feed> getFeed({required String id}) async {
     final docSnapshot = await _fireStore.collection('feeds').doc(id).get();
+
+    if (docSnapshot.data() == null) {
+      throw NotFoundException(
+        code: 500,
+        message: '피드가 존재하지 않습니다.',
+      );
+    }
 
     return Feed.fromJson(docSnapshot.data()!);
   }
