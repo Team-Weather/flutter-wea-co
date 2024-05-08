@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/data/user/data_source/remote_user_profile_data_source.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 
 class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   final FirebaseFirestore _firestore;
+  final FirebaseAuthService _firebaseService;
 
-  RemoteUserProfileDataSourceImpl({required FirebaseFirestore firestore})
-      : _firestore = firestore;
+  const RemoteUserProfileDataSourceImpl({
+    required FirebaseFirestore firestore,
+    required FirebaseAuthService firebaseService,
+  })  : _firestore = firestore,
+        _firebaseService = firebaseService;
 
   @override
   Future<bool> saveUserProfile({required UserProfile userProfile}) async {
@@ -26,6 +31,8 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   @override
   Future<UserProfile> getUserProfile({String? email}) async {
     try {
+      email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
+
       QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('user_profiles')
           .where('email', isEqualTo: email)
@@ -42,11 +49,11 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<bool> updateUserProfile({UserProfile? userProfile}) async {
+  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
     try {
       final originProfileDocument = await _firestore
           .collection('user_profiles')
-          .where('email', isEqualTo: userProfile!.email)
+          .where('email', isEqualTo: userProfile.email)
           .get();
 
       return await _firestore
@@ -65,6 +72,8 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   @override
   Future<bool> removeUserProfile({String? email}) async {
     try {
+      email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
+
       final originProfileDocument = await _firestore
           .collection('user_profiles')
           .where('email', isEqualTo: email)
