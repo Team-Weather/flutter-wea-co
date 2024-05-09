@@ -41,7 +41,7 @@ void main() {
         final result = await useCase.execute(id: testId);
 
         // Then
-        expect(result, null);
+        expect(result, true);
       });
     });
   });
