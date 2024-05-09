@@ -19,6 +19,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   Feed? feed;
   Map<String, dynamic> feedMap = {};
   int saveFeedCallCount = 0;
+  bool deleteFeedReturnValue = false;
 
   @override
   Future<List<Feed>> getUserFeedList({
@@ -48,6 +49,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
     _fakeFeedList.clear();
     getFeedResult = null;
     getOotdFeedsResult = null;
+    deleteFeedReturnValue = false;
   }
 
   /// [getFeedCallCount] + 1
@@ -153,7 +155,8 @@ class MockFeedRepositoryImpl implements FeedRepository {
 
   @override
   Future<bool> deleteFeed({required String id}) async {
-    return feedMap.remove(id);
+    feedMap.remove(id);
+    return deleteFeedReturnValue;
   }
 
   @override

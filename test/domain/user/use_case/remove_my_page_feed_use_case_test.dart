@@ -9,7 +9,7 @@ void main() {
   group('RemoveMyPageFeedUseCase 클래스', () {
     final mockFeedRepository = MockFeedRepositoryImpl();
     final RemoveMyPageFeedUseCase useCase =
-    RemoveMyPageFeedUseCase(feedRepository: mockFeedRepository);
+        RemoveMyPageFeedUseCase(feedRepository: mockFeedRepository);
 
     group('RemoveMyPageFeedUseCase는', () {
       test('RemoveMyPageFeed test', () async {
@@ -34,7 +34,10 @@ void main() {
             description: 'description',
             weather: testWeather,
             seasonCode: 1,
-            location: testLocation, createdAt: DateTime.now());
+            location: testLocation,
+            createdAt: DateTime.now());
+
+        mockFeedRepository.deleteFeedReturnValue = true;
 
         // When
         mockFeedRepository.feed = testFeed;
