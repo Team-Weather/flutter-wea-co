@@ -63,4 +63,22 @@ class Location {
       createdAt: convertTimestampToDateTime(json['created_at']),
     );
   }
+
+  Map<String, dynamic> toHive() {
+    return {
+      'lat': lat,
+      'lng': lng,
+      'city': city,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
+
+  factory Location.fromHive(Map<String, dynamic> hive) {
+    return Location(
+      lat: hive['lat'] as double,
+      lng: hive['lng'] as double,
+      city: hive['city'] as String,
+      createdAt: DateTime.parse(hive['createdAt']),
+    );
+  }
 }

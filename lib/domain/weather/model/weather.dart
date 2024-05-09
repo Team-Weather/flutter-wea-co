@@ -66,4 +66,22 @@ class Weather {
       createdAt: convertTimestampToDateTime(json['created_at']),
     );
   }
+
+  Map<String, dynamic> toHive() {
+    return {
+      'temperature': temperature,
+      'timeTemperature': timeTemperature.toIso8601String(),
+      'code': code,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
+
+  factory Weather.fromHive(Map<String, dynamic> hive) {
+    return Weather(
+      temperature: hive['temperature'] as double,
+      timeTemperature: DateTime.parse(hive['timeTemperature']),
+      code: hive['code'] as int,
+      createdAt: DateTime.parse(hive['createdAt']),
+    );
+  }
 }

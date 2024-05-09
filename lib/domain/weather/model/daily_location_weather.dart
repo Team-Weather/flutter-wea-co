@@ -98,4 +98,33 @@ class DailyLocationWeather {
       seasonCode: json['season_code'] as int,
     );
   }
+
+  Map<String, dynamic> toHive() {
+    return {
+      'highTemperature': highTemperature,
+      'lowTemperature': lowTemperature,
+      'weatherList': weatherList.map((weather) => weather.toHive()).toList(),
+      'yesterdayWeatherList':
+          yesterDayWeatherList.map((weather) => weather.toHive()).toList(),
+      'location': location.toHive(),
+      'createdAt': createdAt.toIso8601String(),
+      'seasonCode': seasonCode,
+    };
+  }
+
+  factory DailyLocationWeather.fromHive(Map<String, dynamic> hive) {
+    return DailyLocationWeather(
+      highTemperature: hive['highTemperature'] as double,
+      lowTemperature: hive['lowTemperature'] as double,
+      weatherList: (hive['weatherList'] as List)
+          .map((e) => Weather.fromHive(e))
+          .toList(),
+      yesterDayWeatherList: (hive['yesterdayWeatherList'] as List)
+          .map((e) => Weather.fromHive(e))
+          .toList(),
+      location: Location.fromHive(hive['location']),
+      createdAt: DateTime.parse(hive['createdAt']),
+      seasonCode: hive['seasonCode'] as int,
+    );
+  }
 }
