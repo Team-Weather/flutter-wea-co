@@ -58,6 +58,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .collection('feeds')
         .where('user_email', isEqualTo: email)
         .where('deleted_at', isNull: true)
+        .where('created_at', isLessThanOrEqualTo: createdAt)
         .orderBy(createdAt, descending: true)
         .limit(limit)
         .get();
@@ -134,6 +135,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
 
     // 생성일 기준으로 정렬하여 제한된 수의 문서 가져오기
     final QuerySnapshot<Map<String, dynamic>> querySnapshot = await query
+        .where('created_at', isLessThanOrEqualTo: createdAt)
         .orderBy(
           'created_at',
           descending: true,
