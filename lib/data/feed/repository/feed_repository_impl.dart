@@ -5,10 +5,15 @@ import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 class FeedRepositoryImpl implements FeedRepository {
   final RemoteFeedDataSource remoteFeedDataSource;
-  late final int userFeedCount;
 
-  FeedRepositoryImpl(
-      {required this.userFeedCount, required this.remoteFeedDataSource});
+  FeedRepositoryImpl({
+    required this.remoteFeedDataSource,
+  });
+
+  @override
+  Future<bool> saveFeed({required Feed editedFeed}) {
+    return remoteFeedDataSource.saveFeed(feed: editedFeed);
+  }
 
   @override
   Future<bool> deleteFeed({required String id}) async {
@@ -36,11 +41,15 @@ class FeedRepositoryImpl implements FeedRepository {
     required int? limit,
   }) async {
     return remoteFeedDataSource.getUserFeedList(
-        email: email, createdAt: createdAt!, limit: limit!);
+      email: email,
+      createdAt: createdAt ?? DateTime.now(),
+      limit: limit ?? 20,
+    );
   }
 
+  /// [OOTD 피드 화면]
   /// GetOotdFeedsListUseCase에서 사용
-  /// [OOTD 피드 화면]에 들어가면, Firebase에 최신 순(생성일 기준)으로 OOTD 피드 목록을 요청하여 가져와야 한다.
+  /// Firebase에 최신 순(생성일 기준)으로 OOTD 피드 목록을 요청하여 가져와야 한다.
   /// 페이징 처리를 위해 createdAt을 기준으로 limit된 갯수의 피드 목록을 가져와야 한다.
   /// *이건 RemoteDataSource의 getRecommendedFeedList에서 미리 처리됨.
   @override
@@ -49,13 +58,13 @@ class FeedRepositoryImpl implements FeedRepository {
     required DailyLocationWeather dailyLocationWeather,
   }) async {
     return await remoteFeedDataSource.getRecommendedFeedList(
-        dailyLocationWeather: dailyLocationWeather);
+      dailyLocationWeather: dailyLocationWeather,
+    );
   }
 
   /// GetRecommendedFeedListUseCase에서 사용
   /// [홈 화면] 하단
   /// 유저의 위치와 날씨를 기반으로 Firebase에 요청하여 OOTD 피드 목록을 가져와야 한다.
-
   @override
   Future<List<Feed>> getRecommendedFeedList({
     required DailyLocationWeather dailyLocationWeather,
@@ -65,6 +74,7 @@ class FeedRepositoryImpl implements FeedRepository {
     );
   }
 
+  /// [피드 검색 화면]
   @override
   Future<List<Feed>> getSearchFeedList({
     DateTime? createdAt,
@@ -73,12 +83,14 @@ class FeedRepositoryImpl implements FeedRepository {
     int? weatherCode,
     int? minTemperature,
     int? maxTemperature,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<bool> saveFeed({required Feed editedFeed}) {
-    return remoteFeedDataSource.saveFeed(feed: editedFeed);
+  }) async {
+    return await remoteFeedDataSource.getSearchFeedList(
+      createdAt: createdAt ?? DateTime.now(),
+      limit: limit ?? 20,
+      seasonCode: seasonCode,
+      weatherCode: weatherCode,
+      minTemperature: minTemperature,
+      maxTemperature: maxTemperature,
+    );
   }
 }
