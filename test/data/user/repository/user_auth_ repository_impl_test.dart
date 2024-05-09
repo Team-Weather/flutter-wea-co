@@ -152,7 +152,6 @@ void main() {
       test('로그인이 성공했을 때 true 를 반환한다.', () async {
         // given
         final expectUserAuth = userAuth.copyWith();
-        final expectUserProfile = userProfile.copyWith();
 
         userAuthDataSource.returnValue = true;
 
@@ -168,7 +167,6 @@ void main() {
       test('로그인이 성공했을 때 false 를 반환한다.', () async {
         // given
         final expectUserAuth = userAuth.copyWith();
-        final expectUserProfile = userProfile.copyWith();
 
         userAuthDataSource.returnValue = false;
 
