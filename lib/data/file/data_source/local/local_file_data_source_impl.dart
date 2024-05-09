@@ -12,7 +12,7 @@ class LocalFileDataSourceImpl implements LocalFileDataSource {
       : _pathProvider = pathProvider;
 
   @override
-  Future<File?> getImagePath({required bool isOrigin}) async {
+  Future<File?> getImage({required bool isOrigin}) async {
     try {
       final directory = await _pathProvider.getCacheDirectory();
       String fileName = isOrigin ? _originImageFileName : _croppedImageFileName;

@@ -31,7 +31,7 @@ void main() {
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
         // When
-        File? file = await dataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(isOrigin: isOrigin);
 
         // Then
         expect(file?.readAsBytesSync(),
@@ -45,7 +45,7 @@ void main() {
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
         // When
-        File? file = await dataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(isOrigin: isOrigin);
 
         // Then
         expect(file?.readAsBytesSync(),
@@ -57,7 +57,7 @@ void main() {
         const isOrigin = false;
 
         // When
-        File? file = await dataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(isOrigin: isOrigin);
 
         // Then
         expect(file, null);

@@ -36,7 +36,7 @@ void main() {
         final bucketPath = await storage.ref().child('').getDownloadURL();
 
         // When
-        File? file = await localFileDataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await localFileDataSource.getImage(isOrigin: isOrigin);
 
         if (file != null) {
           final path =
