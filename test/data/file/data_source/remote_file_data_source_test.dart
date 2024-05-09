@@ -7,6 +7,7 @@ import 'package:weaco/data/file/data_source/local/local_file_data_source_impl.da
 import 'package:weaco/data/file/data_source/remote/remote_file_data_source.dart';
 import 'package:weaco/data/file/data_source/remote/remote_file_data_source_impl.dart';
 
+import '../../../mock/core/firebase/mock_firebase_auth_service_impl.dart';
 import '../../../mock/core/path_provider/mock_path_provider_service_impl.dart';
 
 void main() {
@@ -16,7 +17,7 @@ void main() {
 
   final MockFirebaseStorage storage = MockFirebaseStorage();
   final RemoteFileDataSource remoteFileDataSource =
-      RemoteFileDataSourceImpl(firebaseStorage: storage);
+      RemoteFileDataSourceImpl(firebaseStorage: storage, firebaseAuthService: MockFirebaseAuthService());
 
   group('RemoteFileDataSourceImpl 클래스', () {
     tearDown(() {
@@ -40,7 +41,7 @@ void main() {
 
         if (file != null) {
           final path =
-              await remoteFileDataSource.saveImage(image: file, email: email);
+              await remoteFileDataSource.saveImage(image: file);
           expect(path.startsWith('${bucketPath}feed_images/$email'), true);
         }
       });
