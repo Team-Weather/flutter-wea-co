@@ -24,9 +24,4 @@ class MockHiveWrapper implements HiveWrapper {
     mockKey = key;
     return await dataBox!.get(key);
   }
-
-  @override
-  void deleteData(String key) async {
-    await dataBox!.delete(key);
-  }
 }
