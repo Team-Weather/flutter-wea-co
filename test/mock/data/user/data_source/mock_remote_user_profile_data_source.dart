@@ -9,35 +9,44 @@ class MockRemoteUserProfileDataSourceImpl
   bool isSaved = false;
   bool isUpdated = false;
 
+  UserProfile? methodUserProfileParameter;
+  String? methodEmailParameter;
+
   void initMockData() {
     methodCallCount = 0;
     getUserProfileResult = null;
     isRemoved = false;
     isSaved = false;
     isUpdated = false;
+    methodUserProfileParameter = null;
+    methodEmailParameter = null;
   }
 
   @override
   Future<UserProfile> getUserProfile({String? email}) {
     methodCallCount++;
+    methodEmailParameter = email;
     return Future.value(getUserProfileResult);
   }
 
   @override
   Future<bool> updateUserProfile({UserProfile? userProfile}) async {
     methodCallCount++;
+    methodUserProfileParameter = userProfile;
     return isUpdated;
   }
 
   @override
   Future<bool> saveUserProfile({required UserProfile userProfile}) async {
     methodCallCount++;
+    methodUserProfileParameter = userProfile;
     return isSaved;
   }
 
   @override
   Future<bool> removeUserProfile({String? email}) async {
     methodCallCount++;
+    methodEmailParameter = email;
     return isRemoved;
   }
 }
