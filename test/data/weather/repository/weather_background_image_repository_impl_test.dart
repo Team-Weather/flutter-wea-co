@@ -3,7 +3,7 @@ import 'package:weaco/data/weather/repository/weather_background_image_repositor
 import 'package:weaco/domain/weather/model/weather_background_image.dart';
 import 'package:weaco/domain/weather/repository/weather_background_image_repository.dart';
 
-import '../../../mock/data/weather/mock_remote_weather_background_image_data_source_impl.dart';
+import '../../../mock/data/weather/data_source/remote_data_source/mock_remote_weather_background_image_data_source_impl.dart';
 
 void main() {
   group('ProfileImageRepositoryImpl 클래스', () {

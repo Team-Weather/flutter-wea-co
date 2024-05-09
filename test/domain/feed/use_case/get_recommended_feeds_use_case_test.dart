@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/location/model/location.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 
 import '../../../mock/data/feed/repository/mock_feed_repository_impl.dart';
@@ -12,7 +13,52 @@ void main() {
     final GetRecommendedFeedsUseCase useCase =
         GetRecommendedFeedsUseCase(feedRepository: mockFeedRepository);
 
-    setUp(() => mockFeedRepository.initMockData());
+    setUp(() {
+      mockFeedRepository.initMockData();
+
+      final expectedDailyLocationWeather = DailyLocationWeather(
+        seasonCode: 0,
+        highTemperature: 15,
+        lowTemperature: 12,
+        weatherList: [
+          Weather(
+            temperature: 1,
+            timeTemperature: DateTime.now(),
+            code: 1,
+            createdAt: DateTime.now(),
+          ),
+          Weather(
+            temperature: 1,
+            timeTemperature: DateTime.now(),
+            code: 1,
+            createdAt: DateTime.now(),
+          )
+        ],
+        yesterDayWeatherList: [
+          Weather(
+            temperature: 1,
+            timeTemperature: DateTime.now(),
+            code: 1,
+            createdAt: DateTime.now(),
+          ),
+          Weather(
+            temperature: 1,
+            timeTemperature: DateTime.now(),
+            code: 1,
+            createdAt: DateTime.now(),
+          )
+        ],
+        location: Location(
+          lat: 113.1,
+          lng: 213.1,
+          city: '서울시',
+          createdAt: DateTime.now(),
+        ),
+        createdAt: DateTime.now(),
+      );
+
+      mockFeedRepository.dailyLocationWeather = expectedDailyLocationWeather;
+    });
 
     group('execute 메서드는', () {
       test('FeedRepository.getRecommendedFeeds()을 한번 호출한다.', () async {
@@ -20,7 +66,8 @@ void main() {
         const expectCount = 1;
 
         // When
-        await useCase.execute();
+        await useCase.execute(
+            dailyLocationWeather: mockFeedRepository.dailyLocationWeather!);
 
         // Then
         expect(mockFeedRepository.getRecommendedFeedsCallCount, expectCount);
@@ -73,7 +120,8 @@ void main() {
         mockFeedRepository.addFeed(feed: feed4);
 
         // When
-        final result = await useCase.execute();
+        final result = await useCase.execute(
+            dailyLocationWeather: mockFeedRepository.dailyLocationWeather!);
 
         // Then
         expect(result, [feed1, feed2, feed3, feed4]);
