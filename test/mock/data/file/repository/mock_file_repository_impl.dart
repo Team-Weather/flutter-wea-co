@@ -26,4 +26,10 @@ class MockFileRepositoryImpl implements FileRepository {
     methodParameterMap['data'] = file;
     return saveImageResult;
   }
+
+  @override
+  Future<String> saveOotdImage() {
+    // TODO: implement saveFeed
+    throw UnimplementedError();
+  }
 }
