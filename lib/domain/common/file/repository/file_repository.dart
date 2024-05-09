@@ -7,7 +7,5 @@ abstract interface class FileRepository {
 
   Future<bool> saveImage({required bool isOrigin, required File file});
 
-  Future<List<WeatherBackgroundImage>> getWeatherBackgroundImageList();
-
   Future<List<ProfileImage>> getProfileImageList();
 }

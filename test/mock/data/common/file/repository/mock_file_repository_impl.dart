@@ -7,18 +7,15 @@ class MockFileRepositoryImpl implements FileRepository {
   int getImageCallCount = 0;
   int saveImageCallCount = 0;
   int getProfileImageListCallCount = 0;
-  int getWeatherBackgroundImageListCallCount = 0;
   final Map<String, dynamic> methodParameterMap = {};
   File? getImageResult;
   bool saveImageResult = false;
   List<ProfileImage> getProfileImageResult = [];
-  List<WeatherBackgroundImage> getWeatherBackgroundImageListResult = [];
 
   void initMockData() {
     getImageCallCount = 0;
     saveImageCallCount = 0;
     getProfileImageListCallCount = 0;
-    getWeatherBackgroundImageListCallCount = 0;
     methodParameterMap.clear();
   }
 
@@ -39,11 +36,5 @@ class MockFileRepositoryImpl implements FileRepository {
   Future<List<ProfileImage>> getProfileImageList() async {
     getProfileImageListCallCount++;
     return getProfileImageResult;
-  }
-
-  @override
-  Future<List<WeatherBackgroundImage>> getWeatherBackgroundImageList() async {
-    getWeatherBackgroundImageListCallCount++;
-    return getWeatherBackgroundImageListResult;
   }
 }

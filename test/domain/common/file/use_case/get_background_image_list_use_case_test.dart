@@ -3,12 +3,14 @@ import 'package:weaco/domain/common/file/use_case/get_background_image_list_use_
 import 'package:weaco/domain/weather/model/weather_background_image.dart';
 
 import '../../../../mock/data/common/file/repository/mock_file_repository_impl.dart';
+import '../../../../mock/data/weather/repository/mock_weather_background_image_repository_impl.dart';
 
 void main() {
   group('GetHomeImageUseCase 클래스', () {
-    final mockFileRepository = MockFileRepositoryImpl();
+    final mockFileRepository = MockWeatherBackgroundImageRepository();
     final GetBackgroundImageListUseCase getHomeBackgroundImageListUseCase =
-        GetBackgroundImageListUseCase(fileRepository: mockFileRepository);
+        GetBackgroundImageListUseCase(
+            weatherBackgroundImageRepository: mockFileRepository);
     setUp(() => mockFileRepository.initMockData());
     group('execute 메소드는', () {
       test(
@@ -21,8 +23,7 @@ void main() {
         await getHomeBackgroundImageListUseCase.execute();
 
         // Then
-        expect(mockFileRepository.getWeatherBackgroundImageListCallCount,
-            expectedCallCount);
+        expect(mockFileRepository.methodCallCount, expectedCallCount);
       });
 
       test(
