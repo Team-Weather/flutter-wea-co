@@ -1,13 +1,14 @@
 import 'package:weaco/domain/common/file/model/profile_image.dart';
-import 'package:weaco/domain/common/file/repository/file_repository.dart';
+import 'package:weaco/domain/user/repository/profile_image_repository.dart';
 
 class GetProfileImageListUseCase {
-  final FileRepository _fileRepository;
+  final ProfileImageRepository _profileImageRepository;
 
-  GetProfileImageListUseCase({required FileRepository fileRepository})
-      : _fileRepository = fileRepository;
+  GetProfileImageListUseCase(
+      {required ProfileImageRepository profileImageRepository})
+      : _profileImageRepository = profileImageRepository;
 
   Future<List<ProfileImage>> execute() async {
-    return await _fileRepository.getProfileImageList();
+    return await _profileImageRepository.getProfileImageList();
   }
 }
