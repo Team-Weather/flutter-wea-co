@@ -4,12 +4,14 @@ import 'package:weaco/core/hive/hive_wrapper.dart';
 
 class MockHiveWrapper implements HiveWrapper {
   Box? dataBox;
-  String? mockKey;
-  String? mockValue;
+  String mockKey = '';
+  String mockValue = '';
 
   Future<void> initMockData() async {
     await setUpTestHive();
     dataBox = await Hive.openBox('weacoBox');
+    mockKey = '';
+    mockValue = '';
   }
 
   @override

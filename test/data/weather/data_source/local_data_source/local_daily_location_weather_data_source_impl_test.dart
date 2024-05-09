@@ -21,52 +21,11 @@ void main() async {
     });
 
     group('saveLocalDailyLocationWeather 메서드는', () {
-      test('로컬에 DailyLocationWeather 데이터를 저장한다.', () async {
+      test('HiveWrapper.writeData()의 key, value 를 호출한다.', () async {
         // Given
         const String testKey = 'daily_location_weather_key';
 
         final dateNow = DateTime.now();
-
-        final actualDailyLocationWeather = {
-          "highTemperature": 21.0,
-          "lowTemperature": 12.0,
-          "weatherList": [
-            {
-              "temperature": 1.0,
-              "timeTemperature": dateNow.toIso8601String(),
-              "code": 1,
-              "createdAt": dateNow.toIso8601String(),
-            },
-            {
-              "temperature": 1.0,
-              "timeTemperature": dateNow.toIso8601String(),
-              "code": 1,
-              "createdAt": dateNow.toIso8601String(),
-            }
-          ],
-          "yesterdayWeatherList": [
-            {
-              "temperature": 1.0,
-              "timeTemperature": dateNow.toIso8601String(),
-              "code": 1,
-              "createdAt": dateNow.toIso8601String(),
-            },
-            {
-              "temperature": 1.0,
-              "timeTemperature": dateNow.toIso8601String(),
-              "code": 1,
-              "createdAt": dateNow.toIso8601String(),
-            }
-          ],
-          "location": {
-            "lat": 113.1,
-            "lng": 213.1,
-            "city": '서울시',
-            "createdAt": dateNow.toIso8601String(),
-          },
-          "createdAt": dateNow.toIso8601String(),
-          "seasonCode": 0,
-        };
 
         final dailyLocationWeather = DailyLocationWeather(
           highTemperature: 21,
@@ -109,11 +68,6 @@ void main() async {
           seasonCode: 0,
         );
 
-        await hiveWrapper.writeData(
-          testKey,
-          jsonEncode(actualDailyLocationWeather),
-        );
-
         // When
         await localDailyLocationWeatherDataSource.saveLocalDailyLocationWeather(
           dailyLocationWeather: dailyLocationWeather,
@@ -121,23 +75,75 @@ void main() async {
 
         // Then
         expect(testKey, hiveWrapper.mockKey);
-        expect(jsonEncode(actualDailyLocationWeather), hiveWrapper.mockValue);
+        expect(
+          jsonEncode(dailyLocationWeather.toJson()),
+          hiveWrapper.mockValue,
+        );
       });
     });
 
     group('getLocalDailyLocationWeather 메서드는', () {
-      test('로컬에 저장된 DailyLocationWeather 데이터를 반환한다.', () async {
+      test('로컬에 저장된 데이터를 HiveWrapper.readData()로 value 를 호출한다.', () async {
         // Given
         const String testKey = 'daily_location_weather_key';
-        final data = await hiveWrapper.readData(testKey);
-        DailyLocationWeather.fromHive(jsonDecode(data));
+
+        final dateNow = DateTime.now();
+
+        final dailyLocationWeather = DailyLocationWeather(
+          highTemperature: 21,
+          lowTemperature: 12,
+          weatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            )
+          ],
+          yesterDayWeatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            )
+          ],
+          location: Location(
+            lat: 113.1,
+            lng: 213.1,
+            city: '서울시',
+            createdAt: dateNow,
+          ),
+          createdAt: dateNow,
+          seasonCode: 0,
+        );
+
+        await localDailyLocationWeatherDataSource.saveLocalDailyLocationWeather(
+          dailyLocationWeather: dailyLocationWeather,
+        );
 
         // When
-        final expectData = await localDailyLocationWeatherDataSource.getLocalDailyLocationWeather();
+        final weatherData = await localDailyLocationWeatherDataSource
+            .getLocalDailyLocationWeather();
 
         // Then
         expect(testKey, hiveWrapper.mockKey);
-        expect(DailyLocationWeather.fromHive(jsonDecode(data)), expectData);
+        expect(
+          weatherData,
+          DailyLocationWeather.fromJson(jsonDecode(hiveWrapper.mockValue)),
+        );
       });
     });
   });
