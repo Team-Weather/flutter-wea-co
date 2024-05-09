@@ -11,7 +11,7 @@ abstract interface class FeedRepository {
 
   Future<Feed?> getFeed({required String id});
 
-  Future<Feed?> deleteFeed({required String id});
+  Future<bool> deleteFeed({required String id, required String email});
 
   Future<bool> saveFeed({required Feed editedFeed});
 
@@ -29,5 +29,5 @@ abstract interface class FeedRepository {
   });
 
   /// OOTD 피드를 최신 순으로 가져옵니다.
-  Future<List<Feed>> getOotdFeedsList({DateTime? createdAt});
+  Future<List<Feed>> getOotdFeedsList({required DailyLocationWeather dailyLocationWeather});
 }
