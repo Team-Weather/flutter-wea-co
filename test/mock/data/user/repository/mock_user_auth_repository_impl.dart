@@ -51,7 +51,6 @@ class MockUserAuthRepositoryImpl implements UserAuthRepository {
     return isSignUp;
   }
 
-  @override
   Future<bool> isRegistered({required String email}) async {
     isRegisteredCallCount++;
     return isRegisteredResult;
