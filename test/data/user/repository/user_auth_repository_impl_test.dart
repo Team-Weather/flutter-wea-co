@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/data/user/repository/user_auth_%20repository_impl.dart';
+import 'package:weaco/data/user/repository/user_auth_repository_impl.dart';
 import 'package:weaco/domain/user/model/user_auth.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/domain/user/repository/user_auth_repository.dart';
