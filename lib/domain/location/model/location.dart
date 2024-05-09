@@ -46,7 +46,7 @@ class Location {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirebase() {
     return {
       'lat': lat,
       'lng': lng,
@@ -55,16 +55,16 @@ class Location {
     };
   }
 
-  factory Location.fromJson(Map<String, dynamic> json) {
+  factory Location.fromFirebase(Map<String, dynamic> data) {
     return Location(
-      lat: json['lat'] as double,
-      lng: json['lng'] as double,
-      city: json['city'] as String,
-      createdAt: convertTimestampToDateTime(json['created_at']),
+      lat: data['lat'] as double,
+      lng: data['lng'] as double,
+      city: data['city'] as String,
+      createdAt: convertTimestampToDateTime(data['created_at']),
     );
   }
 
-  Map<String, dynamic> toHive() {
+  Map<String, dynamic> toJson() {
     return {
       'lat': lat,
       'lng': lng,
@@ -73,12 +73,12 @@ class Location {
     };
   }
 
-  factory Location.fromHive(Map<String, dynamic> hive) {
+  factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
-      lat: hive['lat'] as double,
-      lng: hive['lng'] as double,
-      city: hive['city'] as String,
-      createdAt: DateTime.parse(hive['createdAt']),
+      lat: json['lat'] as double,
+      lng: json['lng'] as double,
+      city: json['city'] as String,
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 }

@@ -70,15 +70,44 @@ class DailyLocationWeather {
     );
   }
 
+  Map<String, dynamic> toFirebase() {
+    return {
+      'highTemperature': highTemperature,
+      'lowTemperature': lowTemperature,
+      'weatherList': weatherList.map((weather) => weather.toFirebase()).toList(),
+      'yesterDayWeatherList':
+          yesterDayWeatherList.map((weather) => weather.toFirebase()).toList(),
+      'location': location.toFirebase(),
+      'createdAt': createdAt,
+      'seasonCode': seasonCode,
+    };
+  }
+
+  factory DailyLocationWeather.fromFirebase(Map<String, dynamic> data) {
+    return DailyLocationWeather(
+      highTemperature: data['highTemperature'] as double,
+      lowTemperature: data['lowTemperature'] as double,
+      weatherList: (data['weatherList'] as List)
+          .map((e) => Weather.fromFirebase(e))
+          .toList(),
+      yesterDayWeatherList: (data['yesterDayWeatherList'] as List)
+          .map((e) => Weather.fromFirebase(e))
+          .toList(),
+      location: Location.fromFirebase(data['location']),
+      createdAt: data['created_at'] as DateTime,
+      seasonCode: data['season_code'] as int,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'highTemperature': highTemperature,
       'lowTemperature': lowTemperature,
       'weatherList': weatherList.map((weather) => weather.toJson()).toList(),
-      'yesterDayWeatherList':
+      'yesterdayWeatherList':
           yesterDayWeatherList.map((weather) => weather.toJson()).toList(),
       'location': location.toJson(),
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
       'seasonCode': seasonCode,
     };
   }
@@ -90,41 +119,12 @@ class DailyLocationWeather {
       weatherList: (json['weatherList'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
-      yesterDayWeatherList: (json['yesterDayWeatherList'] as List)
+      yesterDayWeatherList: (json['yesterdayWeatherList'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
       location: Location.fromJson(json['location']),
-      createdAt: json['created_at'] as DateTime,
-      seasonCode: json['season_code'] as int,
-    );
-  }
-
-  Map<String, dynamic> toHive() {
-    return {
-      'highTemperature': highTemperature,
-      'lowTemperature': lowTemperature,
-      'weatherList': weatherList.map((weather) => weather.toHive()).toList(),
-      'yesterdayWeatherList':
-          yesterDayWeatherList.map((weather) => weather.toHive()).toList(),
-      'location': location.toHive(),
-      'createdAt': createdAt.toIso8601String(),
-      'seasonCode': seasonCode,
-    };
-  }
-
-  factory DailyLocationWeather.fromHive(Map<String, dynamic> hive) {
-    return DailyLocationWeather(
-      highTemperature: hive['highTemperature'] as double,
-      lowTemperature: hive['lowTemperature'] as double,
-      weatherList: (hive['weatherList'] as List)
-          .map((e) => Weather.fromHive(e))
-          .toList(),
-      yesterDayWeatherList: (hive['yesterdayWeatherList'] as List)
-          .map((e) => Weather.fromHive(e))
-          .toList(),
-      location: Location.fromHive(hive['location']),
-      createdAt: DateTime.parse(hive['createdAt']),
-      seasonCode: hive['seasonCode'] as int,
+      createdAt: DateTime.parse(json['createdAt']),
+      seasonCode: json['seasonCode'] as int,
     );
   }
 }

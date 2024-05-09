@@ -49,7 +49,7 @@ class Weather {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirebase() {
     return {
       'temperature': temperature,
       'time_temperature': timeTemperature,
@@ -58,16 +58,16 @@ class Weather {
     };
   }
 
-  factory Weather.fromJson(Map<String, dynamic> json) {
+  factory Weather.fromFirebase(Map<String, dynamic> data) {
     return Weather(
-      temperature: json['temperature'] as double,
-      timeTemperature: convertTimestampToDateTime(json['time_temperature']),
-      code: json['code'] as int,
-      createdAt: convertTimestampToDateTime(json['created_at']),
+      temperature: data['temperature'] as double,
+      timeTemperature: convertTimestampToDateTime(data['time_temperature']),
+      code: data['code'] as int,
+      createdAt: convertTimestampToDateTime(data['created_at']),
     );
   }
 
-  Map<String, dynamic> toHive() {
+  Map<String, dynamic> toJson() {
     return {
       'temperature': temperature,
       'timeTemperature': timeTemperature.toIso8601String(),
@@ -76,12 +76,12 @@ class Weather {
     };
   }
 
-  factory Weather.fromHive(Map<String, dynamic> hive) {
+  factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
-      temperature: hive['temperature'] as double,
-      timeTemperature: DateTime.parse(hive['timeTemperature']),
-      code: hive['code'] as int,
-      createdAt: DateTime.parse(hive['createdAt']),
+      temperature: json['temperature'] as double,
+      timeTemperature: DateTime.parse(json['timeTemperature']),
+      code: json['code'] as int,
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 }
