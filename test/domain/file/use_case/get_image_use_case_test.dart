@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/domain/common/file/use_case/get_image_use_case.dart';
+import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 
-import '../../../../mock/data/common/file/repository/mock_file_repository_impl.dart';
+import '../../../mock/data/file/repository/mock_file_repository_impl.dart';
 
 void main() {
   group('GetImageUseCase 클래스', () {

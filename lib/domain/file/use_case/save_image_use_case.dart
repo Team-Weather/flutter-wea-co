@@ -1,6 +1,5 @@
 import 'dart:io';
-
-import 'package:weaco/domain/common/file/repository/file_repository.dart';
+import 'package:weaco/domain/file/repository/file_repository.dart';
 
 class SaveImageUseCase {
   final FileRepository _fileRepository;
