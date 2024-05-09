@@ -22,7 +22,7 @@ void main() {
     'RemoteFeedDataSourceImpl 클래스',
     () {
       group(
-        'saveFeed는',
+        'saveFeed()는',
         () {
           test('Firestore에 Feed를 저장하고, true를 반환해야 한다', () async {
             // Given
@@ -98,7 +98,7 @@ void main() {
           );
         },
       );
-      group('getFeed는', () {
+      group('getFeed()는', () {
         test('firestore에 id를 전달하면, firebase는 Json을 반환해야 한다', () async {
           // Given
           const testId = 'testId';
@@ -176,7 +176,7 @@ void main() {
           expect(result.length, 3);
         });
       });
-      group('deletedFeed는', () {
+      group('deletedFeed()는', () {
         test('id값을 전달하면, 특정 Feed를 삭제하고 true를 반환해야 한다', () async {
           // Given
           const testId = 'testId';
@@ -214,7 +214,7 @@ void main() {
           expect(result, feedDeletedAt != null);
         });
       });
-      group('getSearchFeedList는', () {
+      group('getSearchFeedList()는', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           // Given
           for (int i = 0; i < 3; i++) {
@@ -255,7 +255,7 @@ void main() {
         });
       });
 
-      group('getRecommendedFeedList', () {
+      group('getRecommendedFeedList()', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           Weather mockWeather = Weather(
             temperature: 25,
