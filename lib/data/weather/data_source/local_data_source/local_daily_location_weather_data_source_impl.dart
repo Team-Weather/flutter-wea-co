@@ -20,7 +20,7 @@ class LocalDailyLocationWeatherDataSourceImpl
   }) async {
     await _hiveWrapper.writeData(
       dailyLocationWeatherKey,
-      jsonEncode(dailyLocationWeather.toJson()),
+      jsonEncode(dailyLocationWeather.toHive()),
     );
   }
 
@@ -28,6 +28,6 @@ class LocalDailyLocationWeatherDataSourceImpl
   @override
   Future<DailyLocationWeather?> getLocalDailyLocationWeather() async {
     final data = await _hiveWrapper.readData(dailyLocationWeatherKey);
-    return DailyLocationWeather.fromJson(jsonDecode(data));
+    return DailyLocationWeather.fromHive(jsonDecode(data));
   }
 }
