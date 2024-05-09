@@ -87,7 +87,6 @@ class FeedRepositoryImpl implements FeedRepository {
   /// GetRecommendedFeedListUseCase에서 사용
   /// [홈 화면] 하단
   /// 유저의 위치와 날씨를 기반으로 Firebase에 요청하여 OOTD 피드 목록을 가져와야 한다.
-
   @override
   Future<List<Feed>> getRecommendedFeedList({
     required DailyLocationWeather dailyLocationWeather,
@@ -103,6 +102,10 @@ class FeedRepositoryImpl implements FeedRepository {
     }
   }
 
+  /// GetSearchFeedListUseCase에서 사용
+  /// [View에서] 유저가 검색화면에서 필터(계절, 날씨, 온도)를 선택하면,
+  /// [UseCase에서]그 값을 넘겨받은 UseCase가 Repository를 통해 Firebase에 요청하여 검색 피드 목록을 가져와야 한다.
+  /// [검색 화면]에 들어가면, Firebase에 필터를 통해 검색 피드 목록을 요청하여 가져와야 한다.
   @override
   Future<List<Feed>> getSearchFeedList({
     DateTime? createdAt,
@@ -111,12 +114,24 @@ class FeedRepositoryImpl implements FeedRepository {
     int? weatherCode,
     int? minTemperature,
     int? maxTemperature,
-  }) {
-    throw UnimplementedError();
+  }) async {
+    try {
+      /// Firebase에 요청하여 검색 피드 목록을 가져와야 한다.
+      return await remoteFeedDataSource.getSearchFeedList(
+        createdAt: createdAt!,
+        limit: limit!,
+        seasonCode: seasonCode,
+        weatherCode: weatherCode,
+        minTemperature: minTemperature,
+        maxTemperature: maxTemperature,
+      );
+    } catch (e) {
+      /// 실패 시, Exception 발생
+      throw Exception('Failed to get search feed list');
+    }
   }
 
   @override
-
   /// 파일 레포에서 호출이 안됨. 현재!
   /// Future<String> saveOotdImage();
   /// 요 친구가 FileRepository 인터페이스에 추가될 것 같습니다
