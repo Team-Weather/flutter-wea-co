@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/repository/feed_repository.dart';
@@ -12,7 +11,7 @@ class FeedRepositoryImpl implements FeedRepository {
       {required this.userFeedCount, required this.remoteFeedDataSource});
 
   @override
-  Future<bool> deleteFeed({required String id, required String email}) async {
+  Future<bool> deleteFeed({required String id}) async {
     try {
       /// email을 통해 User를 식별 하고 id를 통해 Firebase 내의 특정 피드를 삭제를 해야 한다.
       await remoteFeedDataSource.deleteFeed(id: id);
@@ -49,10 +48,11 @@ class FeedRepositoryImpl implements FeedRepository {
   /// @param createdAt: 피드 생성 시간
   /// @param limit: 피드 목록 갯수 제한
   @override
-  Future<List<Feed>> getFeedList(
-      {required String email,
-      required DateTime? createdAt,
-      required int? limit}) {
+  Future<List<Feed>> getUserFeedList({
+    required String email,
+    required DateTime? createdAt,
+    required int? limit,
+  }) {
     /// 유저의 이메일을 통해 Firebase 내의 해당 유저의 피드 목록을 가져와야 한다.
     /// 생성일자(createdAt)를 기준으로 제한(limit)된 갯수의 피드 목록을 가져오고
     /// 최신 순으로 정렬하여 viewModel에 전달 해야 한다.
@@ -70,8 +70,10 @@ class FeedRepositoryImpl implements FeedRepository {
   /// 페이징 처리를 위해 createdAt을 기준으로 limit된 갯수의 피드 목록을 가져와야 한다.
   /// *이건 RemoteDataSource의 getRecommendedFeedList에서 미리 처리됨.
   @override
-  Future<List<Feed>> getOotdFeedsList(
-      {required DailyLocationWeather dailyLocationWeather}) async {
+  Future<List<Feed>> getOotdFeedList({
+    required DateTime createdAt,
+    required DailyLocationWeather dailyLocationWeather,
+  }) async {
     try {
       /// Firebase에 추천 피드 데이터 요청
       return await remoteFeedDataSource.getRecommendedFeedList(
@@ -85,19 +87,16 @@ class FeedRepositoryImpl implements FeedRepository {
   /// GetRecommendedFeedListUseCase에서 사용
   /// [홈 화면] 하단
   /// 유저의 위치와 날씨를 기반으로 Firebase에 요청하여 OOTD 피드 목록을 가져와야 한다.
+
   @override
-  Future<List<Feed>> getRecommendedFeedList() {
+  Future<List<Feed>> getRecommendedFeedList({
+    required DailyLocationWeather dailyLocationWeather,
+  }) {
     try {
       /// Firebase에 추천 피드 데이터 요청
       return remoteFeedDataSource.getRecommendedFeedList(
-          dailyLocationWeather: DailyLocationWeather(
-        highTemperature: highTemperature,
-        lowTemperature: lowTemperature,
-        weatherList: weatherList,
-        location: location,
-        createdAt: createdAt,
-      ) // dailyLocationWeather는 ViewModel에서 전달 받아야??
-          );
+        dailyLocationWeather: dailyLocationWeather,
+      );
     } catch (e) {
       /// 실패 시, Exception 발생
       throw Exception('Failed to get recommended feed list');
@@ -105,14 +104,14 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<List<Feed>> getSearchFeedList(
-      {DateTime? createdAt,
-      int? limit,
-      int? seasonCode,
-      int? weatherCode,
-      int? minTemperature,
-      int? maxTemperature}) {
-    // TODO: implement getSearchFeedList
+  Future<List<Feed>> getSearchFeedList({
+    DateTime? createdAt,
+    int? limit,
+    int? seasonCode,
+    int? weatherCode,
+    int? minTemperature,
+    int? maxTemperature,
+  }) {
     throw UnimplementedError();
   }
 

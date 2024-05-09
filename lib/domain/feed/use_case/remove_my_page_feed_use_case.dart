@@ -10,7 +10,7 @@ class RemoveMyPageFeedUseCase {
   /// @param id: 삭제할 피드의 id
   /// @return: null
   /// 요 피드(id)를 삭제해 줄래?
-  Future<bool> execute({required String id, required String email}) async {
-    return await _feedRepository.deleteFeed(id: id, email: email);
+  Future<bool> execute({required String id}) async {
+    return await _feedRepository.deleteFeed(id: id);
   }
 }

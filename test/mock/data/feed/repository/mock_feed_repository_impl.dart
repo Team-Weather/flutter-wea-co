@@ -21,7 +21,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   int saveFeedCallCount = 0;
 
   @override
-  Future<List<Feed>> getFeedList({
+  Future<List<Feed>> getUserFeedList({
     required String email,
     required DateTime? createdAt,
     required int? limit,
@@ -143,13 +143,16 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [getOotdFeedsListCallCount] + 1
   /// [getOotdFeedsResult] 반환
   @override
-  Future<List<Feed>> getOotdFeedsList({DateTime? createdAt}) async {
+  Future<List<Feed>> getOotdFeedList({
+    DateTime? createdAt,
+    required DailyLocationWeather dailyLocationWeather,
+  }) async {
     getOotdFeedsListCallCount++;
     return getOotdFeedsResult == null ? [] : [getOotdFeedsResult!];
   }
 
   @override
-  Future<Feed?> deleteFeed({required String id}) async {
+  Future<bool> deleteFeed({required String id}) async {
     return feedMap.remove(id);
   }
 
