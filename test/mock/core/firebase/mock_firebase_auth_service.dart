@@ -13,7 +13,6 @@ class MockFirebaseAuthService implements FirebaseAuthService {
     displayName: 'Bob',
   );
 
-  FakeFirebaseFirestore instance = FakeFirebaseFirestore();
   MockFirebaseAuth _mockAuth = MockFirebaseAuth();
   UserCredential? _userCredential;
   FirebaseAuthService? firebaseAuthService;
@@ -25,7 +24,6 @@ class MockFirebaseAuthService implements FirebaseAuthService {
   UserCredential? get userCredential => _userCredential;
 
   void initMockData() async {
-    instance = FakeFirebaseFirestore();
     _mockAuth = MockFirebaseAuth(mockUser: user, signedIn: true);
     _userCredential = await _mockAuth.createUserWithEmailAndPassword(
         email: 'bob@somedomain.com', password: 'password');

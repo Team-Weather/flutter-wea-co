@@ -7,17 +7,16 @@ import 'package:weaco/domain/user/model/user_profile.dart';
 import '../../../mock/core/firebase/mock_firebase_auth_service.dart';
 
 void main() async {
-
   final instance = FakeFirebaseFirestore();
   final firebaseService = MockFirebaseAuthService();
 
   final RemoteUserProfileDataSource dataSource =
-      RemoteUserProfileDataSourceImpl(firestore: instance, firebaseService: firebaseService);
+      RemoteUserProfileDataSourceImpl(
+          firestore: instance, firebaseService: firebaseService);
 
   group(
     'RemoteUserProfileDataSource 클래스',
     () {
-
       setUp(() => firebaseService.initMockData());
 
       test('saveUserProfile()은 firebase storage에 파라미터로 받은 유저 프로필 정보를 저장한다.',
@@ -74,36 +73,39 @@ void main() async {
         expect(res, expectProfile);
       });
 
-      test('getUserProfile() email 이 null 일 경우, 현재 유저 프로필 정보를 반환한다.', () async {
-        // Given
-        await instance.collection('user_profiles').add({
-          'created_at': '2024-05-08 02:27:00',
-          'deleted_at': null,
-          'email': firebaseService.user.email,
-          'feed_count': 0,
-          'gender': 1,
-          'nickname': '호구몬',
-          'profile_image_path':
-              'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg'
-        });
+      test(
+        'getUserProfile() email 이 null 일 경우, 현재 유저 프로필 정보를 반환한다.',
+        () async {
+          // Given
+          await instance.collection('user_profiles').add({
+            'created_at': '2024-05-08 02:27:00',
+            'deleted_at': null,
+            'email': firebaseService.user.email,
+            'feed_count': 0,
+            'gender': 1,
+            'nickname': '호구몬',
+            'profile_image_path':
+                'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg'
+          });
 
-        final expectProfile = UserProfile(
-          email: 'bob@somedomain.com',
-          nickname: '호구몬',
-          gender: 1,
-          profileImagePath:
-              'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
-          feedCount: 0,
-          createdAt: DateTime.parse('2024-05-08 02:27:00'),
-          deletedAt: null,
-        );
+          final expectProfile = UserProfile(
+            email: 'bob@somedomain.com',
+            nickname: '호구몬',
+            gender: 1,
+            profileImagePath:
+                'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+            feedCount: 0,
+            createdAt: DateTime.parse('2024-05-08 02:27:00'),
+            deletedAt: null,
+          );
 
-        // When
-        final result = await dataSource.getUserProfile();
+          // When
+          final result = await dataSource.getUserProfile();
 
-        // Then
-        expect(result, expectProfile);
-      },);
+          // Then
+          expect(result, expectProfile);
+        },
+      );
 
       test(
         'updateUserProfile()은 userProfile 이 null 일 경우, 현재 유저 프로필 정보를 업데이트한다.',
@@ -153,11 +155,8 @@ void main() async {
                 'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg'
           });
 
-          const targetEmail = 'test@gmail.com';
-
           // When
-          final bool res =
-              await dataSource.removeUserProfile(email: targetEmail);
+          final bool res = await dataSource.removeUserProfile();
 
           // Then
           expect(res, true);
@@ -166,7 +165,7 @@ void main() async {
 
       test(
         'removeUserProfile()은 userProfile 이 null 일 경우, 현재 유저 프로필 정보를 삭제한다.',
-            () async {
+        () async {
           // Given
           await instance.collection('user_profiles').add({
             'created_at': '2024-05-08 02:27:00',
@@ -176,12 +175,11 @@ void main() async {
             'gender': 1,
             'nickname': '호구몬',
             'profile_image_path':
-            'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg'
+                'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg'
           });
 
           // When
-          final bool res =
-          await dataSource.removeUserProfile();
+          final bool res = await dataSource.removeUserProfile();
 
           // Then
           expect(res, true);
