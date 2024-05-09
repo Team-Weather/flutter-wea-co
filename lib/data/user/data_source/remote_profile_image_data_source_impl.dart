@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/data/user/data_source/remote_profile_image_data_source.dart';
-import 'package:weaco/domain/common/file/model/profile_image.dart';
+import 'package:weaco/domain/user/model/profile_image.dart';
 
 class RemoteProfileImageDataSourceImpl implements RemoteProfileImageDataSource {
   final FirebaseFirestore _firestore;

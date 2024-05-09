@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/data/user/repository/profile_image_repository_impl.dart';
-import 'package:weaco/domain/common/file/model/profile_image.dart';
+import 'package:weaco/domain/user/model/profile_image.dart';
 import 'package:weaco/domain/user/repository/profile_image_repository.dart';
 
 import '../../../mock/data/user/data_source/mock_remote_profile_image_data_source_impl.dart';

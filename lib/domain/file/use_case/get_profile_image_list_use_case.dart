@@ -1,4 +1,4 @@
-import 'package:weaco/domain/common/file/model/profile_image.dart';
+import 'package:weaco/domain/user/model/profile_image.dart';
 import 'package:weaco/domain/user/repository/profile_image_repository.dart';
 
 class GetProfileImageListUseCase {
