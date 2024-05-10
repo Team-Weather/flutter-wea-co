@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/core/go_router/router.dart';
 import 'firebase_options.dart';
 
 late Box dataBox;
@@ -21,13 +24,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routerConfig: router,
     );
   }
 }
@@ -61,6 +64,59 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextButton(
+              onPressed: () => context.push(RouterPath.home.path),
+              child: const Text('Go to HomeScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to SignUpScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to SignInScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to DialogScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to AppSettingScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to MyPageScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to UserPageScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdSearchScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdFeedScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdDetailScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to CameraScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to PictureCropScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdPostScreen'),
+            ),
+            const Spacer(),
             const Text(
               'You have pushed the button this many times:',
             ),
