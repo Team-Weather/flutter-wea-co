@@ -71,7 +71,7 @@ void main() {
                 city: '서울시, 노원구',
                 createdAt: DateTime.parse('2024-05-06'),
               );
-              DateTime dateTime = DateTime.now();
+              DateTime dateTime = DateTime.parse('2024-05-06');
 
               final mockFeed = Feed(
                 id: 'gyubro',
