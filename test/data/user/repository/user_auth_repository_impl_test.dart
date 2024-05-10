@@ -38,10 +38,7 @@ void main() {
     });
 
     group('signUp() 메소드는', () {
-      test(
-          'UserAuthDataSource.signUp(),'
-          'RemoteUserProfileDataSource.saveUserasync Profile() 메소드를'
-          '1회씩 호출한다.', () async {
+      test('UserAuthDataSource.signUp() 메소드를 무조건 1회 호출한다.', () async {
         // given
         int expectCallCount = 1;
 
@@ -53,13 +50,50 @@ void main() {
 
         // then
         expect(userAuthDataSource.signUpCallCount, expectCallCount);
+      });
+
+      test(
+          'UserAuthDataSource.signUp() 이 실패하면'
+          'RemoteUserProfileDataSource.saveUserProfile() 메소드를'
+          '호출하지 않는다.', () async {
+        // given
+        int expectCallCount = 0;
+
+        userAuthDataSource.returnValue = false;
+
+        // when
+        await userAuthRepository.signUp(
+          userAuth: userAuth,
+          userProfile: userProfile,
+        );
+
+        // then
+        expect(userProfileDataSource.methodCallCount, expectCallCount);
+      });
+
+      test(
+          'UserAuthDataSource.signUp() 이 성공하면'
+          'RemoteUserProfileDataSource.saveUserProfile() 메소드를'
+          '1회 호출한다.', () async {
+        // given
+        int expectCallCount = 1;
+
+        userAuthDataSource.returnValue = true;
+
+        // when
+        await userAuthRepository.signUp(
+          userAuth: userAuth,
+          userProfile: userProfile,
+        );
+
+        // then
         expect(userProfileDataSource.methodCallCount, expectCallCount);
       });
 
       test(
           '인자로 받은 값을 각각 '
           'UserAuthDataSource.signUp(),'
-          'RemoteUserProfileDataSource.saveUserasync Profile() 메소드에 그대로 전달한다.',
+          'RemoteUserProfileDataSource.saveUserProfile() 메소드에 그대로 전달한다.',
           () async {
         // given
         final expectUserAuth = userAuth.copyWith();
@@ -69,6 +103,9 @@ void main() {
           'email': expectUserAuth.email,
           'password': expectUserAuth.password,
         };
+
+        userAuthDataSource.returnValue = true;
+        userProfileDataSource.isSaved = true;
 
         // when
         await userAuthRepository.signUp(
