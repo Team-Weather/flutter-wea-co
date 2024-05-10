@@ -83,15 +83,15 @@ class Feed {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': this.id,
-      'imagePath': this.imagePath,
-      'userEmail': this.userEmail,
-      'description': this.description,
+      'id': id,
+      'imagePath': imagePath,
+      'userEmail': userEmail,
+      'description': description,
       'weather': weather.toJson(),
-      'seasonCode': this.seasonCode,
+      'seasonCode': seasonCode,
       'location': location.toJson(),
-      'createdAt': this.createdAt,
-      'deletedAt': this.deletedAt,
+      'createdAt': createdAt,
+      'deletedAt': deletedAt,
     };
   }
 
