@@ -14,6 +14,17 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   })  : _userAuthDataSource = userAuthDataSource,
         _remoteUserProfileDataSource = remoteUserProfileDataSource;
 
+  /// 사용자 Auth 정보와 Profile 정보로 회원가입 한 후 결과를 반환하는 메소드
+  ///
+  /// UserAuthDataSource.signUp() 메소드를 호출하여 유저 계정을 생성한다.
+  /// 실패 시, return false
+  ///
+  /// 성공했을 경우, RemoteUserProfileDataSource.saveUserProfile()
+  /// 메소드를 호출하여 유저 프로파일 정보를 저장한다.
+  /// 실패 시,  UserAuthDataSource.signUp() 로 등록했던 유저계정을
+  /// UserAuthDataSource.signOut() 를 호출하여 계정을 삭제 한 후 return false.
+  ///
+  /// 두 작업이 완료시 return true
   @override
   Future<bool> signUp({
     required UserAuth userAuth,
@@ -22,10 +33,19 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
     final signUpResult = await _userAuthDataSource.signUp(
         email: userAuth.email, password: userAuth.password);
 
+    if (signUpResult == false) {
+      return false;
+    }
+
     final saveUserProfileResult = await _remoteUserProfileDataSource
         .saveUserProfile(userProfile: userProfile);
 
-    return signUpResult && saveUserProfileResult;
+    if (saveUserProfileResult == false) {
+      await _userAuthDataSource.signOut();
+      return false;
+    }
+
+    return true;
   }
 
   @override
