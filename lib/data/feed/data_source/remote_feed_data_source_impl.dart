@@ -60,7 +60,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .where('deleted_at', isNull: true)
         .where('created_at', isLessThanOrEqualTo: createdAt)
         .orderBy(createdAt, descending: true)
-        .startAfter([createdAt])
+        .startAfter([createdAt.toString()])
         .limit(limit)
         .get();
 
@@ -143,8 +143,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         )
         .limit(limit)
         .where('deleted_at', isNull: true)
-        .startAfter([createdAt])
-        .get();
+        .startAfter([createdAt.toString()]).get();
 
     return querySnapshot.docs.map((e) => Feed.fromDocumentSnapshot(e)).toList();
   }
