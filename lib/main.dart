@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to OotdPostScreen'),
             ),
             const Spacer(),
-            Text(
+            const Text(
               'You have pushed the button this many times:',
             ),
             Text(

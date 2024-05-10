@@ -29,7 +29,6 @@ final router = GoRouter(initialLocation: '/', routes: [
   GoRoute(
     path: '/appSetting',
     // builder: (context, state) => AppSettingScreen(),
-
     builder: (context, state) => const HomeScreen(),
   ),
   GoRoute(
