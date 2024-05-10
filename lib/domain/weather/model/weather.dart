@@ -49,7 +49,7 @@ class Weather {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirebase() {
     return {
       'temperature': temperature,
       'time_temperature': timeTemperature,
@@ -58,12 +58,30 @@ class Weather {
     };
   }
 
+  factory Weather.fromFirebase(Map<String, dynamic> data) {
+    return Weather(
+      temperature: data['temperature'] as double,
+      timeTemperature: convertTimestampToDateTime(data['time_temperature']),
+      code: data['code'] as int,
+      createdAt: convertTimestampToDateTime(data['created_at']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'temperature': temperature,
+      'timeTemperature': timeTemperature.toIso8601String(),
+      'code': code,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
+
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       temperature: json['temperature'] as double,
-      timeTemperature: convertTimestampToDateTime(json['time_temperature']),
+      timeTemperature: DateTime.parse(json['timeTemperature']),
       code: json['code'] as int,
-      createdAt: convertTimestampToDateTime(json['created_at']),
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 }

@@ -8,8 +8,4 @@ class HiveWrapper {
   Future<String> readData(String key) async {
     return await dataBox.get(key);
   }
-
-  void deleteData(String key) async {
-    await dataBox.delete(key);
-  }
 }

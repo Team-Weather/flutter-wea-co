@@ -89,9 +89,9 @@ class Feed {
       'image_path': imagePath,
       'user_email': userEmail,
       'description': description,
-      'weather': weather.toJson(),
+      'weather': weather.toFirebase(),
       'season_code': seasonCode,
-      'location': location.toJson(),
+      'location': location.toFirebase(),
       'created_at': createdAt,
       'deleted_at': deletedAt,
     };
@@ -103,9 +103,9 @@ class Feed {
       imagePath: json['image_path'],
       userEmail: json['user_email'],
       description: json['description'],
-      weather: Weather.fromJson(json['weather']),
+      weather: Weather.fromFirebase(json['weather']),
       seasonCode: json['season_code'],
-      location: Location.fromJson(json['location']),
+      location: Location.fromFirebase(json['location']),
       createdAt: convertTimestampToDateTime(json['created_at']),
       deletedAt: json['deleted_at'] != null
           ? convertTimestampToDateTime(json['deleted_at'])
@@ -119,9 +119,9 @@ class Feed {
       imagePath: doc.data()!['image_path'],
       userEmail: doc.data()!['user_email'],
       description: doc.data()!['description'],
-      weather: Weather.fromJson(doc.data()!['weather']),
+      weather: Weather.fromFirebase(doc.data()!['weather']),
       seasonCode: doc.data()!['season_code'],
-      location: Location.fromJson(doc.data()!['location']),
+      location: Location.fromFirebase(doc.data()!['location']),
       createdAt: convertTimestampToDateTime(doc.data()!['created_at']),
       deletedAt: doc.data()?['deleted_at'] != null
           ? convertTimestampToDateTime(doc.data()!['deleted_at'])

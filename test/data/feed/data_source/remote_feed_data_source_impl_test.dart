@@ -292,8 +292,8 @@ void main() {
           // Given
           for (int i = 0; i < 3; i++) {
             await fakeFirestore.collection('feeds').add({
-              'weather': mockWeather.toJson(),
-              'location': mockLocation.toJson(),
+              'weather': mockWeather.toFirebase(),
+              'location': mockLocation.toFirebase(),
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
               'image_path':
