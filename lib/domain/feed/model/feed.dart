@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:weaco/common/convertor.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
 
@@ -85,47 +83,29 @@ class Feed {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'image_path': imagePath,
-      'user_email': userEmail,
-      'description': description,
-      'weather': weather.toFirebase(),
-      'season_code': seasonCode,
-      'location': location.toFirebase(),
-      'created_at': createdAt,
-      'deleted_at': deletedAt,
+      'id': this.id,
+      'imagePath': this.imagePath,
+      'userEmail': this.userEmail,
+      'description': this.description,
+      'weather': weather.toJson(),
+      'seasonCode': this.seasonCode,
+      'location': location.toJson(),
+      'createdAt': this.createdAt,
+      'deletedAt': this.deletedAt,
     };
   }
 
-  factory Feed.fromJson(Map<String, dynamic> json) {
+  factory Feed.fromJson(Map<String, dynamic> map) {
     return Feed(
-      id: json['id'],
-      imagePath: json['image_path'],
-      userEmail: json['user_email'],
-      description: json['description'],
-      weather: Weather.fromFirebase(json['weather']),
-      seasonCode: json['season_code'],
-      location: Location.fromFirebase(json['location']),
-      createdAt: convertTimestampToDateTime(json['created_at']),
-      deletedAt: json['deleted_at'] != null
-          ? convertTimestampToDateTime(json['deleted_at'])
-          : null,
-    );
-  }
-  factory Feed.fromDocumentSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> doc) {
-    return Feed(
-      id: doc.id,
-      imagePath: doc.data()!['image_path'],
-      userEmail: doc.data()!['user_email'],
-      description: doc.data()!['description'],
-      weather: Weather.fromFirebase(doc.data()!['weather']),
-      seasonCode: doc.data()!['season_code'],
-      location: Location.fromFirebase(doc.data()!['location']),
-      createdAt: convertTimestampToDateTime(doc.data()!['created_at']),
-      deletedAt: doc.data()?['deleted_at'] != null
-          ? convertTimestampToDateTime(doc.data()!['deleted_at'])
-          : null,
+      id: map['id'] as String,
+      imagePath: map['imagePath'] as String,
+      userEmail: map['userEmail'] as String,
+      description: map['description'] as String,
+      weather: Weather.fromJson(map['weather']),
+      seasonCode: map['seasonCode'] as int,
+      location: Location.fromJson(map['location']),
+      createdAt: map['createdAt'] as DateTime,
+      deletedAt: map['deletedAt'] as DateTime,
     );
   }
 }
