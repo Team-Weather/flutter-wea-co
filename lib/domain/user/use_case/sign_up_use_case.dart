@@ -15,12 +15,6 @@ class SignUpUseCase {
   /// 회원 가입 성공시 true 반환, 실패시 false 반환
   Future<bool> execute(
       {required UserAuth userAuth, required UserProfile userProfile}) async {
-    // email을 중복 검사 한다.
-    // 중복된 email이 있으면 exception을 발생시킨다.
-    // 중복된 email이 없으면 회원 가입을 진행한다.
-    if (await _userAuthRepository.isRegistered(email: userAuth.email)) {
-      return false;
-    }
     return await _userAuthRepository.signUp(
         userAuth: userAuth, userProfile: userProfile);
   }
