@@ -4,6 +4,8 @@ import 'package:weaco/domain/user/repository/user_profile_repository.dart';
 class MockUserProfileRepositoryImpl implements UserProfileRepository {
   int getUserProfileCallCount = 0;
   int getMyProfileCallCount = 0;
+  int updateUserProfileCallCount = 0;
+  bool updateUserProfileResult = false;
 
   // 메서드 호출시 인자 확인을 위한 map
   final Map<String, dynamic> methodParameterMap = {};
@@ -32,12 +34,14 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
   /// [_fakeUserProfileMap]의 모든 프로필 삭제
   void resetProfile() {
     _fakeUserProfileMap.clear();
+    updateUserProfileResult = false;
   }
 
   /// 호출 횟수 초기화
   void resetCallCount() {
     getUserProfileCallCount = 0;
     getMyProfileCallCount = 0;
+    updateUserProfileCallCount = 0;
   }
 
   /// 호출시 [getMyProfileCallCount] + 1
@@ -46,6 +50,13 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
   Future<UserProfile?> getMyProfile() async {
     getMyProfileCallCount++;
     return _fakeUserProfileMap['my'];
+  }
+
+  @override
+  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
+    ++updateUserProfileCallCount;
+    methodParameterMap['updateUserProfile'] = userProfile;
+    return updateUserProfileResult;
   }
 }
 
