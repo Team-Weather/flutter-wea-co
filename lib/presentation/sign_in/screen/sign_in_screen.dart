@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/core/util/validation_util.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -322,13 +323,8 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _isValidateForm() {
-    final passwordReg = RegExp(r'''
-^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[a-zA-Z])(?=.*\d).{8,}$''')
-        .hasMatch(passwordFormController.text);
-    final emailReg = RegExp(r'''
-^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$''').hasMatch(emailFormController.text);
-
-    isSignInButtonEnabled = (passwordReg && emailReg);
+    isSignInButtonEnabled = (isValidEmail(emailFormController.text) &&
+        isValidPassword(passwordFormController.text));
     setState(() {});
   }
 
