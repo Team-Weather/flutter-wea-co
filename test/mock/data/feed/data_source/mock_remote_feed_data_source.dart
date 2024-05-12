@@ -40,7 +40,7 @@ class MockRemoteFeedDataSource implements RemoteFeedDataSource {
 
   @override
   Future<List<Feed>> getSearchFeedList({
-    required DateTime createdAt,
+    DateTime? createdAt,
     required int limit,
     int? seasonCode,
     int? weatherCode,
@@ -59,8 +59,8 @@ class MockRemoteFeedDataSource implements RemoteFeedDataSource {
 
   @override
   Future<List<Feed>> getUserFeedList({
+    DateTime? createdAt,
     required String email,
-    required DateTime createdAt,
     required int limit,
   }) async {
     return feedList;
