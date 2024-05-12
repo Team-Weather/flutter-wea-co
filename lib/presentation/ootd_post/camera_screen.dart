@@ -5,14 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
+import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 
-class NewOotd extends StatelessWidget {
-  const NewOotd({super.key});
+class CameraScreen extends StatelessWidget {
+  const CameraScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<NewOotdViewModel>();
+    final viewModel = context.watch<CameraViewModel>();
 
     return Scaffold(
       appBar: AppBar(

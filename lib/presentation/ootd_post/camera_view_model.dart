@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-class NewOotdViewModel with ChangeNotifier {
+class CameraViewModel with ChangeNotifier {
   XFile? _imageFile;
 
   XFile? get imageFile => _imageFile;

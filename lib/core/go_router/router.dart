@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/home_screen.dart';
-import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
-import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
+import 'package:weaco/presentation/ootd_post/camera_screen.dart';
+import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -67,8 +67,8 @@ final router = GoRouter(
       // builder: (context, state) => CameraScreen(),
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => NewOotdViewModel(),
-          child: const NewOotd(),
+          create: (_) => CameraViewModel(),
+          child: const CameraScreen(),
         );
       },
     ),
