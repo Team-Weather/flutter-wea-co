@@ -46,5 +46,5 @@ void feedDiSetup() {
   getIt.registerLazySingleton<RemoveMyPageFeedUseCase>(
       () => RemoveMyPageFeedUseCase(feedRepository: getIt<FeedRepository>()));
   getIt.registerLazySingleton<SaveEditFeedUseCase>(
-      () => SaveEditFeedUseCase(feedRepository: getIt<FeedRepository>()));
+      () => SaveEditFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
 }
