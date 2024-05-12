@@ -15,7 +15,7 @@ class GetMyPageFeedsUseCase {
   }) async {
     List<Feed> feedList = [];
     try {
-      feedList = await _feedRepository.getFeedList(
+      feedList = await _feedRepository.getUserFeedList(
         email: email,
         createdAt: createdAt,
         limit: limit,
