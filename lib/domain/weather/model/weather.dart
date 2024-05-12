@@ -1,5 +1,3 @@
-import 'package:weaco/common/convertor.dart';
-
 class Weather {
   final double temperature;
   final DateTime timeTemperature;
@@ -46,24 +44,6 @@ class Weather {
       timeTemperature: timeTemperature ?? this.timeTemperature,
       code: code ?? this.code,
       createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  Map<String, dynamic> toFirebase() {
-    return {
-      'temperature': temperature,
-      'time_temperature': timeTemperature,
-      'code': code,
-      'created_at': convertDateTimeToTimestamp(createdAt),
-    };
-  }
-
-  factory Weather.fromFirebase(Map<String, dynamic> data) {
-    return Weather(
-      temperature: data['temperature'] as double,
-      timeTemperature: convertTimestampToDateTime(data['time_temperature']),
-      code: data['code'] as int,
-      createdAt: convertTimestampToDateTime(data['created_at']),
     );
   }
 

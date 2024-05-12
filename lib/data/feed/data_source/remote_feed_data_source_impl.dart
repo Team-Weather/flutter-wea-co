@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/core/exception/not_found_exception.dart';
+import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -14,19 +15,21 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// OOTD 피드 작성 또는 편집 후 저장
   @override
   Future<bool> saveFeed({required Feed feed}) async {
+    final feedDto = toFeedDto(feed: feed);
+
     // 피드를 수정 할 경우
     if (feed.id != null) {
       return await _fireStore
           .collection('feeds')
           .doc(feed.id)
-          .set(feed.toJson())
+          .set(feedDto)
           .then((value) => true);
     }
 
     // 새 피드를 저장 할 경우
     return await _fireStore
         .collection('feeds')
-        .add(feed.toJson())
+        .add(feedDto)
         .then((value) => true);
   }
 
@@ -43,7 +46,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
       );
     }
 
-    return Feed.fromJson(docSnapshot.data()!);
+    return toFeed(feedDto: docSnapshot.data()!, id: docSnapshot.id);
   }
 
   /// [유저 페이지/마이 페이지]:
@@ -51,18 +54,22 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   @override
   Future<List<Feed>> getUserFeedList({
     required String email,
-    required DateTime createdAt,
+    DateTime? createdAt,
     required int limit,
   }) async {
     final querySnapshot = await _fireStore
         .collection('feeds')
         .where('user_email', isEqualTo: email)
         .where('deleted_at', isNull: true)
-        .orderBy(createdAt, descending: true)
+        .where('created_at',
+            isLessThan: createdAt ?? Timestamp.fromDate(DateTime.now()))
+        .orderBy('created_at', descending: true)
         .limit(limit)
         .get();
 
-    return querySnapshot.docs.map((e) => Feed.fromJson(e.data())).toList();
+    return querySnapshot.docs
+        .map((doc) => toFeed(feedDto: doc.data(), id: doc.id))
+        .toList();
   }
 
   /// [마이페이지] 피드 삭제
@@ -98,7 +105,9 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .limit(10)
         .get();
 
-    return querySnapshot.docs.map((e) => Feed.fromJson(e.data())).toList();
+    return querySnapshot.docs
+        .map((doc) => toFeed(feedDto: doc.data(), id: doc.id))
+        .toList();
   }
 
   /// [검색 페이지] 피드 검색:
@@ -107,7 +116,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
 
   @override
   Future<List<Feed>> getSearchFeedList({
-    required DateTime createdAt,
+    DateTime? createdAt,
     required int limit,
     int? seasonCode,
     int? weatherCode,
@@ -134,14 +143,18 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
 
     // 생성일 기준으로 정렬하여 제한된 수의 문서 가져오기
     final QuerySnapshot<Map<String, dynamic>> querySnapshot = await query
+        .where('created_at',
+            isLessThan: createdAt ?? Timestamp.fromDate(DateTime.now()))
+        .where('deleted_at', isNull: true)
         .orderBy(
           'created_at',
           descending: true,
         )
         .limit(limit)
-        .where('deleted_at', isNull: true)
         .get();
 
-    return querySnapshot.docs.map((e) => Feed.fromDocumentSnapshot(e)).toList();
+    return querySnapshot.docs
+        .map((doc) => toFeed(feedDto: doc.data(), id: doc.id))
+        .toList();
   }
 }

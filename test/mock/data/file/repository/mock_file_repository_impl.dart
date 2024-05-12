@@ -4,14 +4,18 @@ import 'package:weaco/domain/file/repository/file_repository.dart';
 class MockFileRepositoryImpl implements FileRepository {
   int getImageCallCount = 0;
   int saveImageCallCount = 0;
+  int saveOotdImageCallCount = 0;
   final Map<String, dynamic> methodParameterMap = {};
   File? getImageResult;
+  String saveOotdImageResult = '';
   bool saveImageResult = false;
 
   void initMockData() {
     getImageCallCount = 0;
     saveImageCallCount = 0;
+    saveOotdImageCallCount = 0;
     methodParameterMap.clear();
+    saveOotdImageResult = '';
   }
 
   @override
@@ -28,8 +32,8 @@ class MockFileRepositoryImpl implements FileRepository {
   }
 
   @override
-  Future<String> saveOotdImage() {
-    // TODO: implement saveFeed
-    throw UnimplementedError();
+  Future<String> saveOotdImage() async {
+    saveOotdImageCallCount++;
+    return saveOotdImageResult;
   }
 }
