@@ -270,11 +270,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: isSignInButtonEnabled
-            ? () {
-                print('login 눌림');
-              }
-            : null,
+        onTap: isSignInButtonEnabled ? () {} : null,
         child: Container(
           decoration: BoxDecoration(
             color: isSignInButtonEnabled
@@ -303,9 +299,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: () {
-          print('회원가입 눌림');
-        },
+        onTap: () {},
         child: Container(
           decoration: BoxDecoration(
             color: Colors.transparent,
