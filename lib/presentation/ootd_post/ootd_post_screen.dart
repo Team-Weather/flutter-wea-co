@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/presentation/new_ootd/new_ootd_view_model.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class NewOotd extends StatelessWidget {
   const NewOotd({super.key});

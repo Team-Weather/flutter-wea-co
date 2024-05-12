@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/home_screen.dart';
-import 'package:weaco/presentation/new_ootd/new_ootd_screen.dart';
-import 'package:weaco/presentation/new_ootd/new_ootd_view_model.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
