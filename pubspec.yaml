@@ -54,6 +54,7 @@ dependencies:
   firebase_storage_mocks: ^0.6.1
   hive_test: ^1.0.1
   image_picker: ^1.1.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
