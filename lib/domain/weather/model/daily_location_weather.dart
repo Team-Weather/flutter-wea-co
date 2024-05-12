@@ -75,10 +75,10 @@ class DailyLocationWeather {
       'highTemperature': highTemperature,
       'lowTemperature': lowTemperature,
       'weatherList': weatherList.map((weather) => weather.toJson()).toList(),
-      'yesterDayWeatherList':
+      'yesterdayWeatherList':
           yesterDayWeatherList.map((weather) => weather.toJson()).toList(),
       'location': location.toJson(),
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
       'seasonCode': seasonCode,
     };
   }
@@ -90,12 +90,12 @@ class DailyLocationWeather {
       weatherList: (json['weatherList'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
-      yesterDayWeatherList: (json['yesterDayWeatherList'] as List)
+      yesterDayWeatherList: (json['yesterdayWeatherList'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
       location: Location.fromJson(json['location']),
-      createdAt: json['created_at'] as DateTime,
-      seasonCode: json['season_code'] as int,
+      createdAt: DateTime.parse(json['createdAt']),
+      seasonCode: json['seasonCode'] as int,
     );
   }
 }

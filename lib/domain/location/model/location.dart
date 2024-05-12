@@ -1,5 +1,3 @@
-import 'package:weaco/common/convertor.dart';
-
 class Location {
   final double lat;
   final double lng;
@@ -51,7 +49,7 @@ class Location {
       'lat': lat,
       'lng': lng,
       'city': city,
-      'created_at': convertDateTimeToTimestamp(createdAt),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
@@ -60,7 +58,7 @@ class Location {
       lat: json['lat'] as double,
       lng: json['lng'] as double,
       city: json['city'] as String,
-      createdAt: convertTimestampToDateTime(json['created_at']),
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 }

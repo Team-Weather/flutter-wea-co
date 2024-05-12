@@ -8,6 +8,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   int getRecommendedFeedsCallCount = 0;
   int getOotdFeedsListCallCount = 0;
   int getSearchFeedsCallCount = 0;
+  int getDeleteFeedCallCount = 0;
   String getFeedParamId = '';
 
   // 메서드 호출시 인자 확인을 위한 map
@@ -155,6 +156,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
 
   @override
   Future<bool> deleteFeed({required String id}) async {
+    getDeleteFeedCallCount++;
     feedMap.remove(id);
     return deleteFeedReturnValue;
   }

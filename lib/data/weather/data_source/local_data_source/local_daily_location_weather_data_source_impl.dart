@@ -13,6 +13,7 @@ class LocalDailyLocationWeatherDataSourceImpl
     required HiveWrapper hiveWrapper,
   }) : _hiveWrapper = hiveWrapper;
 
+  /// 로컬에 DailyLocationWeather 데이터를 저장한다.
   @override
   Future<void> saveLocalDailyLocationWeather({
     required DailyLocationWeather dailyLocationWeather,
@@ -23,6 +24,7 @@ class LocalDailyLocationWeatherDataSourceImpl
     );
   }
 
+  /// 로컬의 DailyLocationWeather 데이터를 가져와서 반환한다.
   @override
   Future<DailyLocationWeather?> getLocalDailyLocationWeather() async {
     final data = await _hiveWrapper.readData(dailyLocationWeatherKey);

@@ -52,6 +52,7 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_dotenv: ^5.1.0
   firebase_storage_mocks: ^0.6.1
+  hive_test: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
   fake_cloud_firestore: ^2.5.1
+  firebase_auth_mocks: ^0.13.0
   hive_generator: ^1.1.0
 
 # For information on the generic Dart part of this file, see the

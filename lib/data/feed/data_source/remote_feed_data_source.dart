@@ -11,8 +11,11 @@ abstract interface class RemoteFeedDataSource {
   Future<Feed> getFeed({required String id});
 
   /// [유저 페이지/마이 페이지] :  피드 데이터 요청 (email) -> 파베 / 피드 데이터 반환(List<Feed>)← 파베
-  Future<List<Feed>> getUserFeedList(
-      {required String email, required DateTime createdAt, required int limit});
+  Future<List<Feed>> getUserFeedList({
+    required String email,
+    DateTime? createdAt,
+    required int limit,
+  });
 
   /// [마이페이지] 피드 삭제: 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) from FB
   Future<bool> deleteFeed({required String id});
@@ -36,7 +39,7 @@ abstract interface class RemoteFeedDataSource {
   /// @param minTemperature: 검색을 위한 최소 온도
   /// @param maxTemperature: 검색을 위한 최대 온도
   Future<List<Feed>> getSearchFeedList({
-    required DateTime createdAt,
+    DateTime? createdAt,
     required int limit,
     int? seasonCode,
     int? weatherCode,

@@ -4,7 +4,8 @@ import 'package:weaco/core/path_provider/path_provider_service.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source_impl.dart';
 
-import '../../../mock/data/common/file/repository/mock_path_provider_service_impl.dart';
+import '../../../mock/core/path_provider/mock_path_provider_service_impl.dart';
+
 
 void main() {
   group('LocalFileDataSourceImpl 클래스', () {
@@ -30,7 +31,7 @@ void main() {
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
         // When
-        File? file = await dataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(isOrigin: isOrigin);
 
         // Then
         expect(file?.readAsBytesSync(),
@@ -44,7 +45,7 @@ void main() {
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
         // When
-        File? file = await dataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(isOrigin: isOrigin);
 
         // Then
         expect(file?.readAsBytesSync(),
@@ -56,7 +57,7 @@ void main() {
         const isOrigin = false;
 
         // When
-        File? file = await dataSource.getImagePath(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(isOrigin: isOrigin);
 
         // Then
         expect(file, null);
