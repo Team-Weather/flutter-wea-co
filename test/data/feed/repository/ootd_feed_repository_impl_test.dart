@@ -143,7 +143,9 @@ void main() {
             expectedUseProfile);
       });
 
-      test('피드 저장 성공 시, true 를 반환한다.', () async {
+      test(''
+          'FeedRepository.saveFeed, UserProfileRepository.updateMyFeedCount()를 '
+          '정상적으로 호출한 뒤, true 를 반환한다.', () async {
         // Given
         const expected = true;
 
@@ -205,7 +207,9 @@ void main() {
         expect(userProfileRepository.methodParameterMap['updateUserProfile'], expectedUserProfile);
       });
 
-      test('피드 삭제 성공 시 true 를 반환한다.', () async {
+      test(
+          'FeedRepository.deleteFeed(), OotdFeedRepositoryImpl.updateMyFeedCount()를 '
+          '정상적으로 호출한 뒤, true 를 반환한다.', () async {
         // Given
         const expected = true;
 
