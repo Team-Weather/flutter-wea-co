@@ -70,35 +70,6 @@ class DailyLocationWeather {
     );
   }
 
-  Map<String, dynamic> toFirebase() {
-    return {
-      'highTemperature': highTemperature,
-      'lowTemperature': lowTemperature,
-      'weatherList': weatherList.map((weather) => weather.toFirebase()).toList(),
-      'yesterDayWeatherList':
-          yesterDayWeatherList.map((weather) => weather.toFirebase()).toList(),
-      'location': location.toFirebase(),
-      'createdAt': createdAt,
-      'seasonCode': seasonCode,
-    };
-  }
-
-  factory DailyLocationWeather.fromFirebase(Map<String, dynamic> data) {
-    return DailyLocationWeather(
-      highTemperature: data['highTemperature'] as double,
-      lowTemperature: data['lowTemperature'] as double,
-      weatherList: (data['weatherList'] as List)
-          .map((e) => Weather.fromFirebase(e))
-          .toList(),
-      yesterDayWeatherList: (data['yesterDayWeatherList'] as List)
-          .map((e) => Weather.fromFirebase(e))
-          .toList(),
-      location: Location.fromFirebase(data['location']),
-      createdAt: data['created_at'] as DateTime,
-      seasonCode: data['season_code'] as int,
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'highTemperature': highTemperature,
