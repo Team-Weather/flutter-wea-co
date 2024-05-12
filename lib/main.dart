@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'firebase_options.dart';
 
 late Box dataBox;
@@ -65,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-              onPressed: () => context.push(RouterPath.home.path),
+              onPressed: () => RouterStatic.goToHome(context),
               child: const Text('Go to HomeScreen'),
             ),
             TextButton(

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source_impl.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
@@ -117,7 +117,7 @@ void main() {
           );
 
           final mockFeed = Feed(
-            id: 'gyubro',
+            id: testId,
             imagePath: 'imagePath',
             userEmail: 'test@email.com',
             description: 'This is a test feed',
@@ -130,7 +130,7 @@ void main() {
           await fakeFirestore
               .collection('feeds')
               .doc(testId)
-              .set(mockFeed.toJson());
+              .set(toFeedDto(feed: mockFeed));
 
           // When
           final result = await dataSource.getFeed(id: testId);
@@ -207,8 +207,8 @@ void main() {
           final docResult =
               await fakeFirestore.collection('feeds').doc(testId).get();
 
-          final feedDeletedAt = Feed.fromJson(docResult.data()!).deletedAt;
-          debugPrint(feedDeletedAt.toString());
+          final feedDeletedAt =
+              toFeed(feedDto: docResult.data()!, id: docResult.id).deletedAt;
 
           // Then
           expect(result, feedDeletedAt != null);
@@ -292,8 +292,8 @@ void main() {
           // Given
           for (int i = 0; i < 3; i++) {
             await fakeFirestore.collection('feeds').add({
-              'weather': mockWeather.toFirebase(),
-              'location': mockLocation.toFirebase(),
+              'weather': toWeatherDto(weather: mockWeather),
+              'location': toLocationDto(location: mockLocation),
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
               'image_path':
