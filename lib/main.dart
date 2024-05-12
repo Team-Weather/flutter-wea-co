@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to OotdDetailScreen'),
             ),
             TextButton(
-              onPressed: () => context.push(RouterPath.camera.path),
+              onPressed: () => RouterStatic.goToCamera(context),
               child: const Text('Go to CameraScreen'),
             ),
             TextButton(
