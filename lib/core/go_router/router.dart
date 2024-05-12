@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/home_screen.dart';
+import 'package:weaco/presentation/new_ootd/new_ootd_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -62,7 +63,7 @@ final router = GoRouter(
     GoRoute(
       path: RouterPath.camera.path,
       // builder: (context, state) => CameraScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const NewOotd(),
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
