@@ -26,23 +26,23 @@ class BottomNavigationWidget extends StatelessWidget {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.wb_sunny_outlined),
-          label: 'Home',
+          label: 'Home Weather',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.space_dashboard_outlined),
-          label: 'Search',
+          label: 'OOTD Feed',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add, size: 0),
-          label: 'Notification',
+          label: 'Post',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search_outlined),
-          label: 'Notification',
+          label: 'search',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline_outlined),
-          label: 'Profile',
+          label: 'MyProfile',
         ),
       ],
     );
