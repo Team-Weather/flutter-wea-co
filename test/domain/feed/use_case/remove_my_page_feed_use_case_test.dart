@@ -1,8 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/remove_my_page_feed_use_case.dart';
-import 'package:weaco/domain/location/model/location.dart';
-import 'package:weaco/domain/weather/model/weather.dart';
 import '../../../mock/data/feed/repository/mock_ootd_feed_repository_impl.dart';
 
 void main() {
