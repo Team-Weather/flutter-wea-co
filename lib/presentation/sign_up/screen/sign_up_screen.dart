@@ -85,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildForm() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,7 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       height: 56,
       margin: const EdgeInsets.only(left: 8, right: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFFF),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFF3F3F3),
