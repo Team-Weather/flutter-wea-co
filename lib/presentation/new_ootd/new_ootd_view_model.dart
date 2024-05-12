@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewOotdViewModel with ChangeNotifier {
@@ -6,28 +7,22 @@ class NewOotdViewModel with ChangeNotifier {
 
   XFile? get imageFile => _imageFile;
 
-  void pickedImageFromCamera() async {
+  void pickImage({
+    required ImageSource imageSource,
+    required Function(String) callback,
+  }) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
-    if (pickedFile != null) {
-      _imageFile = pickedFile;
-    } else {
-      debugPrint('이미지 선택 안 함');
-    }
+    try {
+      final pickedFile = await picker.pickImage(source: imageSource);
 
-    notifyListeners();
-  }
-
-  void pickedImageFromGallery() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      debugPrint('path: ${pickedFile.path}');
-      _imageFile = pickedFile;
-    } else {
-      debugPrint('이미지 선택 안 함');
+      if (pickedFile != null) {
+        _imageFile = pickedFile;
+      } else {
+        debugPrint('이미지 선택 안 함');
+      }
+    } on PlatformException {
+      callback('access_denied');
     }
 
     notifyListeners();
