@@ -242,7 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           alignment: Alignment.center,
           child: const Text(
-            '로그인하기',
+            '가입하기',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
