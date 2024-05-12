@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/domain/user/repository/user_profile_repository.dart';
-import 'package:weaco/domain/user/repository/user_profile_repository_impl.dart';
+import 'package:weaco/data/user/repository/user_profile_repository_impl.dart';
 
 import '../../../mock/data/user/data_source/mock_remote_user_profile_data_source.dart';
 
