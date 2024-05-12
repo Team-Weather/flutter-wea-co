@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/home_screen.dart';
+import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -17,7 +19,7 @@ final router = GoRouter(
     GoRoute(
       path: RouterPath.signUp.path,
       // builder: (context, state) => SignUpScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const SignUpScreen(),
     ),
     GoRoute(
       path: RouterPath.signIn.path,
