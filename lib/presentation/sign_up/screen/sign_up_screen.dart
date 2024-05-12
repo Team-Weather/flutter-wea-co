@@ -55,11 +55,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FlutterLogo(size: 40),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             '회원가입',
             style: TextStyle(
@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             '첫 회원가입이네요! 기본정보를 입력해주세요',
             style: TextStyle(
@@ -193,10 +193,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       height: 56,
       margin: const EdgeInsets.only(left: 8, right: 8),
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFF),
+        color: const Color(0xFFFFFFF),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: isSelected ? Color(0xFFFDCE55) : Color(0xFFF3F3F3),
+          color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFF3F3F3),
           width: 2,
         ),
       ),
@@ -207,13 +207,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             Icon(
               Icons.check_circle,
-              color: isSelected ? Color(0xFFFDCE55) : Color(0xFFF3F3F3),
+              color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFF3F3F3),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             // Add some space between the icon and the text
             Text(
               gender,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF1A1C29),
                 fontSize: 16,
                 fontFamily: 'Roboto',
