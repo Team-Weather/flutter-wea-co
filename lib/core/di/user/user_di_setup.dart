@@ -9,6 +9,7 @@ import 'package:weaco/data/user/data_source/remote_user_profile_date_source_impl
 import 'package:weaco/data/user/data_source/user_auth_data_source.dart';
 import 'package:weaco/data/user/repository/profile_image_repository_impl.dart';
 import 'package:weaco/data/user/repository/user_auth_repository_impl.dart';
+import 'package:weaco/data/user/repository/user_profile_repository_impl.dart';
 import 'package:weaco/domain/user/repository/profile_image_repository.dart';
 import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 import 'package:weaco/domain/user/repository/user_profile_repository.dart';
@@ -39,6 +40,9 @@ void userDiSetup() {
   getIt.registerLazySingleton<ProfileImageRepository>(() =>
       ProfileImageRepositoryImpl(
           remoteDataSource: getIt<RemoteProfileImageDataSource>()));
+  getIt.registerLazySingleton<UserProfileRepository>(() =>
+      UserProfileRepositoryImpl(
+          remoteUserProfileDataSource: getIt<RemoteUserProfileDataSource>()));
 
   // // UseCase
   getIt.registerLazySingleton<GetMyPageUserProfileUseCase>(() =>

@@ -34,7 +34,7 @@ void main() {
       createdAt: DateTime.parse('2024-05-06'),
     );
     final mockFeed = Feed(
-      id: 'id',
+      id: null,
       imagePath: 'imagePath',
       userEmail: 'test@email.com',
       description: 'This is a test feed',
@@ -143,7 +143,8 @@ void main() {
             expectedUseProfile);
       });
 
-      test(''
+      test(
+          ''
           'FeedRepository.saveFeed, UserProfileRepository.updateMyFeedCount()를 '
           '정상적으로 호출한 뒤, true 를 반환한다.', () async {
         // Given
@@ -154,6 +155,39 @@ void main() {
 
         // Then
         expect(actual, expected);
+      });
+
+      test('파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 FeedRepository.saveFeed를 한번 호출한다.', () async {
+        // Given
+        const int expected = 1;
+
+        // When
+        await ootdFeedRepository.saveOotdFeed(feed: mockFeed.copyWith(id: '1'));
+
+        // Then
+        expect(feedRepository.saveFeedCallCount, expected);
+      });
+
+      test('파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 FileRepository.saveOotdImage()를 호출하지 않는다.', () async {
+        // Given
+        const int expected = 0;
+
+        // When
+        await ootdFeedRepository.saveOotdFeed(feed: mockFeed.copyWith(id: '1'));
+
+        // Then
+        expect(fileRepository.saveImageCallCount, expected);
+      });
+
+      test('파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 UserProfileRepository.getMyProfile()를 호출하지 않는다.', () async {
+        // Given
+        const int expected = 0;
+
+        // When
+        await ootdFeedRepository.saveOotdFeed(feed: mockFeed.copyWith(id: '1'));
+
+        // Then
+        expect(userProfileRepository.getMyProfileCallCount, expected);
       });
     });
 
@@ -196,15 +230,19 @@ void main() {
             expectedCallCount);
       });
 
-      test('가져온 유저 피드 카운트에 1을 뺀 값을 UserProfileRepository.updateUserProfile()에 전달한다.', () async {
+      test(
+          '가져온 유저 피드 카운트에 1을 뺀 값을 UserProfileRepository.updateUserProfile()에 전달한다.',
+          () async {
         // Given
-        final expectedUserProfile = mockUserProfile.copyWith(feedCount: mockUserProfile.feedCount - 1);
+        final expectedUserProfile =
+            mockUserProfile.copyWith(feedCount: mockUserProfile.feedCount - 1);
 
         // When
         await ootdFeedRepository.removeOotdFeed(id: feedId);
 
         // Then
-        expect(userProfileRepository.methodParameterMap['updateUserProfile'], expectedUserProfile);
+        expect(userProfileRepository.methodParameterMap['updateUserProfile'],
+            expectedUserProfile);
       });
 
       test(
