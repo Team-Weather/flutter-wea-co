@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:weaco/core/config/kakao_config.dart';
 import 'package:weaco/core/dio/base_dio.dart';
 import 'package:weaco/core/dio/base_response.dart';
 import 'package:weaco/core/exception/network_exception.dart';
@@ -6,13 +7,11 @@ import 'package:weaco/data/location/data_source/remote_data_source/remote_locati
 
 class KakaoReverseGeoCoderApi implements RemoteLocationDataSource {
   final BaseDio _dio;
-  final String _apiKey;
+  final String _apiKey = KakaoConfig.apiKey;
   final String _basePath =
       'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json';
 
-  KakaoReverseGeoCoderApi({required BaseDio dio, required String apiKey})
-      : _dio = dio,
-        _apiKey = apiKey;
+  KakaoReverseGeoCoderApi({required BaseDio dio}) : _dio = dio;
 
   /// 위도, 경도를 동주소로 변경 요청
   /// @param lat: 위도
