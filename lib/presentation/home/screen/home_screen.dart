@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
 import 'package:weaco/domain/common/enum/weather_code.dart';
+import 'package:weaco/presentation/home/component/recommand_ootd_list_widget.dart';
+import 'package:weaco/presentation/home/component/weather_by_time_list_widget.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 
 /// [홈 화면]
@@ -37,9 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         HomeScreenStatus.error => const Center(child: Text('데이터를 불러올 수 없습니다.')),
         HomeScreenStatus.loading => const CircularProgressIndicator(),
         HomeScreenStatus.idle => const SizedBox(),
-        HomeScreenStatus.success =>
-          // TODO. PTR 구현하기
-          Container(
+        HomeScreenStatus.success => Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
@@ -48,244 +47,222 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 40),
-                  // city
-                  Text(
-                    dailyLocationWeather!.location.city,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  // weather code description
-                  Text(
-                    WeatherCode.fromValue(currentWeather!.code).description,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // current temperature
-                  Text(
-                    '${currentWeather.temperature}°',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 60,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // max, min temperature
-                      Column(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  // 날씨 새로고침
+                  await viewModel.initHomeScreen();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const SizedBox(height: 40),
+                          // city
                           Text(
-                            '최고 ${dailyLocationWeather.highTemperature}°',
+                            dailyLocationWeather!.location.city,
                             style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                    blurRadius: 4,
-                                    color: Color.fromARGB(165, 0, 0, 0),
-                                    offset: Offset(1, 1)),
-                              ],
                             ),
                           ),
+                          const SizedBox(height: 4),
+                          // weather code description
                           Text(
-                            '최저 ${dailyLocationWeather.lowTemperature}°',
+                            WeatherCode.fromValue(currentWeather!.code)
+                                .description,
                             style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                    blurRadius: 4,
-                                    color: Color.fromARGB(165, 0, 0, 0),
-                                    offset: Offset(1, 1)),
-                              ],
                             ),
                           ),
+                          const SizedBox(height: 20),
+                          // current temperature
+                          Text(
+                            '${currentWeather.temperature}°',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 60,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              // max, min temperature
+                              Column(
+                                children: [
+                                  Text(
+                                    '최고 ${dailyLocationWeather.highTemperature}°',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      shadows: [
+                                        Shadow(
+                                            blurRadius: 4,
+                                            color: Color.fromARGB(165, 0, 0, 0),
+                                            offset: Offset(1, 1)),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    '최저 ${dailyLocationWeather.lowTemperature}°',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      shadows: [
+                                        Shadow(
+                                            blurRadius: 4,
+                                            color: Color.fromARGB(165, 0, 0, 0),
+                                            offset: Offset(1, 1)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // 전일 대비
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.2),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Text('전일대비',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        )),
+                                    // TODO. 전일 대비 차이 구하는 함수 필요함
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          ImagePath.temperatureDownArrowIcon,
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        const Text(
+                                          '13°',
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 40),
                         ],
                       ),
-                      // 전일 대비
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.2),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(15),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            const Text('전일대비',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                )),
-                            // TODO. 전일 대비 차이 구하는 함수 필요함
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  ImagePath.temperatureDownArrowIcon,
-                                  width: 16,
-                                  height: 16,
-                                ),
-                                const SizedBox(width: 4),
-                                const Text(
-                                  '13°',
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-                  // weathers by time
-                  Container(
-                    alignment: Alignment.center,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(136, 90, 152, 196),
-                        borderRadius: BorderRadius.circular(15)),
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: dailyLocationWeather.weatherList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  DateFormat('aa HH시', 'ko_KR').format(
-                                      dailyLocationWeather
-                                          .weatherList[index].timeTemperature),
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Image.asset(
-                                  WeatherCode.fromCode(dailyLocationWeather
-                                          .weatherList[index].code)
-                                      .iconPath,
-                                  width: 28,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${dailyLocationWeather.weatherList[index].temperature}°',
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                  ),
-                  const Spacer(),
-
-                  // ootd list
-                  Container(
-                    height: 250,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 26, vertical: 20),
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(50))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '오늘은 이런 코디 어때요?',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 20),
-                        Expanded(
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount:
-                                  dailyLocationWeather.weatherList.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(right: 30),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                            color:
-                                                Color.fromARGB(48, 95, 95, 95),
-                                            blurRadius: 2,
-                                            offset: Offset(5, 0))
-                                      ]),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                        viewModel.feedList[index].imagePath),
-                                  ),
-                                );
-                              }),
-                        ),
-                        const SizedBox(height: 20),
-                      ],
                     ),
-                  ),
-                ],
+
+                    // weathers by time
+                    WeatherByTimeListWidget(
+                      dailyLocationWeather: dailyLocationWeather,
+                    ),
+
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: 40),
+                    ),
+
+                    // ootd list
+                    RecommandOotdListWidget(
+                      dailyLocationWeather: dailyLocationWeather,
+                      feedList: viewModel.feedList,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
       },
 
       // 디자인 확인을 위한 임시 네비게이션
-      bottomNavigationBar:
-          BottomNavigationBar(selectedItemColor: Colors.blue, items: const [
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.access_alarm_rounded,
-              color: Colors.amber,
-            ),
-            label: 'temp'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.access_alarm_rounded,
-              color: Colors.amber,
-            ),
-            label: 'temp'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.access_alarm_rounded,
-              color: Colors.amber,
-            ),
-            label: 'temp'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.access_alarm_rounded,
-              color: Colors.amber,
-            ),
-            label: 'temp'),
-      ]),
+      // bottomNavigationBar: Stack(children: [
+      //   Stack(
+      //     children: [
+      //       BottomNavigationWidget(
+      //         onTap: (value) {},
+      //         currentIndex: 0,
+      //       ),
+      //       if (!isPressingFloatingActionButton)
+      //         SizedBox(
+      //           width: 72,
+      //           height: 72,
+      //           child: FloatingActionButton(
+      //             onPressed: () {
+      //               setState(() {
+      //                 isPressingFloatingActionButton = true;
+      //               });
+      //               Future.delayed(const Duration(milliseconds: 2000), () {
+      //                 setState(() {
+      //                   isPressingFloatingActionButton = false;
+      //                 });
+      //               });
+      //             },
+      //             elevation: 0,
+      //             shape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(50),
+      //               side: BorderSide(
+      //                   color: Theme.of(context).primaryColor,
+      //                   width: deviceWidth * 0.005),
+      //             ),
+      //             backgroundColor: Theme.of(context).canvasColor,
+      //             child: const Icon(
+      //               Icons.add,
+      //               color: Color(0xffF2C347),
+      //               size: 40,
+      //             ),
+      //           ),
+      //         ),
+      //       if (isPressingFloatingActionButton)
+      //         SizedBox(
+      //           width: 128,
+      //           height: 72,
+      //           child: FloatingActionButton(
+      //             onPressed: () {},
+      //             elevation: 0,
+      //             shape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(50),
+      //               side: BorderSide(
+      //                   color: Theme.of(context).primaryColor,
+      //                   width: MediaQuery.of(context).size.width * 0.005),
+      //             ),
+      //             backgroundColor: Theme.of(context).canvasColor,
+      //             child: const Row(
+      //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //               children: [
+      //                 Icon(
+      //                   Icons.camera_alt_rounded,
+      //                   color: Color(0xffF2C347),
+      //                   size: 40,
+      //                 ),
+      //                 Icon(
+      //                   Icons.photo_album_outlined,
+      //                   color: Color(0xffF2C347),
+      //                   size: 40,
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //     ],
+      //   ),
+      // ])
     );
   }
 }
