@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'firebase_options.dart';
@@ -15,6 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  diSetup();
   runApp(const MyApp());
 }
 
