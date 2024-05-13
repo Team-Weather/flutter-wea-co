@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to SignUpScreen'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => RouterStatic.goToSignIn(context),
               child: const Text('Go to SignInScreen'),
             ),
             TextButton(
