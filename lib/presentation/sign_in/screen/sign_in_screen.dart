@@ -72,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      color: const Color(0xFFFFFFFF),
+                      color: const Color(0xF5F5F5FF),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -160,9 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
             width: double.infinity,
-            height: 126,
             child: Column(
               children: [
                 TextFormField(
@@ -180,7 +179,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     border: InputBorder.none,
                     fillColor: const Color(0xFFF3F3F3),
                     filled: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(14),
@@ -190,12 +189,18 @@ class _SignInScreenState extends State<SignInScreen> {
                           const BorderSide(width: 2, color: Color(0xFFFDCE55)),
                       borderRadius: BorderRadius.circular(14),
                     ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 2, color: Color(0xFFD00B0B)),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                     errorBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 2, color: Color(0xFFD00B0B)),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     errorStyle: const TextStyle(color: Color(0xFFD00B0B)),
+                    errorText: _checkEmailErrorText(),
                   ),
                   onChanged: (value) {
                     _isValidateForm();
@@ -209,34 +214,40 @@ class _SignInScreenState extends State<SignInScreen> {
                   cursorColor: const Color(0xFFFDCE55),
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: '비밀번호',
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF797979),
-                      fontSize: 16,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                    ),
-                    border: InputBorder.none,
-                    fillColor: const Color(0xFFF3F3F3),
-                    filled: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 2, color: Color(0xFFFDCE55)),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 2, color: Color(0xFFD00B0B)),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    errorStyle: const TextStyle(color: Color(0xFFD00B0B)),
-                  ),
+                      hintText: '비밀번호',
+                      hintStyle: const TextStyle(
+                        color: Color(0xFF797979),
+                        fontSize: 16,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                      border: InputBorder.none,
+                      fillColor: const Color(0xFFF3F3F3),
+                      filled: true,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 20),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFFFDCE55)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFFD00B0B)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFFD00B0B)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      errorStyle: const TextStyle(color: Color(0xFFD00B0B)),
+                      errorText: _checkPasswordErrorText()),
                   onChanged: (value) {
                     _isValidateForm();
                   },
@@ -252,14 +263,13 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildBottomSheet() {
     return Container(
       width: double.infinity,
-      height: !_isSignUpButtonVisible ? 70 : 140,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      color: const Color(0xFFFFFFFF),
+      height: !_isSignUpButtonVisible ? 62 : 116,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      color: const Color(0xF5F5F5FF),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildSignInButtons(),
-          const SizedBox(height: 8),
           if (_isSignUpButtonVisible) _buildSignUpButtons(),
         ],
       ),
@@ -267,7 +277,8 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget _buildSignInButtons() {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
       width: double.infinity,
       height: 54,
       child: InkWell(
@@ -279,7 +290,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 : const Color(0xFFD9D9D9),
             borderRadius: BorderRadius.circular(14),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           alignment: Alignment.center,
           child: const Text(
             '로그인하기',
@@ -306,7 +317,7 @@ class _SignInScreenState extends State<SignInScreen> {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(14),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           alignment: Alignment.center,
           child: const Text(
             '회원가입',
@@ -330,5 +341,19 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool get _isSignUpButtonVisible {
     return MediaQuery.of(context).viewInsets.bottom == 0;
+  }
+
+  String? _checkEmailErrorText() {
+    return (emailFormController.text.isEmpty ||
+            isValidEmail(emailFormController.text))
+        ? null
+        : '이메일 형식이 올바르지 않습니다';
+  }
+
+  String? _checkPasswordErrorText() {
+    return (passwordFormController.text.isEmpty ||
+            isValidPassword(passwordFormController.text))
+        ? null
+        : '비밀번호는 8자 이상, 숫자, 특수문자를 포함해야 합니다';
   }
 }
