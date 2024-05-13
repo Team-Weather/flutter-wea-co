@@ -12,7 +12,7 @@ class CameraScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<CameraViewModel>();
+    final CameraViewModel viewModel = context.watch<CameraViewModel>();
 
     return Scaffold(
       appBar: AppBar(

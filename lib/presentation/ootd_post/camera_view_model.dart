@@ -11,10 +11,10 @@ class CameraViewModel with ChangeNotifier {
     required ImageSource imageSource,
     required Function(String) callback,
   }) async {
-    final picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
 
     try {
-      final pickedFile = await picker.pickImage(source: imageSource);
+      final XFile? pickedFile = await picker.pickImage(source: imageSource);
 
       if (pickedFile != null) {
         _imageFile = pickedFile;
