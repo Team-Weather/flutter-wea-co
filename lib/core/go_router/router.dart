@@ -4,6 +4,7 @@ import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
+import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -81,10 +82,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdDetail.path,
-      // builder: (context, state) => OotdDetailScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+      builder: (context, state) => const OotdDetailScreen(id: 'asdfasdfsaf',),
     ),
     GoRoute(
       path: RouterPath.camera.path,
