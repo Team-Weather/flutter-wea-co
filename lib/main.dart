@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to OotdSearchScreen'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => RouterStatic.goToOotdFeed(context),
               child: const Text('Go to OotdFeedScreen'),
             ),
             TextButton(
