@@ -204,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFFFF),
+        color: const Color(0xF5F5F5FF),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFF3F3F3),
@@ -242,7 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildSignInButtons() {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
-      color: const Color(0xFFFFFFFF),
+      color: const Color(0xF5F5F5FF),
       child: InkWell(
         onTap: isSignUpButtonEnabled ? () {} : null,
         child: Container(
@@ -257,7 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: const Text(
             '가입하기',
             style: TextStyle(
-              color: Colors.white,
+              color: Color(0xF5F5F5FF),
               fontSize: 16,
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w600,
