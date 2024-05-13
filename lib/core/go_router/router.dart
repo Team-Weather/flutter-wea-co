@@ -11,6 +11,7 @@ import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
 import 'package:weaco/presentation/ootd_post/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -108,10 +109,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
-      // builder: (context, state) => OotdPostScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+      builder: (context, state) => const OotdPostScreen(),
     ),
   ],
 );
