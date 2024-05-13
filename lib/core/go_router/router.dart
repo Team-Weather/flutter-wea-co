@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
+import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
@@ -34,9 +35,7 @@ final router = GoRouter(
     GoRoute(
       path: RouterPath.signIn.path,
       // builder: (context, state) => SignInScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+      builder: (context, state) => const SignInScreen(),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
