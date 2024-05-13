@@ -19,7 +19,7 @@ class BottomNavigationWidget extends StatelessWidget {
       iconSize: 32,
       currentIndex: currentIndex,
       selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-      unselectedIconTheme: IconThemeData(color: Color(0xffd5d5d5)),
+      unselectedIconTheme: const IconThemeData(color: Color(0xffd5d5d5)),
       onTap: onTap,
       mouseCursor: SystemMouseCursors.click,
       backgroundColor: Theme.of(context).colorScheme.background,

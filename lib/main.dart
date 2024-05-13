@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weaco/core/go_router/router.dart';
@@ -35,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffF2C347)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xffF2C347)),
         primaryColor: const Color(0xffF2C347),
         canvasColor: Colors.white,
         scaffoldBackgroundColor: const Color(0xffF5F5F5),
