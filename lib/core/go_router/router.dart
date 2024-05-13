@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
-import 'package:weaco/presentation/navigation_bar/widget_view_sample.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 
