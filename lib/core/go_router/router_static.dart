@@ -40,11 +40,11 @@ class RouterStatic {
   }
 
   static void goToOotdFeed(BuildContext context) {
-    router.go(RouterPath.ootdFeed.path);
+    router.push(RouterPath.ootdFeed.path);
   }
 
   static void goToOotdDetail(BuildContext context) {
-    router.go(RouterPath.ootdDetail.path);
+    router.push(RouterPath.ootdDetail.path);
   }
 
   static void goToCamera(BuildContext context) {
