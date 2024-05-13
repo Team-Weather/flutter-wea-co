@@ -77,6 +77,7 @@ enum WeatherCode {
 
   static WeatherCode fromValue(int value) {
     return switch (value) {
+      0 => WeatherCode.noData,
       1 => WeatherCode.clearSky,
       2 => WeatherCode.partlyCloudy,
       3 => WeatherCode.fog,
@@ -90,11 +91,11 @@ enum WeatherCode {
       11 => WeatherCode.snowShower,
       12 => WeatherCode.thunderStorm,
       13 => WeatherCode.thunderStormHail,
-      _ => WeatherCode.noData
+      _ => throw ArgumentError('Invalid value')
     };
   }
 
-  static WeatherCode fromCode(int code) {
+  static WeatherCode fromDtoCode(int code) {
     return switch (code) {
       0 => WeatherCode.clearSky,
       1 || 2 || 3 => WeatherCode.partlyCloudy,
@@ -109,7 +110,7 @@ enum WeatherCode {
       85 || 86 => WeatherCode.snowShower,
       95 => WeatherCode.thunderStorm,
       96 || 99 => WeatherCode.thunderStormHail,
-      _ => throw Exception()
+      _ => throw ArgumentError('Invalid value')
     };
   }
 }
