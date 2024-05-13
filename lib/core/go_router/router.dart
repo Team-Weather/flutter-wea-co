@@ -11,7 +11,9 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: RouterPath.defaultPage.path,
-      builder: (context, state) => const MyHomePage(title: 'weaco'),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.home.path,
@@ -25,61 +27,85 @@ final router = GoRouter(
     GoRoute(
       path: RouterPath.signUp.path,
       // builder: (context, state) => SignUpScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.signIn.path,
       // builder: (context, state) => SignInScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
       // builder: (context, state) => DialogScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.appSetting.path,
       // builder: (context, state) => AppSettingScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.myPage.path,
       // builder: (context, state) => MyPageScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.userPage.path,
       // builder: (context, state) => UserPageScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdSearch.path,
       // builder: (context, state) => OotdSearchScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdFeed.path,
       // builder: (context, state) => OotdFeedScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) => const OotdDetailScreen(id: 'asdfasdfsaf',),
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.camera.path,
       // builder: (context, state) => CameraScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
       // builder: (context, state) => PictureCropScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
       // builder: (context, state) => OotdPostScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MyHomePage(
+        title: '',
+      ),
     ),
   ],
 );
