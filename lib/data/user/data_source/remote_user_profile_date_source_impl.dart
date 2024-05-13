@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/core/firebase/firebase_auth_service.dart';
+import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
 import 'package:weaco/data/user/data_source/remote_user_profile_data_source.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 
@@ -30,22 +31,18 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
 
   @override
   Future<UserProfile> getUserProfile({String? email}) async {
-    try {
-      email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
+    email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
 
-      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
-          .collection('user_profiles')
-          .where('email', isEqualTo: email)
-          .get();
+    QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection('user_profiles')
+        .where('email', isEqualTo: email)
+        .get();
 
-      if (snapshot.docs.isEmpty) {
-        throw Exception('유저 프로필이 존재하지 않습니다.');
-      }
-
-      return UserProfile.fromJson(snapshot.docs[0].data());
-    } catch (e) {
-      throw Exception(e);
+    if (snapshot.docs.isEmpty) {
+      throw Exception('유저 프로필이 존재하지 않습니다.');
     }
+
+    return toUserProfile(json: snapshot.docs[0].data());
   }
 
   @override
@@ -59,7 +56,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
       return await _firestore
           .collection('user_profiles')
           .doc(originProfileDocument.docs[0].reference.id)
-          .set(userProfile.toJson())
+          .set(toUserProfileDto(userProfile: userProfile))
           .then((value) => true)
           .catchError(
             (e) => false,
