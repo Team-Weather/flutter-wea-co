@@ -43,8 +43,8 @@ class RouterStatic {
     router.push(RouterPath.ootdFeed.path);
   }
 
-  static void goToOotdDetail(BuildContext context) {
-    router.push(RouterPath.ootdDetail.path);
+  static void goToOotdDetail(BuildContext context, String id) {
+    router.push(RouterPath.ootdDetail.path, extra: id);
   }
 
   static void goToCamera(BuildContext context) {

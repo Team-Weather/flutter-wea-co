@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
@@ -9,6 +10,7 @@ import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
 import 'package:weaco/presentation/ootd_post/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
+import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -81,9 +83,12 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdDetail.path,
-      builder: (context, state) => const OotdDetailScreen(
-        id: 'asdfasdfsaf',
-      ),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt(), getUserProfileUseCase: getIt(), id: state.extra as String),
+          child: OotdDetailScreen(),
+        );
+      },
     ),
     GoRoute(
       path: RouterPath.camera.path,
