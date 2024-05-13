@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'package:weaco/core/go_router/router_static.dart';
-import 'package:weaco/presentation/home/home_screen.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 import 'firebase_options.dart';
 
@@ -20,14 +19,9 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -57,29 +51,75 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   bool isPressingFloatingActionButton = false;
 
-  final List<Widget> pages = [
-    const HomeScreen(),
-    const HomeScreen(),
-    Container(),
-    const HomeScreen(),
-    const HomeScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          TextButton(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextButton(
               onPressed: () => RouterStatic.goToHome(context),
-              child: const Text('Go to HomeScreen')),
-          pages[_currentIndex],
-        ],
+              child: const Text('Go to HomeScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to SignUpScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to SignInScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to DialogScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to AppSettingScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to MyPageScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to UserPageScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdSearchScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdFeedScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdDetailScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to CameraScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to PictureCropScreen'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Go to OotdPostScreen'),
+            ),
+            const Spacer(),
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Stack(
@@ -103,8 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                   side: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      width: deviceWidth * 0.005),
+                      color: Theme.of(context).primaryColor, width: 1),
                 ),
                 backgroundColor: Theme.of(context).canvasColor,
                 child: const Icon(
@@ -124,8 +163,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                   side: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      width: deviceWidth * 0.005),
+                    color: Theme.of(context).primaryColor,
+                    width: 2.0,
+                  ),
                 ),
                 backgroundColor: Theme.of(context).canvasColor,
                 child: const Row(
