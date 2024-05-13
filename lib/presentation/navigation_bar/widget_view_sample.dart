@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+class WidgetViewSample extends StatefulWidget {
+  const WidgetViewSample({super.key, required this.title});
 
   final String title;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<WidgetViewSample> createState() => _WidgetViewSampleState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _WidgetViewSampleState extends State<WidgetViewSample> {
   int _currentIndex = 0;
   bool isPressingFloatingActionButton = false;
 
