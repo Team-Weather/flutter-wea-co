@@ -50,18 +50,18 @@ class Weather {
   Map<String, dynamic> toJson() {
     return {
       'temperature': temperature,
-      'timeTemperature': timeTemperature.toIso8601String(),
+      'time_temperature': timeTemperature.toIso8601String(),
       'code': code,
-      'createdAt': createdAt.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
     };
   }
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       temperature: json['temperature'] as double,
-      timeTemperature: DateTime.parse(json['timeTemperature']),
+      timeTemperature: DateTime.parse(json['time_temperature']),
       code: json['code'] as int,
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: DateTime.parse(json['created_at']),
     );
   }
 }
