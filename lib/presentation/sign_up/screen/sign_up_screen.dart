@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/core/enum/gender_code.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -14,7 +15,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   final TextEditingController nicknameFormController = TextEditingController();
   bool isSignUpButtonEnabled = false;
-  int selectedGenderIndex = -1; // 0 for '남자', 1 for '여자'
+  GenderCode selectedGender = GenderCode.unknown; // 0 for '남자', 1 for '여자'
 
   @override
   void dispose() {
@@ -33,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 80, left: 8, right: 8),
+                padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -87,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _buildForm() {
     return SizedBox(
-      width: double.infinity,
+      // width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -121,8 +122,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool isObscureText = false,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
       width: double.infinity,
+      padding: const EdgeInsets.only(bottom: 4),
       child: Column(
         children: [
           TextFormField(
@@ -151,12 +152,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const BorderSide(width: 2, color: Color(0xFFFDCE55)),
                 borderRadius: BorderRadius.circular(14),
               ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(width: 2, color: Color(0xFFD00B0B)),
+                borderRadius: BorderRadius.circular(14),
+              ),
               errorBorder: OutlineInputBorder(
                 borderSide:
                     const BorderSide(width: 2, color: Color(0xFFD00B0B)),
                 borderRadius: BorderRadius.circular(14),
               ),
               errorStyle: const TextStyle(color: Color(0xFFD00B0B)),
+              errorText: checkErrorText_(labelText),
             ),
             onChanged: (value) {
               _isValidateForm();
@@ -172,17 +179,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _buildGenderSelection() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () => _handleGenderSelection(0),
-            child: _buildGenderOption('남자', selectedGenderIndex == 0),
+            onTap: () => _handleGenderSelection(GenderCode.man),
+            child: _buildGenderOption(
+                GenderCode.man.name, selectedGender == GenderCode.man),
           ),
         ),
+        const SizedBox(width: 16), // Add some space between
         Expanded(
           child: GestureDetector(
-            onTap: () => _handleGenderSelection(1),
-            child: _buildGenderOption('여자', selectedGenderIndex == 1),
+            onTap: () => _handleGenderSelection(GenderCode.women),
+            child:
+                _buildGenderOption(GenderCode.women.name, selectedGender == GenderCode.women),
           ),
         ),
       ],
@@ -192,7 +203,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildGenderOption(String gender, bool isSelected) {
     return Container(
       height: 56,
-      margin: const EdgeInsets.only(left: 8, right: 8),
       decoration: BoxDecoration(
         color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(14),
@@ -208,7 +218,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             Icon(
               Icons.check_circle,
-              color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFF3F3F3),
+              color: isSelected
+                  ? const Color(0xFFFDCE55)
+                  : const Color(0xFFF3F3F3),
             ),
             const SizedBox(width: 8),
             // Add some space between the icon and the text
@@ -259,10 +271,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _isValidateForm() {
     isSignUpButtonEnabled = (_isValidEmail(emailFormController.text) &&
         _isValidPassword(passwordFormController.text) &&
-        isValidString(nicknameFormController.text) &&
-        selectedGenderIndex != -1 &&
+        _isValidString(nicknameFormController.text) &&
         _isValidConfirmPassword(
-            passwordFormController.text, passwordConfirmFormController.text));
+            passwordFormController.text, passwordConfirmFormController.text) &&
+        selectedGender != GenderCode.unknown);
     setState(() {});
   }
 
@@ -283,14 +295,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return password == confirmPassword && _isValidPassword(confirmPassword);
   }
 
-  bool isValidString(String text) {
+  bool _isValidString(String text) {
     return RegExp(r'''
 (?:[가-힣]{3,})|(?:[a-zA-Z]{3,})''').hasMatch(text);
   }
 
-  void _handleGenderSelection(int index) {
-    setState(() {
-      selectedGenderIndex = index;
-    });
+  void _handleGenderSelection(GenderCode genderCode) {
+    selectedGender = genderCode;
+    _isValidateForm();
+  }
+
+  String? checkErrorText_(String label) {
+    return switch (label) {
+      '이메일' => emailFormController.text.isEmpty ||
+              _isValidEmail(emailFormController.text)
+          ? null
+          : '이메일 형식이 올바르지 않습니다',
+      '비밀번호' => passwordFormController.text.isEmpty ||
+              _isValidPassword(passwordFormController.text)
+          ? null
+          : '비밀번호는 8자 이상, 숫자, 특수문자를 포함해야 합니다',
+      '비밀번호 확인' => passwordConfirmFormController.text.isEmpty ||
+              _isValidConfirmPassword(passwordFormController.text,
+                  passwordConfirmFormController.text)
+          ? null
+          : '비밀번호가 일치하지 않습니다',
+      '닉네임' => nicknameFormController.text.isEmpty ||
+              _isValidString(nicknameFormController.text)
+          ? null
+          : '닉네임은 한글 또는 영문 3자 이상이어야 합니다',
+      _ => null,
+    };
   }
 }
