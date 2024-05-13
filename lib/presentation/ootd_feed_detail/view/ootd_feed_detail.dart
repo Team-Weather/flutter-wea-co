@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/pinch_zoom.dart';
 
@@ -41,7 +39,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
             maintainSize: false,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              color: Color(0xFFFFFF),
+              color: const Color(0x00ffffff),
             ),
           ),
         ),
@@ -96,7 +94,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                 color: Colors.white),
                             child: Text('기온 25.5'),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           const DefaultTextStyle(
                             style: TextStyle(
                                 fontSize: 16,
@@ -122,7 +120,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                color: Color(0x33FFFFFF),
+                                color: const Color(0x33FFFFFF),
                                 border:
                                     Border.all(color: Colors.white, width: 1)),
                             child: const Padding(
@@ -143,7 +141,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                color: Color(0x33FFFFFF),
+                                color: const Color(0x33FFFFFF),
                                 border:
                                     Border.all(color: Colors.white, width: 1)),
                             child: const Padding(
@@ -221,7 +219,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                         color: Colors.white),
                     child: Text('호구몬_사실 후곰'),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
                     icon: const Icon(
                       Icons.close,
