@@ -13,7 +13,7 @@ class GetUserPageFeedsUseCase {
     required DateTime? createdAt,
     int? limit = 20,
   }) async {
-    return await _feedRepository.getFeedList(
+    return await _feedRepository.getUserFeedList(
       email: email,
       createdAt: createdAt,
       limit: limit,
