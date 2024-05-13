@@ -17,9 +17,16 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
         _feedRepository = feedRepository,
         _userProfileRepository = userProfileRepository;
 
-  /// 피드 저장
+  /// 피드 저장 및 수정
   @override
   Future<bool> saveOotdFeed({required Feed feed}) async {
+    return feed.id == null
+        ? await _save(feed: feed)
+        : await _update(feed: feed);
+  }
+
+  /// 피드 저장
+  Future<bool> _save({required Feed feed}) async {
     final String path = await _fileRepository.saveOotdImage();
 
     final saveResult = await _feedRepository.saveFeed(
@@ -28,6 +35,13 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
     await _updateMyFeedCount(1);
 
     return saveResult;
+  }
+
+  /// 피드 수정
+  Future<bool> _update({required Feed feed}) async {
+    final updateResult = await _feedRepository.saveFeed(editedFeed: feed);
+
+    return updateResult;
   }
 
   /// 피드 삭제

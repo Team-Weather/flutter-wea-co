@@ -165,7 +165,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   Future<bool> saveFeed({required Feed editedFeed}) async {
     saveFeedCallCount++;
     feed = editedFeed;
-    if (editedFeed.id!.isNotEmpty) return true;
+
     return true;
   }
 }

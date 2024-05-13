@@ -43,8 +43,8 @@ void feedDiSetup() {
       () => GetSearchFeedsUseCase(feedRepository: getIt<FeedRepository>()));
   getIt.registerLazySingleton<GetUserPageFeedsUseCase>(
       () => GetUserPageFeedsUseCase(feedRepository: getIt<FeedRepository>()));
-  getIt.registerLazySingleton<RemoveMyPageFeedUseCase>(
-      () => RemoveMyPageFeedUseCase(feedRepository: getIt<FeedRepository>()));
-  getIt.registerLazySingleton<SaveEditFeedUseCase>(
-      () => SaveEditFeedUseCase(feedRepository: getIt<FeedRepository>()));
+  getIt.registerLazySingleton<RemoveMyPageFeedUseCase>(() =>
+      RemoveMyPageFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
+  getIt.registerLazySingleton<SaveEditFeedUseCase>(() =>
+      SaveEditFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
 }
