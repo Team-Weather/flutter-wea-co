@@ -58,12 +58,12 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
               child: Container(
                 height: _isCancelAreaShow ? _detailAreaExpandHeight : null,
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   color: Color(0x87000000),
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10.0, // 얼마나 흩어져
@@ -86,10 +86,10 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                               fit: BoxFit.fill,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
-                          DefaultTextStyle(
+                          const DefaultTextStyle(
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
@@ -97,24 +97,24 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                             child: Text('기온 25.5'),
                           ),
                           Spacer(),
-                          DefaultTextStyle(
+                          const DefaultTextStyle(
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white),
                             child: Text('2023.04.27'),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 16,
                           ),
-                          Icon(
+                          const Icon(
                             Icons.edit,
                             size: 20,
                             color: Colors.white,
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
                       Row(
@@ -125,8 +125,8 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                 color: Color(0x33FFFFFF),
                                 border:
                                     Border.all(color: Colors.white, width: 1)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               child: DefaultTextStyle(
                                 style: TextStyle(
@@ -137,7 +137,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -146,8 +146,8 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                 color: Color(0x33FFFFFF),
                                 border:
                                     Border.all(color: Colors.white, width: 1)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               child: DefaultTextStyle(
                                 style: TextStyle(
@@ -160,7 +160,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
                       SizedBox(
@@ -170,12 +170,12 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: DefaultTextStyle(
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.white),
                               child: Text(
-                                '가나다라마바사아자차카타파하\n' * 100,
+                                '${widget._id}가나다라마바사아자차카타파하\n' * 100,
                                 overflow: _isCancelAreaShow
                                     ? null
                                     : TextOverflow.ellipsis,
@@ -211,10 +211,10 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                       fit: BoxFit.fitHeight,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
-                  DefaultTextStyle(
+                  const DefaultTextStyle(
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -223,7 +223,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                   ),
                   Spacer(),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       size: 24,
                     ),
