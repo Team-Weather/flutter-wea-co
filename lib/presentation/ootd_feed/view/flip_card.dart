@@ -25,7 +25,7 @@ class FlipCard extends StatefulWidget {
         _flipCallback = flipCallback;
 
   @override
-  State<FlipCard> createState() => _FlipCardState(_data.isFront);
+  State<FlipCard> createState() => _FlipCardState();
 }
 
 class _FlipCardState extends State<FlipCard>
@@ -39,12 +39,10 @@ class _FlipCardState extends State<FlipCard>
   bool _isDragging = false;
   bool _isFlipping = false;
   bool _isKeepGoingDown = true;
-  bool _isToBack;
+  late bool _isToBack;
   late AnimationController _controller;
   late Animation<double> _upAnimation;
   late Animation<double> _downAnimation;
-
-  _FlipCardState(bool isToBack) : _isToBack = isToBack;
 
   @override
   void initState() {
@@ -58,6 +56,7 @@ class _FlipCardState extends State<FlipCard>
       TweenSequenceItem(tween: ConstantTween(pi / 2), weight: 0.5),
       TweenSequenceItem(tween: Tween(begin: pi / 2, end: 0.0), weight: 0.5),
     ]).animate(_controller);
+    _isToBack = widget._data.isFront;
     super.initState();
   }
 
