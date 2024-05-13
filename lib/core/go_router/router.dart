@@ -56,8 +56,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdDetail.path,
-      // builder: (context, state) => OotdDetailScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => OotdDetailScreen(id: 'asdfasdfsaf',),
     ),
     GoRoute(
       path: RouterPath.camera.path,
