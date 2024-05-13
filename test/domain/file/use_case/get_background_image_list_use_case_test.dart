@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weaco/domain/file/use_case/get_background_image_list_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
 import 'package:weaco/domain/weather/model/weather_background_image.dart';
 
 import '../../../mock/data/weather/repository/mock_weather_background_image_repository_impl.dart';

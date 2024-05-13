@@ -1,7 +1,10 @@
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/navigation_bar/widget_view_sample.dart';
+import 'package:weaco/presentation/home/screen/home_screen.dart';
+import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -14,9 +17,12 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.home.path,
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => HomeScreenViewModel(),
+          child: const HomeScreen(),
+        );
+      },
     ),
     GoRoute(
       path: RouterPath.signUp.path,
