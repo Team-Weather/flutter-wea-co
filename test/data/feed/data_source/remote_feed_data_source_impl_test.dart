@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source_impl.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
@@ -22,7 +22,7 @@ void main() {
     'RemoteFeedDataSourceImpl 클래스',
     () {
       group(
-        'saveFeed는',
+        'saveFeed()는',
         () {
           test('Firestore에 Feed를 저장하고, true를 반환해야 한다', () async {
             // Given
@@ -71,7 +71,7 @@ void main() {
                 city: '서울시, 노원구',
                 createdAt: DateTime.parse('2024-05-06'),
               );
-              DateTime dateTime = DateTime.now();
+              DateTime dateTime = DateTime.parse('2024-05-06');
 
               final mockFeed = Feed(
                 id: 'gyubro',
@@ -98,7 +98,7 @@ void main() {
           );
         },
       );
-      group('getFeed는', () {
+      group('getFeed()는', () {
         test('firestore에 id를 전달하면, firebase는 Json을 반환해야 한다', () async {
           // Given
           const testId = 'testId';
@@ -117,7 +117,7 @@ void main() {
           );
 
           final mockFeed = Feed(
-            id: 'gyubro',
+            id: testId,
             imagePath: 'imagePath',
             userEmail: 'test@email.com',
             description: 'This is a test feed',
@@ -130,7 +130,7 @@ void main() {
           await fakeFirestore
               .collection('feeds')
               .doc(testId)
-              .set(mockFeed.toJson());
+              .set(toFeedDto(feed: mockFeed));
 
           // When
           final result = await dataSource.getFeed(id: testId);
@@ -176,7 +176,7 @@ void main() {
           expect(result.length, 3);
         });
       });
-      group('deletedFeed는', () {
+      group('deletedFeed()는', () {
         test('id값을 전달하면, 특정 Feed를 삭제하고 true를 반환해야 한다', () async {
           // Given
           const testId = 'testId';
@@ -207,14 +207,14 @@ void main() {
           final docResult =
               await fakeFirestore.collection('feeds').doc(testId).get();
 
-          final feedDeletedAt = Feed.fromJson(docResult.data()!).deletedAt;
-          debugPrint(feedDeletedAt.toString());
+          final feedDeletedAt =
+              toFeed(feedDto: docResult.data()!, id: docResult.id).deletedAt;
 
           // Then
           expect(result, feedDeletedAt != null);
         });
       });
-      group('getSearchFeedList는', () {
+      group('getSearchFeedList()는', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           // Given
           for (int i = 0; i < 3; i++) {
@@ -255,7 +255,7 @@ void main() {
         });
       });
 
-      group('getRecommendedFeedList', () {
+      group('getRecommendedFeedList()', () {
         test('Firebase Storage를 통해 파라미터로 받은 조건에 해당하는 값을 받는다.', () async {
           Weather mockWeather = Weather(
             temperature: 25,
@@ -292,8 +292,8 @@ void main() {
           // Given
           for (int i = 0; i < 3; i++) {
             await fakeFirestore.collection('feeds').add({
-              'weather': mockWeather.toFirebase(),
-              'location': mockLocation.toFirebase(),
+              'weather': toWeatherDto(weather: mockWeather),
+              'location': toLocationDto(location: mockLocation),
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
               'image_path':

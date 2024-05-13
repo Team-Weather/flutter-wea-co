@@ -8,6 +8,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
   int getRecommendedFeedsCallCount = 0;
   int getOotdFeedsListCallCount = 0;
   int getSearchFeedsCallCount = 0;
+  int getDeleteFeedCallCount = 0;
   String getFeedParamId = '';
 
   // 메서드 호출시 인자 확인을 위한 map
@@ -19,9 +20,10 @@ class MockFeedRepositoryImpl implements FeedRepository {
   Feed? feed;
   Map<String, dynamic> feedMap = {};
   int saveFeedCallCount = 0;
+  bool deleteFeedReturnValue = false;
 
   @override
-  Future<List<Feed>> getFeedList({
+  Future<List<Feed>> getUserFeedList({
     required String email,
     required DateTime? createdAt,
     required int? limit,
@@ -48,6 +50,7 @@ class MockFeedRepositoryImpl implements FeedRepository {
     _fakeFeedList.clear();
     getFeedResult = null;
     getOotdFeedsResult = null;
+    deleteFeedReturnValue = false;
   }
 
   /// [getFeedCallCount] + 1
@@ -143,14 +146,19 @@ class MockFeedRepositoryImpl implements FeedRepository {
   /// [getOotdFeedsListCallCount] + 1
   /// [getOotdFeedsResult] 반환
   @override
-  Future<List<Feed>> getOotdFeedsList({DateTime? createdAt}) async {
+  Future<List<Feed>> getOotdFeedList({
+    DateTime? createdAt,
+    required DailyLocationWeather dailyLocationWeather,
+  }) async {
     getOotdFeedsListCallCount++;
     return getOotdFeedsResult == null ? [] : [getOotdFeedsResult!];
   }
 
   @override
-  Future<Feed?> deleteFeed({required String id}) async {
-    return feedMap.remove(id);
+  Future<bool> deleteFeed({required String id}) async {
+    getDeleteFeedCallCount++;
+    feedMap.remove(id);
+    return deleteFeedReturnValue;
   }
 
   @override

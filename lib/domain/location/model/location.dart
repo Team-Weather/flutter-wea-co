@@ -1,5 +1,3 @@
-import 'package:weaco/common/convertor.dart';
-
 class Location {
   final double lat;
   final double lng;
@@ -43,24 +41,6 @@ class Location {
       lng: lng ?? this.lng,
       city: city ?? this.city,
       createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  Map<String, dynamic> toFirebase() {
-    return {
-      'lat': lat,
-      'lng': lng,
-      'city': city,
-      'created_at': convertDateTimeToTimestamp(createdAt),
-    };
-  }
-
-  factory Location.fromFirebase(Map<String, dynamic> data) {
-    return Location(
-      lat: data['lat'] as double,
-      lng: data['lng'] as double,
-      city: data['city'] as String,
-      createdAt: convertTimestampToDateTime(data['created_at']),
     );
   }
 
