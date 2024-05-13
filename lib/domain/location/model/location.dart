@@ -49,7 +49,7 @@ class Location {
       'lat': lat,
       'lng': lng,
       'city': city,
-      'createdAt': createdAt.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
     };
   }
 
@@ -58,7 +58,7 @@ class Location {
       lat: json['lat'] as double,
       lng: json['lng'] as double,
       city: json['city'] as String,
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: DateTime.parse(json['created_at']),
     );
   }
 }
