@@ -5,7 +5,7 @@ import 'package:weaco/domain/weather/model/weather.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 
 class OotdFeedViewModel extends ChangeNotifier {
-  List<OotdCard> _feedList = [];
+  final List<OotdCard> _feedList = [];
   List<OotdCard> get feedList => List.unmodifiable(_feedList);
 
 

@@ -5,7 +5,7 @@ import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 
 import 'ootd_feed_screen.dart';
 
-BoxShadow shadow = BoxShadow(
+BoxShadow shadow = const BoxShadow(
   color: Colors.black26,
   blurRadius: 10.0, // soften the shadow
   spreadRadius: 0.5, //extend the shadow
@@ -16,8 +16,8 @@ class FlipCard extends StatefulWidget {
   final void Function({required bool isToNext}) _moveCallback;
   final void Function() _flipCallback;
 
-  FlipCard(
-      {required OotdCard data,
+  const FlipCard(
+      {super.key, required OotdCard data,
       required void Function({required bool isToNext}) moveCallback,
       required void Function() flipCallback})
       : _data = data,
@@ -25,16 +25,16 @@ class FlipCard extends StatefulWidget {
         _flipCallback = flipCallback;
 
   @override
-  _FlipCardState createState() => _FlipCardState(_data.isFront);
+  State<FlipCard> createState() => _FlipCardState(_data.isFront);
 }
 
 class _FlipCardState extends State<FlipCard>
     with SingleTickerProviderStateMixin {
-  double _swipeThreshold = 100.0;
+  final double _swipeThreshold = 100.0;
   double _swipeStartPoint = 0.0;
   bool _isSwapping = false;
-  int _flipSpeed = 400;
-  double _flipThreshold = 50.0;
+  final int _flipSpeed = 400;
+  final double _flipThreshold = 50.0;
   double _dragStartPoint = 0.0;
   bool _isDragging = false;
   bool _isFlipping = false;
@@ -212,7 +212,7 @@ class _FlipCardState extends State<FlipCard>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               '너의 날씨는?',
               style: TextStyle(
                 fontSize: 24,
@@ -232,7 +232,7 @@ class _FlipCardState extends State<FlipCard>
               width: 240,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFFAFAFA),
+                color: const Color(0xFFFAFAFA),
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -243,7 +243,7 @@ class _FlipCardState extends State<FlipCard>
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Color(0xFF282828),
+                        color: const Color(0xFF282828),
                         boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
@@ -252,8 +252,8 @@ class _FlipCardState extends State<FlipCard>
                           )
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         child: Text(
                           '맑아요',
@@ -265,7 +265,7 @@ class _FlipCardState extends State<FlipCard>
                         ),
                       ),
                     ),
-                    Text(
+                    const Text(
                       '그날의 온도는',
                       style: TextStyle(
                         fontSize: 16,
@@ -274,7 +274,7 @@ class _FlipCardState extends State<FlipCard>
                     ),
                     Text(
                       '${widget._data.feed.weather.temperature}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                       ),
