@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
-          _buildSignInButtons(),
+          _buildSignUpButtons(),
         ],
       ),
     );
@@ -163,7 +163,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 borderRadius: BorderRadius.circular(14),
               ),
               errorStyle: const TextStyle(color: Color(0xFFD00B0B)),
-              errorText: checkErrorText_(labelText),
+              errorText: _checkErrorText(labelText),
             ),
             onChanged: (value) {
               _isValidateForm();
@@ -239,7 +239,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSignInButtons() {
+  Widget _buildSignUpButtons() {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
       color: const Color(0xF5F5F5FF),
@@ -305,7 +305,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _isValidateForm();
   }
 
-  String? checkErrorText_(String label) {
+  String? _checkErrorText(String label) {
     return switch (label) {
       '이메일' => emailFormController.text.isEmpty ||
               _isValidEmail(emailFormController.text)
