@@ -3,20 +3,19 @@ import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
-import '../../../mock/data/feed/repository/mock_feed_repository_impl.dart';
+import '../../../mock/data/feed/repository/mock_ootd_feed_repository_impl.dart';
 
 void main() {
   group('SaveEditFeedUseCase 클래스', () {
-    final feedRepository = MockFeedRepositoryImpl();
+    final ootdFeedRepository = MockOotdFeedRepositoryImpl();
     final saveEditFeedUseCase =
-        SaveEditFeedUseCase(feedRepository: feedRepository);
+        SaveEditFeedUseCase(ootdFeedRepository: ootdFeedRepository);
 
-    setUp(() => feedRepository.initMockData());
+    setUp(() => ootdFeedRepository.initMockData());
 
     group('execute 메소드는', () {
-      test('파라미터로 받은 새 feed를 FeedRepository.saveFeed에 넘긴다.', () async {
+      test('OotdFeedRepository.saveFeed를 한번 호출한다.', () async {
         // Given
-        const bool expectedResponse = true;
         const int expectedCallCount = 1;
 
         final mockFeedNew = Feed(
@@ -42,17 +41,15 @@ void main() {
         );
 
         // When
-        final response = await saveEditFeedUseCase.execute(feed: mockFeedNew);
+        await saveEditFeedUseCase.execute(feed: mockFeedNew);
 
         // Then
-        expect(feedRepository.saveFeedCallCount, expectedCallCount);
-        expect(response, expectedResponse);
+        expect(ootdFeedRepository.saveOotdFeedCallCount, expectedCallCount);
       });
 
-      test('파라미터로 받은 수정된 feed를 FeedRepository.saveFeed에 넘긴다.', () async {
+      test('OotdFeedRepository.saveFeed를 호출하고 반환받은 값을 그대로 반환한다.', () async {
         // Given
-        const int expectedCallCount = 1;
-        const bool expectedResponse = true;
+        const bool expected = true;
         final editedFeed = Feed(
           id: 'id',
           imagePath: 'imagePath',
@@ -74,14 +71,14 @@ void main() {
           createdAt: DateTime.now(),
           deletedAt: null,
         );
-        feedRepository.getFeedResult = editedFeed;
+        ootdFeedRepository.saveOotdFeedParamFeed = editedFeed;
+        ootdFeedRepository.saveOotdFeedReturnValue = expected;
 
         // When
-        final response = await saveEditFeedUseCase.execute(feed: editedFeed);
+        final actual = await saveEditFeedUseCase.execute(feed: editedFeed);
 
         // Then
-        expect(feedRepository.saveFeedCallCount, expectedCallCount);
-        expect(response, expectedResponse);
+        expect(actual, expected);
       });
     });
   });

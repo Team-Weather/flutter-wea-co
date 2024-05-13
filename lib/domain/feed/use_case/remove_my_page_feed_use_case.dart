@@ -1,16 +1,15 @@
-import 'package:weaco/domain/feed/repository/feed_repository.dart';
+import 'package:weaco/domain/feed/repository/ootd_feed_repository.dart';
 
 class RemoveMyPageFeedUseCase {
-  final FeedRepository _feedRepository;
+  final OotdFeedRepository _ootdFeedRepository;
 
-  RemoveMyPageFeedUseCase({required FeedRepository feedRepository})
-      : _feedRepository = feedRepository;
+  RemoveMyPageFeedUseCase({required OotdFeedRepository ootdFeedRepository})
+      : _ootdFeedRepository = ootdFeedRepository;
 
   /// id를 통해 특정 피드를 삭제
   /// @param id: 삭제할 피드의 id
   /// @return: null
-  /// 요 피드(id)를 삭제해 줄래?
   Future<bool> execute({required String id}) async {
-    return await _feedRepository.deleteFeed(id: id);
+    return await _ootdFeedRepository.removeOotdFeed(id: id);
   }
 }
