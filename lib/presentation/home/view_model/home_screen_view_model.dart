@@ -64,8 +64,6 @@ class HomeScreenViewModel with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      debugPrint(e.toString());
-      // TODO. 에러 다이얼로그 또는 스낵바 처리
       _status = HomeScreenStatus.error;
       notifyListeners();
     }

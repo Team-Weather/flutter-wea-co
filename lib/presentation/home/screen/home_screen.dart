@@ -31,6 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeScreenViewModel>();
 
+    if (viewModel.status.isError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
+    }
+
     return Scaffold(
       body: switch (viewModel.status) {
         HomeScreenStatus.error => const Center(child: Text('데이터를 불러올 수 없습니다.')),
