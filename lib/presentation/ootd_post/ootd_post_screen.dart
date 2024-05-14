@@ -38,7 +38,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: _appBar(),
+        appBar: _appBar(viewModel),
         body: viewModel.showSpinner
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
@@ -145,7 +145,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(OotdPostViewModel viewModel) {
     return AppBar(
       title: const Text('피드글 쓰기'),
       centerTitle: true,
@@ -156,11 +156,15 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       actions: [
         TextButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('저장되었습니다.'),
-              ),
-            );
+            viewModel.saveFeed(_contentTextController.text, (result) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: result
+                      ? const Text('저장되었습니다.')
+                      : const Text('다시 시도해 주세요.'),
+                ),
+              );
+            });
           },
           child: const Text(
             '저장',
