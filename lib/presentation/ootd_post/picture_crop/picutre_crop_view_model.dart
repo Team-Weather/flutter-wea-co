@@ -1,19 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
 
 class PictureCropViewModel with ChangeNotifier {
   final SaveImageUseCase _saveImageUseCase;
-  final GetImageUseCase _getImageUseCase;
-  File? _file;
 
   PictureCropViewModel({
     required SaveImageUseCase saveImageUseCase,
-    required GetImageUseCase getImageUseCase,
-  })  : _saveImageUseCase = saveImageUseCase,
-        _getImageUseCase = getImageUseCase;
+  })  : _saveImageUseCase = saveImageUseCase;
 
   /// 원본 이미지 저장
   void saveOriginImage({required File file}) async {
