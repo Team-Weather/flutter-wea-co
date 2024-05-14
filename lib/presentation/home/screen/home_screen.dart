@@ -24,17 +24,23 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController = ScrollController();
 
     Future.microtask(
-        () async => await context.read<HomeScreenViewModel>().initHomeScreen());
+      () async => await context.read<HomeScreenViewModel>().initHomeScreen(),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (context.read<HomeScreenViewModel>().status.isError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeScreenViewModel>();
-
-    if (viewModel.status.isError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
-    }
 
     return Scaffold(
       body: switch (viewModel.status) {
@@ -43,11 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
           const Center(child: CircularProgressIndicator()),
         HomeScreenStatus.idle => const SizedBox(),
         HomeScreenStatus.success => Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
-                // TODO. 날씨에 맞는 배경 이미지 삽입
-                image: AssetImage(ImagePath.homeBackgroundSunny),
+                image: AssetImage(viewModel.backgroundImagePath),
               ),
             ),
             child: SafeArea(
