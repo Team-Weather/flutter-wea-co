@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/di/di_setup.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
+import 'package:weaco/presentation/common/handler/exception_handle_dialog.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -282,7 +287,19 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: isSignInButtonEnabled ? () {} : null,
+        onTap: isSignInButtonEnabled
+            ? () {
+                context
+                    .read<SignInViewModel>()
+                    .signIn(
+                      email: emailFormController.text,
+                      password: passwordFormController.text,
+                    )
+                    .then((_) => RouterStatic.goToHome(context))
+                    .catchError((e) => getIt<ExceptionHandleDialog>()
+                        .showOneButtonDialog(context, e));
+              }
+            : null,
         child: Container(
           decoration: BoxDecoration(
             color: isSignInButtonEnabled
@@ -311,7 +328,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: () {},
+        onTap: () => RouterStatic.goToSignUp(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.transparent,
