@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
@@ -10,7 +11,6 @@ import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
-import 'package:weaco/presentation/settings/screen/app_setting_license_screen.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
 import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
@@ -66,7 +66,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.appSettingLicense.path,
-      builder: (context, state) => const AppSettingLicenseScreen(),
+      builder: (context, state) => const LicensePage(),
     ),
     GoRoute(
       path: RouterPath.myPage.path,
