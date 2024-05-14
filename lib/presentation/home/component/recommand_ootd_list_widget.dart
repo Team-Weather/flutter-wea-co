@@ -33,7 +33,7 @@ class RecommandOotdListWidget extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: dailyLocationWeather?.weatherList.length,
+                itemCount: feedList.length,
                 itemBuilder: (context, index) {
                   return RecommandOotdWidget(
                     feedList: feedList,
