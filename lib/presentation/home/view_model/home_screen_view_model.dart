@@ -58,9 +58,9 @@ class HomeScreenViewModel with ChangeNotifier {
         // 현재 시간에 맞는 날씨 예보 빼내기
         _currentWeather = dailyLocationWeather!.weatherList.firstWhere(
             (element) => element.timeTemperature.hour == DateTime.now().hour);
-      }
 
-      // TODO. 전일 대비 계산
+        _calculateTemperatureGap();
+      }
 
       notifyListeners();
     } catch (e) {
@@ -69,5 +69,14 @@ class HomeScreenViewModel with ChangeNotifier {
       _status = HomeScreenStatus.error;
       notifyListeners();
     }
+  }
+
+  /// 전일 대비 온도 계산
+  void _calculateTemperatureGap() {
+    _temperatureGap = (dailyLocationWeather!.yesterDayWeatherList
+            .firstWhere((element) =>
+                element.timeTemperature.hour == DateTime.now().hour)
+            .temperature) -
+        (currentWeather!.temperature);
   }
 }
