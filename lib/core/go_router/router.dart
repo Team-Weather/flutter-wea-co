@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
+import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
+import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -78,17 +80,22 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdFeed.path,
-      // builder: (context, state) => OotdFeedScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => OotdFeedViewModel(getSearchFeedsUseCase: getIt()),
+          child: const OotdFeedScreen(),
+        );
+      },
     ),
     GoRoute(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt(), getUserProfileUseCase: getIt(), id: state.extra as String),
-          child: const OotdDetailScreen(),
+          create: (_) => OotdDetailViewModel(
+              getDetailFeedDetailUseCase: getIt(),
+              getUserProfileUseCase: getIt(),
+              id: state.uri.queryParameters['id'] ?? ''),
+          child: OotdDetailScreen(id: state.uri.queryParameters['id'] ?? '', mainImagePath: state.uri.queryParameters['imagePath'] ?? '',),
         );
       },
     ),
