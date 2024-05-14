@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:weaco/domain/common/enum/weather_code.dart';
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 
 class WeatherByTimeWidget extends StatelessWidget {
@@ -30,7 +30,8 @@ class WeatherByTimeWidget extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Image.asset(
-            WeatherCode.fromCode(dailyLocationWeather!.weatherList[index].code)
+            WeatherCode.fromDtoCode(
+                    dailyLocationWeather!.weatherList[index].code)
                 .iconPath,
             width: 28,
           ),

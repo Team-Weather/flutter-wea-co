@@ -44,8 +44,10 @@ class RecommandOotdListWidget extends StatelessWidget {
                       itemCount: feedList.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          // TODO. 추후 feed 데이터 들고 이동하도록 구현해야 함.
-                          onTap: () => RouterStatic.goToOotdDetail(context),
+                          onTap: () => RouterStatic.goToOotdDetail(
+                            context,
+                            feedList[index].id!,
+                          ),
                           child: RecommandOotdWidget(
                             feedList: feedList,
                             index: index,

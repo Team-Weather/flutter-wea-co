@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
-import 'package:weaco/domain/common/enum/weather_code.dart';
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/home/component/recommand_ootd_list_widget.dart';
 import 'package:weaco/presentation/home/component/weather_by_time_list_widget.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
@@ -32,10 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (context.read<HomeScreenViewModel>().status.isError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
-    }
+    // if (context.read<HomeScreenViewModel>().status.isError) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
+    // }
   }
 
   @override
@@ -82,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 4),
                           // weather code description
                           Text(
-                            WeatherCode.fromCode(viewModel.currentWeather!.code)
+                            WeatherCode.fromDtoCode(
+                                    viewModel.currentWeather!.code)
                                 .description,
                             style: const TextStyle(
                               fontSize: 15,

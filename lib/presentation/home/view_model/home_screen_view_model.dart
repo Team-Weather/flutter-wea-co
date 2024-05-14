@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weaco/common/image_path.dart';
-import 'package:weaco/domain/common/enum/weather_code.dart';
-
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -72,7 +71,8 @@ class HomeScreenViewModel with ChangeNotifier {
       }
 
       notifyListeners();
-    } catch (e) {
+    } on Exception catch (e) {
+      print(e);
       _status = HomeScreenStatus.error;
       notifyListeners();
     }
@@ -90,7 +90,8 @@ class HomeScreenViewModel with ChangeNotifier {
 
       WeatherBackgroundImage image = weatherBackgroundImageList.firstWhere(
           (element) =>
-              element.code == WeatherCode.fromCode(currentWeather!.code).value);
+              element.code ==
+              WeatherCode.fromDtoCode(currentWeather!.code).value);
 
       _weatherBackgroundImage = image.imagePath;
     } catch (e) {
