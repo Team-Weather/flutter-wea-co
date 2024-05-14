@@ -15,58 +15,37 @@ class PictureCropScreen extends StatefulWidget {
 }
 
 class _PictureCropScreenState extends State<PictureCropScreen> {
+  late Future<void> _cropImageFuture;
   CroppedFile? _croppedFile;
+  final String samplePath =
+      '/data/data/team.weather.weaco/cache/0ddabc12-9269-428b-8123-b09d1230c5a62983180504067444417.jpg';
+
+  @override
+  void initState() {
+    super.initState();
+    _cropImageFuture = _cropImage(samplePath);
+  }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<PictureCropViewModel>();
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.arrow_back),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              '확인',
-              style: TextStyle(
-                color: Color(0xFFFC8800),
-                fontSize: 18,
-              ),
-            ),
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _croppedFile != null
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Image.file(File(_croppedFile!.path)),
-                    ),
-                  )
-                : const Text('이미지 없을 무'),
-            ElevatedButton(
-              onPressed: () async {
-                await cropImage(viewModel);
-              },
-              child: const Text('이미지 가져오기'),
-            ),
-          ],
-        ),
-      ),
+    return FutureBuilder(
+      future: _cropImageFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          _cropResult(samplePath, viewModel);
+          return const Scaffold(
+            body: SizedBox(),
+          );
+        }
+      },
     );
   }
 
-  Future<void> cropImage(PictureCropViewModel viewModel) async {
-    const String samplePath =
-        '/data/user/0/team.weather.weaco/cache/c2b5e982-bdf9-413b-a1c0-06966e6a4683/1000000018.jpg';
+  Future<void> _cropImage(String samplePath) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: samplePath,
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
@@ -87,24 +66,30 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     );
 
     if (croppedFile != null) {
-      viewModel.saveOriginImage(file: File(samplePath));
-      viewModel.saveCroppedImage(
-          file: File(croppedFile.path),
-          callback: (result) {
-            if (result) {
-              context.push(RouterPath.ootdPost.path);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('잠시 후 다시 시도해 주시기 바랍니다.'),
-                ),
-              );
-            }
-          });
+      _croppedFile = croppedFile;
+    }
+  }
 
-      setState(() {
-        _croppedFile = croppedFile;
-      });
+  void _cropResult(String samplePath, PictureCropViewModel viewModel) {
+    if (_croppedFile == null) {
+      return;
+    } else {
+      viewModel.saveOriginImage(file: File(samplePath));
+
+      viewModel.saveCroppedImage(
+        file: File(_croppedFile!.path),
+        callback: (result) {
+          if (result) {
+            context.push(RouterPath.ootdPost.path);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('잠시 후 다시 시도해 주시기 바랍니다.'),
+              ),
+            );
+          }
+        },
+      );
     }
   }
 }
