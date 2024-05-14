@@ -33,7 +33,7 @@ class RecommandOotdListWidget extends StatelessWidget {
             feedList.isEmpty
                 ? const Center(
                     child: Text(
-                      '아직 추천 할 만 한 코디가 없어요 :( \n 가장 먼저 OOTD를 올려보세요! :D',
+                      '아직 등록된 코디가 없어요 :( \n 가장 먼저 OOTD를 올려보세요! :D',
                       textAlign: TextAlign.center,
                     ),
                   )
