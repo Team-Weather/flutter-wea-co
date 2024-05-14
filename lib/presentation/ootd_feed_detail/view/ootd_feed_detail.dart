@@ -265,7 +265,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
             top: 0,
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 16, 8, 16),
+              padding: const EdgeInsets.fromLTRB(18, 10, 8, 0),
               child: Builder(builder: (context) {
                 log('상단 프로필 build() 호출');
                 return Row(
