@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 
 import 'ootd_feed_screen.dart';
@@ -83,7 +82,7 @@ class _FlipCardState extends State<FlipCard>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        RouterStatic.goToOotdDetail(context);
+        // RouterStatic.goToOotdDetail(context);
       },
       onHorizontalDragStart: (details) {
         _swipeStartPoint = details.localPosition.dx;

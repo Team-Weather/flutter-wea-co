@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 
 /// 버튼 두 개가 있는 다이얼로그
 class TwoButtonDialog extends StatelessWidget {
+  final String title;
+  final String content;
+  final VoidCallback onPressedLeft;
+  final VoidCallback onPressedRight;
+  final String leftButtonText;
+  final String rightButtonCancelText;
+  final int leftButtonColor;
+  final int rightButtonColor;
+
   const TwoButtonDialog({
     super.key,
     required this.title,
     required this.content,
-    required this.onPressedCheck,
-    required this.onPressedCancel,
-    required this.buttonText,
-    required this.buttonCancelText,
+    required this.onPressedLeft,
+    required this.onPressedRight,
+    required this.leftButtonText,
+    required this.rightButtonCancelText,
+    this.leftButtonColor = 0xFFFDCE55,
+    this.rightButtonColor = 0xFFB1B1B1,
   });
-
-  final String title;
-  final String content;
-  final VoidCallback onPressedCheck;
-  final VoidCallback onPressedCancel;
-  final String buttonText;
-  final String buttonCancelText;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,7 @@ class TwoButtonDialog extends StatelessWidget {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFFFDCE55),
+                          Color(leftButtonColor),
                         ),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -69,9 +73,9 @@ class TwoButtonDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onPressed: onPressedCancel,
+                      onPressed: onPressedLeft,
                       child: Text(
-                        buttonCancelText,
+                        leftButtonText,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -90,7 +94,7 @@ class TwoButtonDialog extends StatelessWidget {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFFB1B1B1),
+                          Color(rightButtonColor),
                         ),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -99,9 +103,9 @@ class TwoButtonDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onPressed: onPressedCheck,
+                      onPressed: onPressedRight,
                       child: Text(
-                        buttonText,
+                        rightButtonCancelText,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,

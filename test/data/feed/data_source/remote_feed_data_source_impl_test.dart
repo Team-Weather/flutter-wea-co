@@ -208,7 +208,7 @@ void main() {
               await fakeFirestore.collection('feeds').doc(testId).get();
 
           final feedDeletedAt =
-              toFeed(feedDto: docResult.data()!, id: docResult.id).deletedAt;
+              toFeed(json: docResult.data()!, id: docResult.id).deletedAt;
 
           // Then
           expect(result, feedDeletedAt != null);

@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 
 /// 버튼 하나만 있는 다이얼로그
 class OneButtonDialog extends StatelessWidget {
+  final String title;
+  final String content;
+  final VoidCallback onPressedCheck;
+  final String buttonText;
+  final int buttonColor;
+
   const OneButtonDialog({
     super.key,
     required this.title,
     required this.content,
     required this.onPressedCheck,
     required this.buttonText,
+    this.buttonColor = 0xFFFDCE55,
   });
-
-  final String title;
-  final String content;
-  final VoidCallback onPressedCheck;
-  final String buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class OneButtonDialog extends StatelessWidget {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFFFDCE55),
+                          Color(buttonColor),
                         ),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
