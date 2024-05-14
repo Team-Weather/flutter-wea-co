@@ -23,9 +23,7 @@ class _WeatherByTimeListWidgetState extends State<WeatherByTimeListWidget> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.scrollController.jumpTo(
-          (widget.scrollController.position.maxScrollExtent / 4) *
-              (DateTime.now().hour ~/ 5));
+      _moveScrollToCurrentTime();
     });
   }
 
@@ -50,5 +48,26 @@ class _WeatherByTimeListWidgetState extends State<WeatherByTimeListWidget> {
                 );
               })),
     );
+  }
+
+  _moveScrollToCurrentTime() {
+    final hour = DateTime.now().hour;
+    const totalItems = 24; // 전체 아이템 개수
+    const visibleItems = 5; // 화면에 보이는 아이템 개수
+    final middleIndex = (visibleItems / 2).floor(); // 중앙 인덱스
+
+    // 현재 시간을 5개의 아이템 중 가운데에 위치시키기 위해 중앙 인덱스에서 현재 시간의 위치를 계산
+    final scrollToIndex =
+        (totalItems - visibleItems) ~/ 2 + (hour - middleIndex);
+
+    // 계산된 인덱스가 스크롤 가능한 범위 내에 있는지 확인
+    final scrollExtent = widget.scrollController.position.maxScrollExtent;
+    final itemExtent =
+        widget.scrollController.position.viewportDimension / visibleItems;
+    final maxScrollIndex = (scrollExtent - itemExtent).floor();
+    final clampedScrollToIndex = scrollToIndex.clamp(0, maxScrollIndex);
+
+    // 계산된 인덱스로 스크롤 이동
+    widget.scrollController.jumpTo(clampedScrollToIndex * itemExtent);
   }
 }
