@@ -5,6 +5,8 @@ import 'package:weaco/core/di/file/file_di_setup.dart';
 import 'package:weaco/core/di/location/location_di_setup.dart';
 import 'package:weaco/core/di/user/user_di_setup.dart';
 import 'package:weaco/core/di/weather/weather_di_setup.dart';
+import 'package:weaco/domain/user/use_case/sign_in_use_case.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -25,7 +27,10 @@ void diSetup() {
   locationDiSetup();
   feedDiSetup();
   weatherDiSetup();
+
   // ViewModel
+  getIt.registerFactory<SignInViewModel>(
+      () => SignInViewModel(signInUseCase: getIt<SignInUseCase>()));
 
   // View
 }

@@ -3,10 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/dio/base_dio.dart';
+import 'package:weaco/core/exception/handler/ExceptionMessageHandler.dart';
 import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/core/gps/gps_helper.dart';
 import 'package:weaco/core/hive/hive_wrapper.dart';
 import 'package:weaco/core/path_provider/path_provider_service.dart';
+import 'package:weaco/presentation/common/handler/exception_handle_dialog.dart';
 
 void commonDiSetup() {
   // Firebase
@@ -27,4 +29,11 @@ void commonDiSetup() {
 
   // Hive
   getIt.registerLazySingleton<HiveWrapper>(() => HiveWrapper());
+
+  // Exception
+  getIt.registerLazySingleton<ExceptionMessageHandler>(
+      () => ExceptionMessageHandler());
+  getIt.registerLazySingleton<ExceptionHandleDialog>(() =>
+      ExceptionHandleDialog(
+          exceptionMessageHandler: getIt<ExceptionMessageHandler>()));
 }
