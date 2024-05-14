@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
@@ -16,6 +17,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   late ScrollController _scrollController;
   final TextEditingController _contentTextController = TextEditingController();
   bool isClicked = false;
+  CroppedFile? _croppedFile;
 
   @override
   void initState() {
@@ -150,7 +152,11 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       title: const Text('피드글 쓰기'),
       centerTitle: true,
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () async {
+          viewModel.getOriginImage();
+          if (viewModel.originImage == null) return;
+          await cropImage(viewModel.originImage!.path);
+        },
         icon: const Icon(Icons.arrow_back),
       ),
       actions: [
@@ -187,6 +193,35 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
         child: Text(name),
       ),
     );
+  }
+
+  Future<void> cropImage(String sourcePath) async {
+    // const String samplePath =
+    //     '/data/user/0/team.weather.weaco/cache/c2b5e982-bdf9-413b-a1c0-06966e6a4683/1000000018.jpg';
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: sourcePath,
+      aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.ratio16x9,
+          lockAspectRatio: true, // 비율 고정
+        ),
+        IOSUiSettings(
+          title: '이미지 자르기',
+          minimumAspectRatio: 1.0, // 비율 고정
+          rotateButtonsHidden: true,
+          aspectRatioPickerButtonHidden: true,
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      setState(() {
+        _croppedFile = croppedFile;
+      });
+    }
   }
 
   void _scrollTo() {

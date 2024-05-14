@@ -24,6 +24,7 @@ class OotdPostViewModel with ChangeNotifier {
         _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase,
         _saveEditFeedUseCase = saveEditFeedUseCase;
 
+  File? _originImage;
   File? _image;
   Weather? _weather;
   DailyLocationWeather? _dailyLocationWeather;
@@ -73,6 +74,13 @@ class OotdPostViewModel with ChangeNotifier {
 
     callback(result);
   }
+
+  void getOriginImage() async {
+    _originImage = await _getImageUseCase.execute(isOrigin: true);
+  }
+
+
+  File? get originImage => _originImage;
 
   File? get image => _image;
 
