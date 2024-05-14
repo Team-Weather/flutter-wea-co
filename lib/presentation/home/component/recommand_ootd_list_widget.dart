@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/presentation/home/component/recommand_ootd_widget.dart';
@@ -42,9 +43,13 @@ class RecommandOotdListWidget extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: feedList.length,
                       itemBuilder: (context, index) {
-                        return RecommandOotdWidget(
-                          feedList: feedList,
-                          index: index,
+                        return GestureDetector(
+                          // TODO. 추후 feed 데이터 들고 이동하도록 구현해야 함.
+                          onTap: () => RouterStatic.goToOotdDetail(context),
+                          child: RecommandOotdWidget(
+                            feedList: feedList,
+                            index: index,
+                          ),
                         );
                       },
                     ),
