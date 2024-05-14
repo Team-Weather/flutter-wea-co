@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -107,7 +108,12 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
-      builder: (context, state) => const OotdPostScreen(),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => getIt<OotdPostViewModel>(),
+          child: const OotdPostScreen(),
+        );
+      },
     ),
   ],
 );
