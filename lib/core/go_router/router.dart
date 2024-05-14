@@ -11,6 +11,7 @@ import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
 import 'package:weaco/presentation/ootd_post/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
+import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
 
@@ -85,9 +86,12 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdDetail.path,
-      builder: (context, state) => const OotdDetailScreen(
-        id: 'asdfasdfsaf',
-      ),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt(), getUserProfileUseCase: getIt(), id: state.extra as String),
+          child: const OotdDetailScreen(),
+        );
+      },
     ),
     GoRoute(
       path: RouterPath.camera.path,
