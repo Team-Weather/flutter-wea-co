@@ -82,7 +82,7 @@ final router = GoRouter(
       path: RouterPath.ootdFeed.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => OotdFeedViewModel(getSearchFeedsUseCase: getIt()),
+          create: (_) => getIt<OotdFeedViewModel>(),
           child: const OotdFeedScreen(),
         );
       },
@@ -91,10 +91,7 @@ final router = GoRouter(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => OotdDetailViewModel(
-              getDetailFeedDetailUseCase: getIt(),
-              getUserProfileUseCase: getIt(),
-              id: state.uri.queryParameters['id'] ?? ''),
+          create: (_) => getIt<OotdDetailViewModel>(param1: state.uri.queryParameters['id'] ?? ''),
           child: OotdDetailScreen(id: state.uri.queryParameters['id'] ?? '', mainImagePath: state.uri.queryParameters['imagePath'] ?? '',),
         );
       },
