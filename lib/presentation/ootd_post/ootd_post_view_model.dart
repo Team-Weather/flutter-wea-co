@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
+import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
@@ -14,15 +15,18 @@ class OotdPostViewModel with ChangeNotifier {
   final GetImageUseCase _getImageUseCase;
   final GetDailyLocationWeatherUseCase _getDailyLocationWeatherUseCase;
   final SaveEditFeedUseCase _saveEditFeedUseCase;
+  final SaveImageUseCase _saveImageUseCase;
   bool _showSpinner = false;
 
   OotdPostViewModel({
     required GetImageUseCase getImageUseCase,
     required GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase,
     required SaveEditFeedUseCase saveEditFeedUseCase,
+    required SaveImageUseCase saveImageUseCase,
   })  : _getImageUseCase = getImageUseCase,
         _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase,
-        _saveEditFeedUseCase = saveEditFeedUseCase;
+        _saveEditFeedUseCase = saveEditFeedUseCase,
+        _saveImageUseCase = saveImageUseCase;
 
   File? _originImage;
   File? _image;
@@ -77,6 +81,16 @@ class OotdPostViewModel with ChangeNotifier {
 
   void getOriginImage() async {
     _originImage = await _getImageUseCase.execute(isOrigin: true);
+  }
+
+  void saveCroppedImage({
+    required File file,
+    required Function(bool) callback,
+  }) async {
+    final bool result =
+    await _saveImageUseCase.execute(isOrigin: false, file: file);
+
+    callback(result);
   }
 
 

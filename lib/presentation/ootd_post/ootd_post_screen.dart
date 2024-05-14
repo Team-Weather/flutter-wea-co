@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
@@ -52,22 +54,30 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                     children: [
                       Stack(
                         children: [
-                          Image.file(viewModel.image!),
+                          _croppedFile == null ? Image.file(viewModel.image!)
+                          : Image.file(File(_croppedFile!.path)),
                           Positioned(
                             top: 10,
                             right: 10,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(5.0),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.crop),
-                                    Text('수정'),
-                                  ],
+                            child: GestureDetector(
+                              onTap: () async {
+                                viewModel.getOriginImage();
+                                if (viewModel.originImage == null) return;
+                                await cropImage(viewModel.originImage!.path);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.crop),
+                                      Text('수정'),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -218,6 +228,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     );
 
     if (croppedFile != null) {
+
       setState(() {
         _croppedFile = croppedFile;
       });
