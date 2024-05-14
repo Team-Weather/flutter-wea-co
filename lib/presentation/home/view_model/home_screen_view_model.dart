@@ -71,8 +71,7 @@ class HomeScreenViewModel with ChangeNotifier {
       }
 
       notifyListeners();
-    } on Exception catch (e) {
-      print(e);
+    } catch (e) {
       _status = HomeScreenStatus.error;
       notifyListeners();
     }
