@@ -1,12 +1,12 @@
 class HourlyDto {
   List<String>? _time;
-  List<num>? _temperature2m;
-  List<num>? _weathercode;
+  List? _temperature2m;
+  List? _weathercode;
 
   HourlyDto({
     List<String>? time,
-    List<num>? temperature2m,
-    List<num>? weathercode,
+    List? temperature2m,
+    List? weathercode,
   }) {
     _time = time ?? [];
     _temperature2m = temperature2m ?? [];
@@ -16,16 +16,16 @@ class HourlyDto {
   HourlyDto.fromJson({required dynamic json}) {
     _time = json['time'] != null ? json['time'].cast<String>() : [];
     _temperature2m = json['temperature_2m'] != null
-        ? json['temperature_2m'] as List<num>
+        ? json['temperature_2m'] as List
         : [];
     _weathercode =
-        json['weathercode'] != null ? json['weathercode'] as List<num> : [];
+        json['weathercode'] != null ? json['weathercode'] as List : [];
   }
 
   HourlyDto copyWith({
     List<String>? time,
-    List<num>? temperature2m,
-    List<num>? weathercode,
+    List? temperature2m,
+    List? weathercode,
   }) =>
       HourlyDto(
         time: time ?? _time,
@@ -35,9 +35,9 @@ class HourlyDto {
 
   List<String>? get time => _time;
 
-  List<num>? get temperature2m => _temperature2m;
+  List? get temperature2m => _temperature2m;
 
-  List<num>? get weathercode => _weathercode;
+  List? get weathercode => _weathercode;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
