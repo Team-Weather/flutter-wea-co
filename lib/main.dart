@@ -7,10 +7,13 @@ import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'firebase_options.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 late Box dataBox;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PackageInfo.fromPlatform();
   await Hive.initFlutter();
   dataBox = await Hive.openBox('weacoBox');
   await dotenv.load(fileName: '.env');
@@ -36,6 +39,12 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ko'),
       title: 'WeaCo',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(fontSize: 22),
+          headlineMedium: TextStyle(fontSize: 18),
+          headlineSmall: TextStyle(fontSize: 14),
+          bodyLarge: TextStyle(fontSize: 12),
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -90,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to DialogScreen'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => RouterStatic.pushToAppSetting(context),
               child: const Text('Go to AppSettingScreen'),
             ),
             TextButton(
