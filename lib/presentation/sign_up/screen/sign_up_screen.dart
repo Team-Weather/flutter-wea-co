@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/gender_code.dart';
+import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/common/handler/check_handle_dialog.dart';
+import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -192,8 +197,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Expanded(
           child: GestureDetector(
             onTap: () => _handleGenderSelection(GenderCode.women),
-            child:
-                _buildGenderOption(GenderCode.women.name, selectedGender == GenderCode.women),
+            child: _buildGenderOption(
+                GenderCode.women.name, selectedGender == GenderCode.women),
           ),
         ),
       ],
@@ -244,7 +249,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
       color: const Color(0xF5F5F5FF),
       child: InkWell(
-        onTap: isSignUpButtonEnabled ? () {} : null,
+        onTap: isSignUpButtonEnabled
+            ? () {
+                context
+                    .read<SignUpViewModel>()
+                    .signUp(
+                      email: emailFormController.text,
+                      password: passwordFormController.text,
+                      nickname: nicknameFormController.text,
+                      genderCode: selectedGender,
+                    )
+                    .then((_) => getIt<CheckHandleDialog>().showOneButtonDialog(
+                        context: context,
+                        content: '회원가입에 성공하였습니다.',
+                        buttonText: '둘러보기',
+                        onPressedCheck: () => RouterStatic.goToHome(context)))
+                    .catchError((e) {});
+              }
+            : null,
         child: Container(
           height: 54,
           decoration: BoxDecoration(
