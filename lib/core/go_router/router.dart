@@ -87,7 +87,7 @@ final router = GoRouter(
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt(), getUserProfileUseCase: getIt(), id: state.extra as String),
-          child: OotdDetailScreen(),
+          child: const OotdDetailScreen(),
         );
       },
     ),
