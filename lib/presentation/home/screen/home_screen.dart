@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 4),
                           // weather code description
                           Text(
-                            WeatherCode.fromValue(currentWeather!.code)
+                            WeatherCode.fromCode(currentWeather!.code)
                                 .description,
                             style: const TextStyle(
                               fontSize: 15,
