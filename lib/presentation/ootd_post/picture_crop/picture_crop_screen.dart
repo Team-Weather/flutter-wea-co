@@ -19,7 +19,7 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => context.pop,
+          onPressed: () => context.pop(),
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
