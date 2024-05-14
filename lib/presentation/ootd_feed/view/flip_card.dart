@@ -1,7 +1,11 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/enum/weather_code.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
-
+import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'ootd_feed_screen.dart';
 
 BoxShadow shadow = const BoxShadow(
@@ -11,15 +15,16 @@ BoxShadow shadow = const BoxShadow(
 );
 
 class FlipCard extends StatefulWidget {
-  final OotdCard _data;
+  final int _index;
   final void Function({required bool isToNext}) _moveCallback;
   final void Function() _flipCallback;
 
   const FlipCard(
-      {super.key, required OotdCard data,
+      {super.key,
+      required int index,
       required void Function({required bool isToNext}) moveCallback,
       required void Function() flipCallback})
-      : _data = data,
+      : _index= index,
         _moveCallback = moveCallback,
         _flipCallback = flipCallback;
 
@@ -29,16 +34,17 @@ class FlipCard extends StatefulWidget {
 
 class _FlipCardState extends State<FlipCard>
     with SingleTickerProviderStateMixin {
+  late final OotdCard _data;
   final double _swipeThreshold = 100.0;
   double _swipeStartPoint = 0.0;
   bool _isSwapping = false;
-  final int _flipSpeed = 400;
-  final double _flipThreshold = 50.0;
+  final int _flipSpeed = 230;
+  final double _flipThreshold = 40.0;
   double _dragStartPoint = 0.0;
   bool _isDragging = false;
   bool _isFlipping = false;
   bool _isKeepGoingDown = true;
-  late bool _isToBack;
+  bool _isToBack = true;
   late AnimationController _controller;
   late Animation<double> _upAnimation;
   late Animation<double> _downAnimation;
@@ -48,14 +54,18 @@ class _FlipCardState extends State<FlipCard>
     _controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: _flipSpeed));
     _upAnimation = TweenSequence([
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: -pi / 2), weight: 0.5),
+      TweenSequenceItem(
+          tween: Tween(begin: 0.0, end: -math.pi / 2), weight: 0.5),
       TweenSequenceItem(tween: ConstantTween(0.0), weight: 0.5),
     ]).animate(_controller);
     _downAnimation = TweenSequence([
-      TweenSequenceItem(tween: ConstantTween(pi / 2), weight: 0.5),
-      TweenSequenceItem(tween: Tween(begin: pi / 2, end: 0.0), weight: 0.5),
+      TweenSequenceItem(tween: ConstantTween(math.pi / 2), weight: 0.5),
+      TweenSequenceItem(
+          tween: Tween(begin: math.pi / 2, end: 0.0), weight: 0.5),
     ]).animate(_controller);
-    _isToBack = widget._data.isFront;
+    _data =
+        context.read<OotdFeedViewModel>().feedList[widget._index];
+    _isToBack = _data.isFront;
     super.initState();
   }
 
@@ -80,83 +90,96 @@ class _FlipCardState extends State<FlipCard>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // RouterStatic.goToOotdDetail(context);
+    log('전체 build(${widget._index}) 호출', name: 'FlipCard.build()');
+    var scale = context.read<OotdFeedViewModel>().currentIndex == widget._index ? 1.0 : 0.85;
+    return TweenAnimationBuilder(
+      curve: Curves.ease,
+      tween: Tween(begin: scale, end: scale),
+      duration: const Duration(milliseconds: 0),
+      builder: (_, __, Widget? child) {
+        return Transform.scale(
+          scale: scale,
+          child: child,
+        );
       },
-      onHorizontalDragStart: (details) {
-        _swipeStartPoint = details.localPosition.dx;
-        _isSwapping = true;
-      },
-      onHorizontalDragUpdate: (details) {
-        if (!_isSwapping) return;
-        if (_swipeStartPoint - details.localPosition.dx >= _swipeThreshold) {
-          _isSwapping = false;
-          widget._moveCallback(isToNext: true);
-        } else if (_swipeStartPoint - details.localPosition.dx <=
-            -_swipeThreshold) {
-          _isSwapping = false;
-          widget._moveCallback(isToNext: false);
-        }
-      },
-      onVerticalDragStart: (details) {
-        _dragStartPoint = details.localPosition.dy;
-        _isDragging = true;
-      },
-      onVerticalDragUpdate: (details) {
-        if (!_isDragging || _isFlipping) return;
-        if (_dragStartPoint - details.localPosition.dy >= _flipThreshold) {
-          _isDragging = false;
-          _flip(isUp: true);
-          widget._flipCallback();
-        } else if (_dragStartPoint - details.localPosition.dy <=
-            -_flipThreshold) {
-          _isDragging = false;
-          _flip(isUp: false);
-        }
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SizedBox(
-            width: cardWidth,
-            height: cardHeight,
-            child: AnimatedBuilder(
-              animation: _downAnimation,
-              builder: (_, __) {
-                return Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.0005)
-                    ..rotateX(_downAnimation.value),
-                  child: Visibility(
-                    visible: _controller.value >= 0.5,
-                    child: _isToBack ? _buildBackSide() : _buildFrontSide(),
-                  ),
-                );
-              },
+      child: GestureDetector(
+        onTap: () {
+          RouterStatic.goToOotdDetail(context, id: _data.feed.id ?? '', imagePath: _data.feed.imagePath);
+        },
+        onHorizontalDragStart: (details) {
+          _swipeStartPoint = details.localPosition.dx;
+          _isSwapping = true;
+        },
+        onHorizontalDragUpdate: (details) {
+          if (!_isSwapping) return;
+          if (_swipeStartPoint - details.localPosition.dx >= _swipeThreshold) {
+            _isSwapping = false;
+            widget._moveCallback(isToNext: true);
+          } else if (_swipeStartPoint - details.localPosition.dx <=
+              -_swipeThreshold) {
+            _isSwapping = false;
+            widget._moveCallback(isToNext: false);
+          }
+        },
+        onVerticalDragStart: (details) {
+          _dragStartPoint = details.localPosition.dy;
+          _isDragging = true;
+        },
+        onVerticalDragUpdate: (details) {
+          if (!_isDragging || _isFlipping) return;
+          if (_dragStartPoint - details.localPosition.dy >= _flipThreshold) {
+            _isDragging = false;
+            _flip(isUp: true);
+            widget._flipCallback();
+          } else if (_dragStartPoint - details.localPosition.dy <=
+              -_flipThreshold) {
+            _isDragging = false;
+            _flip(isUp: false);
+          }
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              width: cardWidth,
+              height: cardHeight,
+              child: AnimatedBuilder(
+                animation: _downAnimation,
+                builder: (_, __) {
+                  return Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.0005)
+                      ..rotateX(_downAnimation.value),
+                    child: Visibility(
+                      visible: _controller.value >= 0.5,
+                      child: _isToBack ? _buildBackSide() : _buildFrontSide(),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            width: cardWidth,
-            height: cardHeight,
-            child: AnimatedBuilder(
-              animation: _upAnimation,
-              builder: (_, __) {
-                return Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.0005)
-                    ..rotateX(_upAnimation.value),
-                  child: Visibility(
-                    visible: _controller.value < 0.5,
-                    child: _isToBack ? _buildFrontSide() : _buildBackSide(),
-                  ),
-                );
-              },
+            SizedBox(
+              width: cardWidth,
+              height: cardHeight,
+              child: AnimatedBuilder(
+                animation: _upAnimation,
+                builder: (_, __) {
+                  return Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.0005)
+                      ..rotateX(_upAnimation.value),
+                    child: Visibility(
+                      visible: _controller.value < 0.5,
+                      child: _isToBack ? _buildFrontSide() : _buildBackSide(),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -177,14 +200,14 @@ class _FlipCardState extends State<FlipCard>
           BoxShadow(
             color: Colors.black26,
             blurRadius: 10.0, // 얼마나 흩어져
-            spreadRadius: 0.1, // 얼마나 두껍게
+            spreadRadius: 0.01, // 얼마나 두껍게
           )
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: Image.network(
-          widget._data.feed.imagePath,
+          _data.feed.imagePath,
           fit: BoxFit.fitHeight,
         ),
       ),
@@ -194,13 +217,13 @@ class _FlipCardState extends State<FlipCard>
   Widget _buildBackSide() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius:BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30),
         color: Colors.white,
         boxShadow: const [
           BoxShadow(
-            color: Colors.black26,
+            color: Colors.black12,
             blurRadius: 10.0, // 얼마나 흩어져
-            spreadRadius: 0.1, // 얼마나 두껍게
+            spreadRadius: 0.01, // 얼마나 두껍게
           )
         ],
       ),
@@ -210,20 +233,20 @@ class _FlipCardState extends State<FlipCard>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              '너의 날씨는?',
+            const DefaultTextStyle(
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w800,
-              ),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black),
+              child: Text(
+                  '너의 날씨는?'),
             ),
             SizedBox(
               width: 80,
               height: 80,
-              child: Image.network(
-                'https://cdn-icons-png.flaticon.com/256/169/169367.png',
-                fit: BoxFit.fill,
-              ),
+              child: Image.asset(
+                  WeatherCode.fromValue(_data.feed.weather.code)
+                      .iconPath),
             ),
             Container(
               height: 130,
@@ -245,37 +268,40 @@ class _FlipCardState extends State<FlipCard>
                         boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
-                            blurRadius: 10.0, // 얼마나 흩어져
-                            spreadRadius: 0.1, // 얼마나 두껍게
+                            blurRadius: 5.0, // 얼마나 흩어져
+                            spreadRadius: 0.01, // 얼마나 두껍게
                           )
                         ],
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: Text(
-                          '맑아요',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                          child: Text(
+                              WeatherCode.fromValue(_data.feed.weather.code)
+                                  .description),
                         ),
                       ),
                     ),
-                    const Text(
-                      '그날의 온도는',
+                    const DefaultTextStyle(
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      child: Text(
+                          '그날의 온도는'),
                     ),
-                    Text(
-                      '${widget._data.feed.weather.temperature}',
+                    DefaultTextStyle(
                       style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                      ),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black),
+                      child: Text(
+                          '${_data.feed.weather.temperature}°C'),
                     ),
                   ],
                 ),
