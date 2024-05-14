@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/common/image_path.dart';
+import 'package:weaco/domain/common/enum/weather_code.dart';
 
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
+import 'package:weaco/domain/weather/model/weather_background_image.dart';
 import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 
@@ -36,15 +39,20 @@ class HomeScreenViewModel with ChangeNotifier {
   HomeScreenStatus _status = HomeScreenStatus.idle;
   // 전일 대비 온도차
   double? _temperatureGap;
+  String? _weatherBackgroundImage;
 
   DailyLocationWeather? get dailyLocationWeather => _dailyLocationWeather;
   Weather? get currentWeather => _currentWeather;
   double? get temperatureGap => _temperatureGap ?? 0;
   List<Feed> get feedList => _feedList;
   HomeScreenStatus get status => _status;
+  String get backgroundImagePath =>
+      _weatherBackgroundImage ?? ImagePath.homeBackgroundSunny;
 
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
+    notifyListeners();
+
     try {
       _dailyLocationWeather = await getDailyLocationWeatherUseCase.execute();
 
@@ -53,16 +61,38 @@ class HomeScreenViewModel with ChangeNotifier {
       );
 
       if (_dailyLocationWeather != null) {
-        _status = HomeScreenStatus.success;
-
         // 현재 시간에 맞는 날씨 예보 빼내기
         _currentWeather = dailyLocationWeather!.weatherList.firstWhere(
-            (element) => element.timeTemperature.hour == DateTime.now().hour);
+          (element) => element.timeTemperature.hour == DateTime.now().hour,
+        );
 
         _calculateTemperatureGap();
+        await _getBackgroundImagePath();
+        _status = HomeScreenStatus.success;
       }
 
       notifyListeners();
+    } catch (e) {
+      _status = HomeScreenStatus.error;
+      notifyListeners();
+    }
+  }
+
+  /// 배경 이미지 주소 가져오기
+  Future<void> _getBackgroundImagePath() async {
+    try {
+      final weatherBackgroundImageList =
+          await getBackgroundImageListUseCase.execute();
+
+      if (weatherBackgroundImageList.isEmpty) {
+        _weatherBackgroundImage = ImagePath.homeBackgroundSunny;
+      }
+
+      WeatherBackgroundImage image = weatherBackgroundImageList.firstWhere(
+          (element) =>
+              element.code == WeatherCode.fromCode(currentWeather!.code).value);
+
+      _weatherBackgroundImage = image.imagePath;
     } catch (e) {
       _status = HomeScreenStatus.error;
       notifyListeners();
