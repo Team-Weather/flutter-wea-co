@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 
 class PinchZoom extends StatefulWidget {
@@ -25,6 +26,7 @@ class _PinchZoomState extends State<PinchZoom>
 
   @override
   Widget build(BuildContext context) {
+    log('핀치 줌 이미지 build() 호출');
     return InteractiveViewer(
       key: widgetKey,
       maxScale: 3.0,

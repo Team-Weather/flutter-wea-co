@@ -72,30 +72,30 @@ class DailyLocationWeather {
 
   Map<String, dynamic> toJson() {
     return {
-      'highTemperature': highTemperature,
-      'lowTemperature': lowTemperature,
-      'weatherList': weatherList.map((weather) => weather.toJson()).toList(),
-      'yesterdayWeatherList':
+      'high_temperature': highTemperature,
+      'low_temperature': lowTemperature,
+      'weather_list': weatherList.map((weather) => weather.toJson()).toList(),
+      'yesterday_weather_list':
           yesterDayWeatherList.map((weather) => weather.toJson()).toList(),
       'location': location.toJson(),
-      'createdAt': createdAt.toIso8601String(),
-      'seasonCode': seasonCode,
+      'created_at': createdAt.toIso8601String(),
+      'season_code': seasonCode,
     };
   }
 
   factory DailyLocationWeather.fromJson(Map<String, dynamic> json) {
     return DailyLocationWeather(
-      highTemperature: json['highTemperature'] as double,
-      lowTemperature: json['lowTemperature'] as double,
-      weatherList: (json['weatherList'] as List)
+      highTemperature: json['high_temperature'] as double,
+      lowTemperature: json['low_temperature'] as double,
+      weatherList: (json['weather_list'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
-      yesterDayWeatherList: (json['yesterdayWeatherList'] as List)
+      yesterDayWeatherList: (json['yesterday_weather_list'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
       location: Location.fromJson(json['location']),
-      createdAt: DateTime.parse(json['createdAt']),
-      seasonCode: json['seasonCode'] as int,
+      createdAt: DateTime.parse(json['created_at']),
+      seasonCode: json['season_code'] as int,
     );
   }
 }

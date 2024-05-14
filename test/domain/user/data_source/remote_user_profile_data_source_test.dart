@@ -44,7 +44,7 @@ void main() async {
           () async {
         // Given
         await instance.collection('user_profiles').add({
-          'created_at': '2024-05-01 13:27:00',
+          'created_at': DateTime.parse('2024-05-01 13:27:00'),
           'deleted_at': null,
           'email': 'hoogom87@gmail.com',
           'feed_count': 0,
@@ -78,7 +78,7 @@ void main() async {
         () async {
           // Given
           await instance.collection('user_profiles').add({
-            'created_at': '2024-05-08 02:27:00',
+            'created_at': DateTime.parse('2024-05-08 02:27:00'),
             'deleted_at': null,
             'email': firebaseService.user.email,
             'feed_count': 0,
