@@ -13,6 +13,7 @@ import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
+import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -34,51 +35,54 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.signUp.path,
-      builder: (context, state) => const SignUpScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignUpViewModel>(),
+        child: const SignUpScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.signIn.path,
-      // builder: (context, state) => SignInScreen(),
+// builder: (context, state) => SignInScreen(),
       builder: (context, state) => const SignInScreen(),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
-      // builder: (context, state) => DialogScreen(),
+// builder: (context, state) => DialogScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.appSetting.path,
-      // builder: (context, state) => AppSettingScreen(),
+// builder: (context, state) => AppSettingScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.myPage.path,
-      // builder: (context, state) => MyPageScreen(),
+// builder: (context, state) => MyPageScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.userPage.path,
-      // builder: (context, state) => UserPageScreen(),
+// builder: (context, state) => UserPageScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.ootdSearch.path,
-      // builder: (context, state) => OotdSearchScreen(),
+// builder: (context, state) => OotdSearchScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.ootdFeed.path,
-      // builder: (context, state) => OotdFeedScreen(),
+// builder: (context, state) => OotdFeedScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
@@ -87,7 +91,10 @@ final router = GoRouter(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt(), getUserProfileUseCase: getIt(), id: state.extra as String),
+          create: (_) => OotdDetailViewModel(
+              getDetailFeedDetailUseCase: getIt(),
+              getUserProfileUseCase: getIt(),
+              id: state.extra as String),
           child: const OotdDetailScreen(),
         );
       },
