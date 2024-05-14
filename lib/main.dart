@@ -9,7 +9,7 @@ import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 import 'firebase_options.dart';
 
-late Box dataBox;
+late Box<String> dataBox;
 
 void main() async {
   await Hive.initFlutter();
