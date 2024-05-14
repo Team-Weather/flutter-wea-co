@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 
 class PictureCropScreen extends StatefulWidget {
   const PictureCropScreen({super.key});
@@ -16,6 +19,8 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<PictureCropViewModel>();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -49,7 +54,7 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
                 : const Text('이미지 없을 무'),
             ElevatedButton(
               onPressed: () async {
-                await cropImage();
+                await cropImage(viewModel);
               },
               child: const Text('이미지 가져오기'),
             ),
@@ -59,7 +64,7 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     );
   }
 
-  Future<void> cropImage() async {
+  Future<void> cropImage(PictureCropViewModel viewModel) async {
     const String samplePath =
         '/data/user/0/team.weather.weaco/cache/c2b5e982-bdf9-413b-a1c0-06966e6a4683/1000000018.jpg';
     final croppedFile = await ImageCropper().cropImage(
@@ -82,6 +87,21 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     );
 
     if (croppedFile != null) {
+      viewModel.saveOriginImage(file: File(samplePath));
+      viewModel.saveCroppedImage(
+          file: File(croppedFile.path),
+          callback: (result) {
+            if (result) {
+              context.push(RouterPath.ootdPost.path);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('잠시 후 다시 시도해 주시기 바랍니다.'),
+                ),
+              );
+            }
+          });
+
       setState(() {
         _croppedFile = croppedFile;
       });
