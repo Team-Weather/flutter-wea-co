@@ -25,9 +25,13 @@ class OotdDetailViewModel extends ChangeNotifier {
   }
 
   Future<void> _getFeedDetail({required String id}) async {
-    _feed = (await _getDetailFeedDetailUseCase.execute(id: id)) ??
-        (throw Exception());
-    _userProfile = (await _getUserProfileUseCase.execute(email: _feed!.userEmail));
+    try {
+      _feed = (await _getDetailFeedDetailUseCase.execute(id: id)) ??
+          (throw Exception());
+      _userProfile = (await _getUserProfileUseCase.execute(email: _feed!.userEmail));
+    } catch (e) {
+      throw Exception();
+    }
     notifyListeners();
   }
 }
