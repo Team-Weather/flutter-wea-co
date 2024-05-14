@@ -27,11 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeScreenViewModel>();
-    final currentWeather = viewModel.status.isSuccess
-        ? viewModel.dailyLocationWeather?.weatherList[0]
-        : null;
-    final dailyLocationWeather =
-        viewModel.status.isSuccess ? viewModel.dailyLocationWeather! : null;
 
     return Scaffold(
       body: switch (viewModel.status) {
@@ -62,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 40),
                           // city
                           Text(
-                            dailyLocationWeather!.location.city,
+                            viewModel.dailyLocationWeather!.location.city,
                             style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
@@ -71,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 4),
                           // weather code description
                           Text(
-                            WeatherCode.fromCode(currentWeather!.code)
+                            WeatherCode.fromCode(viewModel.currentWeather!.code)
                                 .description,
                             style: const TextStyle(
                               fontSize: 15,
@@ -81,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 20),
                           // current temperature
                           Text(
-                            '${currentWeather.temperature}°',
+                            '${viewModel.currentWeather!.temperature}°',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 60,
@@ -95,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Column(
                                 children: [
                                   Text(
-                                    '최고 ${dailyLocationWeather.highTemperature}°',
+                                    '최고 ${viewModel.dailyLocationWeather!.highTemperature}°',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -108,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Text(
-                                    '최저 ${dailyLocationWeather.lowTemperature}°',
+                                    '최저 ${viewModel.dailyLocationWeather!.lowTemperature}°',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -173,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // weathers by time
                     WeatherByTimeListWidget(
-                      dailyLocationWeather: dailyLocationWeather,
+                      dailyLocationWeather: viewModel.dailyLocationWeather,
                     ),
 
                     const SliverToBoxAdapter(
@@ -182,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // ootd list
                     RecommandOotdListWidget(
-                      dailyLocationWeather: dailyLocationWeather,
+                      dailyLocationWeather: viewModel.dailyLocationWeather,
                       feedList: viewModel.feedList,
                     ),
                   ],
