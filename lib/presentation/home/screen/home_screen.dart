@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
-import 'package:weaco/domain/common/enum/weather_code.dart';
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 
 /// [홈 화면]
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Image.asset(
-                                  WeatherCode.fromCode(dailyLocationWeather
+                                  WeatherCode.fromDtoCode(dailyLocationWeather
                                           .weatherList[index].code)
                                       .iconPath,
                                   width: 28,
