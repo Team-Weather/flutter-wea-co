@@ -5,7 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class PictureCropScreen extends StatefulWidget {
-  const PictureCropScreen({super.key});
+  final String sourcePath;
+
+  const PictureCropScreen({
+    super.key,
+    required this.sourcePath,
+  });
 
   @override
   State<PictureCropScreen> createState() => _PictureCropScreenState();
@@ -60,10 +65,8 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
   }
 
   Future<void> cropImage() async {
-    const String samplePath =
-        '/data/user/0/team.weather.weaco/cache/c2b5e982-bdf9-413b-a1c0-06966e6a4683/1000000018.jpg';
     final croppedFile = await ImageCropper().cropImage(
-      sourcePath: samplePath,
+      sourcePath: widget.sourcePath,
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
       uiSettings: [
         AndroidUiSettings(
