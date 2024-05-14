@@ -22,7 +22,7 @@ class OotdPostViewModel with ChangeNotifier {
   Weather? _weather;
   DailyLocationWeather? _dailyLocationWeather;
 
-  Future<void> initOotdPost() async {
+  void initOotdPost() async {
     _showSpinner = true;
     notifyListeners();
 

@@ -22,9 +22,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     super.initState();
     _scrollController = ScrollController();
 
-    Future.microtask(() async {
-      await context.read<OotdPostViewModel>().initOotdPost();
-    });
+    Future.microtask(() => context.read<OotdPostViewModel>().initOotdPost());
   }
 
   @override
