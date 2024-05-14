@@ -30,18 +30,25 @@ class RecommandOotdListWidget extends StatelessWidget {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: feedList.length,
-                itemBuilder: (context, index) {
-                  return RecommandOotdWidget(
-                    feedList: feedList,
-                    index: index,
-                  );
-                },
-              ),
-            ),
+            feedList.isEmpty
+                ? const Center(
+                    child: Text(
+                      '아직 추천 할 만 한 코디가 없어요 :( \n 가장 먼저 OOTD를 올려보세요! :D',
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: feedList.length,
+                      itemBuilder: (context, index) {
+                        return RecommandOotdWidget(
+                          feedList: feedList,
+                          index: index,
+                        );
+                      },
+                    ),
+                  ),
             const SizedBox(height: 20),
           ],
         ),
