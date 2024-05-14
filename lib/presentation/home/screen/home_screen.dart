@@ -36,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: switch (viewModel.status) {
         HomeScreenStatus.error => const Center(child: Text('데이터를 불러올 수 없습니다.')),
-        HomeScreenStatus.loading => const CircularProgressIndicator(),
+        HomeScreenStatus.loading =>
+          const Center(child: CircularProgressIndicator()),
         HomeScreenStatus.idle => const SizedBox(),
         HomeScreenStatus.success => Container(
             decoration: const BoxDecoration(
