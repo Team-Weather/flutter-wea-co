@@ -16,9 +16,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
 
     Future.microtask(
         () async => await context.read<HomeScreenViewModel>().initHomeScreen());
@@ -134,7 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontSize: 12,
                                           color: Colors.white,
                                         )),
-                                    // TODO. 전일 대비 차이 구하는 함수 필요함
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -142,14 +144,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          ImagePath.temperatureDownArrowIcon,
+                                          (viewModel.temperatureGap! >= 0)
+                                              ? ImagePath.temperatureUpArrowIcon
+                                              : ImagePath
+                                                  .temperatureDownArrowIcon,
                                           width: 16,
                                           height: 16,
                                         ),
                                         const SizedBox(width: 4),
-                                        const Text(
-                                          '13°',
-                                          style: TextStyle(
+                                        Text(
+                                          '${viewModel.temperatureGap?.toStringAsFixed(1)}°',
+                                          style: const TextStyle(
                                             fontSize: 30,
                                             color: Colors.white,
                                           ),
@@ -169,6 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // weathers by time
                     WeatherByTimeListWidget(
                       dailyLocationWeather: viewModel.dailyLocationWeather,
+                      scrollController: _scrollController,
                     ),
 
                     const SliverToBoxAdapter(
@@ -186,79 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
       },
-
-      // 디자인 확인을 위한 임시 네비게이션
-      // bottomNavigationBar: Stack(children: [
-      //   Stack(
-      //     children: [
-      //       BottomNavigationWidget(
-      //         onTap: (value) {},
-      //         currentIndex: 0,
-      //       ),
-      //       if (!isPressingFloatingActionButton)
-      //         SizedBox(
-      //           width: 72,
-      //           height: 72,
-      //           child: FloatingActionButton(
-      //             onPressed: () {
-      //               setState(() {
-      //                 isPressingFloatingActionButton = true;
-      //               });
-      //               Future.delayed(const Duration(milliseconds: 2000), () {
-      //                 setState(() {
-      //                   isPressingFloatingActionButton = false;
-      //                 });
-      //               });
-      //             },
-      //             elevation: 0,
-      //             shape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(50),
-      //               side: BorderSide(
-      //                   color: Theme.of(context).primaryColor,
-      //                   width: deviceWidth * 0.005),
-      //             ),
-      //             backgroundColor: Theme.of(context).canvasColor,
-      //             child: const Icon(
-      //               Icons.add,
-      //               color: Color(0xffF2C347),
-      //               size: 40,
-      //             ),
-      //           ),
-      //         ),
-      //       if (isPressingFloatingActionButton)
-      //         SizedBox(
-      //           width: 128,
-      //           height: 72,
-      //           child: FloatingActionButton(
-      //             onPressed: () {},
-      //             elevation: 0,
-      //             shape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(50),
-      //               side: BorderSide(
-      //                   color: Theme.of(context).primaryColor,
-      //                   width: MediaQuery.of(context).size.width * 0.005),
-      //             ),
-      //             backgroundColor: Theme.of(context).canvasColor,
-      //             child: const Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //               children: [
-      //                 Icon(
-      //                   Icons.camera_alt_rounded,
-      //                   color: Color(0xffF2C347),
-      //                   size: 40,
-      //                 ),
-      //                 Icon(
-      //                   Icons.photo_album_outlined,
-      //                   color: Color(0xffF2C347),
-      //                   size: 40,
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //     ],
-      //   ),
-      // ])
     );
   }
 }
