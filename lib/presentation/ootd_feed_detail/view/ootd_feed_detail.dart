@@ -9,7 +9,13 @@ import 'package:weaco/presentation/ootd_feed_detail/view/pinch_zoom.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 
 class OotdDetailScreen extends StatefulWidget {
-  const OotdDetailScreen({super.key});
+  final String _id;
+  final String _mainImagePath;
+
+  const OotdDetailScreen(
+      {super.key, required String id, required String mainImagePath})
+      : _mainImagePath = mainImagePath,
+        _id = id;
 
   @override
   State<OotdDetailScreen> createState() => _OotdDetailScreenState();
@@ -23,30 +29,31 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
     setState(() => _isCancelAreaShow = !_isCancelAreaShow);
   }
 
-  final defaultWidget = Container(
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Colors.grey[300]!,
-          Colors.grey[200]!,
-        ],
-      ),
-    ),
-  );
+  Widget defaultWidget({double? opacity}) => Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.grey[300]!.withOpacity(opacity ?? 1),
+              Colors.grey[200]!.withOpacity(opacity ?? 1),
+            ],
+          ),
+        ),
+      );
 
-  Widget _loadingImageWidget({required String? data}) {
+  Widget _loadingImageWidget({required String? data, double? opacity}) {
     return Builder(
       builder: (context) {
         if (data != null) {
           return Image.network(
             data,
             fit: BoxFit.fitHeight,
-            errorBuilder: (context, error, stackTrace) => defaultWidget,
+            errorBuilder: (context, error, stackTrace) =>
+                defaultWidget(opacity: opacity),
           );
         } else {
-          return defaultWidget;
+          return defaultWidget(opacity: opacity);
         }
       },
     );
@@ -54,18 +61,16 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log('build() 호출');
+    log('build() 호출 ${widget._id}');
     return SafeArea(
         child: Stack(
       fit: StackFit.expand,
       alignment: Alignment.bottomCenter,
       children: [
-        Builder(builder: (context) {
-          return PinchZoom(
-            child: _loadingImageWidget(
-                data: context.watch<OotdDetailViewModel>().feed?.imagePath),
-          );
-        }),
+        PinchZoom(
+          child: _loadingImageWidget(
+              data: widget._mainImagePath),
+        ),
         GestureDetector(
           onTap: _changeArea,
           child: Visibility(
@@ -88,7 +93,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                   ? Alignment.topCenter
                   : Alignment.bottomCenter,
               curve: Curves.easeOutQuint,
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 300),
               child: Container(
                 height: _isCancelAreaShow ? _detailAreaExpandHeight : null,
                 width: MediaQuery.of(context).size.width,
@@ -120,7 +125,8 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                               .code ??
                                           0)
                                       .iconPath,
-                                  errorBuilder: (_, __, ___) => defaultWidget),
+                                  errorBuilder: (_, __, ___) =>
+                                      defaultWidget(opacity: 0.2)),
                             ),
                             const SizedBox(
                               width: 8,
@@ -131,7 +137,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                   fontWeight: FontWeight.w800,
                                   color: Colors.white),
                               child: Text(
-                                  '${context.watch<OotdDetailViewModel>().feed?.weather.temperature.toString() ?? '--'}°C'),
+                                  '${context.watch<OotdDetailViewModel>().feed?.weather.temperature.toString() ?? ''}°C'),
                             ),
                             const Spacer(),
                             DefaultTextStyle(
@@ -144,7 +150,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                       .feed
                                       ?.createdAt
                                       .toFormat() ??
-                                  '--'),
+                                  ''),
                             ),
                             Visibility(
                                 maintainSize: false,
@@ -237,7 +243,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                                           .watch<OotdDetailViewModel>()
                                           .feed
                                           ?.description ??
-                                      '--',
+                                      '',
                                   overflow: _isCancelAreaShow
                                       ? null
                                       : TextOverflow.ellipsis,
@@ -273,6 +279,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                         width: 40,
                         height: 40,
                         child: _loadingImageWidget(
+                            opacity: 0.2,
                             data: context
                                 .watch<OotdDetailViewModel>()
                                 .userProfile
@@ -291,7 +298,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                               .watch<OotdDetailViewModel>()
                               .feed
                               ?.userEmail ??
-                          '----'),
+                          ''),
                     ),
                     const Spacer(),
                     IconButton(
@@ -299,7 +306,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                         Icons.close,
                         size: 24,
                       ),
-                      color: Colors.black,
+                      color: Colors.white,
                       onPressed: () => context.pop(),
                     )
                   ],
