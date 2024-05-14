@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -19,7 +20,11 @@ final router = GoRouter(
       path: RouterPath.home.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => HomeScreenViewModel(),
+          create: (_) => HomeScreenViewModel(
+            getDailyLocationWeatherUseCase: getIt(),
+            getBackgroundImageListUseCase: getIt(),
+            getRecommendedFeedsUseCase: getIt(),
+          ),
           child: const HomeScreen(),
         );
       },

@@ -1,9 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
-import 'package:weaco/domain/weather/repository/daily_location_weather_repository.dart';
+import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 
 enum HomeScreenStatus {
   idle,
@@ -18,67 +22,24 @@ enum HomeScreenStatus {
 }
 
 class HomeScreenViewModel with ChangeNotifier {
+  HomeScreenViewModel({
+    required this.getDailyLocationWeatherUseCase,
+    required this.getBackgroundImageListUseCase,
+    required this.getRecommendedFeedsUseCase,
+  });
+
+  final GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase;
+  final GetBackgroundImageListUseCase getBackgroundImageListUseCase;
+  final GetRecommendedFeedsUseCase getRecommendedFeedsUseCase;
+
   DailyLocationWeather? _dailyLocationWeather;
-  late final DailyLocationWeatherRepository dailyLocationWeatherRepository;
+
   List<Feed> _feedList = [];
   HomeScreenStatus _status = HomeScreenStatus.idle;
 
   DailyLocationWeather? get dailyLocationWeather => _dailyLocationWeather;
   List<Feed> get feedList => _feedList;
   HomeScreenStatus get status => _status;
-
-  final _mockDailyLocationWeather = DailyLocationWeather(
-    seasonCode: 0,
-    highTemperature: 30,
-    lowTemperature: 20,
-    weatherList: [
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-    ],
-    yesterDayWeatherList: [
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-    ],
-    location: Location(
-      lat: 31.23,
-      lng: 29.48,
-      city: '서울시, 노원구',
-      createdAt: DateTime.parse('2024-05-06'),
-    ),
-    createdAt: DateTime.now(),
-  );
 
   final _mockFeedList = [
     Feed(
@@ -134,21 +95,25 @@ class HomeScreenViewModel with ChangeNotifier {
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
     try {
-      // _dailyLocationWeather =
-      //     await dailyLocationWeatherRepository.getDailyLocationWeather();
+      _dailyLocationWeather = await getDailyLocationWeatherUseCase.execute();
 
       // TODO. OOTD 목록 10개 부르기
-
-      _dailyLocationWeather = _mockDailyLocationWeather;
-      _feedList = _mockFeedList;
+      _feedList = await getRecommendedFeedsUseCase.execute(
+        dailyLocationWeather: _dailyLocationWeather!,
+      );
 
       if (_dailyLocationWeather != null) {
         _status = HomeScreenStatus.success;
       }
+
+      // TODO. 전일 대비 계산
+
       notifyListeners();
     } catch (e) {
+      debugPrint(e.toString());
       // TODO. 에러 다이얼로그 또는 스낵바 처리
       _status = HomeScreenStatus.error;
+      notifyListeners();
     }
   }
 }
