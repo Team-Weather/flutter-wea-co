@@ -10,6 +10,9 @@ class RouterStatic {
   static void goToHome(BuildContext context) {
     router.go(RouterPath.home.path);
   }
+  static void popToHome(BuildContext context) {
+    router.pop(RouterPath.home.path);
+  }
 
   static void goToSignUp(BuildContext context) {
     router.go(RouterPath.signUp.path);
@@ -26,7 +29,23 @@ class RouterStatic {
   static void goToAppSetting(BuildContext context) {
     router.go(RouterPath.appSetting.path);
   }
+  static void pushToAppSetting(BuildContext context) {
+    router.push(RouterPath.appSetting.path);
+  }
 
+  static void goToAppSettingLicense(BuildContext context) {
+    router.go(RouterPath.appSettingLicense.path);
+  }
+  static void pushToAppSettingLicense(BuildContext context) {
+    router.push(RouterPath.appSettingLicense.path);
+  }
+
+  static void goToAppSettingPolicy(BuildContext context) {
+    router.go(RouterPath.appSettingPolicy.path);
+  }
+  static void pushToAppSettingPolicy(BuildContext context) {
+    router.push(RouterPath.appSettingPolicy.path);
+  }
   static void goToMyPage(BuildContext context) {
     router.go(RouterPath.myPage.path);
   }

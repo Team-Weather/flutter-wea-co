@@ -1,9 +1,19 @@
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/data/user/data_source/remote_user_profile_data_source.dart';
+import 'package:weaco/data/user/data_source/user_auth_data_source.dart';
+import 'package:weaco/data/user/repository/user_auth_repository_impl.dart';
+import 'package:weaco/domain/user/use_case/log_out_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
+import 'package:weaco/presentation/settings/screen/app_setting_license_screen.dart';
+import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
+import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
+import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -38,8 +48,25 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.appSetting.path,
-      // builder: (context, state) => AppSettingScreen(),
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => AppSettingScreen(
+        appSettingViewModel: AppSettingViewModel(
+          logOutUseCase: LogOutUseCase(
+            userAuthRepository: UserAuthRepositoryImpl(
+                userAuthDataSource: getIt<UserAuthDataSource>(),
+                remoteUserProfileDataSource:
+                    getIt<RemoteUserProfileDataSource>()),
+          ),
+          signOutUseCase: getIt<SignOutUseCase>(),
+        ),
+      ),
+    ),
+    GoRoute(
+      path: RouterPath.appSettingPolicy.path,
+      builder: (context, state) => const AppSettingPolicyScreen(),
+    ),
+    GoRoute(
+      path: RouterPath.appSettingLicense.path,
+      builder: (context, state) => const AppSettingLicenseScreen(),
     ),
     GoRoute(
       path: RouterPath.myPage.path,
