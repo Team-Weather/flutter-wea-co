@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/season_code.dart';
@@ -24,6 +25,13 @@ class OotdDetailScreen extends StatefulWidget {
 class _OotdDetailScreenState extends State<OotdDetailScreen> {
   final double _detailAreaExpandHeight = 400;
   bool _isCancelAreaShow = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+  }
 
   void _changeArea() {
     setState(() => _isCancelAreaShow = !_isCancelAreaShow);
@@ -265,7 +273,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
             top: 0,
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 10, 8, 0),
+              padding: const EdgeInsets.fromLTRB(18, 16, 8, 0),
               child: Builder(builder: (context) {
                 log('상단 프로필 build() 호출');
                 return Row(
@@ -304,7 +312,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                     IconButton(
                       icon: const Icon(
                         Icons.close,
-                        size: 24,
+                        size: 28,
                       ),
                       color: Colors.white,
                       onPressed: () => context.pop(),
