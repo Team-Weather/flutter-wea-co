@@ -41,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeScreenViewModel>();
+    final String temperatureGapPresentation = viewModel.temperatureGap! >= 0
+        ? viewModel.temperatureGap!.toStringAsFixed(1)
+        : (-viewModel.temperatureGap!).toStringAsFixed(1);
 
     return Scaffold(
       body: switch (viewModel.status) {
@@ -163,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          '${viewModel.temperatureGap?.toStringAsFixed(1)}°',
+                                          '$temperatureGapPresentation°',
                                           style: const TextStyle(
                                             fontSize: 30,
                                             color: Colors.white,
