@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/main.dart';
+import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -98,7 +100,12 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      builder: (context, state) => const PictureCropScreen(),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => getIt<PictureCropViewModel>(),
+          child: const PictureCropScreen(),
+        );
+      },
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
