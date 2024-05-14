@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// 버튼 두 개가 있는 다이얼로그
 class TwoButtonDialog extends StatelessWidget {
   const TwoButtonDialog({
     super.key,

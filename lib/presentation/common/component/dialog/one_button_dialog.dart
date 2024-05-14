@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// 버튼 하나만 있는 다이얼로그
 class OneButtonDialog extends StatelessWidget {
   const OneButtonDialog({
     super.key,
