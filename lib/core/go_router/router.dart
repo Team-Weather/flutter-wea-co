@@ -10,6 +10,7 @@ import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
 import 'package:weaco/presentation/ootd_post/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
+import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -97,10 +98,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      // builder: (context, state) => PictureCropScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+      builder: (context, state) => const PictureCropScreen(),
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
