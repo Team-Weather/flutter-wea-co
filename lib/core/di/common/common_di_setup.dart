@@ -7,6 +7,7 @@ import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/core/gps/gps_helper.dart';
 import 'package:weaco/core/hive/hive_wrapper.dart';
 import 'package:weaco/core/path_provider/path_provider_service.dart';
+import 'package:weaco/presentation/common/handler/check_handle_dialog.dart';
 
 void commonDiSetup() {
   // Firebase
@@ -27,4 +28,7 @@ void commonDiSetup() {
 
   // Hive
   getIt.registerLazySingleton<HiveWrapper>(() => HiveWrapper());
+
+  // Dialog
+  getIt.registerLazySingleton<CheckHandleDialog>(() => CheckHandleDialog());
 }
