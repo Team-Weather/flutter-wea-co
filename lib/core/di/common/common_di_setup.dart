@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/dio/base_dio.dart';
-import 'package:weaco/core/exception/handler/ExceptionMessageHandler.dart';
+import 'package:weaco/core/exception/handler/exception_message_handler.dart';
 import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/core/gps/gps_helper.dart';
 import 'package:weaco/core/hive/hive_wrapper.dart';

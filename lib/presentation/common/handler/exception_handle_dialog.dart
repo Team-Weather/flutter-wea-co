@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weaco/core/exception/handler/ExceptionMessageHandler.dart';
+import 'package:weaco/core/exception/handler/exception_message_handler.dart';
 import 'package:weaco/presentation/common/component/dialog/one_button_dialog.dart';
 
 class ExceptionHandleDialog {
