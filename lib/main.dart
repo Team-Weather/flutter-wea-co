@@ -9,7 +9,7 @@ import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 import 'firebase_options.dart';
 
-late Box dataBox;
+late Box<String> dataBox;
 
 void main() async {
   await Hive.initFlutter();
@@ -105,11 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to OotdSearchScreen'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => RouterStatic.goToOotdFeed(context),
               child: const Text('Go to OotdFeedScreen'),
             ),
             TextButton(
-              onPressed: () => RouterStatic.goToOotdDetail(context, '01tRXEDSFm5HtJwRtZZB'),
+              onPressed: () {  },
               child: const Text('Go to OotdDetailScreen'),
             ),
             TextButton(
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to CameraScreen'),
             ),
             TextButton(
-              onPressed: () => RouterStatic.goToPictureCrop(context),
+              onPressed: () => RouterStatic.goToPictureCrop(context, ''),
               child: const Text('Go to PictureCropScreen'),
             ),
             TextButton(

@@ -7,7 +7,12 @@ import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 
 class PictureCropScreen extends StatefulWidget {
-  const PictureCropScreen({super.key});
+  final String sourcePath;
+
+  const PictureCropScreen({
+    super.key,
+    required this.sourcePath,
+  });
 
   @override
   State<PictureCropScreen> createState() => _PictureCropScreenState();
@@ -15,13 +20,11 @@ class PictureCropScreen extends StatefulWidget {
 
 class _PictureCropScreenState extends State<PictureCropScreen> {
   CroppedFile? _croppedFile;
-  final String samplePath =
-      '/data/data/team.weather.weaco/cache/0ddabc12-9269-428b-8123-b09d1230c5a62983180504067444417.jpg';
 
   @override
   void initState() {
     super.initState();
-    _cropImage(samplePath);
+    _cropImage();
   }
 
   @override
@@ -29,9 +32,9 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     return const Scaffold();
   }
 
-  Future<void> _cropImage(String samplePath) async {
+  Future<void> _cropImage() async {
     final croppedFile = await ImageCropper().cropImage(
-      sourcePath: samplePath,
+      sourcePath: widget.sourcePath,
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
       uiSettings: [
         AndroidUiSettings(
@@ -52,16 +55,16 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     if (croppedFile != null) {
       _croppedFile = croppedFile;
 
-      _cropResult(samplePath);
+      _cropResult();
     }
   }
 
-  void _cropResult(String samplePath) async {
+  void _cropResult() async {
     final PictureCropViewModel viewModel = context.read<PictureCropViewModel>();
     if (_croppedFile == null) {
       return;
     } else {
-      await viewModel.saveOriginImage(file: File(samplePath));
+      await viewModel.saveOriginImage(file: File(widget.sourcePath));
 
       await viewModel.saveCroppedImage(file: File(_croppedFile!.path));
 

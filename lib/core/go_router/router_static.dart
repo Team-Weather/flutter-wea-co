@@ -43,16 +43,16 @@ class RouterStatic {
     router.push(RouterPath.ootdFeed.path);
   }
 
-  static void goToOotdDetail(BuildContext context, String id) {
-    router.push(RouterPath.ootdDetail.path, extra: id);
+  static void goToOotdDetail(BuildContext context, {required String id, required String imagePath}) {
+    router.push('${RouterPath.ootdDetail.path}?id=$id&imagePath=$imagePath');
   }
 
   static void goToCamera(BuildContext context) {
     router.go(RouterPath.camera.path);
   }
 
-  static void goToPictureCrop(BuildContext context) {
-    router.go(RouterPath.pictureCrop.path);
+  static void goToPictureCrop(BuildContext context, String path) {
+    router.go(RouterPath.pictureCrop.path, extra: path);
   }
 
   static void goToOotdPost(BuildContext context) {
