@@ -5,7 +5,7 @@ class HiveWrapper {
     await dataBox.put(key, value);
   }
 
-  Future<String> readData(String key) async {
-    return await dataBox.get(key);
+  Future<String?> readData(String key) async {
+    return dataBox.get(key);
   }
 }
