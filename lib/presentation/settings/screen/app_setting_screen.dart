@@ -64,7 +64,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                 TextButton(
                   onPressed: () async {
                     final isSuccess = await widget.appSettingViewModel
-                        .signOut();
+                        .logOut();
                     if (isSuccess) {
                       RouterStatic.goToHome(context);
                     } else {

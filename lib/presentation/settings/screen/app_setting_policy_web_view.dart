@@ -1,10 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:weaco/core/go_router/router_static.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class AppSettingPolicyScreen extends StatefulWidget {
   const AppSettingPolicyScreen({super.key});
@@ -20,9 +16,6 @@ class _AppSettingPolicyScreenState extends State<AppSettingPolicyScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(milliseconds: 3000), () {
-      setState(() => _isPageLoading = false);
-    });
 
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -37,7 +30,18 @@ class _AppSettingPolicyScreenState extends State<AppSettingPolicyScreen> {
     final WebViewController controller =
         WebViewController.fromPlatformCreationParams(params);
 
-    controller.loadRequest(Uri.parse('https://sites.google.com/view/weaco/'));
+    controller
+      ..loadRequest(Uri.parse('https://sites.google.com/view/weaco/'))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) {
+            setState(() => _isPageLoading = true);
+          },
+          onPageFinished: (_) {
+            setState(() => _isPageLoading = false);
+          },
+        ),
+      );
 
     _controller = controller;
   }
@@ -55,12 +59,12 @@ class _AppSettingPolicyScreenState extends State<AppSettingPolicyScreen> {
       ),
       body: Stack(
         children: [
+          WebViewWidget(controller: _controller),
           if (_isPageLoading)
             Stack(children: [
               const Center(child: CircularProgressIndicator()),
               Container(color: Colors.white)
             ]),
-          WebViewWidget(controller: _controller),
         ],
       ),
     );

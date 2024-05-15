@@ -7,13 +7,10 @@ import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'firebase_options.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 late Box dataBox;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await PackageInfo.fromPlatform();
   await Hive.initFlutter();
   dataBox = await Hive.openBox('weacoBox');
   await dotenv.load(fileName: '.env');
