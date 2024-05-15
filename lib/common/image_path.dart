@@ -22,7 +22,7 @@ class ImagePath {
 
   static const String weatherRainShower = '$_iconPath/weather_rain_shower_icon.png';
 
-  static const String weatherFreezingRain = '$_iconPath/weather_frezzing_rain_icon.png';
+  static const String weatherFreezingRain = '$_iconPath/weather_freezing_rain_icon.png';
 
   static const String weatherSnow = '$_iconPath/weather_snow_icon.png';
 

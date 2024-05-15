@@ -1,12 +1,13 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'flip_card.dart';
 
-double scale = 30;
+double scale = 35;
 double cardWidth = 9 * scale;
 double cardHeight = 16 * scale;
-Duration cardMoveSpeed = const Duration(milliseconds: 200);
+Duration cardMoveSpeed = const Duration(milliseconds: 250);
 
 class OotdFeedScreen extends StatefulWidget {
   const OotdFeedScreen({super.key});
@@ -17,12 +18,11 @@ class OotdFeedScreen extends StatefulWidget {
 
 class _OotdFeedScreenState extends State<OotdFeedScreen> {
   late PageController _pageViewController;
-  int _currentIdx = 0;
 
   @override
   void initState() {
     super.initState();
-    _pageViewController = PageController(viewportFraction: 0.8);
+    _pageViewController = PageController(viewportFraction: 0.75);
   }
 
   @override
@@ -33,42 +33,38 @@ class _OotdFeedScreenState extends State<OotdFeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('전체 build() 호출', name: 'OotdFeedScreen.build()');
     return Scaffold(
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
+      body: PageView.builder(
         controller: _pageViewController,
-        // padEnds: true,
+        physics: const NeverScrollableScrollPhysics(),
         pageSnapping: true,
-        children: List.generate(
-           context.watch<OotdFeedViewModel>().feedList.length,
-            (index) => Center(
-                  child: SizedBox(
-                    width: cardWidth,
-                    height: cardHeight,
-                    child: FlipCard(data: context.watch<OotdFeedViewModel>().feedList[index], moveCallback: moveCard, flipCallback: flipCard),
-                  ),
-                )),
+        itemCount: context.watch<OotdFeedViewModel>().feedList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Center(
+            child: SizedBox(
+              width: cardWidth,
+              height: cardHeight,
+              child: FlipCard(
+                  index: index, moveCallback: moveCard, flipCallback: flipCard),
+            ),
+          );
+        },
       ),
     );
   }
 
   void moveCard({required bool isToNext}) {
-    int currentLength = context.read<OotdFeedViewModel>().feedList.length;
-    isToNext ? _currentIdx++ : _currentIdx--;
-    if (_currentIdx < 0) _currentIdx = 0;
-    if (_currentIdx + 2 == currentLength) {
-      context.read<OotdFeedViewModel>().loadMorePage();
-    }
-    if (_currentIdx >= currentLength) _currentIdx = currentLength - 1;
-
+    final nextIndex =
+        context.read<OotdFeedViewModel>().moveIndex(isToNext: isToNext);
     _pageViewController.animateToPage(
-      _currentIdx,
+      nextIndex,
       duration: cardMoveSpeed,
       curve: Curves.easeInOut,
     );
   }
 
   void flipCard() {
-    // context.read<OotdFeedViewModel>().flipCard(index: _currentIdx);
+    context.read<OotdFeedViewModel>().flipCard();
   }
 }
