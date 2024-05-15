@@ -62,8 +62,8 @@ class _AppSettingPolicyScreenState extends State<AppSettingPolicyScreen> {
           WebViewWidget(controller: _controller),
           if (_isPageLoading)
             Stack(children: [
+              Container(color: Colors.white),
               const Center(child: CircularProgressIndicator()),
-              Container(color: Colors.white)
             ]),
         ],
       ),
