@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/common/image_path.dart';
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/domain/location/model/location.dart';
+import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
 import 'package:weaco/domain/weather/model/weather.dart';
-import 'package:weaco/domain/weather/repository/daily_location_weather_repository.dart';
+import 'package:weaco/domain/weather/model/weather_background_image.dart';
+import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 
 enum HomeScreenStatus {
   idle,
@@ -18,137 +22,89 @@ enum HomeScreenStatus {
 }
 
 class HomeScreenViewModel with ChangeNotifier {
+  HomeScreenViewModel({
+    required this.getDailyLocationWeatherUseCase,
+    required this.getBackgroundImageListUseCase,
+    required this.getRecommendedFeedsUseCase,
+  });
+
+  final GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase;
+  final GetBackgroundImageListUseCase getBackgroundImageListUseCase;
+  final GetRecommendedFeedsUseCase getRecommendedFeedsUseCase;
+
   DailyLocationWeather? _dailyLocationWeather;
-  late final DailyLocationWeatherRepository dailyLocationWeatherRepository;
+  Weather? _currentWeather;
   List<Feed> _feedList = [];
   HomeScreenStatus _status = HomeScreenStatus.idle;
+  // 전일 대비 온도차
+  double? _temperatureGap;
+  String? _weatherBackgroundImage;
 
   DailyLocationWeather? get dailyLocationWeather => _dailyLocationWeather;
+  Weather? get currentWeather => _currentWeather;
+  double? get temperatureGap => _temperatureGap ?? 0;
   List<Feed> get feedList => _feedList;
   HomeScreenStatus get status => _status;
-
-  final _mockDailyLocationWeather = DailyLocationWeather(
-    seasonCode: 0,
-    highTemperature: 30,
-    lowTemperature: 20,
-    weatherList: [
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-    ],
-    yesterDayWeatherList: [
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-      Weather(
-        temperature: 25,
-        timeTemperature: DateTime.parse('2024-05-06'),
-        code: 1,
-        createdAt: DateTime.parse('2024-05-06'),
-      ),
-    ],
-    location: Location(
-      lat: 31.23,
-      lng: 29.48,
-      city: '서울시, 노원구',
-      createdAt: DateTime.parse('2024-05-06'),
-    ),
-    createdAt: DateTime.now(),
-  );
-
-  final _mockFeedList = [
-    Feed(
-        id: '0',
-        imagePath:
-            'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
-        userEmail: 'hoogom87@gmail.com',
-        description: '오늘의 OOTD',
-        weather: Weather(
-            code: 0,
-            temperature: 23.4,
-            timeTemperature: DateTime.now(),
-            createdAt: DateTime.now()),
-        seasonCode: 0,
-        location: Location(
-            createdAt: DateTime.now(), lat: 38.325, lng: 128.4356, city: '서울'),
-        createdAt: DateTime.now(),
-        deletedAt: DateTime.now()),
-    Feed(
-        id: '0',
-        imagePath:
-            'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
-        userEmail: 'hoogom87@gmail.com',
-        description: '오늘의 OOTD',
-        weather: Weather(
-            code: 0,
-            temperature: 23.4,
-            timeTemperature: DateTime.now(),
-            createdAt: DateTime.now()),
-        seasonCode: 0,
-        location: Location(
-            createdAt: DateTime.now(), lat: 38.325, lng: 128.4356, city: '서울'),
-        createdAt: DateTime.now(),
-        deletedAt: DateTime.now()),
-    Feed(
-        id: '0',
-        imagePath:
-            'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
-        userEmail: 'hoogom87@gmail.com',
-        description: '오늘의 OOTD',
-        weather: Weather(
-            code: 0,
-            temperature: 23.4,
-            timeTemperature: DateTime.now(),
-            createdAt: DateTime.now()),
-        seasonCode: 0,
-        location: Location(
-            createdAt: DateTime.now(), lat: 38.325, lng: 128.4356, city: '서울'),
-        createdAt: DateTime.now(),
-        deletedAt: DateTime.now())
-  ];
+  String get backgroundImagePath =>
+      _weatherBackgroundImage ?? ImagePath.homeBackgroundSunny;
 
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
+    notifyListeners();
+
     try {
-      // _dailyLocationWeather =
-      //     await dailyLocationWeatherRepository.getDailyLocationWeather();
+      _dailyLocationWeather = await getDailyLocationWeatherUseCase.execute();
 
-      // TODO. OOTD 목록 10개 부르기
-
-      _dailyLocationWeather = _mockDailyLocationWeather;
-      _feedList = _mockFeedList;
+      _feedList = await getRecommendedFeedsUseCase.execute(
+        dailyLocationWeather: _dailyLocationWeather!,
+      );
 
       if (_dailyLocationWeather != null) {
+        // 현재 시간에 맞는 날씨 예보 빼내기
+        _currentWeather = dailyLocationWeather!.weatherList.firstWhere(
+          (element) => element.timeTemperature.hour == DateTime.now().hour,
+        );
+
+        _calculateTemperatureGap();
+        await _getBackgroundImagePath();
         _status = HomeScreenStatus.success;
       }
+
       notifyListeners();
     } catch (e) {
-      // TODO. 에러 다이얼로그 또는 스낵바 처리
       _status = HomeScreenStatus.error;
+      notifyListeners();
     }
+  }
+
+  /// 배경 이미지 주소 가져오기
+  Future<void> _getBackgroundImagePath() async {
+    try {
+      final weatherBackgroundImageList =
+          await getBackgroundImageListUseCase.execute();
+
+      if (weatherBackgroundImageList.isEmpty) {
+        _weatherBackgroundImage = ImagePath.homeBackgroundSunny;
+      }
+
+      WeatherBackgroundImage image = weatherBackgroundImageList.firstWhere(
+          (element) =>
+              element.code ==
+              WeatherCode.fromDtoCode(currentWeather!.code).value);
+
+      _weatherBackgroundImage = image.imagePath;
+    } catch (e) {
+      _status = HomeScreenStatus.error;
+      notifyListeners();
+    }
+  }
+
+  /// 전일 대비 온도 계산
+  void _calculateTemperatureGap() {
+    _temperatureGap = (dailyLocationWeather!.yesterDayWeatherList
+            .firstWhere((element) =>
+                element.timeTemperature.hour == DateTime.now().hour)
+            .temperature) -
+        (currentWeather!.temperature);
   }
 }

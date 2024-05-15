@@ -2,6 +2,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
@@ -29,7 +32,13 @@ final router = GoRouter(
       path: RouterPath.home.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => HomeScreenViewModel(),
+          create: (_) => HomeScreenViewModel(
+            getDailyLocationWeatherUseCase:
+                getIt<GetDailyLocationWeatherUseCase>(),
+            getBackgroundImageListUseCase:
+                getIt<GetBackgroundImageListUseCase>(),
+            getRecommendedFeedsUseCase: getIt<GetRecommendedFeedsUseCase>(),
+          ),
           child: const HomeScreen(),
         );
       },
@@ -107,7 +116,9 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      builder: (context, state) => const PictureCropScreen(),
+      builder: (context, state) => PictureCropScreen(
+        sourcePath: state.extra as String,
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,

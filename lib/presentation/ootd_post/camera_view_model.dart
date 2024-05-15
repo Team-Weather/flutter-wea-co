@@ -7,9 +7,10 @@ class CameraViewModel with ChangeNotifier {
 
   XFile? get imageFile => _imageFile;
 
+  /// 카메라 또는 사진첩에서 이미지 선택
   void pickImage({
     required ImageSource imageSource,
-    required Function(String) callback,
+    required Function(bool) callback,
   }) async {
     final ImagePicker picker = ImagePicker();
 
@@ -21,8 +22,9 @@ class CameraViewModel with ChangeNotifier {
       } else {
         debugPrint('이미지 선택 안 함');
       }
+      callback(true);
     } on PlatformException {
-      callback('access_denied');
+      callback(false);
     }
 
     notifyListeners();
