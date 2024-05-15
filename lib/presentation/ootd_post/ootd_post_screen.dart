@@ -19,7 +19,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   late ScrollController _scrollController;
   final TextEditingController _contentTextController = TextEditingController();
   bool isClicked = false;
-  CroppedFile? _croppedFile;
+  CroppedFile? _newCroppedFile;
 
   @override
   void initState() {
@@ -54,8 +54,8 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                     children: [
                       Stack(
                         children: [
-                          _croppedFile == null ? Image.file(viewModel.image!)
-                          : Image.file(File(_croppedFile!.path)),
+                          _newCroppedFile == null ? Image.file(viewModel.croppedImage!)
+                          : Image.file(File(_newCroppedFile!.path)),
                           Positioned(
                             top: 10,
                             right: 10,
@@ -230,7 +230,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     if (croppedFile != null) {
 
       setState(() {
-        _croppedFile = croppedFile;
+        _newCroppedFile = croppedFile;
       });
     }
   }

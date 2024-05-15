@@ -29,7 +29,7 @@ class OotdPostViewModel with ChangeNotifier {
         _saveImageUseCase = saveImageUseCase;
 
   File? _originImage;
-  File? _image;
+  File? _croppedImage;
   Weather? _weather;
   DailyLocationWeather? _dailyLocationWeather;
 
@@ -38,7 +38,7 @@ class OotdPostViewModel with ChangeNotifier {
     notifyListeners();
 
     try {
-      _image = await _getImageUseCase.execute(isOrigin: false);
+      _croppedImage = await _getImageUseCase.execute(isOrigin: false);
       _dailyLocationWeather = await _getDailyLocationWeatherUseCase.execute();
       // 현재 시간 날씨
       _weather = _dailyLocationWeather!.weatherList.firstWhere((element) {
@@ -55,20 +55,20 @@ class OotdPostViewModel with ChangeNotifier {
   void saveFeed(String description, Function(bool) callback) async {
     final Feed feed = Feed(
       id: null,
-      imagePath: image!.path,
+      imagePath: _croppedImage!.path,
       userEmail: 'abc@gmail.com',
       description: description,
       weather: Weather(
-        temperature: weather!.temperature,
-        timeTemperature: weather!.timeTemperature,
-        code: weather!.code,
+        temperature: _weather!.temperature,
+        timeTemperature: _weather!.timeTemperature,
+        code: _weather!.code,
         createdAt: DateTime.now(),
       ),
-      seasonCode: dailyLocationWeather!.seasonCode,
+      seasonCode: _dailyLocationWeather!.seasonCode,
       location: Location(
-        lat: dailyLocationWeather!.location.lat,
-        lng: dailyLocationWeather!.location.lng,
-        city: dailyLocationWeather!.location.city,
+        lat: _dailyLocationWeather!.location.lat,
+        lng: _dailyLocationWeather!.location.lng,
+        city: _dailyLocationWeather!.location.city,
         createdAt: DateTime.now(),
       ),
       createdAt: DateTime.now(),
@@ -96,7 +96,7 @@ class OotdPostViewModel with ChangeNotifier {
 
   File? get originImage => _originImage;
 
-  File? get image => _image;
+  File? get croppedImage => _croppedImage;
 
   Weather? get weather => _weather;
 
