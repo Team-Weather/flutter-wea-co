@@ -25,8 +25,6 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-
-    Future.microtask(() => context.read<OotdPostViewModel>().initOotdPost());
   }
 
   @override
@@ -54,8 +52,12 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                     children: [
                       Stack(
                         children: [
-                          _newCroppedFile == null ? Image.file(viewModel.croppedImage!)
-                          : Image.file(File(_newCroppedFile!.path)),
+                            _newCroppedFile == null // 새 크롭 화면의 image null 검사
+                              ? viewModel.croppedImage == null // viewModel image null 검사
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : Image.file(viewModel.croppedImage!)
+                              : Image.file(File(_newCroppedFile!.path)),
                           Positioned(
                             top: 10,
                             right: 10,
@@ -228,7 +230,6 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     );
 
     if (croppedFile != null) {
-
       setState(() {
         _newCroppedFile = croppedFile;
       });

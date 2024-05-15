@@ -26,7 +26,10 @@ class OotdPostViewModel with ChangeNotifier {
   })  : _getImageUseCase = getImageUseCase,
         _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase,
         _saveEditFeedUseCase = saveEditFeedUseCase,
-        _saveImageUseCase = saveImageUseCase;
+        _saveImageUseCase = saveImageUseCase {
+
+    initOotdPost();
+  }
 
   File? _originImage;
   File? _croppedImage;
