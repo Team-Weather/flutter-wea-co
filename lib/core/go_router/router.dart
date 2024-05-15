@@ -46,20 +46,15 @@ final router = GoRouter(
       // builder: (context, state) => DialogScreen(),
       builder: (context, state) => const HomeScreen(),
     ),
-    GoRoute(
-      path: RouterPath.appSetting.path,
-      builder: (context, state) => AppSettingScreen(
-        appSettingViewModel: AppSettingViewModel(
-          logOutUseCase: LogOutUseCase(
-            userAuthRepository: UserAuthRepositoryImpl(
-                userAuthDataSource: getIt<UserAuthDataSource>(),
-                remoteUserProfileDataSource:
-                    getIt<RemoteUserProfileDataSource>()),
-          ),
+    GoRoute(path: RouterPath.appSetting.path, builder: (context, state) {
+      return ChangeNotifierProvider(
+        create: (_) => AppSettingViewModel(
+          logOutUseCase: getIt<LogOutUseCase>(),
           signOutUseCase: getIt<SignOutUseCase>(),
         ),
-      ),
-    ),
+        child: const AppSettingScreen(),
+      );
+    }),
     GoRoute(
       path: RouterPath.appSettingPolicy.path,
       builder: (context, state) => const AppSettingPolicyScreen(),
