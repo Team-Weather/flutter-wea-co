@@ -38,7 +38,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<OotdPostViewModel>();
-print('_newCroppedFile:: $_newCroppedFile');
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
