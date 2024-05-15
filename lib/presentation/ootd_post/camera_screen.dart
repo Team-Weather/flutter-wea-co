@@ -72,7 +72,7 @@ class CameraScreen extends StatelessWidget {
     required BuildContext context,
   }) {
     viewModel.pickImage(
-      imageSource: ImageSource.gallery,
+      imageSource: imageSource,
       callback: (result) {
         if (result) {
           RouterStatic.goToPictureCrop(context, viewModel.imageFile!.path);
