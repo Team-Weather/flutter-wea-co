@@ -3,8 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
+import 'package:weaco/presentation/common/component/dialog/one_button_dialog.dart';
 import 'package:weaco/presentation/common/handler/exception_handle_dialog.dart';
+import 'package:weaco/presentation/common/state/exception_state.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
+
+import '../../common/enum/exception_alert.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -16,12 +20,15 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailFormController = TextEditingController();
   final TextEditingController passwordFormController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
   bool isSignInButtonEnabled = false;
+  bool isSignInSubmit = false;
 
   @override
   void dispose() {
     emailFormController.dispose();
     passwordFormController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -171,6 +178,11 @@ class _SignInScreenState extends State<SignInScreen> {
               children: [
                 TextFormField(
                   controller: emailFormController,
+                  autofocus: true,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context).requestFocus(focusNode);
+                  },
                   cursorColor: const Color(0xFFFDCE55),
                   decoration: InputDecoration(
                     hintText: '이메일',
@@ -186,7 +198,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     filled: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
+                      borderSide:
+                          const BorderSide(width: 2, color: Color(0xFFD9D9D9)),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -216,6 +229,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 TextFormField(
                   controller: passwordFormController,
+                  focusNode: focusNode,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    _signInSubmit();
+                  },
                   cursorColor: const Color(0xFFFDCE55),
                   obscureText: true,
                   decoration: InputDecoration(
@@ -233,7 +251,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFFD9D9D9)),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -287,19 +306,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: isSignInButtonEnabled
-            ? () {
-                context
-                    .read<SignInViewModel>()
-                    .signIn(
-                      email: emailFormController.text,
-                      password: passwordFormController.text,
-                    )
-                    .then((_) => RouterStatic.goToHome(context))
-                    .catchError((e) => getIt<ExceptionHandleDialog>()
-                        .showOneButtonDialog(context, e));
-              }
-            : null,
+        onTap: _signInSubmit,
         child: Container(
           decoration: BoxDecoration(
             color: isSignInButtonEnabled
@@ -350,7 +357,31 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  void _signInSubmit() {
+    if (isSignInButtonEnabled == false) return;
+
+    final SignInViewModel signInViewModel = context.read<SignInViewModel>();
+
+    if (isSignInSubmit) {
+      _showAlert(ExceptionAlert.snackBar, '이미 로그인 시도하였습니다.');
+      return;
+    }
+
+    signInViewModel
+        .signIn(
+          email: emailFormController.text,
+          password: passwordFormController.text,
+        )
+        .then((value) => RouterStatic.goToHome(context))
+        .catchError((e) => _showAlert(
+              signInViewModel.exceptionState!.exceptionAlert,
+              signInViewModel.exceptionState!.message,
+            ));
+    isSignInSubmit = true;
+  }
+
   void _isValidateForm() {
+    isSignInSubmit = false;
     isSignInButtonEnabled = (isValidEmail(emailFormController.text) &&
         isValidPassword(passwordFormController.text));
     setState(() {});
@@ -372,5 +403,27 @@ class _SignInScreenState extends State<SignInScreen> {
             isValidPassword(passwordFormController.text))
         ? null
         : '비밀번호는 8자 이상, 숫자, 특수문자를 포함해야 합니다';
+  }
+
+  void _showAlert(ExceptionAlert exceptionAlert, String message) {
+    switch (exceptionAlert) {
+      case ExceptionAlert.snackBar:
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(message),
+        ));
+        break;
+      case ExceptionAlert.dialog:
+        showDialog(
+          context: context,
+          builder: (context) {
+            return OneButtonDialog(
+                title: '',
+                content: message,
+                onPressedCheck: () => Navigator.of(context).pop(),
+                buttonText: '확인');
+          },
+        );
+        break;
+    }
   }
 }
