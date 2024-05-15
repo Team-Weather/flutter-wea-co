@@ -198,6 +198,7 @@ class _FlipCardState extends State<FlipCard>
         ),
         boxShadow: const [
           BoxShadow(
+            offset: Offset(0, 5),
             color: Colors.black26,
             blurRadius: 10.0, // 얼마나 흩어져
             spreadRadius: 0.01, // 얼마나 두껍게
@@ -207,7 +208,8 @@ class _FlipCardState extends State<FlipCard>
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: Image.network(
-          _data.feed.imagePath,
+          'https://user-images.githubusercontent.com/38002959/143966223-7c10b010-32a9-4fd5-b021-3a9764134318.png',
+          // _data.feed.imagePath,
           fit: BoxFit.fitHeight,
         ),
       ),
@@ -221,6 +223,7 @@ class _FlipCardState extends State<FlipCard>
         color: Colors.white,
         boxShadow: const [
           BoxShadow(
+            offset: Offset(0, 5),
             color: Colors.black12,
             blurRadius: 10.0, // 얼마나 흩어져
             spreadRadius: 0.01, // 얼마나 두껍게
@@ -239,11 +242,11 @@ class _FlipCardState extends State<FlipCard>
                   fontWeight: FontWeight.w800,
                   color: Colors.black),
               child: Text(
-                  '너의 날씨는?'),
+                  '그 날의 날씨는'),
             ),
             SizedBox(
-              width: 80,
-              height: 80,
+              width: 100,
+              height: 100,
               child: Image.asset(
                   WeatherCode.fromValue(_data.feed.weather.code)
                       .iconPath),
@@ -293,7 +296,7 @@ class _FlipCardState extends State<FlipCard>
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                       child: Text(
-                          '그날의 온도는'),
+                          '이 날의 온도는'),
                     ),
                     DefaultTextStyle(
                       style: const TextStyle(
