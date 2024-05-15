@@ -1,12 +1,12 @@
 class DailyDto {
   List<String>? _time;
-  List<num>? _temperature2mMax;
-  List<num>? _temperature2mMin;
+  List? _temperature2mMax;
+  List? _temperature2mMin;
 
   DailyDto({
     List<String>? time,
-    List<num>? temperature2mMax,
-    List<num>? temperature2mMin,
+    List? temperature2mMax,
+    List? temperature2mMin,
   }) {
     _time = time ?? [];
     _temperature2mMax = temperature2mMax ?? [];
@@ -16,17 +16,17 @@ class DailyDto {
   DailyDto.fromJson({required dynamic json}) {
     _time = json['time'] != null ? json['time'].cast<String>() : [];
     _temperature2mMax = json['temperature_2m_max'] != null
-        ? json['temperature_2m_max'] as List<num>
+        ? json['temperature_2m_max'] as List
         : [];
     _temperature2mMin = json['temperature_2m_min'] != null
-        ? json['temperature_2m_min'] as List<num>
+        ? json['temperature_2m_min'] as List
         : [];
   }
 
   DailyDto copyWith({
     List<String>? time,
-    List<num>? temperature2mMax,
-    List<num>? temperature2mMin,
+    List? temperature2mMax,
+    List? temperature2mMin,
   }) =>
       DailyDto(
         time: time ?? _time,
@@ -36,9 +36,9 @@ class DailyDto {
 
   List<String>? get time => _time;
 
-  List<num>? get temperature2mMax => _temperature2mMax;
+  List? get temperature2mMax => _temperature2mMax;
 
-  List<num>? get temperature2mMin => _temperature2mMin;
+  List? get temperature2mMin => _temperature2mMin;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

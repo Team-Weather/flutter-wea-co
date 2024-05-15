@@ -1,37 +1,46 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
-import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/domain/location/model/location.dart';
-import 'package:weaco/domain/weather/model/weather.dart';
+import 'package:weaco/domain/feed/use_case/get_search_feeds_use_case.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 
 class OotdFeedViewModel extends ChangeNotifier {
   final List<OotdCard> _feedList = [];
-  List<OotdCard> get feedList => List.unmodifiable(_feedList);
+  int _currentIndex = 0;
+  final GetSearchFeedsUseCase _getSearchFeedsUseCase;
 
-
-  OotdFeedViewModel() {
-    loadMorePage();
+  OotdFeedViewModel({required GetSearchFeedsUseCase getSearchFeedsUseCase})
+      : _getSearchFeedsUseCase = getSearchFeedsUseCase {
+    _loadMorePage();
   }
 
-  void loadMorePage() {
-    for (int i = 0; i < 5; i++) {
-      _feedList.add(OotdCard(
-          data: Feed(
-              id: '${_feedList.length}',
-              imagePath:
-                  'https://user-images.githubusercontent.com/38002959/143966223-7c10b010-32a9-4fd5-b021-3a9764134318.png',
-              userEmail: 'hoogom87@gmail.com',
-              description: '겨울에는 역시 롱패딩',
-              weather: Weather(
-                  temperature: -10.2,
-                  timeTemperature: DateTime.now(),
-                  code: 0,
-                  createdAt: DateTime.now()),
-              seasonCode: 1,
-              location: Location(
-                  lat: 36.984, lng: 128.546, city: '서울시 노원구', createdAt: DateTime.now()),
-              createdAt: DateTime.now())));
+  List<OotdCard> get feedList => List.unmodifiable(_feedList);
+  int get currentIndex => _currentIndex;
+
+  Future<void> _loadMorePage() async {
+    final dataList = (await _getSearchFeedsUseCase.execute(
+        createdAt: (_feedList.isEmpty) ? null : _feedList.last.feed.createdAt,
+        limit: 2));
+    _feedList.addAll(dataList.map((feed) => OotdCard(feed: feed)));
+    if (dataList.isNotEmpty) {
+      notifyListeners();
     }
-    notifyListeners();
+  }
+
+  void flipCard() {
+    _feedList[_currentIndex].isFront = !_feedList[_currentIndex].isFront;
+  }
+
+  int moveIndex({required bool isToNext}) {
+    final int nextIndex = isToNext ? _currentIndex + 1 : _currentIndex - 1;
+    if (nextIndex < 0 || nextIndex >= _feedList.length) {
+      return nextIndex;
+    }
+    _currentIndex = nextIndex;
+    if (_currentIndex + 1 == _feedList.length) {
+      log('무한 스크롤: 데이터 요청', name: 'OotdFeedViewModel.moveIndex()');
+      _loadMorePage();
+    }
+    Future.delayed(const Duration(milliseconds: 125)).then((value) => notifyListeners());
+    return _currentIndex;
   }
 }
