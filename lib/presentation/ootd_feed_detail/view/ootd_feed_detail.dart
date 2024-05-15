@@ -103,7 +103,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
               curve: Curves.easeOutQuint,
               duration: const Duration(milliseconds: 300),
               child: Container(
-                height: _isCancelAreaShow ? _detailAreaExpandHeight : null,
+                height: _isCancelAreaShow ? _detailAreaExpandHeight : 135,
                 width: MediaQuery.of(context).size.width,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -113,7 +113,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+                      const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Builder(builder: (context) {
                     log('하단 시트 build() 호출');
                     return Column(
@@ -185,7 +185,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 16,
+                          height: 12,
                         ),
                         Row(
                           children: [
@@ -233,10 +233,9 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 24,
+                          height: 16,
                         ),
-                        SizedBox(
-                          height: _isCancelAreaShow ? 274 : null,
+                        Expanded(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: Align(
