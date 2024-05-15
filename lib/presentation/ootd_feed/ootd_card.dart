@@ -1,11 +1,8 @@
 import 'package:weaco/domain/feed/model/feed.dart';
 
 class OotdCard {
-  bool isFront = true;
-  final Feed _feed;
+  bool isFront;
+  final Feed feed;
 
-  OotdCard({required Feed data}) : _feed = data;
-
-
-  Feed get feed => _feed;
+  OotdCard({required this.feed, this.isFront = true});
 }

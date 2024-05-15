@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_detail_feed_detail_use_case.dart';
@@ -25,9 +26,13 @@ class OotdDetailViewModel extends ChangeNotifier {
   }
 
   Future<void> _getFeedDetail({required String id}) async {
-    _feed = (await _getDetailFeedDetailUseCase.execute(id: id)) ??
-        (throw Exception());
-    _userProfile = (await _getUserProfileUseCase.execute(email: _feed!.userEmail));
+    try {
+      _feed = (await _getDetailFeedDetailUseCase.execute(id: id)) ??
+          (throw Exception());
+      _userProfile = (await _getUserProfileUseCase.execute(email: _feed!.userEmail));
+    } catch (e) {
+      log(e.toString(), name: 'OotdDetailViewModel._getFeedDetail()');
+    }
     notifyListeners();
   }
 }
