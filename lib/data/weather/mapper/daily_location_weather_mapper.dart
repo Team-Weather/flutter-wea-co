@@ -18,20 +18,20 @@ extension DailyLocationWeatherMapper on WeatherDto {
         lowTemperature:
             daily?.temperature2mMin?.last.toDouble() ?? unknownTemperature,
         weatherList: List.generate(
-            length,
-            (index) => Weather(
-                  temperature:
-                      hourly?.temperature2m?.elementAt(index).toDouble() ??
-                          unknownTemperature,
-                  timeTemperature:
-                      DateTime.tryParse(hourly?.time?.elementAt(index) ?? '') ??
-                          now,
-                  code: hourly?.weathercode?.elementAt(index).toInt() ??
-                      unknownCode,
-                  createdAt: now,
-                )),
+          length,
+          (index) {
+            final hour = index + 24;
+            return Weather(
+              temperature: hourly?.temperature2m?.elementAt(hour).toDouble() ??
+                  unknownTemperature,
+              timeTemperature:
+                  DateTime.tryParse(hourly?.time?.elementAt(hour) ?? '') ?? now,
+              code: hourly?.weathercode?.elementAt(hour).toInt() ?? unknownCode,
+              createdAt: now,
+            );
+          },
+        ),
         yesterDayWeatherList: List.generate(length, (index) {
-          index = index + 24;
           return Weather(
             temperature: hourly?.temperature2m?.elementAt(index).toDouble() ??
                 unknownTemperature,

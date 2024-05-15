@@ -10,6 +10,7 @@ import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
+import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -32,13 +33,18 @@ void diSetup() {
   weatherDiSetup();
 
   // ViewModel
+  getIt.registerFactory<PictureCropViewModel>(
+    () => PictureCropViewModel(saveImageUseCase: getIt<SaveImageUseCase>()),
+  );
+
   getIt.registerFactory<OotdPostViewModel>(
-    () => OotdPostViewModel(
+        () => OotdPostViewModel(
       getImageUseCase: getIt<GetImageUseCase>(),
       getDailyLocationWeatherUseCase: getIt<GetDailyLocationWeatherUseCase>(),
       saveEditFeedUseCase: getIt<SaveEditFeedUseCase>(),
       saveImageUseCase: getIt<SaveImageUseCase>(),
     ),
   );
+
   // View
 }

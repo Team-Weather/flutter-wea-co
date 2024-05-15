@@ -28,7 +28,7 @@ class LocalDailyLocationWeatherDataSourceImpl
   @override
   Future<DailyLocationWeather?> getLocalDailyLocationWeather() async {
     final data = await _hiveWrapper.readData(dailyLocationWeatherKey);
-    if(data == null) return null;
+    if (data == null) return null;
     return DailyLocationWeather.fromJson(jsonDecode(data));
   }
 }
