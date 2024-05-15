@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to CameraScreen'),
             ),
             TextButton(
-              onPressed: () => RouterStatic.goToPictureCrop(context),
+              onPressed: () => RouterStatic.goToPictureCrop(context, ''),
               child: const Text('Go to PictureCropScreen'),
             ),
             TextButton(

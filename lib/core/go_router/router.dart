@@ -103,7 +103,9 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      builder: (context, state) => const PictureCropScreen(),
+      builder: (context, state) => PictureCropScreen(
+        sourcePath: state.extra as String,
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
