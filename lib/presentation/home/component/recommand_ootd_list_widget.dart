@@ -46,7 +46,8 @@ class RecommandOotdListWidget extends StatelessWidget {
                         return GestureDetector(
                           onTap: () => RouterStatic.goToOotdDetail(
                             context,
-                            feedList[index].id!,
+                            id: feedList[index].id ?? '',
+                            imagePath: feedList[index].imagePath,
                           ),
                           child: RecommandOotdWidget(
                             feedList: feedList,
