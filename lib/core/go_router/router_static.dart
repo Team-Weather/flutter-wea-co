@@ -51,8 +51,8 @@ class RouterStatic {
     router.go(RouterPath.camera.path);
   }
 
-  static void goToPictureCrop(BuildContext context) {
-    router.go(RouterPath.pictureCrop.path);
+  static void goToPictureCrop(BuildContext context, String path) {
+    router.go(RouterPath.pictureCrop.path, extra: path);
   }
 
   static void goToOotdPost(BuildContext context) {
