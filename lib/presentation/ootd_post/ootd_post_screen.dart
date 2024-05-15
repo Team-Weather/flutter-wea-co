@@ -38,7 +38,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<OotdPostViewModel>();
-
+print('_newCroppedFile:: $_newCroppedFile');
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -87,7 +87,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                       isClicked
                           ? const SizedBox()
                           : const Padding(
-                              padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                              padding: EdgeInsets.only(top: 20),
                               child: Text(
                                 '어떤 코디를 하셨나요?',
                                 style: TextStyle(
