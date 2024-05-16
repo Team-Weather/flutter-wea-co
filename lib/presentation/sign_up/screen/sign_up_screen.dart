@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/core/di/di_setup.dart';
+import 'package:weaco/common/image_path.dart';
 import 'package:weaco/core/enum/gender_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
-import 'package:weaco/presentation/common/handler/check_handle_dialog.dart';
+import 'package:weaco/core/util/validation_util.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -19,8 +21,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordConfirmFormController =
       TextEditingController();
   final TextEditingController nicknameFormController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
   bool isSignUpButtonEnabled = false;
-  GenderCode selectedGender = GenderCode.unknown; // 0 for '남자', 1 for '여자'
+  bool isSignUpSubmit = false;
+  GenderCode selectedGender = GenderCode.unknown;
 
   @override
   void dispose() {
@@ -28,12 +32,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     passwordFormController.dispose();
     passwordConfirmFormController.dispose();
     nicknameFormController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -62,12 +72,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FlutterLogo(size: 40),
-          SizedBox(height: 8),
-          Text(
+          Image(
+            image: Image.network(ImagePath.weacoLogo).image,
+            width: 40,
+            height: 40,
+          ),
+          const SizedBox(height: 8),
+          const Text(
             '회원가입',
             style: TextStyle(
               color: Color(0xFF1A1C29),
@@ -76,8 +90,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             '첫 회원가입이네요! 기본정보를 입력해주세요',
             style: TextStyle(
               color: Color(0xFF797979),
@@ -100,6 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _buildInputField(
             labelText: '이메일',
             controller: emailFormController,
+            isAutoFocus: true,
           ),
           _buildInputField(
             labelText: '비밀번호',
@@ -125,6 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     required String labelText,
     required TextEditingController controller,
     bool isObscureText = false,
+    bool isAutoFocus = false,
   }) {
     return Container(
       width: double.infinity,
@@ -134,6 +150,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           TextFormField(
             controller: controller,
             obscureText: isObscureText,
+            autofocus: isAutoFocus,
+            textInputAction: labelText == '닉네임'
+                ? TextInputAction.done
+                : TextInputAction.next,
+            onFieldSubmitted: (_) {
+              if (labelText == '닉네임') {
+                _signUpSubmit();
+              }
+            },
             cursorColor: const Color(0xFFFDCE55),
             decoration: InputDecoration(
               hintText: labelText,
@@ -149,7 +174,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               filled: true,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide.none,
+                borderSide:
+                    const BorderSide(width: 2, color: Color(0xFFD9D9D9)),
                 borderRadius: BorderRadius.circular(14),
               ),
               focusedBorder: OutlineInputBorder(
@@ -212,7 +238,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         color: const Color(0xF5F5F5FF),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFF3F3F3),
+          color: isSelected ? const Color(0xFFFDCE55) : const Color(0xFFD9D9D9),
           width: 2,
         ),
       ),
@@ -225,7 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Icons.check_circle,
               color: isSelected
                   ? const Color(0xFFFDCE55)
-                  : const Color(0xFFF3F3F3),
+                  : const Color(0xFFD9D9D9),
             ),
             const SizedBox(width: 8),
             // Add some space between the icon and the text
@@ -249,24 +275,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
       color: const Color(0xF5F5F5FF),
       child: InkWell(
-        onTap: isSignUpButtonEnabled
-            ? () {
-                context
-                    .read<SignUpViewModel>()
-                    .signUp(
-                      email: emailFormController.text,
-                      password: passwordFormController.text,
-                      nickname: nicknameFormController.text,
-                      genderCode: selectedGender,
-                    )
-                    .then((_) => getIt<CheckHandleDialog>().showOneButtonDialog(
-                        context: context,
-                        content: '회원가입에 성공하였습니다.',
-                        buttonText: '둘러보기',
-                        onPressedCheck: () => RouterStatic.goToHome(context)))
-                    .catchError((e) {});
-              }
-            : null,
+        onTap: isSignUpButtonEnabled ? _signUpSubmit : null,
         child: Container(
           height: 54,
           decoration: BoxDecoration(
@@ -290,36 +299,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  void _signUpSubmit() {
+    if (isSignUpButtonEnabled == false) return;
+
+    if (isSignUpSubmit) {
+      AlertUtil.showAlert(
+          context: context,
+          exceptionAlert: ExceptionAlert.snackBar,
+          message: '이미 회원가입을 시도하였습니다.');
+      return;
+    }
+
+    final SignUpViewModel signUpViewModel = context.read<SignUpViewModel>();
+    signUpViewModel
+        .signUp(
+          email: emailFormController.text,
+          password: passwordFormController.text,
+          nickname: nicknameFormController.text,
+          genderCode: selectedGender,
+        )
+        .then((_) => AlertUtil.showAlert(
+              context: context,
+              exceptionAlert: ExceptionAlert.dialog,
+              message: '회원가입에 성공하였습니다.',
+              buttonText: '둘러보기',
+              onPressedCheck: () => RouterStatic.goToHome(context),
+            ))
+        .catchError((e) => AlertUtil.showAlert(
+              context: context,
+              exceptionAlert: signUpViewModel.exceptionState!.exceptionAlert,
+              message: signUpViewModel.exceptionState!.message,
+            ));
+    isSignUpSubmit = true;
+  }
+
   void _isValidateForm() {
-    isSignUpButtonEnabled = (_isValidEmail(emailFormController.text) &&
-        _isValidPassword(passwordFormController.text) &&
-        _isValidString(nicknameFormController.text) &&
-        _isValidConfirmPassword(
-            passwordFormController.text, passwordConfirmFormController.text) &&
-        selectedGender != GenderCode.unknown);
+    isSignUpButtonEnabled =
+        (RegValidationUtil.isValidEmail(emailFormController.text) &&
+            RegValidationUtil.isValidPassword(passwordFormController.text) &&
+            RegValidationUtil.isValidNickname(nicknameFormController.text) &&
+            RegValidationUtil.isValidConfirmPassword(
+                passwordFormController.text,
+                passwordConfirmFormController.text) &&
+            selectedGender != GenderCode.unknown);
     setState(() {});
-  }
-
-  bool _isValidPassword(String password) {
-    final passwordReg = RegExp(r'''
-^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[a-zA-Z])(?=.*\d).{8,}$''')
-        .hasMatch(password);
-    return passwordReg;
-  }
-
-  bool _isValidEmail(String email) {
-    final emailReg = RegExp(r'''
-^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$''').hasMatch(email);
-    return emailReg;
-  }
-
-  bool _isValidConfirmPassword(String password, String confirmPassword) {
-    return password == confirmPassword && _isValidPassword(confirmPassword);
-  }
-
-  bool _isValidString(String text) {
-    return RegExp(r'''
-(?:[가-힣]{3,})|(?:[a-zA-Z]{3,})''').hasMatch(text);
   }
 
   void _handleGenderSelection(GenderCode genderCode) {
@@ -328,22 +351,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   String? _checkErrorText(String label) {
+    isSignUpSubmit = false;
+
     return switch (label) {
       '이메일' => emailFormController.text.isEmpty ||
-              _isValidEmail(emailFormController.text)
+              RegValidationUtil.isValidEmail(emailFormController.text)
           ? null
           : '이메일 형식이 올바르지 않습니다',
       '비밀번호' => passwordFormController.text.isEmpty ||
-              _isValidPassword(passwordFormController.text)
+              RegValidationUtil.isValidPassword(passwordFormController.text)
           ? null
           : '비밀번호는 8자 이상, 숫자, 특수문자를 포함해야 합니다',
       '비밀번호 확인' => passwordConfirmFormController.text.isEmpty ||
-              _isValidConfirmPassword(passwordFormController.text,
+              RegValidationUtil.isValidConfirmPassword(
+                  passwordFormController.text,
                   passwordConfirmFormController.text)
           ? null
           : '비밀번호가 일치하지 않습니다',
       '닉네임' => nicknameFormController.text.isEmpty ||
-              _isValidString(nicknameFormController.text)
+              RegValidationUtil.isValidNickname(nicknameFormController.text)
           ? null
           : '닉네임은 한글 또는 영문 3자 이상이어야 합니다',
       _ => null,
