@@ -8,7 +8,9 @@ import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_cas
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -36,9 +38,9 @@ final router = GoRouter(
         return ChangeNotifierProvider(
           create: (_) => HomeScreenViewModel(
             getDailyLocationWeatherUseCase:
-            getIt<GetDailyLocationWeatherUseCase>(),
+                getIt<GetDailyLocationWeatherUseCase>(),
             getBackgroundImageListUseCase:
-            getIt<GetBackgroundImageListUseCase>(),
+                getIt<GetBackgroundImageListUseCase>(),
             getRecommendedFeedsUseCase: getIt<GetRecommendedFeedsUseCase>(),
           ),
           child: const HomeScreen(),
@@ -54,8 +56,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.signIn.path,
-// builder: (context, state) => SignInScreen(),
-      builder: (context, state) => const SignInScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignInViewModel>(),
+        child: const SignInScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
@@ -105,8 +109,12 @@ final router = GoRouter(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => getIt<OotdDetailViewModel>(param1: state.uri.queryParameters['id'] ?? ''),
-          child: OotdDetailScreen(id: state.uri.queryParameters['id'] ?? '', mainImagePath: state.uri.queryParameters['imagePath'] ?? '',),
+          create: (_) => getIt<OotdDetailViewModel>(
+              param1: state.uri.queryParameters['id'] ?? ''),
+          child: OotdDetailScreen(
+            id: state.uri.queryParameters['id'] ?? '',
+            mainImagePath: state.uri.queryParameters['imagePath'] ?? '',
+          ),
         );
       },
     ),
@@ -121,20 +129,23 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      // builder: (context, state) => PictureCropScreen(
-      //   sourcePath: state.extra as String,
-      // ),
-    // ),
-    builder: (context, state) {
+      builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<PictureCropViewModel>(),
-          child: PictureCropScreen(sourcePath: state.extra as String,),
+          child: PictureCropScreen(
+            sourcePath: state.extra as String,
+          ),
         );
       },
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
-      builder: (context, state) => const OotdPostScreen(),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => getIt<OotdPostViewModel>(),
+          child: const OotdPostScreen(),
+        );
+      },
     ),
   ],
 );

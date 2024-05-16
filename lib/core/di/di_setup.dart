@@ -8,8 +8,14 @@ import 'package:weaco/core/di/weather/weather_di_setup.dart';
 import 'package:weaco/domain/user/use_case/get_profile_image_list_use_case.dart';
 import 'package:weaco/domain/user/use_case/sign_up_use_case.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
+import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
+import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_in_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -37,8 +43,21 @@ void diSetup() {
       getProfileImagePathUseCase: getIt<GetProfileImageListUseCase>()));
 
   // ViewModel
+  getIt.registerFactory<SignInViewModel>(
+      () => SignInViewModel(signInUseCase: getIt<SignInUseCase>()));
+
   getIt.registerFactory<PictureCropViewModel>(
     () => PictureCropViewModel(saveImageUseCase: getIt<SaveImageUseCase>()),
   );
+
+  getIt.registerFactory<OotdPostViewModel>(
+    () => OotdPostViewModel(
+      getImageUseCase: getIt<GetImageUseCase>(),
+      getDailyLocationWeatherUseCase: getIt<GetDailyLocationWeatherUseCase>(),
+      saveEditFeedUseCase: getIt<SaveEditFeedUseCase>(),
+      saveImageUseCase: getIt<SaveImageUseCase>(),
+    ),
+  );
+
   // View
 }

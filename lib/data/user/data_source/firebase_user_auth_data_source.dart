@@ -33,23 +33,14 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
   // 로그인
   @override
   Future<bool> signIn({required String email, required String password}) async {
-    bool isSignInSuccess = false;
-
     try {
-      _firebaseService.firebaseAuth.userChanges().listen((User? user) async {
-        if (user != null) {
-          isSignInSuccess = true;
-        }
-
-        await _firebaseService.signIn(email: email, password: password);
-      });
+      await _firebaseService.signIn(email: email, password: password);
     } on Exception catch (e) {
-      isSignInSuccess = false;
       log(e.toString(), name: 'FirebaseUserAuthDataSource.signIn()');
       rethrow;
     }
 
-    return isSignInSuccess;
+    return true;
   }
 
   // 로그아웃
