@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';

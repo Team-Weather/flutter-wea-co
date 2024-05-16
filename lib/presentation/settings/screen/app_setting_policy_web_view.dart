@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class AppSettingPolicyScreen extends StatefulWidget {
   const AppSettingPolicyScreen({super.key});
@@ -18,14 +17,8 @@ class _AppSettingPolicyScreenState extends State<AppSettingPolicyScreen> {
     super.initState();
 
     late final PlatformWebViewControllerCreationParams params;
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
+
+    params = const PlatformWebViewControllerCreationParams();
 
     final WebViewController controller =
         WebViewController.fromPlatformCreationParams(params);
