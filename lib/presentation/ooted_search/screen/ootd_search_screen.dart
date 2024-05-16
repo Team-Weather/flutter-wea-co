@@ -28,80 +28,78 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  dropDownButton(
-                      defaultText: '계절',
-                      borderColor: const Color(0xFFF2C347),
-                      items: seasonItemList,
-                      width: 80,
-                      selectedValueIndex: 0,
-                      onChanged: (value) {
-                        context.read<OotdSearchViewModel>().tmpMethod(
-                            seasonCodeValue:
-                                seasonItemList.indexOf(value ?? '') + 1,
-                            weatherCodeValue:
-                                weatherItemList.indexOf(selectedData[1] ?? '') +
-                                    1,
-                            temperatureCodeValue: temperatureItemList
-                                    .indexOf(selectedData[2] ?? '') +
-                                1);
-                        setState(() {
-                          selectedData[0] = value;
-                        });
-                      },
-                      fontSize: 13),
-                  dropDownButton(
-                      defaultText: '날씨',
-                      borderColor: const Color(0xFF4C8DE6),
-                      items: weatherItemList,
-                      width: 120,
-                      selectedValueIndex: 1,
-                      onChanged: (value) {
-                        context.read<OotdSearchViewModel>().tmpMethod(
-                            seasonCodeValue:
-                                seasonItemList.indexOf(selectedData[0] ?? '') +
-                                    1,
-                            weatherCodeValue:
-                                weatherItemList.indexOf(value ?? '') + 1,
-                            temperatureCodeValue: temperatureItemList
-                                    .indexOf(selectedData[2] ?? '') +
-                                1);
-                        setState(() {
-                          selectedData[1] = value;
-                        });
-                      },
-                      fontSize: 13),
-                  dropDownButton(
-                      defaultText: '온도',
-                      borderColor: const Color(0xFFE2853F),
-                      items: temperatureItemList,
-                      width: 130,
-                      selectedValueIndex: 2,
-                      onChanged: (value) {
-                        context.read<OotdSearchViewModel>().tmpMethod(
-                            seasonCodeValue:
-                                seasonItemList.indexOf(selectedData[0] ?? '') +
-                                    1,
-                            weatherCodeValue:
-                                weatherItemList.indexOf(selectedData[1] ?? '') +
-                                    1,
-                            temperatureCodeValue:
-                                temperatureItemList.indexOf(value ?? '') + 1);
-                        setState(() {
-                          selectedData[2] = value;
-                        });
-                      },
-                      fontSize: 12),
-                ],
-              )
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                dropDownButton(
+                    defaultText: '계절',
+                    borderColor: const Color(0xFFF2C347),
+                    items: seasonItemList,
+                    width: 80,
+                    selectedValueIndex: 0,
+                    onChanged: (value) {
+                      context.read<OotdSearchViewModel>().tmpMethod(
+                          seasonCodeValue:
+                              seasonItemList.indexOf(value ?? '') + 1,
+                          weatherCodeValue:
+                              weatherItemList.indexOf(selectedData[1] ?? '') +
+                                  1,
+                          temperatureCodeValue: temperatureItemList
+                                  .indexOf(selectedData[2] ?? '') +
+                              1);
+                      setState(() {
+                        selectedData[0] = value;
+                      });
+                    },
+                    fontSize: 13),
+                dropDownButton(
+                    defaultText: '날씨',
+                    borderColor: const Color(0xFF4C8DE6),
+                    items: weatherItemList,
+                    width: 120,
+                    selectedValueIndex: 1,
+                    onChanged: (value) {
+                      context.read<OotdSearchViewModel>().tmpMethod(
+                          seasonCodeValue:
+                              seasonItemList.indexOf(selectedData[0] ?? '') +
+                                  1,
+                          weatherCodeValue:
+                              weatherItemList.indexOf(value ?? '') + 1,
+                          temperatureCodeValue: temperatureItemList
+                                  .indexOf(selectedData[2] ?? '') +
+                              1);
+                      setState(() {
+                        selectedData[1] = value;
+                      });
+                    },
+                    fontSize: 13),
+                dropDownButton(
+                    defaultText: '온도',
+                    borderColor: const Color(0xFFE2853F),
+                    items: temperatureItemList,
+                    width: 130,
+                    selectedValueIndex: 2,
+                    onChanged: (value) {
+                      context.read<OotdSearchViewModel>().tmpMethod(
+                          seasonCodeValue:
+                              seasonItemList.indexOf(selectedData[0] ?? '') +
+                                  1,
+                          weatherCodeValue:
+                              weatherItemList.indexOf(selectedData[1] ?? '') +
+                                  1,
+                          temperatureCodeValue:
+                              temperatureItemList.indexOf(value ?? '') + 1);
+                      setState(() {
+                        selectedData[2] = value;
+                      });
+                    },
+                    fontSize: 12),
+              ],
+            )
+          ],
         ),
       ),
     );
