@@ -191,10 +191,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollController: _scrollController,
                     ),
 
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 40),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
                     ),
-
                     // ootd list
                     RecommandOotdListWidget(
                       dailyLocationWeather: viewModel.dailyLocationWeather,
