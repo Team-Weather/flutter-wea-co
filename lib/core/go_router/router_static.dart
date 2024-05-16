@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
 
 class RouterStatic {
   static void goToDefault(BuildContext context) {
@@ -74,7 +75,11 @@ class RouterStatic {
     router.go(RouterPath.pictureCrop.path, extra: path);
   }
 
-  static void goToOotdPost(BuildContext context) {
-    router.go(RouterPath.ootdPost.path);
+  static void goToOotdPost(BuildContext context, {Feed? feed}) {
+    router.go(RouterPath.ootdPost.path, extra: feed);
+  }
+
+  static void popFromOotdPost(BuildContext context) {
+    router.pop(RouterPath.ootdPost.path);
   }
 }

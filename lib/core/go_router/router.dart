@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/use_case/log_out_use_case.dart';
 import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
@@ -165,7 +166,9 @@ final router = GoRouter(
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdPostViewModel>(),
-          child: const OotdPostScreen(),
+          child: OotdPostScreen(
+            feed: state.extra as Feed?,
+          ),
         );
       },
     ),

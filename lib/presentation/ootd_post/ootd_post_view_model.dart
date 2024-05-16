@@ -17,6 +17,7 @@ class OotdPostViewModel with ChangeNotifier {
   final SaveEditFeedUseCase _saveEditFeedUseCase;
   final SaveImageUseCase _saveImageUseCase;
   bool _showSpinner = false;
+  bool _saveStatus = false;
   File? _originImage;
   File? _croppedImage;
   Weather? _weather;
@@ -53,7 +54,7 @@ class OotdPostViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveFeed(String description, Function(bool) callback) async {
+  Future<void> saveFeed(String description) async {
     final now = DateTime.now();
     final Feed feed = Feed(
       id: null,
@@ -76,9 +77,22 @@ class OotdPostViewModel with ChangeNotifier {
       createdAt: now,
     );
 
-    final result = await _saveEditFeedUseCase.execute(feed: feed);
+    _saveStatus = await _saveEditFeedUseCase.execute(feed: feed);
+  }
 
-    callback(result);
+  Future<void> editFeed(Feed feed, String description) async {
+    final editedFeed = Feed(
+      id: feed.id,
+      imagePath: feed.imagePath,
+      userEmail: feed.userEmail,
+      description: description,
+      weather: feed.weather,
+      seasonCode: feed.seasonCode,
+      location: feed.location,
+      createdAt: feed.createdAt,
+    );
+
+    _saveStatus = await _saveEditFeedUseCase.execute(feed: editedFeed);
   }
 
   Future<void> getOriginImage() async {
@@ -103,6 +117,8 @@ class OotdPostViewModel with ChangeNotifier {
   Weather? get weather => _weather;
 
   DailyLocationWeather? get dailyLocationWeather => _dailyLocationWeather;
+
+  bool get saveStatus => _saveStatus;
 
   bool get showSpinner => _showSpinner;
 }
