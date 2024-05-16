@@ -8,6 +8,7 @@ import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_cas
 import 'package:weaco/main.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
@@ -18,6 +19,7 @@ import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 import 'package:weaco/presentation/user_page/user_page_screen.dart';
 import 'package:weaco/presentation/user_page/user_page_view_model.dart';
@@ -52,8 +54,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.signIn.path,
-      // builder: (context, state) => SignInScreen(),
-      builder: (context, state) => const SignInScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignInViewModel>(),
+        child: const SignInScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
@@ -136,7 +140,12 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
-      builder: (context, state) => const OotdPostScreen(),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => getIt<OotdPostViewModel>(),
+          child: const OotdPostScreen(),
+        );
+      },
     ),
   ],
 );
