@@ -1,11 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 
 class PictureCropScreen extends StatefulWidget {
-  const PictureCropScreen({super.key});
+  final String sourcePath;
+
+  const PictureCropScreen({
+    super.key,
+    required this.sourcePath,
+  });
 
   @override
   State<PictureCropScreen> createState() => _PictureCropScreenState();
@@ -15,55 +22,19 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
   CroppedFile? _croppedFile;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop,
-          icon: const Icon(Icons.arrow_back),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              '확인',
-              style: TextStyle(
-                color: Color(0xFFFC8800),
-                fontSize: 18,
-              ),
-            ),
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _croppedFile != null
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Image.file(File(_croppedFile!.path)),
-                    ),
-                  )
-                : const Text('이미지 없을 무'),
-            ElevatedButton(
-              onPressed: () async {
-                await cropImage();
-              },
-              child: const Text('이미지 가져오기'),
-            ),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    _cropImage();
   }
 
-  Future<void> cropImage() async {
-    const String samplePath =
-        '/data/user/0/team.weather.weaco/cache/c2b5e982-bdf9-413b-a1c0-06966e6a4683/1000000018.jpg';
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
+  }
+
+  Future<void> _cropImage() async {
     final croppedFile = await ImageCropper().cropImage(
-      sourcePath: samplePath,
+      sourcePath: widget.sourcePath,
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
       uiSettings: [
         AndroidUiSettings(
@@ -82,9 +53,34 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
     );
 
     if (croppedFile != null) {
-      setState(() {
-        _croppedFile = croppedFile;
-      });
+      _croppedFile = croppedFile;
+
+      _cropResult();
+    }
+  }
+
+  void _cropResult() async {
+    final PictureCropViewModel viewModel = context.read<PictureCropViewModel>();
+    if (_croppedFile == null) {
+      return;
+    } else {
+      await viewModel.saveOriginImage(file: File(widget.sourcePath));
+
+      await viewModel.saveCroppedImage(file: File(_croppedFile!.path));
+
+      if (viewModel.status.isSuccess) {
+        if (mounted) {
+          RouterStatic.goToOotdPost(context);
+        }
+      } else if (viewModel.status.isError) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('잠시 후 다시 시도해 주시기 바랍니다.'),
+            ),
+          );
+        }
+      }
     }
   }
 }
