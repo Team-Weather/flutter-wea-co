@@ -17,6 +17,10 @@ class OotdPostViewModel with ChangeNotifier {
   final SaveEditFeedUseCase _saveEditFeedUseCase;
   final SaveImageUseCase _saveImageUseCase;
   bool _showSpinner = false;
+  File? _originImage;
+  File? _croppedImage;
+  Weather? _weather;
+  DailyLocationWeather? _dailyLocationWeather;
 
   OotdPostViewModel({
     required GetImageUseCase getImageUseCase,
@@ -27,14 +31,8 @@ class OotdPostViewModel with ChangeNotifier {
         _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase,
         _saveEditFeedUseCase = saveEditFeedUseCase,
         _saveImageUseCase = saveImageUseCase {
-
     initOotdPost();
   }
-
-  File? _originImage;
-  File? _croppedImage;
-  Weather? _weather;
-  DailyLocationWeather? _dailyLocationWeather;
 
   void initOotdPost() async {
     _showSpinner = true;
@@ -92,11 +90,10 @@ class OotdPostViewModel with ChangeNotifier {
     required Function(bool) callback,
   }) async {
     final bool result =
-    await _saveImageUseCase.execute(isOrigin: false, file: file);
+        await _saveImageUseCase.execute(isOrigin: false, file: file);
 
     callback(result);
   }
-
 
   File? get originImage => _originImage;
 
