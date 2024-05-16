@@ -35,17 +35,17 @@ void main() {
       longitude: longitude,
       daily: DailyDto(
         time:
-            List.generate(2, (index) => '${now.year}-${now.month}-${now.day}'),
-        temperature2mMax: [20],
-        temperature2mMin: [10],
+            List.generate(3, (index) => '${now.year}-${now.month}-${now.day}'),
+        temperature2mMax: [20, 25, 30],
+        temperature2mMin: [10, 15, 20],
       ),
       hourly: HourlyDto(
           time: List.generate(
-              48,
+              72,
               (index) =>
                   '${now.year}-${now.month.toString().padLeft(2, '0')}-${(index ~/ 24 <= 1 ? now.day.toString().padLeft(2, '0') : (now.day - 1).toString().padLeft(2, '0'))}T${(index % 24).toString().padLeft(2, '0')}:00:00'),
-          temperature2m: List.generate(48, (index) => 15.0),
-          weathercode: List.generate(48, (index) => 1)),
+          temperature2m: List.generate(72, (index) => 15.0),
+          weathercode: List.generate(72, (index) => 1)),
     );
 
     Location location =
