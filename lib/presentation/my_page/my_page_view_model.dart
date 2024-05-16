@@ -46,10 +46,6 @@ class MyPageViewModel with ChangeNotifier {
   Future<void> initializePageData() async {
     changePageLoadingStatus(true);
 
-    // 테스트 용 로그인
-    FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'dummy4id@gmail.com', password: 'dummy4password@');
-
     // 초기 프로필, 피드 데이터 요청
     await getProfile()
         .then((_) async => await getInitialFeedList(profile!.email));
