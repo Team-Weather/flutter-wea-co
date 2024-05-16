@@ -12,11 +12,11 @@ class RouterStatic {
   }
 
   static void goToSignUp(BuildContext context) {
-    router.go(RouterPath.signUp.path);
+    router.push(RouterPath.signUp.path);
   }
 
   static void goToSignIn(BuildContext context) {
-    router.go(RouterPath.signIn.path);
+    router.push(RouterPath.signIn.path);
   }
 
   static void goToDialog(BuildContext context) {
