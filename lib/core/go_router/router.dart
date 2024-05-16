@@ -80,7 +80,9 @@ final router = GoRouter(
       path: RouterPath.userPage.path,
       builder: (context, state) => ChangeNotifierProvider(
         create: (context) => getIt<UserPageViewModel>(
-          param1: state.uri.queryParameters['email'],
+          // param1: state.uri.queryParameters['email'],
+          // param1: 'dummyId4@gmail.com',
+          param1: 'deletedUser@delete.com',
         ),
         child: const UserPageScreen(),
       ),
@@ -125,10 +127,6 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      // builder: (context, state) => PictureCropScreen(
-      //   sourcePath: state.extra as String,
-      // ),
-      // ),
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<PictureCropViewModel>(),
