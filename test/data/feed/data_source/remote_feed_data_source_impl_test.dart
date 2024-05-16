@@ -91,8 +91,8 @@ void main() {
               // Then
               expect(snapshot.docs.length, 1);
               expect(
-                snapshot.docs.first.data()['id'],
-                equals(mockFeed.id),
+                snapshot.docs.first.data()['user_email'],
+                equals(mockFeed.userEmail),
               );
             },
           );
@@ -147,14 +147,14 @@ void main() {
               'weather': {
                 'code': i, // 날씨 코드
                 'temperature': 22.0, // 온도
-                'time_temperature': DateTime.parse('2024-05-01 13:27:00'),
-                'created_at': DateTime.parse('2024-05-01 13:27:00'),
+                'time_temperature': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'location': {
                 'lat': 35.234,
                 'lng': 131.1,
                 'city': '서울시 구로구',
-                'created_at': Timestamp.now(),
+                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
@@ -185,14 +185,14 @@ void main() {
             'weather': {
               'code': 0, // 날씨 코드
               'temperature': 22.0, // 온도
-              'time_temperature': DateTime.parse('2024-05-01 13:27:00'),
-              'created_at': DateTime.parse('2024-05-01 13:27:00'),
+              'time_temperature': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+              'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
             },
             'location': {
               'lat': 35.234,
               'lng': 131.1,
               'city': '서울시 구로구',
-              'created_at': Timestamp.now(),
+              'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
             },
             'created_at': DateTime.parse('2024-05-01 13:27:00'),
             'description': 'desc',
@@ -208,7 +208,7 @@ void main() {
               await fakeFirestore.collection('feeds').doc(testId).get();
 
           final feedDeletedAt =
-              toFeed(feedDto: docResult.data()!, id: docResult.id).deletedAt;
+              toFeed(json: docResult.data()!, id: docResult.id).deletedAt;
 
           // Then
           expect(result, feedDeletedAt != null);
@@ -222,14 +222,14 @@ void main() {
               'weather': {
                 'code': i, // 날씨 코드
                 'temperature': 22.0, // 온도
-                'time_temperature': DateTime.parse('2024-05-01 13:27:00'),
-                'created_at': DateTime.parse('2024-05-01 13:27:00'),
+                'time_temperature': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'location': {
                 'lat': 35.234,
                 'lng': 131.1,
                 'city': '서울시 구로구',
-                'created_at': Timestamp.now(),
+                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
@@ -292,9 +292,9 @@ void main() {
           // Given
           for (int i = 0; i < 3; i++) {
             await fakeFirestore.collection('feeds').add({
-              'weather': toWeatherDto(weather: mockWeather),
-              'location': toLocationDto(location: mockLocation),
-              'created_at': DateTime.parse('2024-05-01 13:27:00'),
+              'weather': mockWeather.toJson(),
+              'location': mockLocation.toJson(),
+              'created_at': Timestamp.fromDate(DateTime.parse('2024-05-01 13:27:00')),
               'description': 'desc',
               'image_path':
                   'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',

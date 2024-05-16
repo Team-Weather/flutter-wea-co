@@ -46,7 +46,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
       );
     }
 
-    return toFeed(feedDto: docSnapshot.data()!, id: docSnapshot.id);
+    return toFeed(json: docSnapshot.data()!, id: docSnapshot.id);
   }
 
   /// [유저 페이지/마이 페이지]:
@@ -68,7 +68,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .get();
 
     return querySnapshot.docs
-        .map((doc) => toFeed(feedDto: doc.data(), id: doc.id))
+        .map((doc) => toFeed(json: doc.data(), id: doc.id))
         .toList();
   }
 
@@ -106,7 +106,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .get();
 
     return querySnapshot.docs
-        .map((doc) => toFeed(feedDto: doc.data(), id: doc.id))
+        .map((doc) => toFeed(json: doc.data(), id: doc.id))
         .toList();
   }
 
@@ -154,7 +154,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
         .get();
 
     return querySnapshot.docs
-        .map((doc) => toFeed(feedDto: doc.data(), id: doc.id))
+        .map((doc) => toFeed(json: doc.data(), id: doc.id))
         .toList();
   }
 }

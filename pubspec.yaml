@@ -53,11 +53,14 @@ dependencies:
   flutter_dotenv: ^5.1.0
   firebase_storage_mocks: ^0.6.1
   hive_test: ^1.0.1
+  image_picker: ^1.1.1
+  permission_handler: ^11.3.1
   intl: ^0.18.1
   flutter_localizations:
     sdk: flutter
   package_info_plus: ^8.0.0
   webview_flutter: ^4.7.0
+  image_cropper: ^6.0.0
 
 dev_dependencies:
   flutter_test:

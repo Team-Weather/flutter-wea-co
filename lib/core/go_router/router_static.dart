@@ -59,19 +59,19 @@ class RouterStatic {
   }
 
   static void goToOotdFeed(BuildContext context) {
-    router.go(RouterPath.ootdFeed.path);
+    router.push(RouterPath.ootdFeed.path);
   }
 
-  static void goToOotdDetail(BuildContext context) {
-    router.go(RouterPath.ootdDetail.path);
+  static void goToOotdDetail(BuildContext context, {required String id, required String imagePath}) {
+    router.push('${RouterPath.ootdDetail.path}?id=$id&imagePath=$imagePath');
   }
 
   static void goToCamera(BuildContext context) {
     router.go(RouterPath.camera.path);
   }
 
-  static void goToPictureCrop(BuildContext context) {
-    router.go(RouterPath.pictureCrop.path);
+  static void goToPictureCrop(BuildContext context, String path) {
+    router.go(RouterPath.pictureCrop.path, extra: path);
   }
 
   static void goToOotdPost(BuildContext context) {

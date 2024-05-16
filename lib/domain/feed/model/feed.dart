@@ -84,28 +84,28 @@ class Feed {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'imagePath': imagePath,
-      'userEmail': userEmail,
+      'image_path': imagePath,
+      'user_email': userEmail,
       'description': description,
       'weather': weather.toJson(),
-      'seasonCode': seasonCode,
+      'season_code': seasonCode,
       'location': location.toJson(),
-      'createdAt': createdAt,
-      'deletedAt': deletedAt,
+      'created_at': createdAt,
+      'deleted_at': deletedAt,
     };
   }
 
   factory Feed.fromJson(Map<String, dynamic> map) {
     return Feed(
       id: map['id'] as String,
-      imagePath: map['imagePath'] as String,
-      userEmail: map['userEmail'] as String,
+      imagePath: map['image_path'] as String,
+      userEmail: map['user_email'] as String,
       description: map['description'] as String,
       weather: Weather.fromJson(map['weather']),
-      seasonCode: map['seasonCode'] as int,
+      seasonCode: map['season_code'] as int,
       location: Location.fromJson(map['location']),
-      createdAt: map['createdAt'] as DateTime,
-      deletedAt: map['deletedAt'] as DateTime,
+      createdAt: map['created_at'] as DateTime,
+      deletedAt: map['deleted_at'] as DateTime,
     );
   }
 }
