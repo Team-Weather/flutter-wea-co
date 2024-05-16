@@ -7,6 +7,7 @@ class DailyLocationWeather {
   final double lowTemperature;
   final List<Weather> weatherList;
   final List<Weather> yesterDayWeatherList;
+  final List<Weather> tomorrowWeatherList;
   final Location location;
   final DateTime createdAt;
   final int seasonCode;
@@ -16,6 +17,7 @@ class DailyLocationWeather {
     required this.lowTemperature,
     required this.weatherList,
     required this.yesterDayWeatherList,
+    required this.tomorrowWeatherList,
     required this.location,
     required this.createdAt,
     required this.seasonCode,
@@ -23,7 +25,7 @@ class DailyLocationWeather {
 
   @override
   String toString() {
-    return 'DailyLocationWeather{highTemperature: $highTemperature, lowTemperature: $lowTemperature, weatherList: $weatherList, yesterDayWeatherList: $yesterDayWeatherList, location: $location, createdAt: $createdAt, seasonCode: $seasonCode}';
+    return 'DailyLocationWeather{highTemperature: $highTemperature, lowTemperature: $lowTemperature, weatherList: $weatherList, yesterDayWeatherList: $yesterDayWeatherList, tomorrowWeatherList: $tomorrowWeatherList, location: $location, createdAt: $createdAt, seasonCode: $seasonCode}';
   }
 
   @override
@@ -35,6 +37,7 @@ class DailyLocationWeather {
           lowTemperature == other.lowTemperature &&
           weatherList.equals(other.weatherList) &&
           yesterDayWeatherList.equals(other.yesterDayWeatherList) &&
+          tomorrowWeatherList.equals(other.tomorrowWeatherList) &&
           location == other.location &&
           createdAt == other.createdAt &&
           seasonCode == other.seasonCode;
@@ -46,6 +49,8 @@ class DailyLocationWeather {
       weatherList.fold(1, (prev, next) => prev.hashCode ^ next.hashCode) ^
       yesterDayWeatherList.fold(
           1, (prev, next) => prev.hashCode ^ next.hashCode) ^
+      tomorrowWeatherList.fold(
+          1, (prev, next) => prev.hashCode ^ next.hashCode) ^
       location.hashCode ^
       createdAt.hashCode ^
       seasonCode.hashCode;
@@ -55,6 +60,7 @@ class DailyLocationWeather {
     double? lowTemperature,
     List<Weather>? weatherList,
     List<Weather>? yesterDayWeatherList,
+    List<Weather>? tomorrowWeatherList,
     Location? location,
     DateTime? createdAt,
     int? seasonCode,
@@ -64,6 +70,7 @@ class DailyLocationWeather {
       lowTemperature: lowTemperature ?? this.lowTemperature,
       weatherList: weatherList ?? this.weatherList,
       yesterDayWeatherList: yesterDayWeatherList ?? this.yesterDayWeatherList,
+      tomorrowWeatherList: tomorrowWeatherList ?? this.tomorrowWeatherList,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
       seasonCode: seasonCode ?? this.seasonCode,
@@ -77,6 +84,8 @@ class DailyLocationWeather {
       'weather_list': weatherList.map((weather) => weather.toJson()).toList(),
       'yesterday_weather_list':
           yesterDayWeatherList.map((weather) => weather.toJson()).toList(),
+      'tomorrow_weather_list':
+          tomorrowWeatherList.map((weather) => weather.toJson()).toList(),
       'location': location.toJson(),
       'created_at': createdAt.toIso8601String(),
       'season_code': seasonCode,
@@ -91,6 +100,9 @@ class DailyLocationWeather {
           .map((e) => Weather.fromJson(e))
           .toList(),
       yesterDayWeatherList: (json['yesterday_weather_list'] as List)
+          .map((e) => Weather.fromJson(e))
+          .toList(),
+      tomorrowWeatherList: (json['tomorrow_weather_list'] as List)
           .map((e) => Weather.fromJson(e))
           .toList(),
       location: Location.fromJson(json['location']),

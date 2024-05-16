@@ -6,42 +6,49 @@ import 'package:weaco/domain/weather/model/weather.dart';
 
 extension DailyLocationWeatherMapper on WeatherDto {
   DailyLocationWeather toDailyLocationWeather({required Location location}) {
-    DateTime now = DateTime.now();
-    int length = (hourly?.temperature2m?.length ?? 0) ~/ 2;
-    double unknownTemperature = -99.0;
-    int unknownCode = -99;
+    final DateTime now = DateTime.now();
+    const double unknownTemperature = -99.0;
+    const int todayMaxAndMinIndex = 1;
+    const int todayIndex = 24;
+    const int yesterDayIndex = 0;
+    const int tomorrowIndex = 48;
 
     return DailyLocationWeather(
         seasonCode: SeasonCode.fromMonth(now.month).value,
-        highTemperature:
-            daily?.temperature2mMax?.last.toDouble() ?? unknownTemperature,
-        lowTemperature:
-            daily?.temperature2mMin?.last.toDouble() ?? unknownTemperature,
-        weatherList: List.generate(
-          length,
-          (index) {
-            final hour = index + 24;
-            return Weather(
-              temperature: hourly?.temperature2m?.elementAt(hour).toDouble() ??
-                  unknownTemperature,
-              timeTemperature:
-                  DateTime.tryParse(hourly?.time?.elementAt(hour) ?? '') ?? now,
-              code: hourly?.weathercode?.elementAt(hour).toInt() ?? unknownCode,
-              createdAt: now,
-            );
-          },
-        ),
-        yesterDayWeatherList: List.generate(length, (index) {
-          return Weather(
-            temperature: hourly?.temperature2m?.elementAt(index).toDouble() ??
-                unknownTemperature,
-            timeTemperature:
-                DateTime.tryParse(hourly?.time?.elementAt(index) ?? '') ?? now,
-            code: hourly?.weathercode?.elementAt(index).toInt() ?? unknownCode,
-            createdAt: now,
-          );
-        }),
+        highTemperature: daily?.temperature2mMax
+                ?.elementAt(todayMaxAndMinIndex)
+                .toDouble() ??
+            unknownTemperature,
+        lowTemperature: daily?.temperature2mMin
+                ?.elementAt(todayMaxAndMinIndex)
+                .toDouble() ??
+            unknownTemperature,
+        weatherList: _toWhetherList(todayIndex, now),
+        yesterDayWeatherList: _toWhetherList(yesterDayIndex, now),
+        tomorrowWeatherList: _toWhetherList(tomorrowIndex, now),
         location: location,
         createdAt: now);
+  }
+
+  List<Weather> _toWhetherList(int plusIndex, DateTime now) {
+    final int length = (hourly?.temperature2m?.length ?? 0) ~/ 3;
+    const double unknownTemperature = -99.0;
+    const int unknownCode = -99;
+
+    return List.generate(
+      length,
+      (index) {
+        final i = index + plusIndex;
+        return Weather(
+          temperature: hourly?.temperature2m?.elementAt(i).toDouble() ??
+              unknownTemperature,
+          timeTemperature:
+              DateTime.tryParse(hourly?.time?.elementAt(i) ?? '') ??
+                  DateTime.now(),
+          code: hourly?.weathercode?.elementAt(i).toInt() ?? unknownCode,
+          createdAt: DateTime.now(),
+        );
+      },
+    );
   }
 }

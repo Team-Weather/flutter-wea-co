@@ -28,7 +28,8 @@ Future<void> main() async {
         final expectedUrl =
             '${MeteoConfig.baseUrl}/v1/forecast?hourly=temperature_2m,'
             'weathercode&latitude=$lat&longitude=$lng&lang=ko&past_days=1&'
-            'forecast_days=1&daily=temperature_2m_max,temperature_2m_min';
+            'forecast_days=2&daily=temperature_2m_max,temperature_2m_min&'
+            'timezone=Asia%2FTokyo';
         mockMeteoDio.getResponseReturnData = response;
 
         // When

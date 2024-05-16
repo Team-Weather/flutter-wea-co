@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/use_case/log_out_use_case.dart';
 import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
@@ -14,6 +15,8 @@ import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
+import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
+import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
 import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
@@ -120,8 +123,11 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdSearch.path,
-// builder: (context, state) => OotdSearchScreen(),
-      builder: (context, state) => const MainScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<OotdSearchViewModel>(
+        ),
+        child: const OotdSearchScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.ootdFeed.path,
@@ -170,7 +176,9 @@ final router = GoRouter(
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdPostViewModel>(),
-          child: const OotdPostScreen(),
+          child: OotdPostScreen(
+            feed: state.extra as Feed?,
+          ),
         );
       },
     ),

@@ -1,14 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
+import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
-  const OotdPostScreen({super.key});
+  final Feed? feed;
+
+  const OotdPostScreen({super.key, this.feed});
 
   @override
   State<OotdPostScreen> createState() => _OotdPostScreenState();
@@ -26,6 +31,9 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    if (widget.feed != null) {
+      _contentTextController.text = widget.feed!.description;
+    }
   }
 
   @override
@@ -50,42 +58,50 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                   padding: const EdgeInsets.fromLTRB(28, 15, 28, 30),
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          _newCroppedFile == null // 새 크롭 화면의 image null 검사
-                              ? viewModel.croppedImage ==
-                                      null // viewModel image null 검사
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : Image.file(viewModel.croppedImage!)
-                              : Image.file(File(_newCroppedFile!.path)),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: GestureDetector(
-                              onTap: () async {
-                                await viewModel.getOriginImage();
-                                await cropImage(viewModel.originImage!.path);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.crop),
-                                      Text('수정'),
-                                    ],
+                      widget.feed != null
+                          ?
+                          // 기존 피드 수정
+                          Image.file(File(widget.feed!.imagePath))
+                          :
+                          // 새로운 피드 작성
+                          Stack(
+                              children: [
+                                _newCroppedFile ==
+                                        null // 새 크롭 화면의 image null 검사
+                                    ? viewModel.croppedImage ==
+                                            null // viewModel image null 검사
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : Image.file(viewModel.croppedImage!)
+                                    : Image.file(File(_newCroppedFile!.path)),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await viewModel.getOriginImage();
+                                      await cropImage(
+                                          viewModel.originImage!.path);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.crop),
+                                            Text('수정'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
                       !_isScrolledUp
                           ? const SizedBox()
                           : const Padding(
@@ -116,19 +132,33 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                       ),
                       Column(
                         children: [
-                          Row(
-                            children: [
-                              _tags(viewModel
-                                  .dailyLocationWeather!.location.city),
-                              _tags(SeasonCode.fromValue(viewModel
-                                      .dailyLocationWeather!.seasonCode)
-                                  .description),
-                              _tags('${viewModel.weather!.temperature}°'),
-                              _tags(WeatherCode.fromDtoCode(
-                                      viewModel.weather!.code)
-                                  .description),
-                            ],
-                          ),
+                          widget.feed != null
+                              ? Row(
+                                  children: [
+                                    _tags(widget.feed!.location.city),
+                                    _tags(SeasonCode.fromValue(
+                                            widget.feed!.seasonCode)
+                                        .description),
+                                    _tags(
+                                        '${widget.feed!.weather.temperature}°'),
+                                    _tags(WeatherCode.fromDtoCode(
+                                            widget.feed!.weather.code)
+                                        .description),
+                                  ],
+                                )
+                              : Row(
+                                  children: [
+                                    _tags(viewModel
+                                        .dailyLocationWeather!.location.city),
+                                    _tags(SeasonCode.fromValue(viewModel
+                                            .dailyLocationWeather!.seasonCode)
+                                        .description),
+                                    _tags('${viewModel.weather!.temperature}°'),
+                                    _tags(WeatherCode.fromDtoCode(
+                                            viewModel.weather!.code)
+                                        .description),
+                                  ],
+                                ),
                           const SizedBox(height: 15),
                           TextField(
                             controller: _contentTextController,
@@ -168,27 +198,40 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       centerTitle: true,
       leading: IconButton(
         onPressed: () async {
-          await viewModel.getOriginImage();
-          await cropImage(viewModel.originImage!.path);
+          if (widget.feed != null) {
+            context.pop();
+          } else {
+            await viewModel.getOriginImage();
+            await cropImage(viewModel.originImage!.path);
+          }
         },
         icon: const Icon(Icons.arrow_back),
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            viewModel.saveFeed(_contentTextController.text, (result) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: result
-                      ? const Text('저장되었습니다.')
-                      : const Text('다시 시도해 주세요.'),
-                ),
-              );
-            });
+          onPressed: () async {
+            if (widget.feed != null) {
+              await viewModel.editFeed(
+                  widget.feed!, _contentTextController.text);
+            } else {
+              await viewModel.saveFeed(_contentTextController.text);
+            }
+
+            if (mounted) {
+              if (viewModel.saveStatus) {
+                RouterStatic.popFromOotdPost(context);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('다시 시도해 주세요.'),
+                  ),
+                );
+              }
+            }
           },
-          child: const Text(
-            '저장',
-            style: TextStyle(color: Color(0xFFFC8800), fontSize: 18),
+          child: Text(
+            widget.feed != null ? '수정' : '저장',
+            style: const TextStyle(color: Color(0xFFFC8800), fontSize: 18),
           ),
         ),
       ],

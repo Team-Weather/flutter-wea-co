@@ -55,6 +55,20 @@ void main() {
               createdAt: DateTime.now(),
             )
           ],
+          tomorrowWeatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            )
+          ],
           location: Location(
             lat: 113.1,
             lng: 213.1,
@@ -99,6 +113,20 @@ void main() {
             )
           ],
           yesterDayWeatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: DateTime.now(),
+              code: 1,
+              createdAt: DateTime.now(),
+            )
+          ],
+          tomorrowWeatherList: [
             Weather(
               temperature: 1,
               timeTemperature: DateTime.now(),

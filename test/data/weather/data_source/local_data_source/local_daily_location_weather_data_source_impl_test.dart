@@ -58,6 +58,20 @@ void main() async {
               createdAt: dateNow,
             )
           ],
+          tomorrowWeatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            )
+          ],
           location: Location(
             lat: 113.1,
             lng: 213.1,
@@ -107,6 +121,20 @@ void main() async {
             )
           ],
           yesterDayWeatherList: [
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            ),
+            Weather(
+              temperature: 1,
+              timeTemperature: dateNow,
+              code: 1,
+              createdAt: dateNow,
+            )
+          ],
+          tomorrowWeatherList: [
             Weather(
               temperature: 1,
               timeTemperature: dateNow,
