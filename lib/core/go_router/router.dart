@@ -79,11 +79,6 @@ final router = GoRouter(
       );
     }),
     GoRoute(
-      path: RouterPath.appSetting.path,
-      // builder: (context, state) => AppSettingScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
       path: RouterPath.appSettingPolicy.path,
       builder: (context, state) => const AppSettingPolicyScreen(),
     ),

@@ -43,7 +43,6 @@ class MyApp extends StatelessWidget {
           headlineSmall: TextStyle(fontSize: 14),
           bodyLarge: TextStyle(fontSize: 12),
         ),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xffF2C347)),
         primaryColor: const Color(0xffF2C347),
         canvasColor: Colors.white,
