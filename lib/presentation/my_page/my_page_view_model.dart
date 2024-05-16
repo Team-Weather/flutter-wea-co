@@ -43,28 +43,28 @@ class MyPageViewModel with ChangeNotifier {
   bool get isFeedListLoading => _isFeedListLoading;
 
   Future<void> initializePageData() async {
-    changePageLoadingStatus(true);
+    _changePageLoadingStatus(true);
 
     // 초기 프로필, 피드 데이터 요청
     await getProfile()
         .then((_) async => await getInitialFeedList(profile!.email));
 
-    changePageLoadingStatus(false);
+    _changePageLoadingStatus(false);
 
     setLastFeedDateTime();
   }
 
-  void changePageLoadingStatus(bool status) {
+  void _changePageLoadingStatus(bool status) {
     _isPageLoading = status;
     notifyListeners();
   }
 
-  void changeFeedListLoadingStatus(bool status) {
+  void _changeFeedListLoadingStatus(bool status) {
     _isFeedListLoading = status;
     notifyListeners();
   }
 
-  void changeIsFeedListReachEndStatus(bool status) {
+  void _changeIsFeedListReachEndStatus(bool status) {
     _isFeedListReachEnd = status;
     notifyListeners();
   }
@@ -116,7 +116,7 @@ class MyPageViewModel with ChangeNotifier {
 
     // 피드 리스트 로딩중이 아닐때 요청
     if (!_isFeedListLoading) {
-      changeFeedListLoadingStatus(true);
+      _changeFeedListLoadingStatus(true);
 
       final result = await _getMyPageFeedsUseCase.execute(
         email: profile!.email,
@@ -125,7 +125,7 @@ class MyPageViewModel with ChangeNotifier {
       );
 
       if (result.length < _fetchCount) {
-        changeIsFeedListReachEndStatus(true);
+        _changeIsFeedListReachEndStatus(true);
         log('feed list reaches end!', name: 'MyPageViewModel.fetchFeed()');
       }
 
@@ -135,7 +135,7 @@ class MyPageViewModel with ChangeNotifier {
       log('fetched feed count: ${result.length.toString()}',
           name: 'MyPageViewModel.fetchFeed()');
 
-      changeFeedListLoadingStatus(false);
+      _changeFeedListLoadingStatus(false);
       setLastFeedDateTime();
 
       notifyListeners();
