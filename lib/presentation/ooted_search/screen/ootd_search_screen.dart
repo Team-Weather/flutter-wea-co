@@ -35,7 +35,6 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
     final List<Feed> searchFeedList = ootdSearchViewModel.searchFeedList;
 
     final bool isPageLoading = ootdSearchViewModel.isPageLoading;
-    final bool isFeedListLoading = ootdSearchViewModel.isFeedListLoading;
 
     return Scaffold(
       body: SafeArea(
