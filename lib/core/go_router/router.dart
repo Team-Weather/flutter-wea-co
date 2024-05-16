@@ -80,9 +80,7 @@ final router = GoRouter(
       path: RouterPath.userPage.path,
       builder: (context, state) => ChangeNotifierProvider(
         create: (context) => getIt<UserPageViewModel>(
-          // param1: state.uri.queryParameters['email'],
-          // param1: 'dummyId4@gmail.com',
-          param1: 'deletedUser@delete.com',
+          param1: state.uri.queryParameters['email'],
         ),
         child: const UserPageScreen(),
       ),
