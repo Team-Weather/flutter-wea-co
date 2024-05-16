@@ -15,6 +15,9 @@ import 'package:weaco/domain/user/use_case/sign_in_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/domain/feed/use_case/get_user_page_feeds_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
+import 'package:weaco/presentation/user_page/user_page_view_model.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 final getIt = GetIt.instance;
@@ -60,4 +63,11 @@ void diSetup() {
   );
 
   // View
+  getIt.registerFactoryParam<UserPageViewModel, String, void>(
+    (param1, _) => UserPageViewModel(
+      email: param1,
+      getUserProfileUseCase: getIt<GetUserProfileUseCase>(),
+      getUserPageFeedsUseCase: getIt<GetUserPageFeedsUseCase>(),
+    ),
+  );
 }

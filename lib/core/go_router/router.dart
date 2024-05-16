@@ -13,20 +13,22 @@ import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
-import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
-import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
-import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
 import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
+import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
-import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
+import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
+import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
+import 'package:weaco/presentation/user_page/user_page_screen.dart';
+import 'package:weaco/presentation/user_page/user_page_view_model.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 final router = GoRouter(
@@ -102,9 +104,11 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.userPage.path,
-// builder: (context, state) => UserPageScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<UserPageViewModel>(
+          param1: state.uri.queryParameters['email'],
+        ),
+        child: const UserPageScreen(),
       ),
     ),
     GoRoute(
