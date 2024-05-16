@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/presentation/user_page/component/feed_grid/feed_grid_deleted_user_widget.dart';
@@ -22,12 +23,11 @@ class UserPageScreen extends StatefulWidget {
 class _UserPageScreenState extends State<UserPageScreen> {
   @override
   Widget build(BuildContext context) {
-    UserPageViewModel userPageViewModel = context.read<UserPageViewModel>();
+    UserPageViewModel userPageViewModel = context.watch<UserPageViewModel>();
 
-    bool isPageLoading = context.watch<UserPageViewModel>().isPageLoading;
-
-    UserProfile? userProfile = context.read<UserPageViewModel>().userProfile;
-    List<Feed> userFeedList = context.watch<UserPageViewModel>().userFeedList;
+    final UserProfile? userProfile = userPageViewModel.userProfile;
+    final List<Feed> userFeedList = userPageViewModel.userFeedList;
+    final bool isPageLoading = userPageViewModel.isPageLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +53,8 @@ class _UserPageScreenState extends State<UserPageScreen> {
                                   (UserScrollNotification notification) {
                                 if (notification.direction ==
                                         ScrollDirection.reverse &&
-                                    notification.metrics.maxScrollExtent * 0.9 <
+                                    notification.metrics.maxScrollExtent *
+                                            0.85 <
                                         notification.metrics.pixels) {
                                   userPageViewModel.fetchFeed();
                                 }
@@ -75,8 +76,12 @@ class _UserPageScreenState extends State<UserPageScreen> {
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        context.push(
-                                            '${RouterPath.ootdDetail.path}?id=${userFeedList[index].id}&imagePath=${userFeedList[index].imagePath}');
+                                        RouterStatic.goToOotdDetail(
+                                          context,
+                                          id: userFeedList[index].id ?? '',
+                                          imagePath:
+                                              userFeedList[index].imagePath,
+                                        );
                                       },
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(2),
