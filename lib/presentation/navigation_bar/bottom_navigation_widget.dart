@@ -33,8 +33,8 @@ class BottomNavigationWidget extends StatelessWidget {
           label: 'OOTD Feed',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add, size: 0),
-          label: 'Post',
+          icon: SizedBox(),
+          label: '',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search_outlined),
