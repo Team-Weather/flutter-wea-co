@@ -5,6 +5,8 @@ enum RouterPath {
   signIn(path: '/signIn'),
   dialog(path: '/dialog'),
   appSetting(path: '/appSetting'),
+  appSettingLicense(path: '/appSettingLicenseScreen'),
+  appSettingPolicy(path: '/appSettingPolicyScreen'),
   myPage(path: '/myPage'),
   userPage(path: '/userPage'),
   ootdSearch(path: '/ootdSearchScreen'),
