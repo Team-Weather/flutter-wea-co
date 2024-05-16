@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weaco/core/di/di_setup.dart';
-import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
@@ -101,13 +99,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to AppSettingScreen'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => RouterStatic.goToMyPage(context),
               child: const Text('Go to MyPageScreen'),
             ),
             TextButton(
-              onPressed: () {
-                context.push(RouterPath.userPage.path);
-              },
+              onPressed: () => RouterStatic.goToUserPage(context),
               child: const Text('Go to UserPageScreen'),
             ),
             TextButton(
@@ -119,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to OotdFeedScreen'),
             ),
             TextButton(
-              onPressed: () {  },
+              onPressed: () {},
               child: const Text('Go to OotdDetailScreen'),
             ),
             TextButton(
