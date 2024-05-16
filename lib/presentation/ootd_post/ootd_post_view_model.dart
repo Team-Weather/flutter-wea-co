@@ -54,6 +54,7 @@ class OotdPostViewModel with ChangeNotifier {
   }
 
   void saveFeed(String description, Function(bool) callback) async {
+    final now = DateTime.now();
     final Feed feed = Feed(
       id: null,
       imagePath: _croppedImage!.path,
@@ -63,16 +64,16 @@ class OotdPostViewModel with ChangeNotifier {
         temperature: _weather!.temperature,
         timeTemperature: _weather!.timeTemperature,
         code: _weather!.code,
-        createdAt: DateTime.now(),
+        createdAt: now,
       ),
       seasonCode: _dailyLocationWeather!.seasonCode,
       location: Location(
         lat: _dailyLocationWeather!.location.lat,
         lng: _dailyLocationWeather!.location.lng,
         city: _dailyLocationWeather!.location.city,
-        createdAt: DateTime.now(),
+        createdAt: now,
       ),
-      createdAt: DateTime.now(),
+      createdAt: now,
     );
 
     final result = await _saveEditFeedUseCase.execute(feed: feed);
