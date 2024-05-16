@@ -37,6 +37,12 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ko'),
       title: 'WeaCo',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(fontSize: 22),
+          headlineMedium: TextStyle(fontSize: 18),
+          headlineSmall: TextStyle(fontSize: 14),
+          bodyLarge: TextStyle(fontSize: 12),
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xffF2C347)),
         primaryColor: const Color(0xffF2C347),
         canvasColor: Colors.white,
@@ -89,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to DialogScreen'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => RouterStatic.pushToAppSetting(context),
               child: const Text('Go to AppSettingScreen'),
             ),
             TextButton(
