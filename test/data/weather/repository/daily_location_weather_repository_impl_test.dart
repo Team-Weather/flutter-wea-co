@@ -29,7 +29,7 @@ void main() {
     );
     const double latitude = 37.5665;
     const double longitude = 126.978;
-    DateTime now = DateTime.now();
+    DateTime now = DateTime(2024, 5, 5, 12, 0, 0);
     WeatherDto weatherDto = WeatherDto(
       latitude: latitude,
       longitude: longitude,
@@ -94,6 +94,34 @@ void main() {
         localDailyLocationWeatherDataSource.getLocalDailyLocationWeatherResult =
             dailyLocationWeather.copyWith(
                 createdAt: now.subtract(const Duration(hours: 4)));
+        remoteWeatherDataSource.getWeatherResult = weatherDto;
+        locationRepository.getLocationResult = location;
+
+        // When
+        final DailyLocationWeather actual =
+            await dailyLocationWeatherRepository.getDailyLocationWeather();
+
+        // Then
+        expect(actual.createdAt.isAfter(now.subtract(const Duration(hours: 3))),
+            isTrue);
+        expect(
+            localDailyLocationWeatherDataSource
+                .getLocalDailyLocationWeatherCallCount,
+            1);
+        expect(remoteWeatherDataSource.getWeatherCallCount, 1);
+        expect(locationRepository.getLocationCallCount, 1);
+        expect(
+            localDailyLocationWeatherDataSource
+                .saveLocalDailyLocationWeatherCallCount,
+            1);
+      });
+
+      test('로컬 DailyLocationWeather가 생성일자가 오늘이 아니라면 새로운 데이터를 가져와 반환한다.',
+          () async {
+        // Given
+        localDailyLocationWeatherDataSource.getLocalDailyLocationWeatherResult =
+            dailyLocationWeather.copyWith(
+                createdAt: now.subtract(const Duration(days: 1)));
         remoteWeatherDataSource.getWeatherResult = weatherDto;
         locationRepository.getLocationResult = location;
 
