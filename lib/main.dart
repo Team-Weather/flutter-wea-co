@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weaco/core/di/di_setup.dart';
+import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'firebase_options.dart';
 
@@ -35,6 +37,12 @@ class WeacoApp extends StatelessWidget {
       locale: const Locale('ko'),
       title: 'WeaCo',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(fontSize: 22),
+          headlineMedium: TextStyle(fontSize: 18),
+          headlineSmall: TextStyle(fontSize: 14),
+          bodyLarge: TextStyle(fontSize: 12),
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xffF2C347)),
         primaryColor: const Color(0xffF2C347),
         canvasColor: Colors.white,
