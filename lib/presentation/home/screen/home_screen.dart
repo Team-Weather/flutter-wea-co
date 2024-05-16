@@ -16,12 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ScrollController _scrollController;
-
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
 
     Future.microtask(
       () async => await context.read<HomeScreenViewModel>().initHomeScreen(),
@@ -31,11 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // if (context.read<HomeScreenViewModel>().status.isError) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
-    // }
   }
 
   @override
@@ -187,8 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // weathers by time
                     WeatherByTimeListWidget(
-                      dailyLocationWeather: viewModel.dailyLocationWeather,
-                      scrollController: _scrollController,
+                      weatherList: viewModel.weatherByTimeList,
                     ),
 
                     SliverToBoxAdapter(
