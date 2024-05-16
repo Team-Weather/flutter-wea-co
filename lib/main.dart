@@ -105,9 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to MyPageScreen'),
             ),
             TextButton(
-              onPressed: () {
-                context.push(RouterPath.userPage.path);
-              },
+              onPressed: () => RouterStatic.goToUserPage(context),
               child: const Text('Go to UserPageScreen'),
             ),
             TextButton(
@@ -119,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to OotdFeedScreen'),
             ),
             TextButton(
-              onPressed: () {  },
+              onPressed: () {},
               child: const Text('Go to OotdDetailScreen'),
             ),
             TextButton(
