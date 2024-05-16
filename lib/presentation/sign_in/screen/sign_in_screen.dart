@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
-import 'package:weaco/presentation/common/component/dialog/one_button_dialog.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 import '../../common/enum/exception_alert.dart';
@@ -365,7 +365,10 @@ class _SignInScreenState extends State<SignInScreen> {
     final SignInViewModel signInViewModel = context.read<SignInViewModel>();
 
     if (isSignInSubmit) {
-      _showAlert(ExceptionAlert.snackBar, '이미 로그인 시도하였습니다.');
+      AlertUtil.showAlert(
+          context: context,
+          exceptionAlert: ExceptionAlert.snackBar,
+          message: '이미 로그인 시도하였습니다.');
       return;
     }
 
@@ -375,17 +378,19 @@ class _SignInScreenState extends State<SignInScreen> {
           password: passwordFormController.text,
         )
         .then((value) => RouterStatic.goToHome(context))
-        .catchError((e) => _showAlert(
-              signInViewModel.exceptionState!.exceptionAlert,
-              signInViewModel.exceptionState!.message,
+        .catchError((e) => AlertUtil.showAlert(
+              context: context,
+              exceptionAlert: signInViewModel.exceptionState!.exceptionAlert,
+              message: signInViewModel.exceptionState!.message,
             ));
     isSignInSubmit = true;
   }
 
   void _isValidateForm() {
     isSignInSubmit = false;
-    isSignInButtonEnabled = (isValidEmail(emailFormController.text) &&
-        isValidPassword(passwordFormController.text));
+    isSignInButtonEnabled =
+        (RegValidationUtil.isValidEmail(emailFormController.text) &&
+            RegValidationUtil.isValidPassword(passwordFormController.text));
     setState(() {});
   }
 
@@ -395,37 +400,15 @@ class _SignInScreenState extends State<SignInScreen> {
 
   String? _checkEmailErrorText() {
     return (emailFormController.text.isEmpty ||
-            isValidEmail(emailFormController.text))
+            RegValidationUtil.isValidEmail(emailFormController.text))
         ? null
         : '이메일 형식이 올바르지 않습니다';
   }
 
   String? _checkPasswordErrorText() {
     return (passwordFormController.text.isEmpty ||
-            isValidPassword(passwordFormController.text))
+            RegValidationUtil.isValidPassword(passwordFormController.text))
         ? null
         : '비밀번호는 8자 이상, 숫자, 특수문자를 포함해야 합니다';
-  }
-
-  void _showAlert(ExceptionAlert exceptionAlert, String message) {
-    switch (exceptionAlert) {
-      case ExceptionAlert.snackBar:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-        break;
-      case ExceptionAlert.dialog:
-        showDialog(
-          context: context,
-          builder: (context) {
-            return OneButtonDialog(
-                title: '',
-                content: message,
-                onPressedCheck: () => Navigator.of(context).pop(),
-                buttonText: '확인');
-          },
-        );
-        break;
-    }
   }
 }
