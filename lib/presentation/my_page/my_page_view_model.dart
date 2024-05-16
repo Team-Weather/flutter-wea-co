@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:weaco/core/exception/not_found_exception.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
@@ -45,10 +44,6 @@ class MyPageViewModel with ChangeNotifier {
 
   Future<void> initializePageData() async {
     changePageLoadingStatus(true);
-
-    // 테스트 용 로그인
-    FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'dummy4id@gmail.com', password: 'dummy4password@');
 
     // 초기 프로필, 피드 데이터 요청
     await getProfile()
