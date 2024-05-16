@@ -47,7 +47,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
             : SingleChildScrollView(
                 controller: _scrollController,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 80),
+                  padding: const EdgeInsets.fromLTRB(28, 15, 28, 30),
                   child: Column(
                     children: [
                       Stack(
@@ -109,9 +109,9 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                           },
                           icon: _isScrolledUp
                               ? const Icon(Icons.arrow_circle_down_outlined,
-                                  size: 30)
+                                  size: 40)
                               : const Icon(Icons.arrow_circle_up_outlined,
-                                  size: 30),
+                                  size: 40),
                         ),
                       ),
                       Column(
