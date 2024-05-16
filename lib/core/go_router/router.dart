@@ -27,6 +27,7 @@ import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
+import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -54,7 +55,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.signUp.path,
-      builder: (context, state) => const SignUpScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignUpViewModel>(),
+        child: const SignUpScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.signIn.path,
@@ -65,20 +69,22 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.dialog.path,
-      // builder: (context, state) => DialogScreen(),
+// builder: (context, state) => DialogScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
-    GoRoute(path: RouterPath.appSetting.path, builder: (context, state) {
-      return ChangeNotifierProvider(
-        create: (_) => AppSettingViewModel(
-          logOutUseCase: getIt<LogOutUseCase>(),
-          signOutUseCase: getIt<SignOutUseCase>(),
-        ),
-        child: const AppSettingScreen(),
-      );
-    }),
+    GoRoute(
+        path: RouterPath.appSetting.path,
+        builder: (context, state) {
+          return ChangeNotifierProvider(
+            create: (_) => AppSettingViewModel(
+              logOutUseCase: getIt<LogOutUseCase>(),
+              signOutUseCase: getIt<SignOutUseCase>(),
+            ),
+            child: const AppSettingScreen(),
+          );
+        }),
     GoRoute(
       path: RouterPath.appSettingPolicy.path,
       builder: (context, state) => const AppSettingPolicyScreen(),
@@ -89,21 +95,21 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.myPage.path,
-      // builder: (context, state) => MyPageScreen(),
+// builder: (context, state) => MyPageScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.userPage.path,
-      // builder: (context, state) => UserPageScreen(),
+// builder: (context, state) => UserPageScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
       path: RouterPath.ootdSearch.path,
-      // builder: (context, state) => OotdSearchScreen(),
+// builder: (context, state) => OotdSearchScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
