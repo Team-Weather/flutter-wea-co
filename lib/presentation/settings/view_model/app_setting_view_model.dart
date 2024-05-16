@@ -44,10 +44,8 @@ class AppSettingViewModel with ChangeNotifier {
     try {
       await _logOutUseCase.execute();
       isLogOuting = true;
-      notifyListeners();
       return true;
     } catch (e) {
-      notifyListeners(); ///
       return false;
     }
   }
@@ -57,10 +55,8 @@ class AppSettingViewModel with ChangeNotifier {
     try {
       await _signOutUseCase.execute();
       isSignOuting = true;
-      notifyListeners();
       return true;
     } catch (e) {
-      notifyListeners();
       return false;
     }
   }
