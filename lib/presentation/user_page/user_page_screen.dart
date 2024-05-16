@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
+import 'package:weaco/presentation/user_page/component/feed_grid/feed_grid_deleted_user_widget.dart';
+import 'package:weaco/presentation/user_page/component/feed_grid/feed_grid_empty_widget.dart';
 import 'package:weaco/presentation/user_page/component/user_profile/user_profile_deleted_widget.dart';
 import 'package:weaco/presentation/user_page/component/user_profile/user_profile_widget.dart';
 import 'package:weaco/presentation/user_page/user_page_view_model.dart';
@@ -42,69 +44,53 @@ class _UserPageScreenState extends State<UserPageScreen> {
                       ? UserProfileWidget(userProfile: userProfile)
                       : UserProfileDeletedWidget(userProfile: userProfile),
                   const Divider(),
-                  userFeedList.isEmpty
-                      ? const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.camera_alt_outlined,
-                                size: 56,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                '피드가 없습니다.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                  userProfile.deletedAt != null
+                      ? const FeedGridDeletedUserWidget()
+                      : userFeedList.isEmpty
+                          ? const FeedGridEmptyWidget()
+                          : NotificationListener<UserScrollNotification>(
+                              onNotification:
+                                  (UserScrollNotification notification) {
+                                if (notification.direction ==
+                                        ScrollDirection.reverse &&
+                                    notification.metrics.maxScrollExtent * 0.9 <
+                                        notification.metrics.pixels) {
+                                  userPageViewModel.fetchFeed();
+                                }
+
+                                return false;
+                              },
+                              child: Expanded(
+                                child: GridView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemCount: userFeedList.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 3 / 4,
+                                    crossAxisSpacing: 4,
+                                    mainAxisSpacing: 4,
+                                    crossAxisCount: 3,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        context.push(
+                                            '${RouterPath.ootdDetail.path}?id=${userFeedList[index].id}&imagePath=${userFeedList[index].imagePath}');
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(2),
+                                        child: Image(
+                                          image: NetworkImage(
+                                              userFeedList[index].imagePath),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                            ],
-                          ),
-                        )
-                      : NotificationListener<UserScrollNotification>(
-                          onNotification:
-                              (UserScrollNotification notification) {
-                            if (notification.direction ==
-                                    ScrollDirection.reverse &&
-                                notification.metrics.maxScrollExtent * 0.9 <
-                                    notification.metrics.pixels) {
-                              userPageViewModel.fetchFeed();
-                            }
-
-                            return false;
-                          },
-                          child: Expanded(
-                            child: GridView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: userFeedList.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 3 / 4,
-                                crossAxisSpacing: 4,
-                                mainAxisSpacing: 4,
-                                crossAxisCount: 3,
-                              ),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    context.push(
-                                        '${RouterPath.ootdDetail.path}?id=${userFeedList[index].id}&imagePath=${userFeedList[index].imagePath}');
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(2),
-                                    child: Image(
-                                      image: NetworkImage(
-                                          userFeedList[index].imagePath),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                );
-                              },
                             ),
-                          ),
-                        ),
                 ],
               ),
             ),
