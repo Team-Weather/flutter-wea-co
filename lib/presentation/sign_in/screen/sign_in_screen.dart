@@ -32,6 +32,11 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -162,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildLoginForm() {
     return SizedBox(
       width: double.infinity,
-      height: 150,
+      height: 170,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
