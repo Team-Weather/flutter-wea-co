@@ -65,11 +65,12 @@ class _WidgetViewSampleState extends State<WidgetViewSample> {
                       width: deviceWidth * 0.005),
                 ),
                 backgroundColor: Theme.of(context).canvasColor,
-                child: const Icon(
-                  Icons.add,
-                  color: Color(0xffF2C347),
-                  size: 40,
-                ),
+                child: const
+                    ImageIcon(
+                      AssetImage('asset/icon/weaco_post_icon.png'),
+                      size: 40,
+                      color: Color(0xffF2C347),
+                    ),
               ),
             ),
           if (isPressingFloatingActionButton)
@@ -89,16 +90,8 @@ class _WidgetViewSampleState extends State<WidgetViewSample> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(
-                      Icons.camera_alt_rounded,
-                      color: Color(0xffF2C347),
-                      size: 40,
-                    ),
-                    Icon(
-                      Icons.photo_album_outlined,
-                      color: Color(0xffF2C347),
-                      size: 40,
-                    ),
+                    ImageIcon(AssetImage('asset/icon/weaco_cam_icon.png')),
+                    ImageIcon(AssetImage('asset/icon/weaco_photo_icon.png')),
                   ],
                 ),
               ),
