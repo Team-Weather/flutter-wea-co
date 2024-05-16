@@ -64,7 +64,7 @@ class _WidgetViewSampleState extends State<WidgetViewSample> {
                       color: Theme.of(context).primaryColor,
                       width: deviceWidth * 0.005),
                 ),
-                backgroundColor: Theme.of(context).canvasColor,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 child: const Icon(
                   Icons.add,
                   color: Color(0xffF2C347),

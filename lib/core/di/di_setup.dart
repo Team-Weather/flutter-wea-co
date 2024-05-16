@@ -5,6 +5,9 @@ import 'package:weaco/core/di/file/file_di_setup.dart';
 import 'package:weaco/core/di/location/location_di_setup.dart';
 import 'package:weaco/core/di/user/user_di_setup.dart';
 import 'package:weaco/core/di/weather/weather_di_setup.dart';
+import 'package:weaco/domain/user/use_case/get_profile_image_list_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_up_use_case.dart';
+import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
@@ -36,6 +39,11 @@ void diSetup() {
   locationDiSetup();
   feedDiSetup();
   weatherDiSetup();
+
+  // ViewModel
+  getIt.registerFactory<SignUpViewModel>(() => SignUpViewModel(
+      signUpUseCase: getIt<SignUpUseCase>(),
+      getProfileImagePathUseCase: getIt<GetProfileImageListUseCase>()));
 
   // ViewModel
   getIt.registerFactory<SignInViewModel>(
