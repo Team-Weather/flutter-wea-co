@@ -34,7 +34,7 @@ class HomeScreenViewModel with ChangeNotifier {
 
   DailyLocationWeather? _dailyLocationWeather;
   Weather? _currentWeather;
-  final List<Weather> _weatherByTimeList = [];
+  List<Weather> _weatherByTimeList = [];
   List<Feed> _feedList = [];
   HomeScreenStatus _status = HomeScreenStatus.idle;
   // 전일 대비 온도차
@@ -84,6 +84,7 @@ class HomeScreenViewModel with ChangeNotifier {
   Future<void> _getWeatherByTimeList() async {
     DateTime now = DateTime.now();
     int currentHour = now.hour;
+    List<Weather> weatherList = [];
 
     // 현재 시간 이후의 날씨 정보 목록
     List<Weather> weatherAfterCurrentTime = dailyLocationWeather!.weatherList
@@ -95,7 +96,7 @@ class HomeScreenViewModel with ChangeNotifier {
         Set.from(weatherAfterCurrentTime.map((e) => e.timeTemperature.hour));
 
     // 현재 시간 이후의 객체를 추가합니다.
-    _weatherByTimeList.addAll(weatherAfterCurrentTime);
+    weatherList.addAll(weatherAfterCurrentTime);
 
     // 남은 시간만큼을 dailyLocationWeather!.tomorrowWeatherList에서 가져와서 채웁니다.
     int remainingCount = 24 - weatherAfterCurrentTime.length;
@@ -106,8 +107,9 @@ class HomeScreenViewModel with ChangeNotifier {
           .take(remainingCount)
           .toList();
 
-      _weatherByTimeList.addAll(tomorrowWeather);
+      weatherList.addAll(tomorrowWeather);
     }
+    _weatherByTimeList = weatherList;
   }
 
   /// 배경 이미지 주소 가져오기
