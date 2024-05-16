@@ -49,19 +49,21 @@ class UserPageViewModel with ChangeNotifier {
     changePageLoadingStatus(false);
 
     setLastFeedDateTime();
-    notifyListeners();
   }
 
   void changePageLoadingStatus(bool status) {
     _isPageLoading = status;
+    notifyListeners();
   }
 
   void changeFeedListLoadingStatus(bool status) {
     _isFeedListLoading = status;
+    notifyListeners();
   }
 
   void setLastFeedDateTime() {
     _lastFeedDateTime = _userFeedList[_userFeedList.length - 1].createdAt;
+    notifyListeners();
   }
 
   Future<void> getUserProfile(String email) async {
@@ -79,6 +81,7 @@ class UserPageViewModel with ChangeNotifier {
     } on Exception catch (e) {
       log(e.toString(), name: 'UserPageViewModel.getUserProfile()');
     }
+    notifyListeners();
   }
 
   Future<void> getInitialUserFeedList(String email) async {
@@ -91,6 +94,7 @@ class UserPageViewModel with ChangeNotifier {
     } on Exception catch (e) {
       log(e.toString(), name: 'UserPageViewModel.getInitialUserFeedList()');
     }
+    notifyListeners();
   }
 
   Future<void> fetchFeed() async {
