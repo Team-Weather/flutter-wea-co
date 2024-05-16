@@ -40,9 +40,10 @@ class DailyLocationWeatherRepositoryImpl
 
   /// 로컬 데이터가 없거나 만료된 데이터인지 확인한다.
   bool _isOldDataOrExpired(DailyLocationWeather? localData) {
+    final now = DateTime.now();
     return (localData == null ||
-        localData.createdAt
-            .isBefore(DateTime.now().subtract(const Duration(hours: 3))));
+        localData.createdAt.day != now.day ||
+        localData.createdAt.isBefore(now.subtract(const Duration(hours: 3))));
   }
 
   /// 날씨와 위치를 가져와서 DailyLocationWeather로 변환한다.
