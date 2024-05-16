@@ -1,9 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/temperature_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
+import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
 
 class OotdSearchScreen extends StatefulWidget {
@@ -26,81 +29,153 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final OotdSearchViewModel ootdSearchViewModel =
+        context.watch<OotdSearchViewModel>();
+
+    final List<Feed> searchFeedList = ootdSearchViewModel.searchFeedList;
+
+    final bool isPageLoading = ootdSearchViewModel.isPageLoading;
+    final bool isFeedListLoading = ootdSearchViewModel.isFeedListLoading;
+
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                dropDownButton(
-                    defaultText: '계절',
-                    borderColor: const Color(0xFFF2C347),
-                    items: seasonItemList,
-                    width: 80,
-                    selectedValueIndex: 0,
-                    onChanged: (value) {
-                      context.read<OotdSearchViewModel>().tmpMethod(
-                          seasonCodeValue:
-                              seasonItemList.indexOf(value ?? '') + 1,
-                          weatherCodeValue:
-                              weatherItemList.indexOf(selectedData[1] ?? '') +
-                                  1,
-                          temperatureCodeValue: temperatureItemList
-                                  .indexOf(selectedData[2] ?? '') +
-                              1);
-                      setState(() {
-                        selectedData[0] = value;
-                      });
-                    },
-                    fontSize: 13),
-                dropDownButton(
-                    defaultText: '날씨',
-                    borderColor: const Color(0xFF4C8DE6),
-                    items: weatherItemList,
-                    width: 120,
-                    selectedValueIndex: 1,
-                    onChanged: (value) {
-                      context.read<OotdSearchViewModel>().tmpMethod(
-                          seasonCodeValue:
-                              seasonItemList.indexOf(selectedData[0] ?? '') +
-                                  1,
-                          weatherCodeValue:
-                              weatherItemList.indexOf(value ?? '') + 1,
-                          temperatureCodeValue: temperatureItemList
-                                  .indexOf(selectedData[2] ?? '') +
-                              1);
-                      setState(() {
-                        selectedData[1] = value;
-                      });
-                    },
-                    fontSize: 13),
-                dropDownButton(
-                    defaultText: '온도',
-                    borderColor: const Color(0xFFE2853F),
-                    items: temperatureItemList,
-                    width: 130,
-                    selectedValueIndex: 2,
-                    onChanged: (value) {
-                      context.read<OotdSearchViewModel>().tmpMethod(
-                          seasonCodeValue:
-                              seasonItemList.indexOf(selectedData[0] ?? '') +
-                                  1,
-                          weatherCodeValue:
-                              weatherItemList.indexOf(selectedData[1] ?? '') +
-                                  1,
-                          temperatureCodeValue:
-                              temperatureItemList.indexOf(value ?? '') + 1);
-                      setState(() {
-                        selectedData[2] = value;
-                      });
-                    },
-                    fontSize: 12),
-              ],
-            )
-          ],
-        ),
+        child: isPageLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        dropDownButton(
+                            defaultText: '계절',
+                            borderColor: const Color(0xFFF2C347),
+                            items: seasonItemList,
+                            width: 80,
+                            selectedValueIndex: 0,
+                            onChanged: (value) {
+                              ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                seasonCodeValue:
+                                    seasonItemList.indexOf(value ?? '') + 1,
+                                weatherCodeValue: weatherItemList
+                                        .indexOf(selectedData[1] ?? '') +
+                                    1,
+                                temperatureCodeValue: temperatureItemList
+                                        .indexOf(selectedData[2] ?? '') +
+                                    1,
+                              );
+                              setState(() {
+                                selectedData[0] = value;
+                              });
+                            },
+                            fontSize: 13),
+                        dropDownButton(
+                            defaultText: '날씨',
+                            borderColor: const Color(0xFF4C8DE6),
+                            items: weatherItemList,
+                            width: 120,
+                            selectedValueIndex: 1,
+                            onChanged: (value) {
+                              ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                seasonCodeValue: seasonItemList
+                                        .indexOf(selectedData[0] ?? '') +
+                                    1,
+                                weatherCodeValue:
+                                    weatherItemList.indexOf(value ?? '') + 1,
+                                temperatureCodeValue: temperatureItemList
+                                        .indexOf(selectedData[2] ?? '') +
+                                    1,
+                              );
+                              setState(() {
+                                selectedData[1] = value;
+                              });
+                            },
+                            fontSize: 13),
+                        dropDownButton(
+                            defaultText: '온도',
+                            borderColor: const Color(0xFFE2853F),
+                            items: temperatureItemList,
+                            width: 130,
+                            selectedValueIndex: 2,
+                            onChanged: (value) {
+                              ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                seasonCodeValue: seasonItemList
+                                        .indexOf(selectedData[0] ?? '') +
+                                    1,
+                                weatherCodeValue: weatherItemList
+                                        .indexOf(selectedData[1] ?? '') +
+                                    1,
+                                temperatureCodeValue:
+                                    temperatureItemList.indexOf(value ?? '') +
+                                        1,
+                              );
+                              setState(() {
+                                selectedData[2] = value;
+                              });
+                            },
+                            fontSize: 12),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    NotificationListener<UserScrollNotification>(
+                      onNotification: (UserScrollNotification notification) {
+                        if (notification.direction == ScrollDirection.reverse &&
+                            notification.metrics.maxScrollExtent * 0.85 <
+                                notification.metrics.pixels) {
+                          ootdSearchViewModel.fetchFeedWhenScroll(
+                            seasonCodeValue:
+                                seasonItemList.indexOf(selectedData[0] ?? '') +
+                                    1,
+                            weatherCodeValue:
+                                weatherItemList.indexOf(selectedData[1] ?? '') +
+                                    1,
+                            temperatureCodeValue: temperatureItemList
+                                    .indexOf(selectedData[2] ?? '') +
+                                1,
+                          );
+                        }
+
+                        return false;
+                      },
+                      child: Expanded(
+                        child: GridView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: searchFeedList.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 3 / 4,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 4,
+                            crossAxisCount: 3,
+                          ),
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                RouterStatic.goToOotdDetail(
+                                  context,
+                                  id: searchFeedList[index].id ?? '',
+                                  imagePath: searchFeedList[index].imagePath,
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(2),
+                                child: Image(
+                                  image: NetworkImage(
+                                      searchFeedList[index].imagePath),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
       ),
     );
   }
