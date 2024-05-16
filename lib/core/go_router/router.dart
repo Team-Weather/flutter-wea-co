@@ -9,6 +9,8 @@ import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
+import 'package:weaco/presentation/my_page/my_page_screen.dart';
+import 'package:weaco/presentation/my_page/my_page_view_model.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
@@ -109,8 +111,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.myPage.path,
-// builder: (context, state) => MyPageScreen(),
-      builder: (context, state) => const MainScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<MyPageViewModel>(),
+        child: const MyPageScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.userPage.path,
@@ -124,8 +128,7 @@ final router = GoRouter(
     GoRoute(
       path: RouterPath.ootdSearch.path,
       builder: (context, state) => ChangeNotifierProvider(
-        create: (context) => getIt<OotdSearchViewModel>(
-        ),
+        create: (context) => getIt<OotdSearchViewModel>(),
         child: const OotdSearchScreen(),
       ),
     ),
