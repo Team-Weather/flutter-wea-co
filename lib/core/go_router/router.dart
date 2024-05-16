@@ -10,6 +10,7 @@ import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -51,8 +52,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.signIn.path,
-      // builder: (context, state) => SignInScreen(),
-      builder: (context, state) => const SignInScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignInViewModel>(),
+        child: const SignInScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
