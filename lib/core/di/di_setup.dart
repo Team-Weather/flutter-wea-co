@@ -7,6 +7,9 @@ import 'package:weaco/core/di/user/user_di_setup.dart';
 import 'package:weaco/core/di/weather/weather_di_setup.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/domain/feed/use_case/get_user_page_feeds_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
+import 'package:weaco/presentation/user_page/user_page_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -33,4 +36,11 @@ void diSetup() {
     () => PictureCropViewModel(saveImageUseCase: getIt<SaveImageUseCase>()),
   );
   // View
+  getIt.registerFactoryParam<UserPageViewModel, String, void>(
+    (param1, _) => UserPageViewModel(
+      email: param1,
+      getUserProfileUseCase: getIt<GetUserProfileUseCase>(),
+      getUserPageFeedsUseCase: getIt<GetUserPageFeedsUseCase>(),
+    ),
+  );
 }
