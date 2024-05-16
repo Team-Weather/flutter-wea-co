@@ -15,6 +15,8 @@ import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
+import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
+import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
 import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
@@ -113,9 +115,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.ootdSearch.path,
-// builder: (context, state) => OotdSearchScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<OotdSearchViewModel>(
+        ),
+        child: const OotdSearchScreen(),
       ),
     ),
     GoRoute(

@@ -55,7 +55,7 @@ class RouterStatic {
   }
 
   static void goToOotdSearch(BuildContext context) {
-    router.go(RouterPath.ootdSearch.path);
+    router.push(RouterPath.ootdSearch.path);
   }
 
   static void goToOotdFeed(BuildContext context) {
