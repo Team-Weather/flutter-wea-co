@@ -16,15 +16,16 @@ class OotdPostScreen extends StatefulWidget {
 
 class _OotdPostScreenState extends State<OotdPostScreen> {
   static const int maxLength = 300;
-  late ScrollController _scrollController;
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _contentTextController = TextEditingController();
   bool isClicked = false;
+  bool _isScrolledUp = true;
   CroppedFile? _newCroppedFile;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -45,15 +46,15 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 controller: _scrollController,
-                // physics: NeverScrollableScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 15, 20, 80),
                   child: Column(
                     children: [
                       Stack(
                         children: [
-                            _newCroppedFile == null // 새 크롭 화면의 image null 검사
-                              ? viewModel.croppedImage == null // viewModel image null 검사
+                          _newCroppedFile == null // 새 크롭 화면의 image null 검사
+                              ? viewModel.croppedImage ==
+                                      null // viewModel image null 검사
                                   ? const Center(
                                       child: CircularProgressIndicator())
                                   : Image.file(viewModel.croppedImage!)
@@ -86,7 +87,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                           ),
                         ],
                       ),
-                      isClicked
+                      !_isScrolledUp
                           ? const SizedBox()
                           : const Padding(
                               padding: EdgeInsets.only(top: 20),
@@ -102,15 +103,15 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                         padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
                         child: IconButton(
                           onPressed: () {
-                            _scrollTo();
                             setState(() {
-                              isClicked = !isClicked;
+                              _isScrolledUp = !_isScrolledUp;
                             });
+                            _scrollTo();
                           },
-                          icon: isClicked
-                              ? const Icon(Icons.arrow_circle_up_outlined,
+                          icon: _isScrolledUp
+                              ? const Icon(Icons.arrow_circle_down_outlined,
                                   size: 30)
-                              : const Icon(Icons.arrow_circle_down_outlined,
+                              : const Icon(Icons.arrow_circle_up_outlined,
                                   size: 30),
                         ),
                       ),
@@ -133,7 +134,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                           TextField(
                             controller: _contentTextController,
                             maxLength: maxLength,
-                            maxLines: 13,
+                            maxLines: 10,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
                               hintText: '어떤 코디를 하셨나요?',
@@ -149,6 +150,9 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: MediaQuery.of(context).viewInsets.bottom,
+                          )
                         ],
                       ),
                     ],
@@ -208,8 +212,6 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   }
 
   Future<void> cropImage(String sourcePath) async {
-    // const String samplePath =
-    //     '/data/user/0/team.weather.weaco/cache/c2b5e982-bdf9-413b-a1c0-06966e6a4683/1000000018.jpg';
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: sourcePath,
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
@@ -236,9 +238,29 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     }
   }
 
+  void _scrollListener() {
+    if (_scrollController.offset <=
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // 스크롤 위치가 상단에 도달하면 화살표를 위로 표시
+      setState(() {
+        _isScrolledUp = true;
+      });
+    } else if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // 스크롤 위치가 하단에 도달하면 화살표를 아래로 표시
+      setState(() {
+        _isScrolledUp = false;
+      });
+    }
+  }
+
   void _scrollTo() {
     _scrollController.animateTo(
-      isClicked ? 0.0 : _scrollController.position.maxScrollExtent,
+      _isScrolledUp
+          ? _scrollController.position.minScrollExtent
+          : _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
