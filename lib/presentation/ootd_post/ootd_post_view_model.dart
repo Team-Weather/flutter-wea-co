@@ -82,8 +82,9 @@ class OotdPostViewModel with ChangeNotifier {
     callback(result);
   }
 
-  void getOriginImage() async {
+  Future<void> getOriginImage() async {
     _originImage = await _getImageUseCase.execute(isOrigin: true);
+    if (_originImage == null) return;
   }
 
   void saveCroppedImage({

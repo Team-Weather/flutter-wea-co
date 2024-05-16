@@ -64,8 +64,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                             right: 10,
                             child: GestureDetector(
                               onTap: () async {
-                                viewModel.getOriginImage();
-                                if (viewModel.originImage == null) return;
+                                await viewModel.getOriginImage();
                                 await cropImage(viewModel.originImage!.path);
                               },
                               child: Container(
@@ -169,8 +168,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       centerTitle: true,
       leading: IconButton(
         onPressed: () async {
-          viewModel.getOriginImage();
-          if (viewModel.originImage == null) return;
+          await viewModel.getOriginImage();
           await cropImage(viewModel.originImage!.path);
         },
         icon: const Icon(Icons.arrow_back),
