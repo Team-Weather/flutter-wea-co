@@ -8,7 +8,7 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
+import 'package:weaco/presentation/ootd_post/view_model/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
   final Feed? feed;

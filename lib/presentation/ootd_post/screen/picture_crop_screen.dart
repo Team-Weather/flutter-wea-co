@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
-import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/presentation/ootd_post/view_model/picutre_crop_view_model.dart';
 
 class PictureCropScreen extends StatefulWidget {
   final String sourcePath;
