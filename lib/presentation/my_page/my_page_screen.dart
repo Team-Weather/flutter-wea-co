@@ -6,9 +6,9 @@ import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
+import 'package:weaco/presentation/my_page/component/user_profile/my_profile_widget.dart';
 import 'package:weaco/presentation/my_page/my_page_view_model.dart';
 import 'package:weaco/presentation/user_page/component/feed_grid/feed_grid_empty_widget.dart';
-import 'package:weaco/presentation/user_page/component/user_profile/user_profile_widget.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -26,146 +26,165 @@ class _MyPageScreenState extends State<MyPageScreen> {
     final List<Feed> feedList = myPageViewModel.feedList;
     final bool isPageLoading = myPageViewModel.isPageLoading;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        scrolledUnderElevation: 0,
-      ),
-      body: isPageLoading || profile == null
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
-              child: Column(
-                children: [
-                  UserProfileWidget(userProfile: profile),
-                  const Divider(),
-                  feedList.isEmpty
-                      ? const FeedGridEmptyWidget()
-                      : NotificationListener<UserScrollNotification>(
-                          onNotification:
-                              (UserScrollNotification notification) {
-                            if (notification.direction ==
-                                    ScrollDirection.reverse &&
-                                notification.metrics.maxScrollExtent * 0.85 <
-                                    notification.metrics.pixels) {
-                              myPageViewModel.fetchFeed();
-                            }
-
-                            return false;
-                          },
-                          child: Expanded(
-                            child: GridView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: feedList.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 3 / 4,
-                                crossAxisSpacing: 4,
-                                mainAxisSpacing: 4,
-                                crossAxisCount: 3,
-                              ),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    RouterStatic.goToOotdDetail(
-                                      context,
-                                      id: feedList[index].id ?? '',
-                                      imagePath: feedList[index].imagePath,
-                                    );
-                                  },
-                                  onLongPress: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return SizedBox(
-                                          height: 120,
-                                          width: double.maxFinite,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                height: 40,
-                                                width: 360,
-                                                child: FilledButton(
-                                                  onPressed: () {
-                                                    final selectedFeed =
-                                                        feedList[index];
-
-                                                    context.push(
-                                                        RouterPath
-                                                            .ootdPost.path,
-                                                        extra: selectedFeed);
-                                                    context.pop();
-                                                  },
-                                                  style: FilledButton.styleFrom(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    shape:
-                                                        const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(12),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  child: const Text('수정'),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 8,
-                                              ),
-                                              SizedBox(
-                                                height: 40,
-                                                width: 360,
-                                                child: FilledButton(
-                                                  onPressed: () {
-                                                    myPageViewModel
-                                                        .removeSelectedFeed(
-                                                            feedList[index]
-                                                                .id!);
-                                                    context.pop();
-                                                  },
-                                                  style: FilledButton.styleFrom(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .error,
-                                                    shape:
-                                                        const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(12),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  child: const Text('삭제'),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(2),
-                                    child: Image(
-                                      image: NetworkImage(
-                                          feedList[index].imagePath),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+    return isPageLoading || profile == null
+        ? Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(42),
+              child: AppBar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                scrolledUnderElevation: 0,
+                actions: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                    ),
+                    onPressed: () {
+                      RouterStatic.pushToAppSetting(context);
+                    },
+                  ),
                 ],
               ),
             ),
+            body: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+              child: Column(
+                children: [
+                  MyProfileWidget(userProfile: profile),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: Divider(),
+                  ),
+                  feedList.isEmpty
+                      ? const FeedGridEmptyWidget()
+                      : _buildFeedList(),
+                ],
+              ),
+            ),
+          );
+  }
+
+  bool _handleFeedScroll(UserScrollNotification notification) {
+    MyPageViewModel myPageViewModel = context.read<MyPageViewModel>();
+
+    if (notification.direction == ScrollDirection.reverse &&
+        notification.metrics.maxScrollExtent * 0.85 <
+            notification.metrics.pixels) {
+      myPageViewModel.fetchFeed();
+    }
+
+    return false;
+  }
+
+  Widget _buildFeedList() {
+    return NotificationListener<UserScrollNotification>(
+      onNotification: _handleFeedScroll,
+      child: Expanded(
+        child: _buildFeedGridView(),
+      ),
+    );
+  }
+
+  Widget _buildFeedGridView() {
+    MyPageViewModel myPageViewModel = context.read<MyPageViewModel>();
+
+    return GridView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: myPageViewModel.feedList.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 3 / 4,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        crossAxisCount: 3,
+      ),
+      itemBuilder: (context, index) {
+        return _buildFeedCard(myPageViewModel.feedList[index]);
+      },
+    );
+  }
+
+  Widget _buildFeedCard(Feed currentFeed) {
+    MyPageViewModel myPageViewModel = context.read<MyPageViewModel>();
+
+    return GestureDetector(
+      onTap: () {
+        RouterStatic.goToOotdDetail(
+          context,
+          id: currentFeed.id ?? '',
+          imagePath: currentFeed.imagePath,
+        );
+      },
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return SizedBox(
+              height: 120,
+              width: double.maxFinite,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 40,
+                    width: 360,
+                    child: FilledButton(
+                      onPressed: () {
+                        context.push(RouterPath.ootdPost.path,
+                            extra: currentFeed);
+                        context.pop();
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                      ),
+                      child: const Text('수정'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 360,
+                    child: FilledButton(
+                      onPressed: () {
+                        myPageViewModel.removeSelectedFeed(currentFeed.id!);
+                        context.pop();
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                      ),
+                      child: const Text('삭제'),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image(
+          image: NetworkImage(currentFeed.imagePath),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
