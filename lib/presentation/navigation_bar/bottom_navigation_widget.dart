@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/common/image_path.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
   const BottomNavigationWidget({
@@ -12,39 +13,44 @@ class BottomNavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      iconSize: 32,
-      currentIndex: currentIndex,
-      selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-      unselectedIconTheme: const IconThemeData(color: Color(0xffd5d5d5)),
-      onTap: onTap,
-      mouseCursor: SystemMouseCursors.click,
-      backgroundColor: Theme.of(context).colorScheme.background,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.wb_sunny_outlined),
-          label: 'Home Weather',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.space_dashboard_outlined),
-          label: 'OOTD Feed',
-        ),
-        BottomNavigationBarItem(
-          icon: SizedBox(),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: 'search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline_outlined),
-          label: 'MyProfile',
-        ),
-      ],
+    return SizedBox(
+      height: 72,
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        iconSize: 32,
+        currentIndex: currentIndex,
+        selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        unselectedIconTheme: const IconThemeData(color: Color(0xffd5d5d5)),
+        onTap: onTap,
+        mouseCursor: SystemMouseCursors.click,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage(ImagePath.imageIconHome)),
+            label: 'Home Weather',
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(right: 56.0),
+              child: ImageIcon(AssetImage(ImagePath.imageIconFeed)),
+            ),
+            label: 'OOTD Feed',
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(left: 56.0),
+              child: ImageIcon(AssetImage(ImagePath.imageIconSearch)),
+            ),
+            label: 'search',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage(ImagePath.imageIconMyPage)),
+            label: 'MyProfile',
+          ),
+        ],
+      ),
     );
   }
 }
