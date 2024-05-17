@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/common/image_path.dart';
 
 class FloatingActionButtonWidget extends StatefulWidget {
   const FloatingActionButtonWidget({super.key});
@@ -32,9 +33,9 @@ class _FloatingActionButtonWidgetState
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.decelerate,
-      width: isExpanded ? 120 : 72,
+      width: isExpanded ? 148 : 72,
       height: 72,
       transformAlignment: Alignment.center,
       child: FloatingActionButton(
@@ -58,12 +59,12 @@ class _FloatingActionButtonWidgetState
                   Stack(
                     children: [
                       AnimatedPositioned(
-                        duration: const Duration(milliseconds: 1000),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOut,
-                        left: isExpanded ? 16 : 32,
+                        left: isExpanded ? 22 : 32,
                         top: 16,
                         child: const ImageIcon(
-                          AssetImage('asset/icon/weaco_cam_icon.png'),
+                          AssetImage(ImagePath.imageIconCam),
                           size: 40,
                           color: Color(0xffF2C347),
                         ),
@@ -72,9 +73,9 @@ class _FloatingActionButtonWidgetState
                         duration: const Duration(milliseconds: 1000),
                         curve: Curves.easeInOut,
                         top: 16,
-                        right: isExpanded ? 16 : 32,
+                        right: isExpanded ? 22 : 32,
                         child: const ImageIcon(
-                          AssetImage('asset/icon/weaco_photo_icon.png'),
+                          AssetImage(ImagePath.imageIconPhoto),
                           size: 40,
                           color: Color(0xffF2C347),
                         ),
@@ -84,7 +85,7 @@ class _FloatingActionButtonWidgetState
                 ],
               )
             : const ImageIcon(
-                AssetImage('asset/icon/weaco_feed_add_icon.png'),
+                AssetImage(ImagePath.imageIconFeedAdd),
                 size: 40,
                 color: Colors.white,
               ),

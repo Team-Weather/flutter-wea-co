@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/common/image_path.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
   const BottomNavigationWidget({
@@ -28,25 +29,25 @@ class BottomNavigationWidget extends StatelessWidget {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: ImageIcon(
-                AssetImage('asset/icon/weaco_home_weather_icon.png')),
+                AssetImage(ImagePath.imageIconHome)),
             label: 'Home Weather',
           ),
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.only(right: 56.0),
-              child: ImageIcon(AssetImage('asset/icon/weaco_feed_icon.png')),
+              child: ImageIcon(AssetImage(ImagePath.imageIconFeed)),
             ),
             label: 'OOTD Feed',
           ),
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.only(left: 56.0),
-              child: ImageIcon(AssetImage('asset/icon/weaco_search_icon.png')),
+              child: ImageIcon(AssetImage(ImagePath.imageIconSearch)),
             ),
             label: 'search',
           ),
           BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('asset/icon/weaco_mypage_icon.png')),
+            icon: ImageIcon(AssetImage(ImagePath.imageIconMyPage)),
             label: 'MyProfile',
           ),
         ],
