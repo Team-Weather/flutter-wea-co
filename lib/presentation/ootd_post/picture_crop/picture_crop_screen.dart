@@ -38,15 +38,19 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
       uiSettings: [
         AndroidUiSettings(
-          toolbarColor: Colors.deepOrange,
-          toolbarWidgetColor: Colors.white,
+          toolbarTitle: '이미지 자르기',
+          toolbarColor: Colors.white,
+          toolbarWidgetColor: const Color(0xFFFC8800),
           initAspectRatio: CropAspectRatioPreset.ratio16x9,
           lockAspectRatio: true, // 비율 고정
         ),
         IOSUiSettings(
           title: '이미지 자르기',
+          doneButtonTitle: '확인',
+          cancelButtonTitle: '취소',
           minimumAspectRatio: 1.0, // 비율 고정
           rotateButtonsHidden: true,
+          resetButtonHidden: true,
           aspectRatioPickerButtonHidden: true,
         ),
       ],
@@ -57,6 +61,7 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
 
       _cropResult();
     } else {
+
       if (mounted) {
         Navigator.of(context).pop();
       }
