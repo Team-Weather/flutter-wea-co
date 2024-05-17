@@ -63,4 +63,9 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   Future<bool> signOut() async {
     return await _userAuthDataSource.signOut();
   }
+
+  @override
+  String? signInCheck() {
+    return _userAuthDataSource.signInCheck();
+  }
 }
