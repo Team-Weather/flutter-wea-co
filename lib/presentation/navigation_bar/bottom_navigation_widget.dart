@@ -28,22 +28,19 @@ class BottomNavigationWidget extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.background,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: ImageIcon(
-                AssetImage(ImagePath.imageIconHome)),
+            icon: ImageIcon(AssetImage(ImagePath.imageIconHome)),
             label: 'Home Weather',
           ),
           BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.only(right: 56.0),
-              child: ImageIcon(AssetImage(ImagePath.imageIconFeed)),
-            ),
+            icon: ImageIcon(AssetImage(ImagePath.imageIconFeed)),
             label: 'OOTD Feed',
           ),
           BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.only(left: 56.0),
-              child: ImageIcon(AssetImage(ImagePath.imageIconSearch)),
-            ),
+            icon: SizedBox(),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage(ImagePath.imageIconSearch)),
             label: 'search',
           ),
           BottomNavigationBarItem(
