@@ -5,12 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router.dart';
-<<<<<<< HEAD
-=======
-import 'package:weaco/core/go_router/router_static.dart';
-import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
-import 'package:weaco/presentation/navigation_bar/floating_action_button_widget.dart';
->>>>>>> dev
 import 'firebase_options.dart';
 
 late Box<String> dataBox;
