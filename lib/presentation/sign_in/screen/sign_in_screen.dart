@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
+
+import '../../common/enum/exception_alert.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -11,18 +17,26 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailFormController = TextEditingController();
   final TextEditingController passwordFormController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
   bool isSignInButtonEnabled = false;
+  bool isSignInSubmit = false;
 
   @override
   void dispose() {
     emailFormController.dispose();
     passwordFormController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -153,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildLoginForm() {
     return SizedBox(
       width: double.infinity,
-      height: 150,
+      height: 170,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -166,6 +180,11 @@ class _SignInScreenState extends State<SignInScreen> {
               children: [
                 TextFormField(
                   controller: emailFormController,
+                  autofocus: true,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context).requestFocus(focusNode);
+                  },
                   cursorColor: const Color(0xFFFDCE55),
                   decoration: InputDecoration(
                     hintText: '이메일',
@@ -181,7 +200,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     filled: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
+                      borderSide:
+                          const BorderSide(width: 2, color: Color(0xFFD9D9D9)),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -211,6 +231,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 TextFormField(
                   controller: passwordFormController,
+                  focusNode: focusNode,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    _signInSubmit();
+                  },
                   cursorColor: const Color(0xFFFDCE55),
                   obscureText: true,
                   decoration: InputDecoration(
@@ -228,7 +253,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFFD9D9D9)),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -282,7 +308,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: isSignInButtonEnabled ? () {} : null,
+        onTap: _signInSubmit,
         child: Container(
           decoration: BoxDecoration(
             color: isSignInButtonEnabled
@@ -311,7 +337,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: () {},
+        onTap: () => RouterStatic.goToSignUp(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.transparent,
@@ -333,9 +359,38 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  void _signInSubmit() {
+    if (isSignInButtonEnabled == false) return;
+
+    final SignInViewModel signInViewModel = context.read<SignInViewModel>();
+
+    if (isSignInSubmit) {
+      AlertUtil.showAlert(
+          context: context,
+          exceptionAlert: ExceptionAlert.snackBar,
+          message: '이미 로그인 시도하였습니다.');
+      return;
+    }
+
+    signInViewModel
+        .signIn(
+          email: emailFormController.text,
+          password: passwordFormController.text,
+        )
+        .then((value) => RouterStatic.goToHome(context))
+        .catchError((e) => AlertUtil.showAlert(
+              context: context,
+              exceptionAlert: signInViewModel.exceptionState!.exceptionAlert,
+              message: signInViewModel.exceptionState!.message,
+            ));
+    isSignInSubmit = true;
+  }
+
   void _isValidateForm() {
-    isSignInButtonEnabled = (isValidEmail(emailFormController.text) &&
-        isValidPassword(passwordFormController.text));
+    isSignInSubmit = false;
+    isSignInButtonEnabled =
+        (RegValidationUtil.isValidEmail(emailFormController.text) &&
+            RegValidationUtil.isValidPassword(passwordFormController.text));
     setState(() {});
   }
 
@@ -345,14 +400,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
   String? _checkEmailErrorText() {
     return (emailFormController.text.isEmpty ||
-            isValidEmail(emailFormController.text))
+            RegValidationUtil.isValidEmail(emailFormController.text))
         ? null
         : '이메일 형식이 올바르지 않습니다';
   }
 
   String? _checkPasswordErrorText() {
     return (passwordFormController.text.isEmpty ||
-            isValidPassword(passwordFormController.text))
+            RegValidationUtil.isValidPassword(passwordFormController.text))
         ? null
         : '비밀번호는 8자 이상, 숫자, 특수문자를 포함해야 합니다';
   }

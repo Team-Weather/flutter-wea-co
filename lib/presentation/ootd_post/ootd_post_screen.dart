@@ -1,7 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:provider/provider.dart';
+import 'package:weaco/core/enum/season_code.dart';
+import 'package:weaco/core/enum/weather_code.dart';
+import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
-  const OotdPostScreen({super.key});
+  final Feed? feed;
+
+  const OotdPostScreen({super.key, this.feed});
 
   @override
   State<OotdPostScreen> createState() => _OotdPostScreenState();
@@ -9,14 +21,19 @@ class OotdPostScreen extends StatefulWidget {
 
 class _OotdPostScreenState extends State<OotdPostScreen> {
   static const int maxLength = 300;
-  late ScrollController _scrollController;
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _contentTextController = TextEditingController();
   bool isClicked = false;
+  bool _isScrolledUp = true;
+  CroppedFile? _newCroppedFile;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    if (widget.feed != null) {
+      _contentTextController.text = widget.feed!.description;
+    }
   }
 
   @override
@@ -27,129 +44,194 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<OotdPostViewModel>();
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: _appBar(),
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          // physics: NeverScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 80),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Image.asset(
-                      height: 604,
-                      fit: BoxFit.fitHeight,
-                      'asset/image/ootd_post_image.png',
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.crop),
-                              Text('수정'),
-                            ],
-                          ),
+        appBar: _appBar(viewModel),
+        body: viewModel.showSpinner
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                controller: _scrollController,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 15, 28, 30),
+                  child: Column(
+                    children: [
+                      widget.feed != null
+                          ?
+                          // 기존 피드 수정
+                          Image.file(File(widget.feed!.imagePath))
+                          :
+                          // 새로운 피드 작성
+                          Stack(
+                              children: [
+                                _newCroppedFile ==
+                                        null // 새 크롭 화면의 image null 검사
+                                    ? viewModel.croppedImage ==
+                                            null // viewModel image null 검사
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : Image.file(viewModel.croppedImage!)
+                                    : Image.file(File(_newCroppedFile!.path)),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await viewModel.getOriginImage();
+                                      await cropImage(
+                                          viewModel.originImage!.path);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.crop),
+                                            Text('수정'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                      !_isScrolledUp
+                          ? const SizedBox()
+                          : const Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: Text(
+                                '어떤 코디를 하셨나요?',
+                                style: TextStyle(
+                                  color: Color(0xFF979797),
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isScrolledUp = !_isScrolledUp;
+                            });
+                            _scrollTo();
+                          },
+                          icon: _isScrolledUp
+                              ? const Icon(Icons.arrow_circle_down_outlined,
+                                  size: 40)
+                              : const Icon(Icons.arrow_circle_up_outlined,
+                                  size: 40),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                isClicked
-                    ? const SizedBox()
-                    : const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                        child: Text(
-                          '어떤 코디를 하셨나요?',
-                          style: TextStyle(
-                            color: Color(0xFF979797),
-                            fontSize: 15,
+                      Column(
+                        children: [
+                          widget.feed != null
+                              ? Row(
+                                  children: [
+                                    _tags(widget.feed!.location.city),
+                                    _tags(SeasonCode.fromValue(
+                                            widget.feed!.seasonCode)
+                                        .description),
+                                    _tags(
+                                        '${widget.feed!.weather.temperature}°'),
+                                    _tags(WeatherCode.fromDtoCode(
+                                            widget.feed!.weather.code)
+                                        .description),
+                                  ],
+                                )
+                              : Row(
+                                  children: [
+                                    _tags(viewModel
+                                        .dailyLocationWeather!.location.city),
+                                    _tags(SeasonCode.fromValue(viewModel
+                                            .dailyLocationWeather!.seasonCode)
+                                        .description),
+                                    _tags('${viewModel.weather!.temperature}°'),
+                                    _tags(WeatherCode.fromDtoCode(
+                                            viewModel.weather!.code)
+                                        .description),
+                                  ],
+                                ),
+                          const SizedBox(height: 15),
+                          TextField(
+                            controller: _contentTextController,
+                            maxLength: maxLength,
+                            maxLines: 10,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              hintText: '어떤 코디를 하셨나요?',
+                              hintStyle:
+                                  const TextStyle(color: Color(0xFF979797)),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: MediaQuery.of(context).viewInsets.bottom,
+                          )
+                        ],
                       ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
-                  child: IconButton(
-                    onPressed: () {
-                      _scrollTo();
-                      setState(() {
-                        isClicked = !isClicked;
-                      });
-                    },
-                    icon: isClicked
-                        ? const Icon(Icons.arrow_circle_up_outlined, size: 30)
-                        : const Icon(Icons.arrow_circle_down_outlined, size: 30),
+                    ],
                   ),
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        _tags('서울시'),
-                        _tags('여름'),
-                        _tags('26°'),
-                        _tags('맑음'),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    TextField(
-                      controller: _contentTextController,
-                      maxLength: maxLength,
-                      maxLines: 13,
-                      keyboardType: TextInputType.multiline,
-                      decoration: InputDecoration(
-                        hintText: '어떤 코디를 하셨나요?',
-                        hintStyle: const TextStyle(color: Color(0xFF979797)),
-                        border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(OotdPostViewModel viewModel) {
     return AppBar(
       title: const Text('피드글 쓰기'),
       centerTitle: true,
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () async {
+          if (widget.feed != null) {
+            context.pop();
+          } else {
+            await viewModel.getOriginImage();
+            await cropImage(viewModel.originImage!.path);
+          }
+        },
         icon: const Icon(Icons.arrow_back),
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('저장되었습니다.'),
-              ),
-            );
+          onPressed: () async {
+            if (widget.feed != null) {
+              await viewModel.editFeed(
+                  widget.feed!, _contentTextController.text);
+            } else {
+              await viewModel.saveFeed(_contentTextController.text);
+            }
+
+            if (mounted) {
+              if (viewModel.saveStatus) {
+                RouterStatic.popFromOotdPost(context);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('다시 시도해 주세요.'),
+                  ),
+                );
+              }
+            }
           },
-          child: const Text(
-            '저장',
-            style: TextStyle(color: Color(0xFFFC8800), fontSize: 18),
+          child: Text(
+            widget.feed != null ? '수정' : '저장',
+            style: const TextStyle(color: Color(0xFFFC8800), fontSize: 18),
           ),
         ),
       ],
@@ -170,9 +252,56 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     );
   }
 
+  Future<void> cropImage(String sourcePath) async {
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: sourcePath,
+      aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.ratio16x9,
+          lockAspectRatio: true, // 비율 고정
+        ),
+        IOSUiSettings(
+          title: '이미지 자르기',
+          minimumAspectRatio: 1.0, // 비율 고정
+          rotateButtonsHidden: true,
+          aspectRatioPickerButtonHidden: true,
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      setState(() {
+        _newCroppedFile = croppedFile;
+      });
+    }
+  }
+
+  void _scrollListener() {
+    if (_scrollController.offset <=
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // 스크롤 위치가 상단에 도달하면 화살표를 위로 표시
+      setState(() {
+        _isScrolledUp = true;
+      });
+    } else if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // 스크롤 위치가 하단에 도달하면 화살표를 아래로 표시
+      setState(() {
+        _isScrolledUp = false;
+      });
+    }
+  }
+
   void _scrollTo() {
     _scrollController.animateTo(
-      isClicked ? 0.0 : _scrollController.position.maxScrollExtent,
+      _isScrolledUp
+          ? _scrollController.position.minScrollExtent
+          : _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );

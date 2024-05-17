@@ -29,23 +29,23 @@ void main() {
     );
     const double latitude = 37.5665;
     const double longitude = 126.978;
-    DateTime now = DateTime.now();
+    DateTime now = DateTime(2024, 5, 5, 12, 0, 0);
     WeatherDto weatherDto = WeatherDto(
       latitude: latitude,
       longitude: longitude,
       daily: DailyDto(
         time:
-            List.generate(2, (index) => '${now.year}-${now.month}-${now.day}'),
-        temperature2mMax: [20],
-        temperature2mMin: [10],
+            List.generate(3, (index) => '${now.year}-${now.month}-${now.day}'),
+        temperature2mMax: [20, 25, 30],
+        temperature2mMin: [10, 15, 20],
       ),
       hourly: HourlyDto(
           time: List.generate(
-              48,
+              72,
               (index) =>
                   '${now.year}-${now.month.toString().padLeft(2, '0')}-${(index ~/ 24 <= 1 ? now.day.toString().padLeft(2, '0') : (now.day - 1).toString().padLeft(2, '0'))}T${(index % 24).toString().padLeft(2, '0')}:00:00'),
-          temperature2m: List.generate(48, (index) => 15.0),
-          weathercode: List.generate(48, (index) => 1)),
+          temperature2m: List.generate(72, (index) => 15.0),
+          weathercode: List.generate(72, (index) => 1)),
     );
 
     Location location =
@@ -94,6 +94,34 @@ void main() {
         localDailyLocationWeatherDataSource.getLocalDailyLocationWeatherResult =
             dailyLocationWeather.copyWith(
                 createdAt: now.subtract(const Duration(hours: 4)));
+        remoteWeatherDataSource.getWeatherResult = weatherDto;
+        locationRepository.getLocationResult = location;
+
+        // When
+        final DailyLocationWeather actual =
+            await dailyLocationWeatherRepository.getDailyLocationWeather();
+
+        // Then
+        expect(actual.createdAt.isAfter(now.subtract(const Duration(hours: 3))),
+            isTrue);
+        expect(
+            localDailyLocationWeatherDataSource
+                .getLocalDailyLocationWeatherCallCount,
+            1);
+        expect(remoteWeatherDataSource.getWeatherCallCount, 1);
+        expect(locationRepository.getLocationCallCount, 1);
+        expect(
+            localDailyLocationWeatherDataSource
+                .saveLocalDailyLocationWeatherCallCount,
+            1);
+      });
+
+      test('로컬 DailyLocationWeather가 생성일자가 오늘이 아니라면 새로운 데이터를 가져와 반환한다.',
+          () async {
+        // Given
+        localDailyLocationWeatherDataSource.getLocalDailyLocationWeatherResult =
+            dailyLocationWeather.copyWith(
+                createdAt: now.subtract(const Duration(days: 1)));
         remoteWeatherDataSource.getWeatherResult = weatherDto;
         locationRepository.getLocationResult = location;
 

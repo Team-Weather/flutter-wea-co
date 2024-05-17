@@ -5,8 +5,24 @@ import 'package:weaco/core/di/file/file_di_setup.dart';
 import 'package:weaco/core/di/location/location_di_setup.dart';
 import 'package:weaco/core/di/user/user_di_setup.dart';
 import 'package:weaco/core/di/weather/weather_di_setup.dart';
+import 'package:weaco/domain/feed/use_case/get_my_page_feeds_use_case.dart';
+import 'package:weaco/domain/feed/use_case/remove_my_page_feed_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_my_profile_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_profile_image_list_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_up_use_case.dart';
+import 'package:weaco/presentation/my_page/my_page_view_model.dart';
+import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
+import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
+import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_in_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/domain/feed/use_case/get_user_page_feeds_use_case.dart';
+import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
+import 'package:weaco/presentation/user_page/user_page_view_model.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -29,8 +45,40 @@ void diSetup() {
   weatherDiSetup();
 
   // ViewModel
+  getIt.registerFactory<SignUpViewModel>(() => SignUpViewModel(
+      signUpUseCase: getIt<SignUpUseCase>(),
+      getProfileImagePathUseCase: getIt<GetProfileImageListUseCase>()));
+
+  // ViewModel
+  getIt.registerFactory<SignInViewModel>(
+      () => SignInViewModel(signInUseCase: getIt<SignInUseCase>()));
+
   getIt.registerFactory<PictureCropViewModel>(
     () => PictureCropViewModel(saveImageUseCase: getIt<SaveImageUseCase>()),
   );
+
+  getIt.registerFactory<OotdPostViewModel>(
+    () => OotdPostViewModel(
+      getImageUseCase: getIt<GetImageUseCase>(),
+      getDailyLocationWeatherUseCase: getIt<GetDailyLocationWeatherUseCase>(),
+      saveEditFeedUseCase: getIt<SaveEditFeedUseCase>(),
+      saveImageUseCase: getIt<SaveImageUseCase>(),
+    ),
+  );
+
   // View
+  getIt.registerFactoryParam<UserPageViewModel, String, void>(
+    (param1, _) => UserPageViewModel(
+      email: param1,
+      getUserProfileUseCase: getIt<GetUserProfileUseCase>(),
+      getUserPageFeedsUseCase: getIt<GetUserPageFeedsUseCase>(),
+    ),
+  );
+  getIt.registerFactory<MyPageViewModel>(
+    () => MyPageViewModel(
+      getMyPageUserProfileUseCase: getIt<GetMyPageUserProfileUseCase>(),
+      getMyPageFeedsUseCase: getIt<GetMyPageFeedsUseCase>(),
+      removeMyPageFeedUseCase: getIt<RemoveMyPageFeedUseCase>(),
+    ),
+  );
 }

@@ -113,6 +113,7 @@ void main() {
           lowTemperature: 14,
           weatherList: [],
           yesterDayWeatherList: [],
+          tomorrowWeatherList: [],
           location: Location(
             lat: 13,
             lng: 141,
@@ -138,6 +139,7 @@ void main() {
           lowTemperature: 14,
           weatherList: [],
           yesterDayWeatherList: [],
+          tomorrowWeatherList: [],
           location: Location(
             lat: 13,
             lng: 141,

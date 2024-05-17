@@ -1,24 +1,40 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/enum/router_path.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/domain/user/use_case/log_out_use_case.dart';
+import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/main.dart';
+import 'package:weaco/presentation/my_page/my_page_screen.dart';
+import 'package:weaco/presentation/my_page/my_page_view_model.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
+import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
-import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
-import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
+import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
+import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
+import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
+import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
+import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
+import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
-import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_screen.dart';
 import 'package:weaco/presentation/ootd_post/picture_crop/picture_crop_screen.dart';
+import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
+import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
+import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
+import 'package:weaco/presentation/user_page/user_page_screen.dart';
+import 'package:weaco/presentation/user_page/user_page_view_model.dart';
+import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -35,9 +51,9 @@ final router = GoRouter(
         return ChangeNotifierProvider(
           create: (_) => HomeScreenViewModel(
             getDailyLocationWeatherUseCase:
-            getIt<GetDailyLocationWeatherUseCase>(),
+                getIt<GetDailyLocationWeatherUseCase>(),
             getBackgroundImageListUseCase:
-            getIt<GetBackgroundImageListUseCase>(),
+                getIt<GetBackgroundImageListUseCase>(),
             getRecommendedFeedsUseCase: getIt<GetRecommendedFeedsUseCase>(),
           ),
           child: const HomeScreen(),
@@ -46,46 +62,66 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.signUp.path,
-      builder: (context, state) => const SignUpScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignUpViewModel>(),
+        child: const SignUpScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.signIn.path,
-      // builder: (context, state) => SignInScreen(),
-      builder: (context, state) => const SignInScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<SignInViewModel>(),
+        child: const SignInScreen(),
+      ),
     ),
     GoRoute(
       path: RouterPath.dialog.path,
-      // builder: (context, state) => DialogScreen(),
+// builder: (context, state) => DialogScreen(),
       builder: (context, state) => const MyHomePage(
         title: '',
       ),
     ),
     GoRoute(
-      path: RouterPath.appSetting.path,
-      // builder: (context, state) => AppSettingScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
-      ),
+        path: RouterPath.appSetting.path,
+        builder: (context, state) {
+          return ChangeNotifierProvider(
+            create: (_) => AppSettingViewModel(
+              logOutUseCase: getIt<LogOutUseCase>(),
+              signOutUseCase: getIt<SignOutUseCase>(),
+            ),
+            child: const AppSettingScreen(),
+          );
+        }),
+    GoRoute(
+      path: RouterPath.appSettingPolicy.path,
+      builder: (context, state) => const AppSettingPolicyScreen(),
+    ),
+    GoRoute(
+      path: RouterPath.appSettingLicense.path,
+      builder: (context, state) => const LicensePage(),
     ),
     GoRoute(
       path: RouterPath.myPage.path,
-      // builder: (context, state) => MyPageScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<MyPageViewModel>(),
+        child: const MyPageScreen(),
       ),
     ),
     GoRoute(
       path: RouterPath.userPage.path,
-      // builder: (context, state) => UserPageScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<UserPageViewModel>(
+          param1: state.uri.queryParameters['email'],
+        ),
+        child: const UserPageScreen(),
       ),
     ),
     GoRoute(
       path: RouterPath.ootdSearch.path,
-      // builder: (context, state) => OotdSearchScreen(),
-      builder: (context, state) => const MyHomePage(
-        title: '',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<OotdSearchViewModel>(
+        ),
+        child: const OotdSearchScreen(),
       ),
     ),
     GoRoute(
@@ -101,8 +137,12 @@ final router = GoRouter(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => getIt<OotdDetailViewModel>(param1: state.uri.queryParameters['id'] ?? ''),
-          child: OotdDetailScreen(id: state.uri.queryParameters['id'] ?? '', mainImagePath: state.uri.queryParameters['imagePath'] ?? '',),
+          create: (_) => getIt<OotdDetailViewModel>(
+              param1: state.uri.queryParameters['id'] ?? ''),
+          child: OotdDetailScreen(
+            id: state.uri.queryParameters['id'] ?? '',
+            mainImagePath: state.uri.queryParameters['imagePath'] ?? '',
+          ),
         );
       },
     ),
@@ -117,20 +157,25 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouterPath.pictureCrop.path,
-      // builder: (context, state) => PictureCropScreen(
-      //   sourcePath: state.extra as String,
-      // ),
-    // ),
-    builder: (context, state) {
+      builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<PictureCropViewModel>(),
-          child: PictureCropScreen(sourcePath: state.extra as String,),
+          child: PictureCropScreen(
+            sourcePath: state.extra as String,
+          ),
         );
       },
     ),
     GoRoute(
       path: RouterPath.ootdPost.path,
-      builder: (context, state) => const OotdPostScreen(),
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => getIt<OotdPostViewModel>(),
+          child: OotdPostScreen(
+            feed: state.extra as Feed?,
+          ),
+        );
+      },
     ),
   ],
 );

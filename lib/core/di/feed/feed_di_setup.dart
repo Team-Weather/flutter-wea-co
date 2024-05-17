@@ -19,6 +19,7 @@ import 'package:weaco/domain/user/repository/user_profile_repository.dart';
 import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
+import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
 
 void feedDiSetup() {
   // DataSource
@@ -50,8 +51,17 @@ void feedDiSetup() {
       RemoveMyPageFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
   getIt.registerLazySingleton<SaveEditFeedUseCase>(() =>
       SaveEditFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
-  
+
   // ViewModel
-  getIt.registerFactory(() => OotdFeedViewModel(getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>()));
-  getIt.registerFactoryParam((id, _) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt<GetDetailFeedDetailUseCase>(), getUserProfileUseCase: getIt<GetUserProfileUseCase>(), id: id as String));
+  getIt.registerFactory(() =>
+      OotdFeedViewModel(getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>()));
+  getIt.registerFactory(
+    () => OotdSearchViewModel(
+      getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>(),
+    ),
+  );
+  getIt.registerFactoryParam((id, _) => OotdDetailViewModel(
+      getDetailFeedDetailUseCase: getIt<GetDetailFeedDetailUseCase>(),
+      getUserProfileUseCase: getIt<GetUserProfileUseCase>(),
+      id: id as String));
 }

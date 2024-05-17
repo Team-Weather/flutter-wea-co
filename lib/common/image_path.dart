@@ -20,15 +20,19 @@ class ImagePath {
 
   static const String weatherRain = '$_iconPath/weather_rain_icon.png';
 
-  static const String weatherRainShower = '$_iconPath/weather_rain_shower_icon.png';
+  static const String weatherRainShower =
+      '$_iconPath/weather_rain_shower_icon.png';
 
-  static const String weatherFreezingRain = '$_iconPath/weather_freezing_rain_icon.png';
+  static const String weatherFreezingRain =
+      '$_iconPath/weather_freezing_rain_icon.png';
 
   static const String weatherSnow = '$_iconPath/weather_snow_icon.png';
 
-  static const String weatherThunderStorm = '$_iconPath/weather_thunder_storm_icon.png';
+  static const String weatherThunderStorm =
+      '$_iconPath/weather_thunder_storm_icon.png';
 
-  static const String weatherThunderStormHail = '$_iconPath/weather_thunder_storm_hail_icon.png';
+  static const String weatherThunderStormHail =
+      '$_iconPath/weather_thunder_storm_hail_icon.png';
 
   static const String homeBackgroundSunny = '$_imagePath/home_bg_sunny.jpg';
 
@@ -45,4 +49,7 @@ class ImagePath {
   static const String imageIconCam = '$_iconPath/weaco_cam_icon.png';
 
   static const String imageIconPhoto = '$_iconPath/weaco_photo_icon.png';
+
+  static const String weacoLogo =
+      'https://firebasestorage.googleapis.com/v0/b/weaco-f9878.appspot.com/o/3.001.png?alt=media&token=da2ba52d-25b0-4095-8a31-246830c0d1fa';
 }
