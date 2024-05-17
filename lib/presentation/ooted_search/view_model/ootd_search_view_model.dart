@@ -61,11 +61,6 @@ class OotdSearchViewModel with ChangeNotifier {
     try {
       _searchFeedList = await _getSearchFeedsUseCase.execute(
         limit: _fetchCount,
-        createdAt: null,
-        seasonCode: null,
-        weatherCode: null,
-        minTemperature: null,
-        maxTemperature: null,
       );
     } on Exception catch (e) {
       log(e.toString(), name: 'OotdSearchViewModel.fetchInitialFeedList()');
@@ -125,10 +120,9 @@ class OotdSearchViewModel with ChangeNotifier {
     final temperatureCode = TemperatureCode.fromValue(temperatureCodeValue);
     log('fetchFeedWhenFilterChange 호출 (seasonCodeValue: $seasonCode, weatherCodeValue: $weatherCode, temperatureCodeValue: $temperatureCode');
 
-    // 삭제된 유저, 존재하지 않는 유저일 때 (빈배열)
     // 모든 피드를 다 불러왔음을 확인하는 플래그값 true 일 때
     // -> 피드 페이지네이션 요청 차단
-    if (_searchFeedList.isEmpty || _isFeedListReachEnd) return;
+    if (_isFeedListReachEnd) return;
 
     // 요청 보내기
     if (!_isFeedListLoading) {
