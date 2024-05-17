@@ -57,6 +57,18 @@ final router = GoRouter(
                 create: (_) => getIt<OotdFeedViewModel>(),
                 child: const OotdFeedScreen(),
               ),
+              ChangeNotifierProvider(
+                create: (_) => CameraViewModel(),
+                child: const CameraScreen(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => getIt<OotdSearchViewModel>(),
+                child: const OotdSearchScreen(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => getIt<MyPageViewModel>(),
+                child: const MyPageScreen(),
+              ),
             ],
             child: const MainScreen(),
           );

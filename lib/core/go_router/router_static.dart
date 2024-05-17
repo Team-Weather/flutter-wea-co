@@ -11,6 +11,7 @@ class RouterStatic {
   static void goToHome(BuildContext context) {
     router.go(RouterPath.home.path);
   }
+
   static void popToHome(BuildContext context) {
     router.pop(RouterPath.home.path);
   }
@@ -30,6 +31,7 @@ class RouterStatic {
   static void goToAppSetting(BuildContext context) {
     router.go(RouterPath.appSetting.path);
   }
+
   static void pushToAppSetting(BuildContext context) {
     router.push(RouterPath.appSetting.path);
   }
@@ -37,6 +39,7 @@ class RouterStatic {
   static void goToAppSettingLicense(BuildContext context) {
     router.go(RouterPath.appSettingLicense.path);
   }
+
   static void pushToAppSettingLicense(BuildContext context) {
     router.push(RouterPath.appSettingLicense.path);
   }
@@ -44,9 +47,11 @@ class RouterStatic {
   static void goToAppSettingPolicy(BuildContext context) {
     router.go(RouterPath.appSettingPolicy.path);
   }
+
   static void pushToAppSettingPolicy(BuildContext context) {
     router.push(RouterPath.appSettingPolicy.path);
   }
+
   static void goToMyPage(BuildContext context) {
     router.go(RouterPath.myPage.path);
   }
@@ -63,16 +68,17 @@ class RouterStatic {
     router.push(RouterPath.ootdFeed.path);
   }
 
-  static void goToOotdDetail(BuildContext context, {required String id, required String imagePath}) {
+  static void goToOotdDetail(BuildContext context,
+      {required String id, required String imagePath}) {
     router.push('${RouterPath.ootdDetail.path}?id=$id&imagePath=$imagePath');
   }
 
   static void goToCamera(BuildContext context) {
-    router.go(RouterPath.camera.path);
+    router.push(RouterPath.camera.path);
   }
 
   static void goToPictureCrop(BuildContext context, String path) {
-    router.go(RouterPath.pictureCrop.path, extra: path);
+    router.push(RouterPath.pictureCrop.path, extra: path);
   }
 
   static void goToOotdPost(BuildContext context, {Feed? feed}) {
