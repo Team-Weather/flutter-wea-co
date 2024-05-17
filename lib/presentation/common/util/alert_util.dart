@@ -48,7 +48,7 @@ class AlertUtil {
                 onPressedRight: () => onPressedRight == null
                     ? Navigator.of(context).pop()
                     : onPressedRight(),
-                leftButtonColor: Colors.grey.value,
+                leftButtonColor: const Color(0xffB2B2B2).value,
                 leftButtonText: '취소',
                 rightButtonColor: Theme.of(context).primaryColor.value,
                 rightButtonCancelText: '확인');
