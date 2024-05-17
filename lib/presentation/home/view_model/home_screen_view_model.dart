@@ -49,6 +49,8 @@ class HomeScreenViewModel with ChangeNotifier {
   String get backgroundImagePath =>
       _weatherBackgroundImage ?? ImagePath.homeBackgroundSunny;
   List<Weather> get weatherByTimeList => _weatherByTimeList;
+  String get errorMesasge => _errorMessage;
+  String _errorMessage = '';
 
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
@@ -76,6 +78,7 @@ class HomeScreenViewModel with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _status = HomeScreenStatus.error;
+      _errorMessage = e.toString();
       notifyListeners();
     }
   }

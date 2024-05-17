@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/home/component/recommand_ootd_list_widget.dart';
 import 'package:weaco/presentation/home/component/weather_by_time_list_widget.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
@@ -21,18 +23,34 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     Future.microtask(
-      () async => await context.read<HomeScreenViewModel>().initHomeScreen(),
+      () async {
+        await context.read<HomeScreenViewModel>().initHomeScreen();
+      },
     );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        final viewModel = context.read<HomeScreenViewModel>();
+        if (viewModel.status.isError) {
+          AlertUtil.showAlert(
+            context: context,
+            exceptionAlert: ExceptionAlert.snackBar,
+            message: viewModel.errorMesasge,
+          );
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeScreenViewModel>();
+
     final String temperatureGapPresentation = viewModel.temperatureGap! >= 0
         ? viewModel.temperatureGap!.toStringAsFixed(1)
         : (-viewModel.temperatureGap!).toStringAsFixed(1);
