@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/ootd_post/view_model/picutre_crop_view_model.dart';
 
 class PictureCropScreen extends StatefulWidget {
@@ -61,7 +63,6 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
 
       _cropResult();
     } else {
-
       if (mounted) {
         Navigator.of(context).pop();
       }
@@ -77,16 +78,14 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
 
       await viewModel.saveCroppedImage(file: File(_croppedFile!.path));
 
-      if (viewModel.status.isSuccess) {
-        if (mounted) {
+      if (mounted) {
+        if (viewModel.status.isSuccess) {
           RouterStatic.goToOotdPost(context);
-        }
-      } else if (viewModel.status.isError) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('잠시 후 다시 시도해 주시기 바랍니다.'),
-            ),
+        } else if (viewModel.status.isError) {
+          AlertUtil.showAlert(
+            context: context,
+            exceptionAlert: ExceptionAlert.snackBar,
+            message: '다시 시도해 주세요.',
           );
         }
       }
