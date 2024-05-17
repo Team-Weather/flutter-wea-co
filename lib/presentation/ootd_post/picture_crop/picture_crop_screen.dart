@@ -56,6 +56,10 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
       _croppedFile = croppedFile;
 
       _cropResult();
+    } else {
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 
