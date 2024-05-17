@@ -51,9 +51,17 @@ void feedDiSetup() {
       RemoveMyPageFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
   getIt.registerLazySingleton<SaveEditFeedUseCase>(() =>
       SaveEditFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
-  
+
   // ViewModel
-  getIt.registerFactory(() => OotdFeedViewModel(getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>()));
-  getIt.registerFactory(() => OotdSearchViewModel());
-  getIt.registerFactoryParam((id, _) => OotdDetailViewModel(getDetailFeedDetailUseCase: getIt<GetDetailFeedDetailUseCase>(), getUserProfileUseCase: getIt<GetUserProfileUseCase>(), id: id as String));
+  getIt.registerFactory(() =>
+      OotdFeedViewModel(getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>()));
+  getIt.registerFactory(
+    () => OotdSearchViewModel(
+      getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>(),
+    ),
+  );
+  getIt.registerFactoryParam((id, _) => OotdDetailViewModel(
+      getDetailFeedDetailUseCase: getIt<GetDetailFeedDetailUseCase>(),
+      getUserProfileUseCase: getIt<GetUserProfileUseCase>(),
+      id: id as String));
 }
