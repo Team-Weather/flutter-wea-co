@@ -31,4 +31,18 @@ class ImagePath {
   static const String weatherThunderStormHail = '$_iconPath/weather_thunder_storm_hail_icon.png';
 
   static const String homeBackgroundSunny = '$_imagePath/home_bg_sunny.jpg';
+
+  static const String imageIconHome = '$_iconPath/weaco_home_weather_icon.png';
+
+  static const String imageIconFeed = '$_iconPath/weaco_feed_icon.png';
+
+  static const String imageIconSearch = '$_iconPath/weaco_search_icon.png';
+
+  static const String imageIconMyPage = '$_iconPath/weaco_mypage_icon.png';
+
+  static const String imageIconFeedAdd = '$_iconPath/weaco_feed_add_icon.png';
+
+  static const String imageIconCam = '$_iconPath/weaco_cam_icon.png';
+
+  static const String imageIconPhoto = '$_iconPath/weaco_photo_icon.png';
 }
