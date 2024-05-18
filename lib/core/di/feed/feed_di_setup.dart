@@ -17,6 +17,7 @@ import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/file/repository/file_repository.dart';
 import 'package:weaco/domain/user/repository/user_profile_repository.dart';
 import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
@@ -53,8 +54,9 @@ void feedDiSetup() {
       SaveEditFeedUseCase(ootdFeedRepository: getIt<OotdFeedRepository>()));
 
   // ViewModel
-  getIt.registerFactory(() =>
-      OotdFeedViewModel(getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>()));
+  getIt.registerFactory(() => OotdFeedViewModel(
+      getDailyLocationWeatherUseCase: getIt<GetDailyLocationWeatherUseCase>(),
+      getOotdFeedsUseCase: getIt<GetOotdFeedsUseCase>()));
   getIt.registerFactory(
     () => OotdSearchViewModel(
       getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>(),

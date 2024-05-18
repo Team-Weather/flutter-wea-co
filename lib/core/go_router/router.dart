@@ -55,7 +55,7 @@ final router = GoRouter(
                       )),
               ChangeNotifierProvider(
                 create: (_) => getIt<OotdFeedViewModel>(),
-                child: const OotdFeedScreen(),
+                // child: const OotdFeedScreen<OotdFeedViewModel>(),
               ),
               ChangeNotifierProvider(
                 create: (_) => CameraViewModel(),
@@ -149,7 +149,7 @@ final router = GoRouter(
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdFeedViewModel>(),
-          child: const OotdFeedScreen(),
+          child: const OotdFeedScreen<OotdFeedViewModel>(),
         );
       },
     ),
@@ -159,7 +159,7 @@ final router = GoRouter(
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdDetailViewModel>(
               param1: state.uri.queryParameters['id'] ?? ''),
-          child: OotdDetailScreen(
+          child: OotdDetailScreen<OotdDetailViewModel>(
             id: state.uri.queryParameters['id'] ?? '',
             mainImagePath: state.uri.queryParameters['imagePath'] ?? '',
           ),
