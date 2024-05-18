@@ -34,7 +34,7 @@ class MockRemoteFeedDataSource implements RemoteFeedDataSource {
 
   @override
   Future<List<Feed>> getRecommendedFeedList(
-      {required DailyLocationWeather dailyLocationWeather}) async {
+      {required DailyLocationWeather dailyLocationWeather, createdAt}) async {
     return feedList;
   }
 

@@ -26,6 +26,7 @@ class _OotdFeedScreenState<T extends BaseChangeNotifier> extends BaseState<OotdF
   void initState() {
     super.initState();
     _pageViewController = PageController(viewportFraction: 0.75);
+    Future.microtask(() => context.read<OotdFeedViewModel>().initPage());
   }
 
   @override

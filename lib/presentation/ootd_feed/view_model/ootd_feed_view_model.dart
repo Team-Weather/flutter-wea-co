@@ -20,7 +20,7 @@ class OotdFeedViewModel extends BaseChangeNotifier {
       required GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase})
       : _getOotdFeedsUseCase = getOotdFeedsUseCase,
         _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase {
-    _initPage();
+    // initPage();
   }
 
   List<OotdCard> get feedList => List.unmodifiable(_feedList);
@@ -30,13 +30,16 @@ class OotdFeedViewModel extends BaseChangeNotifier {
   bool get isEndOfData => _isEndOfData;
 
   Future<void> _getFeedList() async {
+    log('함수 호출', name: 'OotdFeedViewModel._getFeedList()');
+    if(_isEndOfData) return;
     try {
+      log( _feedList.isNotEmpty ? _feedList.last.feed.createdAt.toString() : 'empty', name: 'OotdFeedViewModel._getFeedList()');
       final dataList = (await _getOotdFeedsUseCase.execute(
           createdAt:
               _feedList.isNotEmpty ? _feedList.last.feed.createdAt : null,
           dailyLocationWeather: _dailyLocationWeather!));
       _feedList.addAll(dataList.map((feed) => OotdCard(feed: feed)));
-      if (dataList.isEmpty) {
+      if (dataList.length < 10) {
         _isEndOfData = true;
       }
     } catch (e) {
@@ -45,9 +48,13 @@ class OotdFeedViewModel extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _initPage() async {
+  Future<void> initPage() async {
+    log('데이터 초기화', name: 'OotdFeedViewModel.initPage()');
     try {
+      _currentIndex = 0;
+      _isEndOfData = false;
       _dailyLocationWeather = (await _getDailyLocationWeatherUseCase.execute());
+      _feedList.clear();
       _getFeedList();
     } catch (e) {
       notifyException(exception: e);
@@ -64,12 +71,11 @@ class OotdFeedViewModel extends BaseChangeNotifier {
       return nextIndex;
     }
     _currentIndex = nextIndex;
-    if (_currentIndex + 1 == _feedList.length) {
+    notifyListeners();
+    if (_currentIndex + 2 >= _feedList.length) {
       log('무한 스크롤: 데이터 요청', name: 'OotdFeedViewModel.moveIndex()');
       _getFeedList();
     }
-    Future.delayed(const Duration(milliseconds: 125))
-        .then((value) => notifyListeners());
     return _currentIndex;
   }
 

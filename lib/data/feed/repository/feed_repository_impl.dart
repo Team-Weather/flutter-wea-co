@@ -59,6 +59,7 @@ class FeedRepositoryImpl implements FeedRepository {
   }) async {
     return await remoteFeedDataSource.getRecommendedFeedList(
       dailyLocationWeather: dailyLocationWeather,
+      createdAt: createdAt
     );
   }
 

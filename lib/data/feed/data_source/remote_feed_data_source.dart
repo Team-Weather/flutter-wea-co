@@ -27,6 +27,7 @@ abstract interface class RemoteFeedDataSource {
   /// @param temperature: 날씨 온도
   Future<List<Feed>> getRecommendedFeedList({
     required DailyLocationWeather dailyLocationWeather,
+    DateTime? createdAt
   });
 
   /// [검색 페이지] 피드 검색:
