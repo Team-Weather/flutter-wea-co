@@ -27,32 +27,29 @@ class WeacoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-        create: (context) => getIt<UserProvider>(),
-        child: MaterialApp.router(
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('ko', 'KR')],
-          locale: const Locale('ko'),
-          title: 'WeaCo',
-          theme: ThemeData(
-            textTheme: const TextTheme(
-              headlineLarge: TextStyle(fontSize: 22),
-              headlineMedium: TextStyle(fontSize: 18),
-              headlineSmall: TextStyle(fontSize: 14),
-              bodyLarge: TextStyle(fontSize: 12),
-            ),
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: const Color(0xffF2C347)),
-            primaryColor: const Color(0xffF2C347),
-            canvasColor: Colors.white,
-            scaffoldBackgroundColor: const Color(0xffF5F5F5),
-            useMaterial3: true,
-          ),
-          routerConfig: router,
-        ));
+    return MaterialApp.router(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('ko', 'KR')],
+      locale: const Locale('ko'),
+      title: 'WeaCo',
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(fontSize: 22),
+          headlineMedium: TextStyle(fontSize: 18),
+          headlineSmall: TextStyle(fontSize: 14),
+          bodyLarge: TextStyle(fontSize: 12),
+        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xffF2C347)),
+        primaryColor: const Color(0xffF2C347),
+        canvasColor: Colors.white,
+        scaffoldBackgroundColor: const Color(0xffF5F5F5),
+        useMaterial3: true,
+      ),
+      routerConfig: router,
+    );
   }
 }
