@@ -272,6 +272,19 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       setState(() {
         _newCroppedFile = croppedFile;
       });
+    } else {
+      if (mounted) {
+        AlertUtil.showAlert(
+          context: context,
+          exceptionAlert: ExceptionAlert.twoButtonDialog,
+          message: '지금 돌아가면 이미지 수정이 삭제됩니다.',
+          leftButtonText: '삭제',
+          onPressedLeft: () {
+            // 다이얼로그에서 '삭제' 를 눌렀을 경우
+            RouterStatic.goToDefault(context);
+          }
+        );
+      }
     }
   }
 
