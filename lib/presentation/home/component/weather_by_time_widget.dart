@@ -41,7 +41,7 @@ class WeatherByTimeWidget extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '${weatherList![index].temperature}°',
+            '${weatherList![index].temperature}℃',
             style: const TextStyle(
               fontSize: 13,
               color: Colors.white,
