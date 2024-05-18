@@ -100,7 +100,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
     bool isSuccessLogOut = context.read<AppSettingViewModel>().isLogOuting;
 
     if (isSuccessLogOut) {
-      RouterStatic.goToHome(context);
+      RouterStatic.goToDefault(context);
       AlertUtil.showAlert(
           context: context,
           exceptionAlert: ExceptionAlert.snackBar,
@@ -117,7 +117,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
     bool isSuccessSignOut = context.read<AppSettingViewModel>().isSignOuting;
 
     if (isSuccessSignOut) {
-      RouterStatic.goToHome(context);
+      RouterStatic.goToDefault(context);
       AlertUtil.showAlert(
           context: context,
           exceptionAlert: ExceptionAlert.snackBar,

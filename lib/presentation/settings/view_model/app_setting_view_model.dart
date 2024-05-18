@@ -42,8 +42,7 @@ class AppSettingViewModel with ChangeNotifier {
   /// 로그아웃 성공 시, true 반환
   Future<bool> logOut() async {
     try {
-      await _logOutUseCase.execute();
-      return true;
+      return await _logOutUseCase.execute();
     } catch (e) {
       return false;
     }
@@ -52,8 +51,7 @@ class AppSettingViewModel with ChangeNotifier {
   /// 회원탈퇴 성공 시, true 반환
   Future<bool> signOut() async {
     try {
-      await _signOutUseCase.execute();
-      return true;
+      return await _signOutUseCase.execute();
     } catch (e) {
       return false;
     }
