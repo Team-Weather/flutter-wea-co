@@ -9,8 +9,9 @@ import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
-import 'package:weaco/presentation/my_page/my_page_screen.dart';
-import 'package:weaco/presentation/my_page/my_page_view_model.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
+import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
+import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
@@ -44,6 +45,7 @@ final router = GoRouter(
         builder: (context, state) {
           return MultiProvider(
             providers: [
+              Provider(create: (context) => getIt<UserProvider>()),
               ChangeNotifierProvider(
                   create: (_) => HomeScreenViewModel(
                         getDailyLocationWeatherUseCase:

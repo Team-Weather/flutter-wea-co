@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
-import 'package:weaco/presentation/my_page/my_page_screen.dart';
+import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
