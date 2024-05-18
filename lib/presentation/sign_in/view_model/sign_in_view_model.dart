@@ -28,9 +28,7 @@ class SignInViewModel extends ChangeNotifier {
       rethrow;
     } catch (e) {
       String? message;
-      print('signIn ex bool ${e is FirebaseException}');
       if (e is FirebaseException) {
-        print('ex code ${e.code}');
         message = switch (e.code) {
           'user-not-found' => '존재하지 않는 유저입니다.',
           'wrong-password' => '비밀번호가 맞지 않습니다.',
