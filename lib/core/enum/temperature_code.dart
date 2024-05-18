@@ -7,22 +7,19 @@ enum TemperatureCode {
       maxTemperature: -10),
   overMinusTenToZero(
       value: 2,
-      description: '-10°C ~ 0°C',
+      description: '-10 ~ 0°C',
       minTemperature: -10,
       maxTemperature: 0),
   overZeroToTen(
-      value: 3,
-      description: '0°C ~ 10°C',
-      minTemperature: 0,
-      maxTemperature: 10),
+      value: 3, description: '0 ~ 10°C', minTemperature: 0, maxTemperature: 10),
   overTenToTwenty(
       value: 4,
-      description: '10°C ~ 20°C',
+      description: '10 ~ 20°C',
       minTemperature: 10,
       maxTemperature: 20),
   overTwentyToThirty(
       value: 5,
-      description: '20°C ~ 30°C',
+      description: '20 ~ 30°C',
       minTemperature: 20,
       maxTemperature: 30),
   overThirty(
