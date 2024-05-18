@@ -31,8 +31,9 @@ class OotdDetailViewModel extends BaseChangeNotifier {
     try {
       _feed = (await _getDetailFeedDetailUseCase.execute(id: id)) ??
           (throw Exception());
-      _userProfile = (await _getUserProfileUseCase.execute(email: _feed!.userEmail));
-         } catch (e) {
+      _userProfile =
+          await _getUserProfileUseCase.execute(email: _feed!.userEmail);
+    } catch (e) {
       notifyException(exception: e);
     }
     notifyListeners();
@@ -40,12 +41,12 @@ class OotdDetailViewModel extends BaseChangeNotifier {
 
   @override
   ExceptionStatus exceptionToExceptionStatus({required Object? exception}) {
-    log(exception.toString(), name: 'OotdDetailViewModel.exceptionToExceptionStatus()');
+    log(exception.toString(),
+        name: 'OotdDetailViewModel.exceptionToExceptionStatus()');
     switch (exception) {
       case _:
         ExceptionAlertType status = ExceptionAlertType.snackBar;
-        return ExceptionStatus(
-            message: '네트워크 오류', exceptionAlertType: status);
+        return ExceptionStatus(message: '네트워크 오류', exceptionAlertType: status);
     }
   }
 }
