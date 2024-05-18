@@ -130,7 +130,8 @@ class OotdSearchViewModel with ChangeNotifier {
     if (!_isFeedListLoading) {
       changeFeedListLoadingStatus(true);
 
-      final result = await _getSearchFeedsUseCase.execute(
+      await _getSearchFeedsUseCase
+          .execute(
         limit: _fetchCount,
         createdAt: _lastFeedDateTime,
         seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
@@ -141,19 +142,19 @@ class OotdSearchViewModel with ChangeNotifier {
         maxTemperature: temperatureCode.maxTemperature == 0
             ? null
             : temperatureCode.maxTemperature,
-      );
-
-      log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
-      if (result.length < _fetchCount) {
-        changeIsFeedListReachEndStatus(true);
-        log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
-      }
-      _searchFeedList.addAll(result);
-
-      setLastFeedDateTime();
-      changeFeedListLoadingStatus(false);
-
-      notifyListeners();
+      )
+          .then((result) {
+        log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
+        if (result.length < _fetchCount) {
+          changeIsFeedListReachEndStatus(true);
+          log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
+        }
+        _searchFeedList.addAll(result);
+      }).then((_) {
+        setLastFeedDateTime();
+        changeFeedListLoadingStatus(false);
+        notifyListeners();
+      });
     }
   }
 }
