@@ -17,6 +17,7 @@ class RecommandOotdListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
+      hasScrollBody: false,
       child: Container(
         height: 250,
         padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
