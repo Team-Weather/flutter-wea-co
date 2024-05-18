@@ -46,15 +46,14 @@ class UserPageViewModel with ChangeNotifier {
 
     // 유저 프로필 결과(null, deletedAt)에 따라 피드 리스트 요청을 차단
     // 피드 리스트 요청 후에 페이지네이션에 사용하는 날짜 갱신
-    await getUserProfile(_email).then(
-      (_) async {
-        if (_userProfile != null && _userProfile!.deletedAt == null) {
-          await getInitialUserFeedList(_email).then(
-            (_) => setLastFeedDateTime(),
-          );
-        }
-      },
-    );
+    await getUserProfile(_email);
+
+    if (_userProfile != null && _userProfile!.deletedAt == null) {
+      await getInitialUserFeedList(_email);
+
+      setLastFeedDateTime();
+    }
+
     changePageLoadingStatus(false);
   }
 
@@ -83,16 +82,16 @@ class UserPageViewModel with ChangeNotifier {
   // 유저 프로필 요청
   Future<void> getUserProfile(String email) async {
     try {
-      await _getUserProfileUseCase.execute(email: email).then((result) {
-        if (result == null) {
-          throw NotFoundException(
-            code: 404,
-            message: '이메일과 일치하는 사용자가 없습니다.',
-          );
-        }
+      final result = await _getUserProfileUseCase.execute(email: email);
 
-        _userProfile = result;
-      });
+      if (result == null) {
+        throw NotFoundException(
+          code: 404,
+          message: '이메일과 일치하는 사용자가 없습니다.',
+        );
+      }
+
+      _userProfile = result;
     } on Exception catch (e) {
       log(e.toString(), name: 'UserPageViewModel.getUserProfile()');
     }
@@ -102,13 +101,13 @@ class UserPageViewModel with ChangeNotifier {
   // 최초 화면 진입시 기본 갯수의 피드 리스트 요청
   Future<void> getInitialUserFeedList(String email) async {
     try {
-      await _getUserPageFeedsUseCase
-          .execute(
-            email: email,
-            createdAt: null,
-            limit: _fetchCount,
-          )
-          .then((result) => _userFeedList = result);
+      final result = await _getUserPageFeedsUseCase.execute(
+        email: email,
+        createdAt: null,
+        limit: _fetchCount,
+      );
+
+      _userFeedList = result;
     } on Exception catch (e) {
       log(e.toString(), name: 'UserPageViewModel.getInitialUserFeedList()');
     }
@@ -129,31 +128,23 @@ class UserPageViewModel with ChangeNotifier {
       if (!_isFeedListLoading) {
         changeFeedListLoadingStatus(true);
 
-        await _getUserPageFeedsUseCase
-            .execute(
+        final result = await _getUserPageFeedsUseCase.execute(
           email: _email,
           createdAt: _lastFeedDateTime,
           limit: _fetchCount,
-        )
-            .then(
-          (result) {
-            if (result.length < _fetchCount) {
-              changeIsFeedListReachEndStatus(true);
-              log('feed list reaches end!',
-                  name: 'UserPageViewModel.fetchFeed()');
-            }
+        );
 
-            _userFeedList.addAll(result);
+        if (result.length < _fetchCount) {
+          changeIsFeedListReachEndStatus(true);
+          log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
+        }
 
-            log('feed loaded', name: 'UserPageViewModel.fetchFeed()');
-            log('fetched feed count: ${result.length.toString()}',
-                name: 'UserPageViewModel.fetchFeed()');
+        _userFeedList.addAll(result);
 
-            changeFeedListLoadingStatus(false);
+        changeFeedListLoadingStatus(false);
 
-            notifyListeners();
-          },
-        ).then((_) => setLastFeedDateTime());
+        setLastFeedDateTime();
+        notifyListeners();
       }
     } on Exception catch (e) {
       log(e.toString(), name: 'MyPageViewModel.removeSelectedFeed()');
