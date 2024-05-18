@@ -19,7 +19,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
     try {
       return await _firestore
           .collection('user_profiles')
-          .add(userProfile.toJson())
+          .add(toUserProfileDto(userProfile: userProfile))
           .then((value) => true)
           .catchError(
             (e) => false,
