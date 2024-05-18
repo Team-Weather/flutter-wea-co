@@ -30,12 +30,12 @@ class TwoButtonDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(28),
       ),
-      contentPadding: const EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(8),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            width: 200,
+            // width: 200,
             height: 100,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

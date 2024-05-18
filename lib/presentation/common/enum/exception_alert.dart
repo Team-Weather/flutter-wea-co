@@ -1,6 +1,7 @@
 enum ExceptionAlert {
   dialog(value: 1),
-  snackBar(value: 2);
+  snackBar(value: 2),
+  twoButtonDialog(value: 3);
 
   final int value;
 
