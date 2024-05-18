@@ -14,8 +14,9 @@ import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
-import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
+
+import '../../ootd_post/view_model/camera_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

@@ -174,8 +174,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                               onTap: () {
                                 RouterStatic.pushToOotdDetail(
                                   context,
-                                  id: searchFeedList[index].id ?? '',
-                                  imagePath: searchFeedList[index].imagePath,
+                                  feed: searchFeedList[index]
                                 );
                               },
                               child: ClipRRect(
