@@ -33,9 +33,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(tabListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+    });
   }
 
   @override
