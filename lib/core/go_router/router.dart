@@ -33,8 +33,8 @@ import 'package:weaco/presentation/main/screen/main_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
-import 'package:weaco/presentation/user_page/user_page_screen.dart';
-import 'package:weaco/presentation/user_page/user_page_view_model.dart';
+import 'package:weaco/presentation/user_page/screen/user_page_screen.dart';
+import 'package:weaco/presentation/user_page/view_model/user_page_view_model.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 final router = GoRouter(
