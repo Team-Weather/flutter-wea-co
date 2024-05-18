@@ -62,7 +62,7 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
   @override
   Future<bool> signOut() async {
     bool isSignOutSuccess = true;
-
+    
     try {
       await _firebaseService.signOut();
     } on Exception catch (e) {

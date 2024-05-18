@@ -23,9 +23,6 @@ class AppSettingViewModel with ChangeNotifier {
 
   PackageInfo? get packageInfo => _packageInfo;
 
-  bool isLogOuting = true;
-  bool isSignOuting = true;
-
   /// 패키지 정보를 가져오는 메서드
   Future<void> getPackageInfo() async {
     try {
