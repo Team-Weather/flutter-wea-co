@@ -226,10 +226,10 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
               if (viewModel.saveStatus) {
                 RouterStatic.goToDefault(context);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('다시 시도해 주세요.'),
-                  ),
+                AlertUtil.showAlert(
+                  context: context,
+                  exceptionAlert: ExceptionAlert.snackBar,
+                  message: '다시 시도해 주세요.',
                 );
               }
             }
