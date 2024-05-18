@@ -1,5 +1,5 @@
 enum SeasonCode {
-  noData(value: 0, description: '-'),
+  noData(value: 0, description: '전체'),
   spring(value: 1, description: '봄'),
   summer(value: 2, description: '여름'),
   autumn(value: 3, description: '가을'),
@@ -12,7 +12,7 @@ enum SeasonCode {
 
   static SeasonCode fromValue(int value) {
     return switch (value) {
-      0 => SeasonCode.noData,
+      0 || -1 => SeasonCode.noData,
       1 => SeasonCode.spring,
       2 => SeasonCode.summer,
       3 => SeasonCode.autumn,

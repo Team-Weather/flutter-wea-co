@@ -36,7 +36,7 @@ class WeatherByTimeWidget extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Image.asset(
-            WeatherCode.fromDtoCode(weatherList![index].code).iconPath,
+            WeatherCode.fromValue(weatherList![index].code).iconPath,
             width: 28,
           ),
           const SizedBox(height: 4),

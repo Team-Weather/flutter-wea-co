@@ -325,8 +325,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         exceptionAlert: ExceptionAlert.dialog,
         message: '회원가입에 성공하였습니다.',
-        rightButtonText: '둘러보기',
-        onPressedRight: () => RouterStatic.goToHome(context),
+        buttonText: '둘러보기',
+        onPressedCheck: () => RouterStatic.goToHome(context),
       );
     },).catchError((e) {
       AlertUtil.showAlert(

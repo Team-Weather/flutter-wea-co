@@ -8,8 +8,10 @@ class AlertUtil {
     required BuildContext context,
     required ExceptionAlert exceptionAlert,
     required String message,
+    String? buttonText,
     String? leftButtonText,
     String? rightButtonText,
+    VoidCallback? onPressedCheck,
     VoidCallback? onPressedLeft,
     VoidCallback? onPressedRight,
   }) {
@@ -27,34 +29,33 @@ class AlertUtil {
             return OneButtonDialog(
                 title: '',
                 content: message,
-                onPressedCheck: () => onPressedRight == null
+                onPressedCheck: () => onPressedCheck == null
                     ? Navigator.of(context).pop()
-                    : onPressedRight(),
-                buttonText: rightButtonText ?? '확인');
+                    : onPressedCheck(),
+                buttonText: buttonText ?? '확인');
           },
         );
 
         break;
-
-      case ExceptionAlert.twoButtonDialog:
+      case ExceptionAlert.dialogTwoButton:
         showDialog(
           context: context,
           builder: (context) {
             return TwoButtonDialog(
-              title: '',
-              content: message,
-              onPressedLeft: () => onPressedLeft == null
-                  ? Navigator.of(context).pop()
-                  : onPressedLeft(),
-              onPressedRight: () => onPressedRight == null
-                  ? Navigator.of(context).pop()
-                  : onPressedRight(),
-              leftButtonText: leftButtonText ?? '확인',
-              rightButtonCancelText: rightButtonText ?? '취소',
-            );
+                title: '',
+                content: message,
+                onPressedLeft: () => onPressedLeft == null
+                    ? Navigator.of(context).pop()
+                    : onPressedLeft(),
+                onPressedRight: () => onPressedRight == null
+                    ? Navigator.of(context).pop()
+                    : onPressedRight(),
+                leftButtonColor: const Color(0xffB2B2B2).value,
+                leftButtonText: '취소',
+                rightButtonColor: Theme.of(context).primaryColor.value,
+                rightButtonCancelText: '확인');
           },
         );
-
         break;
     }
   }

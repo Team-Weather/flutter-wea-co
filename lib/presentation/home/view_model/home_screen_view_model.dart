@@ -128,7 +128,7 @@ class HomeScreenViewModel with ChangeNotifier {
       WeatherBackgroundImage image = weatherBackgroundImageList.firstWhere(
           (element) =>
               element.code ==
-              WeatherCode.fromDtoCode(currentWeather!.code).value);
+              WeatherCode.fromValue(currentWeather!.code).value);
 
       _weatherBackgroundImage = image.imagePath;
     } catch (e) {

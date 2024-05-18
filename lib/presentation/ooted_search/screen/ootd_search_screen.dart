@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,12 +20,13 @@ class OotdSearchScreen extends StatefulWidget {
 
 class _OotdSearchScreenState extends State<OotdSearchScreen> {
   final List<String> seasonItemList =
-      List.generate(4, (index) => SeasonCode.fromValue(index + 1).description);
+      List.generate(5, (index) => SeasonCode.fromValue(index).description);
 
-  final List<String> weatherItemList = List.generate(
-      12, (index) => WeatherCode.fromValue(index + 1).description);
-  final List<String> temperatureItemList = List.generate(
-      6, (index) => TemperatureCode.fromValue(index + 1).description);
+  final List<String> weatherItemList =
+      List.generate(13, (index) => WeatherCode.fromValue(index).description);
+
+  final List<String> temperatureItemList =
+      List.generate(7, (index) => TemperatureCode.fromValue(index).description);
 
   List<String?> selectedData = [null, null, null];
 
@@ -55,15 +58,14 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             width: 80,
                             selectedValueIndex: 0,
                             onChanged: (value) {
+                              log(value.toString(), name:'계절');
                               ootdSearchViewModel.fetchFeedWhenFilterChange(
                                 seasonCodeValue:
-                                    seasonItemList.indexOf(value ?? '') + 1,
+                                    seasonItemList.indexOf(value ?? ''),
                                 weatherCodeValue: weatherItemList
-                                        .indexOf(selectedData[1] ?? '') +
-                                    1,
+                                    .indexOf(selectedData[1] ?? ''),
                                 temperatureCodeValue: temperatureItemList
-                                        .indexOf(selectedData[2] ?? '') +
-                                    1,
+                                    .indexOf(selectedData[2] ?? ''),
                               );
                               setState(() {
                                 selectedData[0] = value;
@@ -74,18 +76,17 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             defaultText: '날씨',
                             borderColor: const Color(0xFF4C8DE6),
                             items: weatherItemList,
-                            width: 120,
+                            width: 110,
                             selectedValueIndex: 1,
                             onChanged: (value) {
+                              log(value.toString(), name:'날씨');
                               ootdSearchViewModel.fetchFeedWhenFilterChange(
                                 seasonCodeValue: seasonItemList
-                                        .indexOf(selectedData[0] ?? '') +
-                                    1,
+                                    .indexOf(selectedData[0] ?? ''),
                                 weatherCodeValue:
-                                    weatherItemList.indexOf(value ?? '') + 1,
+                                    weatherItemList.indexOf(value ?? ''),
                                 temperatureCodeValue: temperatureItemList
-                                        .indexOf(selectedData[2] ?? '') +
-                                    1,
+                                    .indexOf(selectedData[2] ?? ''),
                               );
                               setState(() {
                                 selectedData[1] = value;
@@ -93,22 +94,20 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             },
                             fontSize: 13),
                         dropDownButton(
-                            defaultText: '온도',
+                            defaultText: '기온',
                             borderColor: const Color(0xFFE2853F),
                             items: temperatureItemList,
                             width: 130,
                             selectedValueIndex: 2,
                             onChanged: (value) {
+                              log(value.toString(), name:'기온');
                               ootdSearchViewModel.fetchFeedWhenFilterChange(
                                 seasonCodeValue: seasonItemList
-                                        .indexOf(selectedData[0] ?? '') +
-                                    1,
+                                    .indexOf(selectedData[0] ?? ''),
                                 weatherCodeValue: weatherItemList
-                                        .indexOf(selectedData[1] ?? '') +
-                                    1,
+                                    .indexOf(selectedData[1] ?? ''),
                                 temperatureCodeValue:
-                                    temperatureItemList.indexOf(value ?? '') +
-                                        1,
+                                    temperatureItemList.indexOf(value ?? ''),
                               );
                               setState(() {
                                 selectedData[2] = value;
@@ -128,14 +127,11 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                                 notification.metrics.pixels) {
                           ootdSearchViewModel.fetchFeedWhenScroll(
                             seasonCodeValue:
-                                seasonItemList.indexOf(selectedData[0] ?? '') +
-                                    1,
+                                seasonItemList.indexOf(selectedData[0] ?? ''),
                             weatherCodeValue:
-                                weatherItemList.indexOf(selectedData[1] ?? '') +
-                                    1,
+                                weatherItemList.indexOf(selectedData[1] ?? ''),
                             temperatureCodeValue: temperatureItemList
-                                    .indexOf(selectedData[2] ?? '') +
-                                1,
+                                .indexOf(selectedData[2] ?? ''),
                           );
                         }
 
@@ -155,7 +151,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                RouterStatic.goToOotdDetail(
+                                RouterStatic.pushToOotdDetail(
                                   context,
                                   id: searchFeedList[index].id ?? '',
                                   imagePath: searchFeedList[index].imagePath,
@@ -230,7 +226,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
-              width: 2,
+              width: 1,
               color: borderColor,
             ),
             color: Colors.white,

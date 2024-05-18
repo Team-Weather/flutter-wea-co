@@ -8,8 +8,6 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
-import 'package:weaco/presentation/common/enum/exception_alert.dart';
-import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
@@ -54,136 +52,142 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
         appBar: _appBar(viewModel),
         body: viewModel.showSpinner
             ? const Center(child: CircularProgressIndicator())
-            : SafeArea(
-              child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(22, 15, 22, 30),
-                    child: Column(
-                      children: [
-                        widget.feed != null
-                            ?
-                            // 기존 피드 수정
-                            Image.file(File(widget.feed!.imagePath))
-                            :
-                            // 새로운 피드 작성
-                            Stack(
-                                children: [
-                                  _newCroppedFile ==
-                                          null // 새 크롭 화면의 image null 검사
-                                      ? viewModel.croppedImage ==
-                                              null // viewModel image null 검사
-                                          ? const Center(
-                                              child: CircularProgressIndicator())
-                                          : Image.file(viewModel.croppedImage!)
-                                      : Image.file(File(_newCroppedFile!.path)),
-                                  Positioned(
-                                    top: 10,
-                                    right: 10,
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await viewModel.getOriginImage();
-                                        await cropImage(
-                                            viewModel.originImage!.path);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(5.0),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.crop),
-                                              Text('수정'),
-                                            ],
-                                          ),
+            : SingleChildScrollView(
+                controller: _scrollController,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 15, 28, 30),
+                  child: Column(
+                    children: [
+                      widget.feed != null
+                          ?
+                          // 기존 피드 수정
+                          Image.network(widget.feed!.imagePath)
+                          :
+                          // 새로운 피드 작성
+                          Stack(
+                              children: [
+                                _newCroppedFile ==
+                                        null // 새 크롭 화면의 image null 검사
+                                    ? viewModel.croppedImage ==
+                                            null // viewModel image null 검사
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : Image.file(viewModel.croppedImage!)
+                                    : Image.file(File(_newCroppedFile!.path)),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await viewModel.getOriginImage();
+                                      await cropImage(
+                                          viewModel.originImage!.path);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.crop),
+                                            Text('수정'),
+                                          ],
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                          child: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _isScrolledUp = !_isScrolledUp;
-                              });
-                              _scrollTo();
-                            },
-                            icon: _isScrolledUp
-                                ? const Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    size: 50,
-                                  )
-                                : const Icon(
-                                    Icons.keyboard_arrow_up_outlined,
-                                    size: 50,
-                                  ),
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            widget.feed != null
-                                ? Row(
-                                    children: [
-                                      _tags(widget.feed!.location.city),
-                                      _tags(SeasonCode.fromValue(
-                                              widget.feed!.seasonCode)
-                                          .description),
-                                      _tags(
-                                          '${widget.feed!.weather.temperature}°'),
-                                      _tags(WeatherCode.fromDtoCode(
-                                              widget.feed!.weather.code)
-                                          .description),
-                                    ],
-                                  )
-                                : Row(
-                                    children: [
-                                      _tags(viewModel
-                                          .dailyLocationWeather!.location.city),
-                                      _tags(SeasonCode.fromValue(viewModel
-                                              .dailyLocationWeather!.seasonCode)
-                                          .description),
-                                      _tags('${viewModel.weather!.temperature}°'),
-                                      _tags(WeatherCode.fromDtoCode(
-                                              viewModel.weather!.code)
-                                          .description),
-                                    ],
-                                  ),
-                            const SizedBox(height: 15),
-                            TextField(
-                              controller: _contentTextController,
-                              maxLength: maxLength,
-                              maxLines: 10,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                hintText: '어떤 코디를 하셨나요?',
-                                hintStyle:
-                                    const TextStyle(color: Color(0xFF979797)),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(7),
                                 ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
+                              ],
+                            ),
+                      !_isScrolledUp
+                          ? const SizedBox()
+                          : const Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: Text(
+                                '어떤 코디를 하셨나요?',
+                                style: TextStyle(
+                                  color: Color(0xFF979797),
+                                  fontSize: 15,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: MediaQuery.of(context).viewInsets.bottom,
-                            )
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isScrolledUp = !_isScrolledUp;
+                            });
+                            _scrollTo();
+                          },
+                          icon: _isScrolledUp
+                              ? const Icon(Icons.arrow_circle_down_outlined,
+                                  size: 40)
+                              : const Icon(Icons.arrow_circle_up_outlined,
+                                  size: 40),
                         ),
-                      ],
-                    ),
+                      ),
+                      Column(
+                        children: [
+                          widget.feed != null
+                              ? Row(
+                                  children: [
+                                    _tags(widget.feed!.location.city),
+                                    _tags(SeasonCode.fromValue(
+                                            widget.feed!.seasonCode)
+                                        .description),
+                                    _tags(
+                                        '${widget.feed!.weather.temperature}°'),
+                                    _tags(WeatherCode.fromValue(
+                                            widget.feed!.weather.code)
+                                        .description),
+                                  ],
+                                )
+                              : Row(
+                                  children: [
+                                    _tags(viewModel
+                                        .dailyLocationWeather!.location.city),
+                                    _tags(SeasonCode.fromValue(viewModel
+                                            .dailyLocationWeather!.seasonCode)
+                                        .description),
+                                    _tags('${viewModel.weather!.temperature}°'),
+                                    _tags(WeatherCode.fromValue(
+                                            viewModel.weather!.code)
+                                        .description),
+                                  ],
+                                ),
+                          const SizedBox(height: 15),
+                          TextField(
+                            controller: _contentTextController,
+                            maxLength: maxLength,
+                            maxLines: 10,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              hintText: '어떤 코디를 하셨나요?',
+                              hintStyle:
+                                  const TextStyle(color: Color(0xFF979797)),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).viewInsets.bottom,
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-            ),
+              ),
       ),
     );
   }
@@ -217,10 +221,10 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
               if (viewModel.saveStatus) {
                 RouterStatic.popFromOotdPost(context);
               } else {
-                AlertUtil.showAlert(
-                  context: context,
-                  exceptionAlert: ExceptionAlert.snackBar,
-                  message: '다시 시도해 주세요.',
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('다시 시도해 주세요.'),
+                  ),
                 );
               }
             }
@@ -272,19 +276,6 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       setState(() {
         _newCroppedFile = croppedFile;
       });
-    } else {
-      if (mounted) {
-        AlertUtil.showAlert(
-          context: context,
-          exceptionAlert: ExceptionAlert.twoButtonDialog,
-          message: '지금 돌아가면 이미지 수정이 삭제됩니다.',
-          leftButtonText: '삭제',
-          onPressedLeft: () {
-            // 다이얼로그에서 '삭제' 를 눌렀을 경우
-            RouterStatic.goToDefault(context);
-          }
-        );
-      }
     }
   }
 

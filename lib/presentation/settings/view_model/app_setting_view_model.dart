@@ -43,7 +43,6 @@ class AppSettingViewModel with ChangeNotifier {
   Future<bool> logOut() async {
     try {
       await _logOutUseCase.execute();
-      isLogOuting = true;
       return true;
     } catch (e) {
       return false;
@@ -54,7 +53,6 @@ class AppSettingViewModel with ChangeNotifier {
   Future<bool> signOut() async {
     try {
       await _signOutUseCase.execute();
-      isSignOuting = true;
       return true;
     } catch (e) {
       return false;

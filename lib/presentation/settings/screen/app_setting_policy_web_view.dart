@@ -42,7 +42,7 @@ class _AppSettingPolicyScreenState extends State<AppSettingPolicyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           '개인정보처리방침',

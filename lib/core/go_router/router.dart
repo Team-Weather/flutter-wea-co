@@ -53,22 +53,13 @@ final router = GoRouter(
                         getRecommendedFeedsUseCase:
                             getIt<GetRecommendedFeedsUseCase>(),
                       )),
+              ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
+              ChangeNotifierProvider(create: (_) => getIt<CameraViewModel>()),
+              ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
               ChangeNotifierProvider(
-                create: (_) => getIt<OotdFeedViewModel>(),
-                child: const OotdFeedScreen(),
-              ),
+                  create: (context) => getIt<OotdSearchViewModel>()),
               ChangeNotifierProvider(
-                create: (_) => CameraViewModel(),
-                child: const CameraScreen(),
-              ),
-              ChangeNotifierProvider(
-                create: (context) => getIt<OotdSearchViewModel>(),
-                child: const OotdSearchScreen(),
-              ),
-              ChangeNotifierProvider(
-                create: (context) => getIt<MyPageViewModel>(),
-                child: const MyPageScreen(),
-              ),
+                  create: (context) => getIt<MyPageViewModel>()),
             ],
             child: const MainScreen(),
           );
@@ -149,7 +140,7 @@ final router = GoRouter(
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdFeedViewModel>(),
-          child: const OotdFeedScreen(),
+          child: const OotdFeedScreen<OotdFeedViewModel>(),
         );
       },
     ),
@@ -159,7 +150,7 @@ final router = GoRouter(
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdDetailViewModel>(
               param1: state.uri.queryParameters['id'] ?? ''),
-          child: OotdDetailScreen(
+          child: OotdDetailScreen<OotdDetailViewModel>(
             id: state.uri.queryParameters['id'] ?? '',
             mainImagePath: state.uri.queryParameters['imagePath'] ?? '',
           ),

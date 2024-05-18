@@ -87,19 +87,22 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// 피드 데이터 요청 (날씨) -> 파베
   /// 피드 데이터 반환(List<Feed>) <- 파베
   @override
-  Future<List<Feed>> getRecommendedFeedList({
-    required DailyLocationWeather dailyLocationWeather,
-  }) async {
-    final weather = dailyLocationWeather.weatherList[0];
+  Future<List<Feed>> getRecommendedFeedList(
+      {required DailyLocationWeather dailyLocationWeather,
+      DateTime? createdAt}) async {
+    final index = DateTime.now().hour;
+    final weather = dailyLocationWeather.weatherList[index];
     final querySnapshot = await _fireStore
         .collection('feeds')
         .where('weather.code', isEqualTo: weather.code)
-        .where('season_code', isEqualTo: dailyLocationWeather.seasonCode)
+        // .where('season_code', isEqualTo: dailyLocationWeather.seasonCode)
         .where(
           'weather.temperature',
           isLessThanOrEqualTo: dailyLocationWeather.highTemperature,
           isGreaterThanOrEqualTo: dailyLocationWeather.lowTemperature,
         )
+        .where('created_at',
+            isLessThan: createdAt ?? Timestamp.fromDate(DateTime.now()))
         .where('deleted_at', isNull: true)
         .orderBy('created_at', descending: true)
         .limit(10)
