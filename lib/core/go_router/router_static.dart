@@ -56,8 +56,8 @@ class RouterStatic {
     router.go(RouterPath.myPage.path);
   }
 
-  static void goToUserPage(BuildContext context) {
-    router.go(RouterPath.userPage.path);
+  static void goToUserPage(BuildContext context, {required String email}) {
+    router.go('${RouterPath.userPage.path}?email=$email');
   }
 
   static void goToOotdSearch(BuildContext context) {
