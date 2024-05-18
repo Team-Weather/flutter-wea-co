@@ -8,7 +8,9 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
@@ -279,6 +281,18 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       setState(() {
         _newCroppedFile = croppedFile;
       });
+    } else {
+      if (mounted) {
+        AlertUtil.showAlert(
+            context: context,
+            exceptionAlert: ExceptionAlert.dialogTwoButton,
+            message: '지금 돌아가면 이미지 수정이 삭제됩니다.',
+            rightButtonText: '삭제',
+            onPressedRight: () {
+              // 다이얼로그에서 '삭제' 를 눌렀을 경우
+              RouterStatic.goToDefault(context);
+            });
+      }
     }
   }
 
