@@ -14,42 +14,50 @@ class UserProfileDeletedWidget extends StatelessWidget {
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: CircleAvatar(
-                maxRadius: 32,
+                maxRadius: 26,
                 backgroundImage: NetworkImage(_userProfile.profileImagePath),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  _userProfile.nickname,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Text(
+                    _userProfile.nickname,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const Text(''),
+                const Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xff9F9F9F),
+                  ),
+                ),
               ],
             ),
           ],
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                '',
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              '게시물 0',
+              style: TextStyle(
+                fontSize: 12,
+                color: Color(0xff9F9F9F),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
