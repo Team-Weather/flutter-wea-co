@@ -15,7 +15,12 @@ class SignUpUseCase {
   /// 회원 가입 성공시 true 반환, 실패시 false 반환
   Future<bool> execute(
       {required UserAuth userAuth, required UserProfile userProfile}) async {
-    return await _userAuthRepository.signUp(
+    final bool result = await _userAuthRepository.signUp(
         userAuth: userAuth, userProfile: userProfile);
+    if (result) {
+      await _userAuthRepository.signIn(userAuth: userAuth);
+    }
+
+    return result;
   }
 }

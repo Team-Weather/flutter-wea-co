@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
@@ -374,15 +375,19 @@ class _SignInScreenState extends State<SignInScreen> {
 
     signInViewModel
         .signIn(
-          email: emailFormController.text,
-          password: passwordFormController.text,
-        )
-        .then((value) => RouterStatic.goToHome(context))
-        .catchError((e) => AlertUtil.showAlert(
-              context: context,
-              exceptionAlert: signInViewModel.exceptionState!.exceptionAlert,
-              message: signInViewModel.exceptionState!.message,
-            ));
+            email: emailFormController.text,
+            password: passwordFormController.text)
+        .then((_) {
+      context.read<UserProvider>().signIn(email: emailFormController.text);
+      RouterStatic.goToHome(context);
+    }).catchError((e) {
+      AlertUtil.showAlert(
+        context: context,
+        exceptionAlert: signInViewModel.exceptionState?.exceptionAlert ??
+            ExceptionAlert.snackBar,
+        message: signInViewModel.exceptionState?.message ?? '$e',
+      );
+    });
     isSignInSubmit = true;
   }
 

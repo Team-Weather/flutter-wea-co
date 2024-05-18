@@ -9,8 +9,8 @@ import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
-import 'package:weaco/presentation/my_page/my_page_screen.dart';
-import 'package:weaco/presentation/my_page/my_page_view_model.dart';
+import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
+import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
@@ -32,8 +32,8 @@ import 'package:weaco/presentation/main/screen/main_screen.dart';
 import 'package:weaco/presentation/sign_in/screen/sign_in_screen.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 import 'package:weaco/presentation/sign_up/screen/sign_up_screen.dart';
-import 'package:weaco/presentation/user_page/user_page_screen.dart';
-import 'package:weaco/presentation/user_page/user_page_view_model.dart';
+import 'package:weaco/presentation/user_page/screen/user_page_screen.dart';
+import 'package:weaco/presentation/user_page/view_model/user_page_view_model.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
 final router = GoRouter(

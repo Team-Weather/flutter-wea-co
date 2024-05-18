@@ -8,11 +8,15 @@ class MockUserAuthRepositoryImpl implements UserAuthRepository {
   int isRegisteredCallCount = 0;
   int signOutCallCount = 0;
   int logOutCallCount = 0;
+  int signInCheckCallCount = 0;
   UserAuth? methodParameter;
+  String? signInCheckReturnValue;
   bool isSignUp = false;
   bool isRegisteredResult = false;
   bool isSignOut = false;
   bool isLogOut = false;
+
+
 
   final List<UserAuth> _fakeUserList = [];
 
@@ -22,11 +26,13 @@ class MockUserAuthRepositoryImpl implements UserAuthRepository {
     isRegisteredCallCount = 0;
     signOutCallCount = 0;
     logOutCallCount = 0;
+    signInCheckCallCount = 0;
     methodParameter = null;
     isSignUp = false;
     isRegisteredResult = false;
     isSignOut = false;
     isLogOut = false;
+    signInCheckReturnValue = null;
     _fakeUserList.clear();
   }
 
@@ -66,5 +72,11 @@ class MockUserAuthRepositoryImpl implements UserAuthRepository {
   Future<bool> logOut() async {
     logOutCallCount++;
     return isLogOut;
+  }
+
+  @override
+  String? signInCheck() {
+    signInCheckCallCount++;
+    return signInCheckReturnValue;
   }
 }

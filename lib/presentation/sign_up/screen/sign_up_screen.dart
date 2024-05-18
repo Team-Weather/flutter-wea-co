@@ -5,6 +5,7 @@ import 'package:weaco/core/enum/gender_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 
@@ -313,23 +314,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final SignUpViewModel signUpViewModel = context.read<SignUpViewModel>();
     signUpViewModel
         .signUp(
-          email: emailFormController.text,
-          password: passwordFormController.text,
-          nickname: nicknameFormController.text,
-          genderCode: selectedGender,
-        )
-        .then((_) => AlertUtil.showAlert(
-              context: context,
-              exceptionAlert: ExceptionAlert.dialog,
-              message: '회원가입에 성공하였습니다.',
-              rightButtonText: '둘러보기',
-              onPressedRight: () => RouterStatic.goToHome(context),
-            ))
-        .catchError((e) => AlertUtil.showAlert(
-              context: context,
-              exceptionAlert: signUpViewModel.exceptionState!.exceptionAlert,
-              message: signUpViewModel.exceptionState!.message,
-            ));
+      email: emailFormController.text,
+      password: passwordFormController.text,
+      nickname: nicknameFormController.text,
+      genderCode: selectedGender,
+    )
+        .then((_) {
+      context.read<UserProvider>().signIn(email: emailFormController.text);
+      AlertUtil.showAlert(
+        context: context,
+        exceptionAlert: ExceptionAlert.dialog,
+        message: '회원가입에 성공하였습니다.',
+        rightButtonText: '둘러보기',
+        onPressedRight: () => RouterStatic.goToHome(context),
+      );
+    },).catchError((e) {
+      AlertUtil.showAlert(
+        context: context,
+        exceptionAlert: signUpViewModel.exceptionState!.exceptionAlert,
+        message: signUpViewModel.exceptionState!.message,
+      );
+    });
     isSignUpSubmit = true;
   }
 

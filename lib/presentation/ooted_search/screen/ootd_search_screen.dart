@@ -36,13 +36,12 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
 
     final bool isPageLoading = ootdSearchViewModel.isPageLoading;
 
-    return Scaffold(
-      body: SafeArea(
-        child: isPageLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
+    return isPageLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -118,7 +117,10 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             fontSize: 12),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Divider(),
+                    ),
                     NotificationListener<UserScrollNotification>(
                       onNotification: (UserScrollNotification notification) {
                         if (notification.direction == ScrollDirection.reverse &&
@@ -146,8 +148,8 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 3 / 4,
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
                             crossAxisCount: 3,
                           ),
                           itemBuilder: (context, index) {
@@ -160,7 +162,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                                 );
                               },
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(20),
                                 child: Image(
                                   image: NetworkImage(
                                       searchFeedList[index].imagePath),
@@ -175,8 +177,8 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                   ],
                 ),
               ),
-      ),
-    );
+            ),
+          );
   }
 
   Widget dropDownButton(

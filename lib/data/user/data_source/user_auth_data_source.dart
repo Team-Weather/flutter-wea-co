@@ -16,4 +16,7 @@ abstract interface class UserAuthDataSource {
 
   // 회원탈퇴
   Future<bool> signOut();
+
+  // 로그인 체크 email 반환
+  String? signInCheck();
 }

@@ -45,14 +45,16 @@ class UserPageViewModel with ChangeNotifier {
     changePageLoadingStatus(true);
 
     // 유저 프로필 결과(null, deletedAt)에 따라 피드 리스트 요청을 차단
-    await getUserProfile(_email).then((_) async {
-      if (_userProfile != null && _userProfile!.deletedAt == null) {
-        await getInitialUserFeedList(_email);
-      }
-    });
-    changePageLoadingStatus(false);
+    // 피드 리스트 요청 후에 페이지네이션에 사용하는 날짜 갱신
+    await getUserProfile(_email);
 
-    setLastFeedDateTime();
+    if (_userProfile != null && _userProfile!.deletedAt == null) {
+      await getInitialUserFeedList(_email);
+
+      setLastFeedDateTime();
+    }
+
+    changePageLoadingStatus(false);
   }
 
   void changePageLoadingStatus(bool status) {
@@ -71,10 +73,13 @@ class UserPageViewModel with ChangeNotifier {
   }
 
   void setLastFeedDateTime() {
-    _lastFeedDateTime = _userFeedList[_userFeedList.length - 1].createdAt;
-    notifyListeners();
+    if (_userFeedList.isNotEmpty) {
+      _lastFeedDateTime = _userFeedList[_userFeedList.length - 1].createdAt;
+      notifyListeners();
+    }
   }
 
+  // 유저 프로필 요청
   Future<void> getUserProfile(String email) async {
     try {
       final result = await _getUserProfileUseCase.execute(email: email);
@@ -93,13 +98,16 @@ class UserPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // 최초 화면 진입시 기본 갯수의 피드 리스트 요청
   Future<void> getInitialUserFeedList(String email) async {
     try {
-      _userFeedList = await _getUserPageFeedsUseCase.execute(
+      final result = await _getUserPageFeedsUseCase.execute(
         email: email,
         createdAt: null,
         limit: _fetchCount,
       );
+
+      _userFeedList = result;
     } on Exception catch (e) {
       log(e.toString(), name: 'UserPageViewModel.getInitialUserFeedList()');
     }
@@ -107,39 +115,39 @@ class UserPageViewModel with ChangeNotifier {
   }
 
   Future<void> fetchFeed() async {
-    // 삭제된 유저, 존재하지 않는 유저일 때 (빈배열)
     // 모든 피드를 다 불러왔음을 확인하는 플래그값 true 일 때
     // 유저 프로필의 feedCount 와 현재 피드 리스트의 길이가 같을 때
     // -> 피드 페이지네이션 요청 차단
-    if (_userFeedList.isEmpty ||
-        _isFeedListReachEnd ||
-        _userProfile!.feedCount == _userFeedList.length) return;
+    if (_isFeedListReachEnd ||
+        _userProfile!.feedCount == _userFeedList.length) {
+      return;
+    }
 
-    // 피드 리스트 로딩중이 아닐때 요청
-    if (!_isFeedListLoading) {
-      changeFeedListLoadingStatus(true);
+    try {
+      // 피드 리스트 로딩중이 아닐때 요청
+      if (!_isFeedListLoading) {
+        changeFeedListLoadingStatus(true);
 
-      final result = await _getUserPageFeedsUseCase.execute(
-        email: _email,
-        createdAt: _lastFeedDateTime,
-        limit: _fetchCount,
-      );
+        final result = await _getUserPageFeedsUseCase.execute(
+          email: _email,
+          createdAt: _lastFeedDateTime,
+          limit: _fetchCount,
+        );
 
-      if (result.length < _fetchCount) {
-        changeIsFeedListReachEndStatus(true);
-        log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
+        if (result.length < _fetchCount) {
+          changeIsFeedListReachEndStatus(true);
+          log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
+        }
+
+        _userFeedList.addAll(result);
+
+        changeFeedListLoadingStatus(false);
+
+        setLastFeedDateTime();
+        notifyListeners();
       }
-
-      _userFeedList.addAll(result);
-
-      log('feed loaded', name: 'UserPageViewModel.fetchFeed()');
-      log('fetched feed count: ${result.length.toString()}',
-          name: 'UserPageViewModel.fetchFeed()');
-
-      changeFeedListLoadingStatus(false);
-      setLastFeedDateTime();
-
-      notifyListeners();
+    } on Exception catch (e) {
+      log(e.toString(), name: 'MyPageViewModel.removeSelectedFeed()');
     }
   }
 }

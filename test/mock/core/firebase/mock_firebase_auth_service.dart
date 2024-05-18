@@ -5,6 +5,7 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:weaco/core/firebase/firebase_auth_service.dart';
 
 class MockFirebaseAuthService implements FirebaseAuthService {
+  @override
   final user = MockUser(
     isAnonymous: false,
     uid: 'someuid',
@@ -23,7 +24,7 @@ class MockFirebaseAuthService implements FirebaseAuthService {
   UserCredential? get userCredential => _userCredential;
 
   void initMockData() async {
-    _mockAuth = MockFirebaseAuth(mockUser: user, signedIn: true);
+    _mockAuth = MockFirebaseAuth(mockUser: user as MockUser, signedIn: true);
     _userCredential = await _mockAuth.createUserWithEmailAndPassword(
         email: 'bob@somedomain.com', password: 'password');
   }

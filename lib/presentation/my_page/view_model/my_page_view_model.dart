@@ -40,18 +40,17 @@ class MyPageViewModel with ChangeNotifier {
 
   bool get isPageLoading => _isPageLoading;
 
-  bool get isFeedListLoading => _isFeedListLoading;
-
   Future<void> initializePageData() async {
     _changePageLoadingStatus(true);
 
     // 초기 프로필, 피드 데이터 요청
-    await getProfile()
-        .then((_) async => await getInitialFeedList(profile!.email));
+    await getProfile().then(
+      (_) async => await getInitialFeedList(profile!.email).then(
+        (_) => setLastFeedDateTime(),
+      ),
+    );
 
     _changePageLoadingStatus(false);
-
-    setLastFeedDateTime();
   }
 
   void _changePageLoadingStatus(bool status) {
@@ -70,97 +69,109 @@ class MyPageViewModel with ChangeNotifier {
   }
 
   void setLastFeedDateTime() {
-    _lastFeedDateTime = _feedList[_feedList.length - 1].createdAt;
+    // 현재 피드 리스트가 비어있지 않을 때 마지막 피드 날짜 갱신
+    if (_feedList.isNotEmpty) {
+      _lastFeedDateTime = _feedList[_feedList.length - 1].createdAt;
+    }
+
     notifyListeners();
   }
 
+  // 내 프로필 데이터 요청
   Future<void> getProfile() async {
     try {
-      final result = await _getMyPageUserProfileUseCase.execute();
+      await _getMyPageUserProfileUseCase.execute().then(
+        (result) {
+          if (result == null) {
+            throw NotFoundException(
+              code: 404,
+              message: '이메일과 일치하는 사용자가 없습니다.',
+            );
+          }
 
-      if (result == null) {
-        throw NotFoundException(
-          code: 404,
-          message: '이메일과 일치하는 사용자가 없습니다.',
-        );
-      }
-
-      _profile = result;
+          _profile = result;
+        },
+      );
     } on Exception catch (e) {
       log(e.toString(), name: 'MyPageViewModel.getUserProfile()');
     }
     notifyListeners();
   }
 
+  // 내 피드 데이터 요청
   Future<void> getInitialFeedList(String email) async {
     try {
-      _feedList = await _getMyPageFeedsUseCase.execute(
-        email: email,
-        createdAt: null,
-        limit: _fetchCount,
-      );
+      await _getMyPageFeedsUseCase
+          .execute(
+            email: email,
+            createdAt: null,
+            limit: _fetchCount,
+          )
+          .then((result) => _feedList = result);
     } on Exception catch (e) {
       log(e.toString(), name: 'MyPageViewModel.getInitialUserFeedList()');
     }
     notifyListeners();
   }
 
+  // 피드 페이지네이션
   Future<void> fetchFeed() async {
-    // 피드 리스트가 빈배열일 때
     // 모든 피드를 다 불러왔음을 확인하는 플래그값 true 일 때
     // 유저 프로필의 feedCount 와 현재 피드 리스트의 길이가 같을 때
     // -> 피드 페이지네이션 요청 차단
-    if (_feedList.isEmpty ||
-        _isFeedListReachEnd ||
-        _profile!.feedCount == _feedList.length) return;
+    if (_isFeedListReachEnd || _profile!.feedCount == _feedList.length) return;
 
-    // 피드 리스트 로딩중이 아닐때 요청
-    if (!_isFeedListLoading) {
-      _changeFeedListLoadingStatus(true);
+    try {
+      // 피드 리스트 로딩중이 아닐때 요청
+      if (!_isFeedListLoading) {
+        _changeFeedListLoadingStatus(true);
 
-      final result = await _getMyPageFeedsUseCase.execute(
-        email: profile!.email,
-        createdAt: _lastFeedDateTime,
-        limit: _fetchCount,
-      );
+        await _getMyPageFeedsUseCase
+            .execute(
+          email: profile!.email,
+          createdAt: _lastFeedDateTime,
+          limit: _fetchCount,
+        )
+            .then((result) {
+          if (result.length < _fetchCount) {
+            _changeIsFeedListReachEndStatus(true);
+            log('feed list reaches end!', name: 'MyPageViewModel.fetchFeed()');
+          }
 
-      if (result.length < _fetchCount) {
-        _changeIsFeedListReachEndStatus(true);
-        log('feed list reaches end!', name: 'MyPageViewModel.fetchFeed()');
+          _feedList.addAll(result);
+
+          _changeFeedListLoadingStatus(false);
+
+          notifyListeners();
+        }).then((_) => setLastFeedDateTime());
       }
-
-      _feedList.addAll(result);
-
-      log('feed loaded', name: 'MyPageViewModel.fetchFeed()');
-      log('fetched feed count: ${result.length.toString()}',
-          name: 'MyPageViewModel.fetchFeed()');
-
-      _changeFeedListLoadingStatus(false);
-      setLastFeedDateTime();
-
-      notifyListeners();
+    } on Exception catch (e) {
+      log(e.toString(), name: 'MyPageViewModel.fetchFeed()');
     }
   }
 
+  // Feed 리스트에서 특정 피드 삭제
   Future<void> removeSelectedFeed(String feedId) async {
     try {
-      final result = await _removeMyPageFeedUseCase.execute(id: feedId);
+      await _removeMyPageFeedUseCase.execute(id: feedId).then((result) {
+        if (result) {
+          _decreaseFeedCount();
+          _removeFeedFromList(feedId);
+        }
+      });
 
-      if (result) {
-        _decreaseFeedCount();
-        _removeFeedFromList(feedId);
-      }
+      notifyListeners();
     } on Exception catch (e) {
       log(e.toString(), name: 'MyPageViewModel.removeSelectedFeed()');
     }
-
-    notifyListeners();
   }
 
+  // 피드 리스트에서 선택한 피드 삭제
   void _removeFeedFromList(String id) {
     _feedList.removeWhere((e) => e.id == id);
   }
 
+  // 프로필에서 feedCount - 1
   void _decreaseFeedCount() {
     if (_profile != null) {
       _profile = _profile!.copyWith(feedCount: _profile!.feedCount - 1);
