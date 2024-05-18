@@ -194,7 +194,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       fontSize: 16,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
-                      height: 0,
                     ),
                     border: InputBorder.none,
                     fillColor: const Color(0xFFF3F3F3),
@@ -246,7 +245,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontSize: 16,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
-                        height: 0,
                       ),
                       border: InputBorder.none,
                       fillColor: const Color(0xFFF3F3F3),
@@ -338,7 +336,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: () => RouterStatic.goToSignUp(context),
+        onTap: () => RouterStatic.pushToSignUp(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.transparent,
