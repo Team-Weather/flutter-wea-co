@@ -61,7 +61,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                       widget.feed != null
                           ?
                           // 기존 피드 수정
-                          Image.file(File(widget.feed!.imagePath))
+                          Image.network(widget.feed!.imagePath)
                           :
                           // 새로운 피드 작성
                           Stack(
@@ -141,7 +141,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                                         .description),
                                     _tags(
                                         '${widget.feed!.weather.temperature}°'),
-                                    _tags(WeatherCode.fromDtoCode(
+                                    _tags(WeatherCode.fromValue(
                                             widget.feed!.weather.code)
                                         .description),
                                   ],
@@ -154,7 +154,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                                             .dailyLocationWeather!.seasonCode)
                                         .description),
                                     _tags('${viewModel.weather!.temperature}°'),
-                                    _tags(WeatherCode.fromDtoCode(
+                                    _tags(WeatherCode.fromValue(
                                             viewModel.weather!.code)
                                         .description),
                                   ],

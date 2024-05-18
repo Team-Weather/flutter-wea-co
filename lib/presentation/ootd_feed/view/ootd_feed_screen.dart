@@ -1,6 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/presentation/common/component/base_change_notifier.dart';
+import 'package:weaco/presentation/common/component/base_state_widget.dart';
+import 'package:weaco/presentation/common/state/base_alert_data.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'flip_card.dart';
 
@@ -9,20 +12,21 @@ double cardWidth = 9 * scale;
 double cardHeight = 16 * scale;
 Duration cardMoveSpeed = const Duration(milliseconds: 250);
 
-class OotdFeedScreen extends StatefulWidget {
+class OotdFeedScreen<T extends BaseChangeNotifier> extends StatefulWidget {
   const OotdFeedScreen({super.key});
 
   @override
-  State<OotdFeedScreen> createState() => _OotdFeedScreenState();
+  State<OotdFeedScreen> createState() => _OotdFeedScreenState<T>();
 }
 
-class _OotdFeedScreenState extends State<OotdFeedScreen> {
+class _OotdFeedScreenState<T extends BaseChangeNotifier> extends BaseState<OotdFeedScreen, T> {
   late PageController _pageViewController;
 
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController(viewportFraction: 0.75);
+    Future.microtask(() => context.read<OotdFeedViewModel>().initPage());
   }
 
   @override
@@ -34,6 +38,7 @@ class _OotdFeedScreenState extends State<OotdFeedScreen> {
   @override
   Widget build(BuildContext context) {
     log('전체 build() 호출', name: 'OotdFeedScreen.build()');
+    context.read<OotdFeedViewModel>().feedList.map((e) => precacheImage(Image.network(e.feed.imagePath).image, context));
     return Scaffold(
       body: PageView.builder(
         controller: _pageViewController,
@@ -67,4 +72,7 @@ class _OotdFeedScreenState extends State<OotdFeedScreen> {
   void flipCard() {
     context.read<OotdFeedViewModel>().flipCard();
   }
+
+  @override
+  BaseAlertData baseAlertData = BaseAlertData();
 }

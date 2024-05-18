@@ -16,7 +16,7 @@ class RecommandOotdListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return SliverFillRemaining(
       child: Container(
         height: 250,
         padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
@@ -44,7 +44,7 @@ class RecommandOotdListWidget extends StatelessWidget {
                       itemCount: feedList.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () => RouterStatic.goToOotdDetail(
+                          onTap: () => RouterStatic.pushToOotdDetail(
                             context,
                             id: feedList[index].id ?? '',
                             imagePath: feedList[index].imagePath,

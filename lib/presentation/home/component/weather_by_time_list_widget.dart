@@ -18,10 +18,13 @@ class WeatherByTimeListWidget extends StatefulWidget {
 class _WeatherByTimeListWidgetState extends State<WeatherByTimeListWidget> {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double heightPercentage = 100 / screenHeight;
+
     return SliverToBoxAdapter(
       child: Container(
           alignment: Alignment.center,
-          height: 100,
+          height: screenHeight * heightPercentage,
           decoration: BoxDecoration(
               color: const Color.fromARGB(136, 90, 152, 196),
               borderRadius: BorderRadius.circular(15)),

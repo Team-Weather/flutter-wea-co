@@ -14,48 +14,50 @@ class UserProfileWidget extends StatelessWidget {
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: CircleAvatar(
-                maxRadius: 32,
+                maxRadius: 26,
                 backgroundImage: NetworkImage(_userProfile.profileImagePath),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  _userProfile.nickname,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Text(
+                    _userProfile.nickname,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Text(
                   _userProfile.email.split('@')[0],
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.black26,
+                    color: Color(0xff9F9F9F),
                   ),
                 ),
               ],
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                '게시물 ${_userProfile.feedCount}',
-                style: const TextStyle(
-                  color: Colors.black54,
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              '게시물 ${_userProfile.feedCount}',
+              style: const TextStyle(
+                fontSize: 12,
+                color: Color(0xff9F9F9F),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

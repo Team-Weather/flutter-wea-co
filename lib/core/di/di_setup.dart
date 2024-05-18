@@ -7,10 +7,13 @@ import 'package:weaco/core/di/user/user_di_setup.dart';
 import 'package:weaco/core/di/weather/weather_di_setup.dart';
 import 'package:weaco/domain/feed/use_case/get_my_page_feeds_use_case.dart';
 import 'package:weaco/domain/feed/use_case/remove_my_page_feed_use_case.dart';
+import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 import 'package:weaco/domain/user/use_case/get_my_profile_use_case.dart';
 import 'package:weaco/domain/user/use_case/get_profile_image_list_use_case.dart';
 import 'package:weaco/domain/user/use_case/sign_up_use_case.dart';
-import 'package:weaco/presentation/my_page/my_page_view_model.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
+import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
+import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
@@ -21,7 +24,7 @@ import 'package:weaco/presentation/ootd_post/view_model/ootd_post_view_model.dar
 import 'package:weaco/presentation/ootd_post/view_model/picutre_crop_view_model.dart';
 import 'package:weaco/domain/feed/use_case/get_user_page_feeds_use_case.dart';
 import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
-import 'package:weaco/presentation/user_page/user_page_view_model.dart';
+import 'package:weaco/presentation/user_page/view_model/user_page_view_model.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
 
 final getIt = GetIt.instance;
@@ -44,6 +47,11 @@ void diSetup() {
   feedDiSetup();
   weatherDiSetup();
 
+  // Provider
+  getIt.registerFactory<UserProvider>(() => UserProvider(
+        userAuthRepository: getIt<UserAuthRepository>(),
+      ));
+
   // ViewModel
   getIt.registerFactory<SignUpViewModel>(() => SignUpViewModel(
       signUpUseCase: getIt<SignUpUseCase>(),
@@ -65,6 +73,8 @@ void diSetup() {
       saveImageUseCase: getIt<SaveImageUseCase>(),
     ),
   );
+
+  getIt.registerFactory<CameraViewModel>(() => CameraViewModel());
 
   // View
   getIt.registerFactoryParam<UserPageViewModel, String, void>(

@@ -47,8 +47,11 @@ class OotdSearchViewModel with ChangeNotifier {
   }
 
   void setLastFeedDateTime() {
-    _lastFeedDateTime = _searchFeedList[_searchFeedList.length - 1].createdAt;
-    notifyListeners();
+    if (_searchFeedList.isNotEmpty) {
+      _lastFeedDateTime = _searchFeedList[_searchFeedList.length - 1].createdAt;
+
+      notifyListeners();
+    }
   }
 
   void _clearFeedList() {
@@ -68,6 +71,7 @@ class OotdSearchViewModel with ChangeNotifier {
 
     changePageLoadingStatus(false);
     setLastFeedDateTime();
+
     notifyListeners();
   }
 
@@ -76,6 +80,8 @@ class OotdSearchViewModel with ChangeNotifier {
       int seasonCodeValue = 0,
       int temperatureCodeValue = 0}) async {
     // 넘어온 코드가 0일 경우도 선택 안된 것, (null과 동일)
+    log('fetchFeedWhenFilterChange 호출 (seasonCodeValue: $seasonCodeValue, weatherCodeValue: $weatherCodeValue, temperatureCodeValue: $temperatureCodeValue');
+
     final seasonCode = SeasonCode.fromValue(seasonCodeValue);
     final weatherCode = WeatherCode.fromValue(weatherCodeValue);
     final temperatureCode = TemperatureCode.fromValue(temperatureCodeValue);
@@ -88,21 +94,13 @@ class OotdSearchViewModel with ChangeNotifier {
     final result = await _getSearchFeedsUseCase.execute(
       limit: _fetchCount,
       createdAt: null,
-      seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
-      weatherCode: weatherCode.value == 0 ? null : weatherCode.value,
-      minTemperature: temperatureCode.minTemperature == 0
-          ? null
-          : temperatureCode.minTemperature,
-      maxTemperature: temperatureCode.maxTemperature == 0
-          ? null
-          : temperatureCode.maxTemperature,
+      seasonCode: seasonCode.value <= 0 ? null : seasonCode.value,
+      weatherCode: weatherCode.value <= 0 ? null : weatherCode.value,
+      minTemperature: temperatureCode.value <= 0 ? null :  temperatureCode.minTemperature,
+      maxTemperature: temperatureCode.value <= 0 ? null :  temperatureCode.maxTemperature,
     );
 
     _searchFeedList.addAll(result);
-
-    log('feed loaded', name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-    log('fetched feed count: ${result.length.toString()}',
-        name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
 
     changeFeedListLoadingStatus(false);
     setLastFeedDateTime();
@@ -131,30 +129,23 @@ class OotdSearchViewModel with ChangeNotifier {
       final result = await _getSearchFeedsUseCase.execute(
         limit: _fetchCount,
         createdAt: _lastFeedDateTime,
-        seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
-        weatherCode: weatherCode.value == 0 ? null : weatherCode.value,
-        minTemperature: temperatureCode.minTemperature == 0
-            ? null
-            : temperatureCode.minTemperature,
-        maxTemperature: temperatureCode.maxTemperature == 0
-            ? null
-            : temperatureCode.maxTemperature,
+        seasonCode: seasonCode.value <= 0 ? null : seasonCode.value,
+        weatherCode: weatherCode.value <= 0 ? null : weatherCode.value,
+        minTemperature: temperatureCode.value <= 0 ? null :  temperatureCode.minTemperature,
+        maxTemperature: temperatureCode.value <= 0 ? null :  temperatureCode.maxTemperature,
       );
+
+      _searchFeedList.addAll(result);
+
+      log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
 
       if (result.length < _fetchCount) {
         changeIsFeedListReachEndStatus(true);
         log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
       }
 
-      _searchFeedList.addAll(result);
-
-      log('feed loaded',
-          name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-      log('fetched feed count: ${result.length.toString()}',
-          name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-
-      changeFeedListLoadingStatus(false);
       setLastFeedDateTime();
+      changeFeedListLoadingStatus(false);
 
       notifyListeners();
     }

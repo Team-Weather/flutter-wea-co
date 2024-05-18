@@ -1,4 +1,5 @@
 import 'package:weaco/core/enum/season_code.dart';
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/data/weather/dto/weather_dto.dart';
 import 'package:weaco/domain/location/model/location.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -45,7 +46,7 @@ extension DailyLocationWeatherMapper on WeatherDto {
           timeTemperature:
               DateTime.tryParse(hourly?.time?.elementAt(i) ?? '') ??
                   DateTime.now(),
-          code: hourly?.weathercode?.elementAt(i).toInt() ?? unknownCode,
+          code: WeatherCode.fromDtoCode(hourly?.weathercode?.elementAt(i).toInt() ?? unknownCode).value,
           createdAt: DateTime.now(),
         );
       },

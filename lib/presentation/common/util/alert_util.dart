@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weaco/presentation/common/component/dialog/one_button_dialog.dart';
+import 'package:weaco/presentation/common/component/dialog/two_button_dialog.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 
 class AlertUtil {
@@ -8,7 +9,11 @@ class AlertUtil {
     required ExceptionAlert exceptionAlert,
     required String message,
     String? buttonText,
+    String? leftButtonText,
+    String? rightButtonText,
     VoidCallback? onPressedCheck,
+    VoidCallback? onPressedLeft,
+    VoidCallback? onPressedRight,
   }) {
     switch (exceptionAlert) {
       case ExceptionAlert.snackBar:
@@ -31,6 +36,26 @@ class AlertUtil {
           },
         );
 
+        break;
+      case ExceptionAlert.dialogTwoButton:
+        showDialog(
+          context: context,
+          builder: (context) {
+            return TwoButtonDialog(
+                title: '',
+                content: message,
+                onPressedLeft: () => onPressedLeft == null
+                    ? Navigator.of(context).pop()
+                    : onPressedLeft(),
+                onPressedRight: () => onPressedRight == null
+                    ? Navigator.of(context).pop()
+                    : onPressedRight(),
+                leftButtonColor: const Color(0xffB2B2B2).value,
+                leftButtonText: '취소',
+                rightButtonColor: Theme.of(context).primaryColor.value,
+                rightButtonCancelText: '확인');
+          },
+        );
         break;
     }
   }

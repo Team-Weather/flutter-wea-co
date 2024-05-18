@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/data/user/data_source/user_auth_data_source.dart';
 
@@ -46,16 +45,10 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
   // 로그아웃
   @override
   Future<bool> logOut() async {
-    bool isLogOutSuccess = false;
+    bool isLogOutSuccess = true;
 
     try {
-      _firebaseService.firebaseAuth.userChanges().listen((User? user) async {
-        if (user == null) {
-          isLogOutSuccess = true;
-        }
-
-        await _firebaseService.logOut();
-      });
+      await _firebaseService.logOut();
     } on Exception catch (e) {
       isLogOutSuccess = false;
       log(e.toString(), name: 'FirebaseUserAuthDataSource.logOut()');
@@ -68,12 +61,10 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
   // 회원탈퇴
   @override
   Future<bool> signOut() async {
-    bool isSignOutSuccess = false;
+    bool isSignOutSuccess = true;
 
     try {
       await _firebaseService.signOut();
-
-      isSignOutSuccess = true;
     } on Exception catch (e) {
       isSignOutSuccess = false;
       log(e.toString(), name: 'FirebaseUserAuthDataSource.signOut()');
@@ -81,5 +72,10 @@ class FirebaseUserAuthDataSourceImpl implements UserAuthDataSource {
     }
 
     return isSignOutSuccess;
+  }
+
+  @override
+  String? signInCheck() {
+    return _firebaseService.user?.email;
   }
 }

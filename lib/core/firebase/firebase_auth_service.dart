@@ -5,10 +5,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   UserCredential? _userCredential;
+  User? _user;
+
+  User? get user => _user;
 
   FirebaseAuth get firebaseAuth => _firebaseAuth;
 
   UserCredential? get userCredential => _userCredential;
+
+  FirebaseAuthService() {
+    _addAuthStateChangesListener();
+    _user = _firebaseAuth.currentUser;
+  }
 
   // 회원가입
   Future<UserCredential?> signUp({
@@ -60,5 +68,16 @@ class FirebaseAuthService {
       log(e.toString(), name: 'FirebaseService.signOut()');
       rethrow;
     }
+  }
+
+  void _addAuthStateChangesListener() {
+    _firebaseAuth.authStateChanges().listen((user) {
+      if (user == null) {
+        _user = null;
+        _userCredential = null;
+      } else {
+        _user = user;
+      }
+    });
   }
 }

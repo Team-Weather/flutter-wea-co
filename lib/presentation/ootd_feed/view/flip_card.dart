@@ -104,7 +104,7 @@ class _FlipCardState extends State<FlipCard>
       },
       child: GestureDetector(
         onTap: () {
-          RouterStatic.goToOotdDetail(context, id: _data.feed.id ?? '', imagePath: _data.feed.imagePath);
+          RouterStatic.pushToOotdDetail(context, id: _data.feed.id ?? '', imagePath: _data.feed.imagePath);
         },
         onHorizontalDragStart: (details) {
           _swipeStartPoint = details.localPosition.dx;
@@ -208,8 +208,7 @@ class _FlipCardState extends State<FlipCard>
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: Image.network(
-          'https://user-images.githubusercontent.com/38002959/143966223-7c10b010-32a9-4fd5-b021-3a9764134318.png',
-          // _data.feed.imagePath,
+          _data.feed.imagePath,
           fit: BoxFit.fitHeight,
         ),
       ),
