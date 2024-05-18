@@ -140,10 +140,6 @@ class MyPageViewModel with ChangeNotifier {
 
           _feedList.addAll(result);
 
-          log('feed loaded', name: 'MyPageViewModel.fetchFeed()');
-          log('fetched feed count: ${result.length.toString()}',
-              name: 'MyPageViewModel.fetchFeed()');
-
           _changeFeedListLoadingStatus(false);
 
           notifyListeners();
@@ -170,11 +166,12 @@ class MyPageViewModel with ChangeNotifier {
     }
   }
 
-  // 프로필에서 feedCount - 1
+  // 피드 리스트에서 선택한 피드 삭제
   void _removeFeedFromList(String id) {
     _feedList.removeWhere((e) => e.id == id);
   }
 
+  // 프로필에서 feedCount - 1
   void _decreaseFeedCount() {
     if (_profile != null) {
       _profile = _profile!.copyWith(feedCount: _profile!.feedCount - 1);
