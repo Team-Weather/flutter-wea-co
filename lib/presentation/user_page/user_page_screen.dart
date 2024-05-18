@@ -26,76 +26,97 @@ class _UserPageScreenState extends State<UserPageScreen> {
     final List<Feed> userFeedList = userPageViewModel.userFeedList;
     final bool isPageLoading = userPageViewModel.isPageLoading;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        scrolledUnderElevation: 0,
-      ),
-      body: isPageLoading || userProfile == null
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
+    return isPageLoading || userProfile == null
+        ? Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(42),
+              child: AppBar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                scrolledUnderElevation: 0,
+              ),
+            ),
+            body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
               child: Column(
                 children: [
                   userProfile.deletedAt == null
                       ? UserProfileWidget(userProfile: userProfile)
                       : UserProfileDeletedWidget(userProfile: userProfile),
-                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: Divider(),
+                  ),
                   userProfile.deletedAt != null
                       ? const FeedGridDeletedUserWidget()
                       : userFeedList.isEmpty
                           ? const FeedGridEmptyWidget()
-                          : NotificationListener<UserScrollNotification>(
-                              onNotification:
-                                  (UserScrollNotification notification) {
-                                if (notification.direction ==
-                                        ScrollDirection.reverse &&
-                                    notification.metrics.maxScrollExtent *
-                                            0.85 <
-                                        notification.metrics.pixels) {
-                                  userPageViewModel.fetchFeed();
-                                }
-
-                                return false;
-                              },
-                              child: Expanded(
-                                child: GridView.builder(
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemCount: userFeedList.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 3 / 4,
-                                    crossAxisSpacing: 4,
-                                    mainAxisSpacing: 4,
-                                    crossAxisCount: 3,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        RouterStatic.goToOotdDetail(
-                                          context,
-                                          id: userFeedList[index].id ?? '',
-                                          imagePath:
-                                              userFeedList[index].imagePath,
-                                        );
-                                      },
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(2),
-                                        child: Image(
-                                          image: NetworkImage(
-                                              userFeedList[index].imagePath),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
+                          : _buildFeedList(),
                 ],
               ),
             ),
+          );
+  }
+
+  bool _handleFeedScroll(UserScrollNotification notification) {
+    UserPageViewModel userPageViewModel = context.read<UserPageViewModel>();
+    if (notification.direction == ScrollDirection.reverse &&
+        notification.metrics.maxScrollExtent * 0.85 <
+            notification.metrics.pixels) {
+      userPageViewModel.fetchFeed();
+    }
+
+    return false;
+  }
+
+  Widget _buildFeedList() {
+    return NotificationListener<UserScrollNotification>(
+      onNotification: _handleFeedScroll,
+      child: Expanded(
+        child: _buildFeedGridView(),
+      ),
+    );
+  }
+
+  Widget _buildFeedGridView() {
+    UserPageViewModel userPageViewModel = context.read<UserPageViewModel>();
+
+    return GridView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: userPageViewModel.userFeedList.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 3 / 4,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        crossAxisCount: 3,
+      ),
+      itemBuilder: (context, index) {
+        return _buildFeedCard(userPageViewModel.userFeedList[index]);
+      },
+    );
+  }
+
+  Widget _buildFeedCard(Feed currentFeed) {
+    return GestureDetector(
+      onTap: () {
+        RouterStatic.goToOotdDetail(
+          context,
+          id: currentFeed.id ?? '',
+          imagePath: currentFeed.imagePath,
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image(
+          image: NetworkImage(currentFeed.imagePath),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
