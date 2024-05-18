@@ -3,11 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router.dart';
 import 'firebase_options.dart';
-import 'presentation/common/user_provider.dart';
 
 late Box<String> dataBox;
 
