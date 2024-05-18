@@ -80,7 +80,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           onPressed: () {
             if (context.read<UserProvider>().email == null) {
               _showBottomSheetForNonMember(
-                  '피드는 로그인 후 등록 할 수 있어요.\n회원가입 또는 로그인 후 이용해주세요 😎');
+                  '피드는 로그인 후 등록 할 수 있어요.\n회원가입 또는 로그인 후 이용해 주세요 😎');
               return;
             }
             _toggleFloatingActionButton();
@@ -163,7 +163,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             // 플로팅버튼 아래 빈 바텀아이템 클릭시 리턴처리
             if (value == 2) {
               return;
-            } else if (value == 4) {
+            } else if (value == 4 &&
+                context.read<UserProvider>().email == null) {
               // 로그인 하지 않고 마이페이지 진입 시 넛지 팝업 처리
               _showBottomSheetForNonMember(
                   '마이 페이지는 회원 전용 서비스입니다.\n회원가입 또는 로그인 후 이용해주세요 😎');

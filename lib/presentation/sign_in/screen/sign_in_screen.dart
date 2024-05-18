@@ -379,7 +379,7 @@ class _SignInScreenState extends State<SignInScreen> {
             password: passwordFormController.text)
         .then((_) {
       context.read<UserProvider>().signIn(email: emailFormController.text);
-      RouterStatic.goToHome(context);
+      RouterStatic.goToDefault(context);
     }).catchError((e) {
       AlertUtil.showAlert(
         context: context,
