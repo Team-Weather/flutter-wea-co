@@ -6,10 +6,15 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/extension/date_time.dart';
+import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/common/component/base_change_notifier.dart';
+import 'package:weaco/presentation/common/component/base_state_widget.dart';
+import 'package:weaco/presentation/common/state/base_alert_data.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/pinch_zoom.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 
-class OotdDetailScreen extends StatefulWidget {
+class OotdDetailScreen<T extends BaseChangeNotifier> extends StatefulWidget {
   final String _id;
   final String _mainImagePath;
 
@@ -19,13 +24,13 @@ class OotdDetailScreen extends StatefulWidget {
         _id = id;
 
   @override
-  State<OotdDetailScreen> createState() => _OotdDetailScreenState();
+  State<OotdDetailScreen> createState() => _OotdDetailScreenState<T>();
 }
 
-class _OotdDetailScreenState extends State<OotdDetailScreen> {
+class _OotdDetailScreenState<T extends BaseChangeNotifier>
+    extends BaseState<OotdDetailScreen, T> {
   final double _detailAreaExpandHeight = 400;
   bool _isCancelAreaShow = false;
-
 
   @override
   void initState() {
@@ -70,14 +75,15 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
   @override
   Widget build(BuildContext context) {
     log('build() 호출 ${widget._id}');
+    final feed = context.watch<OotdDetailViewModel>().feed;
+    final profile = context.watch<OotdDetailViewModel>().userProfile;
     return SafeArea(
         child: Stack(
       fit: StackFit.expand,
       alignment: Alignment.bottomCenter,
       children: [
         PinchZoom(
-          child: _loadingImageWidget(
-              data: widget._mainImagePath),
+          child: _loadingImageWidget(data: widget._mainImagePath),
         ),
         GestureDetector(
           onTap: _changeArea,
@@ -111,158 +117,157 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                       topRight: Radius.circular(10)),
                   color: Color(0x87000000),
                 ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Builder(builder: (context) {
-                    log('하단 시트 build() 호출');
-                    return Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          textBaseline: TextBaseline.ideographic,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      child: Builder(builder: (context) {
+                        log('하단 시트 build() 호출');
+                        return Column(
                           children: [
-                            SizedBox(
-                              width: 25,
-                              height: 25,
-                              child: Image.asset(
-                                  WeatherCode.fromValue(context
-                                              .watch<OotdDetailViewModel>()
-                                              .feed
-                                              ?.weather
-                                              .code ??
-                                          0)
-                                      .iconPath,
-                                  errorBuilder: (_, __, ___) =>
-                                      defaultWidget(opacity: 0.2)),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              textBaseline: TextBaseline.ideographic,
+                              children: [
+                                SizedBox(
+                                  width: 25,
+                                  height: 25,
+                                  child: Image.asset(
+                                      WeatherCode.fromValue(
+                                              feed?.weather.code ?? 0)
+                                          .iconPath,
+                                      errorBuilder: (_, __, ___) =>
+                                          defaultWidget(opacity: 0.2)),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                DefaultTextStyle(
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white),
+                                  child: Text(
+                                      '${feed?.weather.temperature.toString() ?? ''}°C'),
+                                ),
+                                const Spacer(),
+                                DefaultTextStyle(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white),
+                                  child: Text(feed?.createdAt.toFormat() ?? ''),
+                                ),
+                                Visibility(
+                                    maintainSize: false,
+                                    visible: context.read<UserProvider>().email != null && (context.read<UserProvider>().email == profile?.email),
+                                    child: const Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Icon(
+                                          Icons.edit,
+                                          size: 20,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ))
+                              ],
                             ),
                             const SizedBox(
-                              width: 8,
+                              height: 12,
                             ),
-                            DefaultTextStyle(
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white),
-                              child: Text(
-                                  '${context.watch<OotdDetailViewModel>().feed?.weather.temperature.toString() ?? ''}°C'),
-                            ),
-                            const Spacer(),
-                            DefaultTextStyle(
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white),
-                              child: Text(context
-                                      .watch<OotdDetailViewModel>()
-                                      .feed
-                                      ?.createdAt
-                                      .toFormat() ??
-                                  ''),
-                            ),
-                            Visibility(
-                                maintainSize: false,
-                                visible: context
-                                        .watch<OotdDetailViewModel>()
-                                        .userProfile
-                                        ?.email !=
-                                    context
-                                        .watch<OotdDetailViewModel>()
-                                        .userProfile
-                                        ?.email,
-                                child: const Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 16,
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: const Color(0x33FFFFFF),
+                                      border: Border.all(
+                                          color: Colors.white, width: 1)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    child: DefaultTextStyle(
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white),
+                                      child: Text(
+                                          '#${SeasonCode.fromValue(feed?.seasonCode ?? 0).description}'),
                                     ),
-                                    Icon(
-                                      Icons.edit,
-                                      size: 20,
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ))
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: const Color(0x33FFFFFF),
-                                  border: Border.all(
-                                      color: Colors.white, width: 1)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                child: DefaultTextStyle(
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.white),
-                                  child: Text(
-                                      '#${SeasonCode.fromValue(context.watch<OotdDetailViewModel>().feed?.seasonCode ?? 0).description}'),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: const Color(0x33FFFFFF),
+                                      border: Border.all(
+                                          color: Colors.white, width: 1)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    child: DefaultTextStyle(
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white),
+                                      child: Text(
+                                          '#${WeatherCode.fromValue(feed?.weather.code ?? 0).description}'),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(
-                              width: 8,
+                              height: 16,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: const Color(0x33FFFFFF),
-                                  border: Border.all(
-                                      color: Colors.white, width: 1)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                child: DefaultTextStyle(
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.white),
-                                  child: Text(
-                                      '#${WeatherCode.fromValue(context.watch<OotdDetailViewModel>().feed?.weather.code ?? 0).description}'),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: DefaultTextStyle(
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.white),
+                                    child: Text(
+                                      feed?.description ?? '',
+                                      overflow: _isCancelAreaShow
+                                          ? null
+                                          : TextOverflow.ellipsis,
+                                      maxLines: _isCancelAreaShow ? null : 1,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: DefaultTextStyle(
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.white),
-                                child: Text(
-                                  context
-                                          .watch<OotdDetailViewModel>()
-                                          .feed
-                                          ?.description ??
-                                      '',
-                                  overflow: _isCancelAreaShow
-                                      ? null
-                                      : TextOverflow.ellipsis,
-                                  maxLines: _isCancelAreaShow ? null : 1,
-                                ),
-                              ),
+                        );
+                      }),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Visibility(
+                          maintainSize: false,
+                          visible: context.read<UserProvider>().email != null && (context.read<UserProvider>().email == profile?.email),
+                          child: GestureDetector(
+                            onTap: () => RouterStatic.pushToOotdPost(context,
+                                feed: feed),
+                            child: Container(
+                              color: Colors.white.withOpacity(0),
+                              width: 60,
+                              height: 60,
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+                          )),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -280,32 +285,35 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: _loadingImageWidget(
-                            opacity: 0.2,
-                            data: context
-                                .watch<OotdDetailViewModel>()
-                                .userProfile
-                                ?.profileImagePath),
+                    GestureDetector(
+                      onTap: () => RouterStatic.pushToUserPage(context,
+                          email: feed?.userEmail ?? ''),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: _loadingImageWidget(
+                                  opacity: 0.2,
+                                  data: profile?.profileImagePath),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          DefaultTextStyle(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                            child: Text(feed?.userEmail ?? ''),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    DefaultTextStyle(
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
-                      child: Text(context
-                              .watch<OotdDetailViewModel>()
-                              .feed
-                              ?.userEmail ??
-                          ''),
                     ),
                     const Spacer(),
                     IconButton(
@@ -323,4 +331,7 @@ class _OotdDetailScreenState extends State<OotdDetailScreen> {
       ],
     ));
   }
+
+  @override
+  BaseAlertData baseAlertData = BaseAlertData();
 }
