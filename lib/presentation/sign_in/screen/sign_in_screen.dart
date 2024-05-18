@@ -192,9 +192,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     hintStyle: const TextStyle(
                       color: Color(0xFF797979),
                       fontSize: 16,
-                      fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
-                      height: 0,
                     ),
                     border: InputBorder.none,
                     fillColor: const Color(0xFFF3F3F3),
@@ -244,9 +242,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       hintStyle: const TextStyle(
                         color: Color(0xFF797979),
                         fontSize: 16,
-                        fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
-                        height: 0,
                       ),
                       border: InputBorder.none,
                       fillColor: const Color(0xFFF3F3F3),
@@ -324,7 +320,6 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -338,7 +333,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: 54,
       child: InkWell(
-        onTap: () => RouterStatic.goToSignUp(context),
+        onTap: () => RouterStatic.pushToSignUp(context),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.transparent,
@@ -351,7 +346,6 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               color: Color(0xFF292929),
               fontSize: 16,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -379,7 +373,7 @@ class _SignInScreenState extends State<SignInScreen> {
             password: passwordFormController.text)
         .then((_) {
       context.read<UserProvider>().signIn(email: emailFormController.text);
-      RouterStatic.goToHome(context);
+      RouterStatic.goToDefault(context);
     }).catchError((e) {
       AlertUtil.showAlert(
         context: context,
