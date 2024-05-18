@@ -47,7 +47,6 @@ class TwoButtonDialog extends StatelessWidget {
                     style: const TextStyle(
                       color: Color(0xFF1D1B20),
                       fontSize: 18,
-                      fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -80,7 +79,6 @@ class TwoButtonDialog extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
-                          fontFamily: 'Roboto',
                           fontWeight: FontWeight.w600,
                           height: 0,
                         ),
@@ -110,7 +108,6 @@ class TwoButtonDialog extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
-                          fontFamily: 'Roboto',
                           fontWeight: FontWeight.w600,
                           height: 0,
                         ),

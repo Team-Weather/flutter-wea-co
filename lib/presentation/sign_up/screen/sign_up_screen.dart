@@ -87,7 +87,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: TextStyle(
               color: Color(0xFF1A1C29),
               fontSize: 20,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -97,7 +96,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: TextStyle(
               color: Color(0xFF797979),
               fontSize: 15,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -166,7 +164,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               hintStyle: const TextStyle(
                 color: Color(0xFF797979),
                 fontSize: 16,
-                fontFamily: 'Roboto',
                 fontWeight: FontWeight.w400,
               ),
               border: InputBorder.none,
@@ -260,7 +257,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               style: const TextStyle(
                 color: Color(0xFF1A1C29),
                 fontSize: 16,
-                fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -290,7 +286,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: TextStyle(
               color: Color(0xF5F5F5FF),
               fontSize: 16,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w600,
             ),
           ),

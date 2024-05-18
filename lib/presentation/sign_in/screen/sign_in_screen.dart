@@ -192,7 +192,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     hintStyle: const TextStyle(
                       color: Color(0xFF797979),
                       fontSize: 16,
-                      fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
                     ),
                     border: InputBorder.none,
@@ -243,7 +242,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       hintStyle: const TextStyle(
                         color: Color(0xFF797979),
                         fontSize: 16,
-                        fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
                       ),
                       border: InputBorder.none,
@@ -322,7 +320,6 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -349,7 +346,6 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               color: Color(0xFF292929),
               fontSize: 16,
-              fontFamily: 'Roboto',
               fontWeight: FontWeight.w400,
             ),
           ),
