@@ -8,6 +8,8 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
@@ -215,10 +217,10 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
               if (viewModel.saveStatus) {
                 RouterStatic.popFromOotdPost(context);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('다시 시도해 주세요.'),
-                  ),
+                AlertUtil.showAlert(
+                  context: context,
+                  exceptionAlert: ExceptionAlert.snackBar,
+                  message: '다시 시도해 주세요.',
                 );
               }
             }
