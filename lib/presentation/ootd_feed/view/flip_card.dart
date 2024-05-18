@@ -24,7 +24,7 @@ class FlipCard extends StatefulWidget {
       required int index,
       required void Function({required bool isToNext}) moveCallback,
       required void Function() flipCallback})
-      : _index= index,
+      : _index = index,
         _moveCallback = moveCallback,
         _flipCallback = flipCallback;
 
@@ -63,8 +63,7 @@ class _FlipCardState extends State<FlipCard>
       TweenSequenceItem(
           tween: Tween(begin: math.pi / 2, end: 0.0), weight: 0.5),
     ]).animate(_controller);
-    _data =
-        context.read<OotdFeedViewModel>().feedList[widget._index];
+    _data = context.read<OotdFeedViewModel>().feedList[widget._index];
     _isToBack = _data.isFront;
     super.initState();
   }
@@ -91,7 +90,9 @@ class _FlipCardState extends State<FlipCard>
   @override
   Widget build(BuildContext context) {
     log('전체 build(${widget._index}) 호출', name: 'FlipCard.build()');
-    var scale = context.read<OotdFeedViewModel>().currentIndex == widget._index ? 1.0 : 0.85;
+    var scale = context.read<OotdFeedViewModel>().currentIndex == widget._index
+        ? 1.0
+        : 0.85;
     return TweenAnimationBuilder(
       curve: Curves.ease,
       tween: Tween(begin: scale, end: scale),
@@ -104,7 +105,11 @@ class _FlipCardState extends State<FlipCard>
       },
       child: GestureDetector(
         onTap: () {
-          RouterStatic.pushToOotdDetail(context, id: _data.feed.id ?? '', imagePath: _data.feed.imagePath);
+          RouterStatic.pushToOotdDetail(
+            context,
+            id: _data.feed.id ?? '',
+            imagePath: _data.feed.imagePath,
+          );
         },
         onHorizontalDragStart: (details) {
           _swipeStartPoint = details.localPosition.dx;
@@ -240,15 +245,13 @@ class _FlipCardState extends State<FlipCard>
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
                   color: Colors.black),
-              child: Text(
-                  '그 날의 날씨는'),
+              child: Text('그 날의 날씨는'),
             ),
             SizedBox(
               width: 100,
               height: 100,
               child: Image.asset(
-                  WeatherCode.fromValue(_data.feed.weather.code)
-                      .iconPath),
+                  WeatherCode.fromValue(_data.feed.weather.code).iconPath),
             ),
             Container(
               height: 130,
@@ -276,8 +279,8 @@ class _FlipCardState extends State<FlipCard>
                         ],
                       ),
                       child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         child: DefaultTextStyle(
                           style: const TextStyle(
                               fontSize: 12,
@@ -294,16 +297,14 @@ class _FlipCardState extends State<FlipCard>
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
-                      child: Text(
-                          '이 날의 온도는'),
+                      child: Text('이 날의 온도는'),
                     ),
                     DefaultTextStyle(
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w800,
                           color: Colors.black),
-                      child: Text(
-                          '${_data.feed.weather.temperature}°C'),
+                      child: Text('${_data.feed.weather.temperature}°C'),
                     ),
                   ],
                 ),
