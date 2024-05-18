@@ -68,7 +68,7 @@ class RouterStatic {
     router.push(RouterPath.ootdFeed.path);
   }
 
-  static void goToOotdDetail(BuildContext context,
+  static void pushToOotdDetail(BuildContext context,
       {required String id, required String imagePath}) {
     router.push('${RouterPath.ootdDetail.path}?id=$id&imagePath=$imagePath');
   }
@@ -83,6 +83,10 @@ class RouterStatic {
 
   static void goToOotdPost(BuildContext context, {Feed? feed}) {
     router.go(RouterPath.ootdPost.path, extra: feed);
+  }
+
+  static void pushToOotdPost(BuildContext context, {Feed? feed}) {
+    router.push(RouterPath.ootdPost.path, extra: feed);
   }
 
   static void popFromOotdPost(BuildContext context) {

@@ -104,7 +104,7 @@ class _UserPageScreenState extends State<UserPageScreen> {
   Widget _buildFeedCard(Feed currentFeed) {
     return GestureDetector(
       onTap: () {
-        RouterStatic.goToOotdDetail(
+        RouterStatic.pushToOotdDetail(
           context,
           id: currentFeed.id ?? '',
           imagePath: currentFeed.imagePath,
