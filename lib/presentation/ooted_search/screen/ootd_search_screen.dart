@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/enum/season_code.dart';
@@ -64,69 +66,77 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        dropDownButton(
-                            defaultText: '🌸 계절',
-                            borderColor: WeacoColors.accentColor,
-                            items: seasonItemList,
-                            width: 110,
-                            selectedValueIndex: 0,
-                            onChanged: (value) {
-                              log(value.toString(), name:'계절');
-                              ootdSearchViewModel.fetchFeedWhenFilterChange(
-                                seasonCodeValue:
-                                    seasonItemList.indexOf(value ?? ''),
-                                weatherCodeValue: weatherItemList
-                                    .indexOf(selectedData[1] ?? ''),
-                                temperatureCodeValue: temperatureItemList
-                                    .indexOf(selectedData[2] ?? ''),
-                              );
-                              setState(() {
-                                selectedData[0] = value;
-                              });
-                            },
-                            fontSize: 13),
-                        dropDownButton(
-                            defaultText: '☀️ 날씨',
-                            borderColor: WeacoColors.accentColor,
-                            items: weatherItemList,
-                            width: 110,
-                            selectedValueIndex: 1,
-                            onChanged: (value) {
-                              log(value.toString(), name:'날씨');
-                              ootdSearchViewModel.fetchFeedWhenFilterChange(
-                                seasonCodeValue: seasonItemList
-                                    .indexOf(selectedData[0] ?? ''),
-                                weatherCodeValue:
-                                    weatherItemList.indexOf(value ?? ''),
-                                temperatureCodeValue: temperatureItemList
-                                    .indexOf(selectedData[2] ?? ''),
-                              );
-                              setState(() {
-                                selectedData[1] = value;
-                              });
-                            },
-                            fontSize: 13),
-                        dropDownButton(
-                            defaultText: '🌡️ 온도',
-                            borderColor: WeacoColors.accentColor,
-                            items: temperatureItemList,
-                            width: 110,
-                            selectedValueIndex: 2,
-                            onChanged: (value) {
-                              log(value.toString(), name:'기온');
-                              ootdSearchViewModel.fetchFeedWhenFilterChange(
-                                seasonCodeValue: seasonItemList
-                                    .indexOf(selectedData[0] ?? ''),
-                                weatherCodeValue: weatherItemList
-                                    .indexOf(selectedData[1] ?? ''),
-                                temperatureCodeValue:
-                                    temperatureItemList.indexOf(value ?? ''),
-                              );
-                              setState(() {
-                                selectedData[2] = value;
-                              });
-                            },
-                            fontSize: 12),
+                        Flexible(
+                          flex: 1,
+                          child: dropDownButton(
+                              defaultText: '🌸 계절',
+                              borderColor: WeacoColors.accentColor,
+                              items: seasonItemList,
+                              selectedValueIndex: 0,
+                              onChanged: (value) {
+                                log(value.toString(), name: '계절');
+                                ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                  seasonCodeValue:
+                                      seasonItemList.indexOf(value ?? ''),
+                                  weatherCodeValue: weatherItemList
+                                      .indexOf(selectedData[1] ?? ''),
+                                  temperatureCodeValue: temperatureItemList
+                                      .indexOf(selectedData[2] ?? ''),
+                                );
+                                setState(() {
+                                  selectedData[0] = value;
+                                });
+                              },
+                              fontSize: 13),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: dropDownButton(
+                              defaultText: '☀️ 날씨',
+                              borderColor: WeacoColors.accentColor,
+                              items: weatherItemList,
+                              selectedValueIndex: 1,
+                              onChanged: (value) {
+                                log(value.toString(), name: '날씨');
+                                ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                  seasonCodeValue: seasonItemList
+                                      .indexOf(selectedData[0] ?? ''),
+                                  weatherCodeValue:
+                                      weatherItemList.indexOf(value ?? ''),
+                                  temperatureCodeValue: temperatureItemList
+                                      .indexOf(selectedData[2] ?? ''),
+                                );
+                                setState(() {
+                                  selectedData[1] = value;
+                                });
+                              },
+                              fontSize: 13),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: dropDownButton(
+                              defaultText: '🌡️ 온도',
+                              borderColor: WeacoColors.accentColor,
+                              items: temperatureItemList,
+                              selectedValueIndex: 2,
+                              onChanged: (value) {
+                                log(value.toString(), name: '기온');
+                                ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                  seasonCodeValue: seasonItemList
+                                      .indexOf(selectedData[0] ?? ''),
+                                  weatherCodeValue: weatherItemList
+                                      .indexOf(selectedData[1] ?? ''),
+                                  temperatureCodeValue:
+                                      temperatureItemList.indexOf(value ?? ''),
+                                );
+                                setState(() {
+                                  selectedData[2] = value;
+                                });
+                              },
+                              fontSize: 12),
+                        ),
                       ],
                     ),
                     const Padding(
@@ -195,7 +205,6 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
       required String defaultText,
       required double fontSize,
       required List<String> items,
-      required double width,
       required Color borderColor,
       required Function(String?) onChanged}) {
     return DropdownButtonHideUnderline(
@@ -234,7 +243,6 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
         },
         buttonStyleData: ButtonStyleData(
           height: 40,
-          width: width,
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
@@ -255,7 +263,6 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200,
-          width: width - 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
