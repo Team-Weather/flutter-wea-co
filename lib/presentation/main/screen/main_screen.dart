@@ -5,6 +5,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/common/component/bottom_sheet/custom_bottom_sheet.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
+import 'package:weaco/presentation/home/component/recommand_login_bottom_sheet_widget.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
@@ -74,6 +77,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         transformAlignment: Alignment.center,
         child: FloatingActionButton(
           onPressed: () {
+            if (context.read<UserProvider>().email == null) {
+              _showBottomSheetForNonMember(
+                  '피드는 로그인 후 등록 할 수 있어요.\n회원가입 또는 로그인 후 이용해주세요 😎');
+              return;
+            }
             _toggleFloatingActionButton();
           },
           elevation: 0,
@@ -151,10 +159,30 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         child: BottomNavigationWidget(
           currentIndex: _currentIndex,
           onTap: (int value) {
-            if (value == 2) return;
+            // 플로팅버튼 아래 빈 바텀아이템 클릭시 리턴처리
+            if (value == 2) {
+              return;
+            } else if (value == 4) {
+              // 로그인 하지 않고 마이페이지 진입 시 넛지 팝업 처리
+              _showBottomSheetForNonMember(
+                  '마이 페이지는 회원 전용 서비스입니다.\n회원가입 또는 로그인 후 이용해주세요 😎');
+              return;
+            }
             _tabController.animateTo(value);
           },
         ),
+      ),
+    );
+  }
+
+  /// 비회원이 로그인 후 사용 가능한 서비스 접근 시 안내 바텀시트를 띄우는 함수
+  void _showBottomSheetForNonMember(String message) {
+    CustomBottomSheet.showSelectBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      child: RecommandLoginBottomSheetWidget(
+        context: context,
+        message: message,
       ),
     );
   }
