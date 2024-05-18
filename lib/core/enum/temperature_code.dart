@@ -1,5 +1,5 @@
 enum TemperatureCode {
-  noData(value: 0, description: '-', minTemperature: 0, maxTemperature: 0),
+  noData(value: 0, description: '전체', minTemperature: 0, maxTemperature: 0),
   underMinusTen(
       value: 1,
       description: '-10°C 이하',
@@ -41,7 +41,7 @@ enum TemperatureCode {
 
   static TemperatureCode fromValue(int value) {
     return switch (value) {
-      0 => TemperatureCode.noData,
+      0 || -1 => TemperatureCode.noData,
       1 => TemperatureCode.underMinusTen,
       2 => TemperatureCode.overMinusTenToZero,
       3 => TemperatureCode.overZeroToTen,
