@@ -49,6 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double heightPercentage = 30 / screenHeight;
+
     final viewModel = context.watch<HomeScreenViewModel>();
 
     final String temperatureGapPresentation = viewModel.temperatureGap! >= 0
@@ -201,9 +204,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     SliverToBoxAdapter(
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03),
+                      child: SizedBox(height: screenHeight * heightPercentage),
                     ),
+
                     // ootd list
                     RecommandOotdListWidget(
                       dailyLocationWeather: viewModel.dailyLocationWeather,
