@@ -16,7 +16,7 @@ class RouterStatic {
     router.pop(RouterPath.home.path);
   }
 
-  static void goToSignUp(BuildContext context) {
+  static void pushToSignUp(BuildContext context) {
     router.push(RouterPath.signUp.path);
   }
 
