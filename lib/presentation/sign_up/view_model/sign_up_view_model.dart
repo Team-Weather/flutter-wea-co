@@ -57,6 +57,7 @@ class SignUpViewModel extends ChangeNotifier {
           'network-request-failed' => '네트워크가 불안정 합니다.',
           'too-many-requests' => '요청이 너무 많습니다.',
           'user-disabled' => '이미 탈퇴한 회원입니다.',
+          'invalid-credential' => '이메일과 비밀번호를 확인해주세요.',
           _ => null,
         };
       }

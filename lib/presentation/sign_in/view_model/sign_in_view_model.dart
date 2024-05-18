@@ -28,7 +28,9 @@ class SignInViewModel extends ChangeNotifier {
       rethrow;
     } catch (e) {
       String? message;
+      print('signIn ex bool ${e is FirebaseException}');
       if (e is FirebaseException) {
+        print('ex code ${e.code}');
         message = switch (e.code) {
           'user-not-found' => '존재하지 않는 유저입니다.',
           'wrong-password' => '비밀번호가 맞지 않습니다.',
@@ -39,6 +41,7 @@ class SignInViewModel extends ChangeNotifier {
           'network-request-failed' => '네트워크가 불안정 합니다.',
           'too-many-requests' => '요청이 너무 많습니다.',
           'user-disabled' => '이미 탈퇴한 회원입니다.',
+          'invalid-credential' => '이메일과 비밀번호를 확인해주세요.',
           _ => null,
         };
       }
