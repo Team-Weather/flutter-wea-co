@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/common/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/home/component/recommand_ootd_list_widget.dart';
 import 'package:weaco/presentation/home/component/weather_by_time_list_widget.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
@@ -16,15 +18,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ScrollController _scrollController;
-
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
 
     Future.microtask(
-      () async => await context.read<HomeScreenViewModel>().initHomeScreen(),
+      () async {
+        await context.read<HomeScreenViewModel>().initHomeScreen();
+      },
     );
   }
 
@@ -32,15 +33,24 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // if (context.read<HomeScreenViewModel>().status.isError) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(content: Text('문제가 발생했습니다. 잠시 후 다시 시도해주세요.')));
-    // }
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        final viewModel = context.read<HomeScreenViewModel>();
+        if (viewModel.status.isError) {
+          AlertUtil.showAlert(
+            context: context,
+            exceptionAlert: ExceptionAlert.snackBar,
+            message: viewModel.errorMesasge,
+          );
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeScreenViewModel>();
+
     final String temperatureGapPresentation = viewModel.temperatureGap! >= 0
         ? viewModel.temperatureGap!.toStringAsFixed(1)
         : (-viewModel.temperatureGap!).toStringAsFixed(1);
@@ -187,14 +197,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // weathers by time
                     WeatherByTimeListWidget(
-                      dailyLocationWeather: viewModel.dailyLocationWeather,
-                      scrollController: _scrollController,
+                      weatherList: viewModel.weatherByTimeList,
                     ),
 
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 40),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
                     ),
-
                     // ootd list
                     RecommandOotdListWidget(
                       dailyLocationWeather: viewModel.dailyLocationWeather,

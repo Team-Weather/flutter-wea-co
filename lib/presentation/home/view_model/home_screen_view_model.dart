@@ -34,6 +34,7 @@ class HomeScreenViewModel with ChangeNotifier {
 
   DailyLocationWeather? _dailyLocationWeather;
   Weather? _currentWeather;
+  List<Weather> _weatherByTimeList = [];
   List<Feed> _feedList = [];
   HomeScreenStatus _status = HomeScreenStatus.idle;
   // 전일 대비 온도차
@@ -47,6 +48,9 @@ class HomeScreenViewModel with ChangeNotifier {
   HomeScreenStatus get status => _status;
   String get backgroundImagePath =>
       _weatherBackgroundImage ?? ImagePath.homeBackgroundSunny;
+  List<Weather> get weatherByTimeList => _weatherByTimeList;
+  String get errorMesasge => _errorMessage;
+  String _errorMessage = '';
 
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
@@ -66,6 +70,7 @@ class HomeScreenViewModel with ChangeNotifier {
         );
 
         _calculateTemperatureGap();
+        await _getWeatherByTimeList();
         await _getBackgroundImagePath();
         _status = HomeScreenStatus.success;
       }
@@ -73,8 +78,41 @@ class HomeScreenViewModel with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _status = HomeScreenStatus.error;
+      _errorMessage = e.toString();
       notifyListeners();
     }
+  }
+
+  /// 현재 시간부터 24시간 이후까지의 날씨 정보를 가져오기
+  Future<void> _getWeatherByTimeList() async {
+    DateTime now = DateTime.now();
+    int currentHour = now.hour;
+    List<Weather> weatherList = [];
+
+    // 현재 시간 이후의 날씨 정보 목록
+    List<Weather> weatherAfterCurrentTime = dailyLocationWeather!.weatherList
+        .where((e) => e.timeTemperature.hour >= currentHour)
+        .toList();
+
+    // 중복되는 시간의 정보를 기록합니다.
+    Set<int> hoursAlreadyAdded =
+        Set.from(weatherAfterCurrentTime.map((e) => e.timeTemperature.hour));
+
+    // 현재 시간 이후의 객체를 추가합니다.
+    weatherList.addAll(weatherAfterCurrentTime);
+
+    // 남은 시간만큼을 dailyLocationWeather!.tomorrowWeatherList에서 가져와서 채웁니다.
+    int remainingCount = 24 - weatherAfterCurrentTime.length;
+
+    if (remainingCount > 0) {
+      List<Weather> tomorrowWeather = dailyLocationWeather!.tomorrowWeatherList
+          .where((e) => !hoursAlreadyAdded.contains(e.timeTemperature.hour))
+          .take(remainingCount)
+          .toList();
+
+      weatherList.addAll(tomorrowWeather);
+    }
+    _weatherByTimeList = weatherList;
   }
 
   /// 배경 이미지 주소 가져오기

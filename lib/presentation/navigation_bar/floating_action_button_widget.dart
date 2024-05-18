@@ -58,26 +58,32 @@ class _FloatingActionButtonWidgetState
                 children: [
                   Stack(
                     children: [
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                        left: isExpanded ? 22 : 32,
-                        top: 16,
-                        child: const ImageIcon(
-                          AssetImage(ImagePath.imageIconCam),
-                          size: 40,
-                          color: Color(0xffF2C347),
+                      GestureDetector(
+                        onTap: () {},
+                        child: AnimatedPositioned(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                          left: isExpanded ? 22 : 32,
+                          top: 16,
+                          child: const ImageIcon(
+                            AssetImage(ImagePath.imageIconCam),
+                            size: 40,
+                            color: Color(0xffF2C347),
+                          ),
                         ),
                       ),
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 1000),
-                        curve: Curves.easeInOut,
-                        top: 16,
-                        right: isExpanded ? 22 : 32,
-                        child: const ImageIcon(
-                          AssetImage(ImagePath.imageIconPhoto),
-                          size: 40,
-                          color: Color(0xffF2C347),
+                      GestureDetector(
+                        onTap: () {},
+                        child: AnimatedPositioned(
+                          duration: const Duration(milliseconds: 1000),
+                          curve: Curves.easeInOut,
+                          top: 16,
+                          right: isExpanded ? 22 : 32,
+                          child: const ImageIcon(
+                            AssetImage(ImagePath.imageIconPhoto),
+                            size: 40,
+                            color: Color(0xffF2C347),
+                          ),
                         ),
                       ),
                     ],

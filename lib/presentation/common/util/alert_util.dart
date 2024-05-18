@@ -13,6 +13,7 @@ class AlertUtil {
     switch (exceptionAlert) {
       case ExceptionAlert.snackBar:
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: Text(message),
         ));
         break;
@@ -29,6 +30,7 @@ class AlertUtil {
                 buttonText: buttonText ?? '확인');
           },
         );
+
         break;
     }
   }
