@@ -47,8 +47,11 @@ class OotdSearchViewModel with ChangeNotifier {
   }
 
   void setLastFeedDateTime() {
-    _lastFeedDateTime = _searchFeedList[_searchFeedList.length - 1].createdAt;
-    notifyListeners();
+    if (_searchFeedList.isNotEmpty) {
+      _lastFeedDateTime = _searchFeedList[_searchFeedList.length - 1].createdAt;
+
+      notifyListeners();
+    }
   }
 
   void _clearFeedList() {
@@ -59,16 +62,20 @@ class OotdSearchViewModel with ChangeNotifier {
   Future<void> getInitialFeedList() async {
     changePageLoadingStatus(true);
     try {
-      _searchFeedList = await _getSearchFeedsUseCase.execute(
+      await _getSearchFeedsUseCase
+          .execute(
         limit: _fetchCount,
-      );
+      )
+          .then((result) {
+        _searchFeedList = result;
+      }).then((_) {
+        changePageLoadingStatus(false);
+        setLastFeedDateTime();
+        notifyListeners();
+      });
     } on Exception catch (e) {
       log(e.toString(), name: 'OotdSearchViewModel.fetchInitialFeedList()');
     }
-
-    changePageLoadingStatus(false);
-    setLastFeedDateTime();
-    notifyListeners();
   }
 
   Future<void> fetchFeedWhenFilterChange(
@@ -85,29 +92,25 @@ class OotdSearchViewModel with ChangeNotifier {
     _clearFeedList();
     changeFeedListLoadingStatus(true);
 
-    final result = await _getSearchFeedsUseCase.execute(
-      limit: _fetchCount,
-      createdAt: null,
-      seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
-      weatherCode: weatherCode.value == 0 ? null : weatherCode.value,
-      minTemperature: temperatureCode.minTemperature == 0
-          ? null
-          : temperatureCode.minTemperature,
-      maxTemperature: temperatureCode.maxTemperature == 0
-          ? null
-          : temperatureCode.maxTemperature,
-    );
-
-    _searchFeedList.addAll(result);
-
-    log('feed loaded', name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-    log('fetched feed count: ${result.length.toString()}',
-        name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-
-    changeFeedListLoadingStatus(false);
-    setLastFeedDateTime();
-
-    notifyListeners();
+    await _getSearchFeedsUseCase
+        .execute(
+          limit: _fetchCount,
+          createdAt: null,
+          seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
+          weatherCode: weatherCode.value == 0 ? null : weatherCode.value,
+          minTemperature: temperatureCode.minTemperature == 0
+              ? null
+              : temperatureCode.minTemperature,
+          maxTemperature: temperatureCode.maxTemperature == 0
+              ? null
+              : temperatureCode.maxTemperature,
+        )
+        .then((result) => _searchFeedList.addAll(result))
+        .then((_) {
+      changeFeedListLoadingStatus(false);
+      setLastFeedDateTime();
+      notifyListeners();
+    });
   }
 
   Future<void> fetchFeedWhenScroll(
@@ -128,7 +131,8 @@ class OotdSearchViewModel with ChangeNotifier {
     if (!_isFeedListLoading) {
       changeFeedListLoadingStatus(true);
 
-      final result = await _getSearchFeedsUseCase.execute(
+      await _getSearchFeedsUseCase
+          .execute(
         limit: _fetchCount,
         createdAt: _lastFeedDateTime,
         seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
@@ -139,24 +143,19 @@ class OotdSearchViewModel with ChangeNotifier {
         maxTemperature: temperatureCode.maxTemperature == 0
             ? null
             : temperatureCode.maxTemperature,
-      );
-
-      if (result.length < _fetchCount) {
-        changeIsFeedListReachEndStatus(true);
-        log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
-      }
-
-      _searchFeedList.addAll(result);
-
-      log('feed loaded',
-          name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-      log('fetched feed count: ${result.length.toString()}',
-          name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-
-      changeFeedListLoadingStatus(false);
-      setLastFeedDateTime();
-
-      notifyListeners();
+      )
+          .then((result) {
+        log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
+        if (result.length < _fetchCount) {
+          changeIsFeedListReachEndStatus(true);
+          log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
+        }
+        _searchFeedList.addAll(result);
+      }).then((_) {
+        setLastFeedDateTime();
+        changeFeedListLoadingStatus(false);
+        notifyListeners();
+      });
     }
   }
 }
