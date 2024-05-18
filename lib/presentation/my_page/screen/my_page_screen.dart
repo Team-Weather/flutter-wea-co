@@ -115,8 +115,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
       onTap: () {
         RouterStatic.pushToOotdDetail(
           context,
-          id: currentFeed.id ?? '',
-          imagePath: currentFeed.imagePath,
+          feed: currentFeed
         );
       },
       onLongPress: () {
