@@ -52,142 +52,136 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
         appBar: _appBar(viewModel),
         body: viewModel.showSpinner
             ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                controller: _scrollController,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 15, 28, 30),
-                  child: Column(
-                    children: [
-                      widget.feed != null
-                          ?
-                          // 기존 피드 수정
-                          Image.file(File(widget.feed!.imagePath))
-                          :
-                          // 새로운 피드 작성
-                          Stack(
-                              children: [
-                                _newCroppedFile ==
-                                        null // 새 크롭 화면의 image null 검사
-                                    ? viewModel.croppedImage ==
-                                            null // viewModel image null 검사
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : Image.file(viewModel.croppedImage!)
-                                    : Image.file(File(_newCroppedFile!.path)),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      await viewModel.getOriginImage();
-                                      await cropImage(
-                                          viewModel.originImage!.path);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(5.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.crop),
-                                            Text('수정'),
-                                          ],
+            : SafeArea(
+              child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(22, 15, 22, 30),
+                    child: Column(
+                      children: [
+                        widget.feed != null
+                            ?
+                            // 기존 피드 수정
+                            Image.file(File(widget.feed!.imagePath))
+                            :
+                            // 새로운 피드 작성
+                            Stack(
+                                children: [
+                                  _newCroppedFile ==
+                                          null // 새 크롭 화면의 image null 검사
+                                      ? viewModel.croppedImage ==
+                                              null // viewModel image null 검사
+                                          ? const Center(
+                                              child: CircularProgressIndicator())
+                                          : Image.file(viewModel.croppedImage!)
+                                      : Image.file(File(_newCroppedFile!.path)),
+                                  Positioned(
+                                    top: 10,
+                                    right: 10,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        await viewModel.getOriginImage();
+                                        await cropImage(
+                                            viewModel.originImage!.path);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(5.0),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.crop),
+                                              Text('수정'),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                      !_isScrolledUp
-                          ? const SizedBox()
-                          : const Padding(
-                              padding: EdgeInsets.only(top: 20),
-                              child: Text(
-                                '어떤 코디를 하셨나요?',
-                                style: TextStyle(
-                                  color: Color(0xFF979797),
-                                  fontSize: 15,
-                                ),
+                                ],
                               ),
-                            ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isScrolledUp = !_isScrolledUp;
-                            });
-                            _scrollTo();
-                          },
-                          icon: _isScrolledUp
-                              ? const Icon(Icons.arrow_circle_down_outlined,
-                                  size: 40)
-                              : const Icon(Icons.arrow_circle_up_outlined,
-                                  size: 40),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          widget.feed != null
-                              ? Row(
-                                  children: [
-                                    _tags(widget.feed!.location.city),
-                                    _tags(SeasonCode.fromValue(
-                                            widget.feed!.seasonCode)
-                                        .description),
-                                    _tags(
-                                        '${widget.feed!.weather.temperature}°'),
-                                    _tags(WeatherCode.fromDtoCode(
-                                            widget.feed!.weather.code)
-                                        .description),
-                                  ],
-                                )
-                              : Row(
-                                  children: [
-                                    _tags(viewModel
-                                        .dailyLocationWeather!.location.city),
-                                    _tags(SeasonCode.fromValue(viewModel
-                                            .dailyLocationWeather!.seasonCode)
-                                        .description),
-                                    _tags('${viewModel.weather!.temperature}°'),
-                                    _tags(WeatherCode.fromDtoCode(
-                                            viewModel.weather!.code)
-                                        .description),
-                                  ],
-                                ),
-                          const SizedBox(height: 15),
-                          TextField(
-                            controller: _contentTextController,
-                            maxLength: maxLength,
-                            maxLines: 10,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              hintText: '어떤 코디를 하셨나요?',
-                              hintStyle:
-                                  const TextStyle(color: Color(0xFF979797)),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isScrolledUp = !_isScrolledUp;
+                              });
+                              _scrollTo();
+                            },
+                            icon: _isScrolledUp
+                                ? const Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    size: 50,
+                                  )
+                                : const Icon(
+                                    Icons.keyboard_arrow_up_outlined,
+                                    size: 50,
+                                  ),
                           ),
-                          SizedBox(
-                            height: MediaQuery.of(context).viewInsets.bottom,
-                          )
-                        ],
-                      ),
-                    ],
+                        ),
+                        Column(
+                          children: [
+                            widget.feed != null
+                                ? Row(
+                                    children: [
+                                      _tags(widget.feed!.location.city),
+                                      _tags(SeasonCode.fromValue(
+                                              widget.feed!.seasonCode)
+                                          .description),
+                                      _tags(
+                                          '${widget.feed!.weather.temperature}°'),
+                                      _tags(WeatherCode.fromDtoCode(
+                                              widget.feed!.weather.code)
+                                          .description),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      _tags(viewModel
+                                          .dailyLocationWeather!.location.city),
+                                      _tags(SeasonCode.fromValue(viewModel
+                                              .dailyLocationWeather!.seasonCode)
+                                          .description),
+                                      _tags('${viewModel.weather!.temperature}°'),
+                                      _tags(WeatherCode.fromDtoCode(
+                                              viewModel.weather!.code)
+                                          .description),
+                                    ],
+                                  ),
+                            const SizedBox(height: 15),
+                            TextField(
+                              controller: _contentTextController,
+                              maxLength: maxLength,
+                              maxLines: 10,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                hintText: '어떤 코디를 하셨나요?',
+                                hintStyle:
+                                    const TextStyle(color: Color(0xFF979797)),
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).viewInsets.bottom,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+            ),
       ),
     );
   }
