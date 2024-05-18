@@ -10,7 +10,7 @@ import 'package:weaco/domain/feed/use_case/remove_my_page_feed_use_case.dart';
 import 'package:weaco/domain/user/use_case/get_my_profile_use_case.dart';
 import 'package:weaco/domain/user/use_case/get_profile_image_list_use_case.dart';
 import 'package:weaco/domain/user/use_case/sign_up_use_case.dart';
-import 'package:weaco/presentation/my_page/my_page_view_model.dart';
+import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/sign_up/view_model/sign_up_view_model.dart';
 import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
