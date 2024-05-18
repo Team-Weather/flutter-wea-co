@@ -5,6 +5,8 @@ class MockUserAuthDataSourceImpl implements UserAuthDataSource {
   int signInCallCount = 0;
   int signOutCallCount = 0;
   int signUpCallCount = 0;
+  int signInCheckCallCount = 0;
+  String? signInCheckReturnValue;
 
   Map<String, dynamic> methodParameter = {};
 
@@ -15,8 +17,10 @@ class MockUserAuthDataSourceImpl implements UserAuthDataSource {
     signInCallCount = 0;
     signOutCallCount = 0;
     signUpCallCount = 0;
+    signInCheckCallCount = 0;
     methodParameter.clear();
     returnValue = false;
+    signInCheckReturnValue = null;
   }
 
   @override
@@ -51,5 +55,11 @@ class MockUserAuthDataSourceImpl implements UserAuthDataSource {
   Future<bool> signOut() {
     signOutCallCount++;
     return Future.value(returnValue);
+  }
+
+  @override
+  String? signInCheck() {
+    signInCheckCallCount++;
+    return signInCheckReturnValue;
   }
 }

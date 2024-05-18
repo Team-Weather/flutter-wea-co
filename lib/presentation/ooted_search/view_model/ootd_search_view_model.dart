@@ -47,8 +47,11 @@ class OotdSearchViewModel with ChangeNotifier {
   }
 
   void setLastFeedDateTime() {
-    _lastFeedDateTime = _searchFeedList[_searchFeedList.length - 1].createdAt;
-    notifyListeners();
+    if (_searchFeedList.isNotEmpty) {
+      _lastFeedDateTime = _searchFeedList[_searchFeedList.length - 1].createdAt;
+
+      notifyListeners();
+    }
   }
 
   void _clearFeedList() {
@@ -68,6 +71,7 @@ class OotdSearchViewModel with ChangeNotifier {
 
     changePageLoadingStatus(false);
     setLastFeedDateTime();
+
     notifyListeners();
   }
 
@@ -99,10 +103,6 @@ class OotdSearchViewModel with ChangeNotifier {
     );
 
     _searchFeedList.addAll(result);
-
-    log('feed loaded', name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-    log('fetched feed count: ${result.length.toString()}',
-        name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
 
     changeFeedListLoadingStatus(false);
     setLastFeedDateTime();
@@ -141,20 +141,17 @@ class OotdSearchViewModel with ChangeNotifier {
             : temperatureCode.maxTemperature,
       );
 
+      _searchFeedList.addAll(result);
+
+      log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
+
       if (result.length < _fetchCount) {
         changeIsFeedListReachEndStatus(true);
         log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
       }
 
-      _searchFeedList.addAll(result);
-
-      log('feed loaded',
-          name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-      log('fetched feed count: ${result.length.toString()}',
-          name: 'OotdSearchViewModel.fetchFeedWhenFilterChange()');
-
-      changeFeedListLoadingStatus(false);
       setLastFeedDateTime();
+      changeFeedListLoadingStatus(false);
 
       notifyListeners();
     }

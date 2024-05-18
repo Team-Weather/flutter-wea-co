@@ -12,4 +12,6 @@ abstract interface class UserAuthRepository {
   Future<bool> signOut();
 
   Future<bool> logOut();
+
+  String? signInCheck();
 }
