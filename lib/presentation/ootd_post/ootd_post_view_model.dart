@@ -52,12 +52,12 @@ class OotdPostViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveFeed(String description) async {
+  Future<void> saveFeed(String email, String description) async {
     final now = DateTime.now();
     final Feed feed = Feed(
       id: null,
       imagePath: _croppedImage!.path,
-      userEmail: 'abc@gmail.com',
+      userEmail: email,
       description: description,
       weather: Weather(
         temperature: _weather!.temperature,

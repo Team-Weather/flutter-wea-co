@@ -8,6 +8,7 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
   static const int maxLength = 300;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _contentTextController = TextEditingController();
+  String _email = '';
   bool isClicked = false;
   bool _isScrolledUp = true;
   CroppedFile? _newCroppedFile;
@@ -34,6 +36,10 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     if (widget.feed != null) {
       _contentTextController.text = widget.feed!.description;
     }
+
+    Future.microtask(() {
+      _email = context.read<UserProvider>().email!;
+    });
   }
 
   @override
@@ -214,12 +220,12 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
               await viewModel.editFeed(
                   widget.feed!, _contentTextController.text);
             } else {
-              await viewModel.saveFeed(_contentTextController.text);
+              await viewModel.saveFeed(_email, _contentTextController.text);
             }
 
             if (mounted) {
               if (viewModel.saveStatus) {
-                RouterStatic.popFromOotdPost(context);
+                RouterStatic.goToDefault(context);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
