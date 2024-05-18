@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 20),
                           // current temperature
                           Text(
-                            '${viewModel.currentWeather!.temperature}°',
+                            '${viewModel.currentWeather!.temperature}℃',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 60,
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Column(
                                 children: [
                                   Text(
-                                    '최고 ${viewModel.dailyLocationWeather!.highTemperature}°',
+                                    '최고 ${viewModel.dailyLocationWeather!.highTemperature}℃',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Text(
-                                    '최저 ${viewModel.dailyLocationWeather!.lowTemperature}°',
+                                    '최저 ${viewModel.dailyLocationWeather!.lowTemperature}℃',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          '$temperatureGapPresentation°',
+                                          '$temperatureGapPresentation℃',
                                           style: const TextStyle(
                                             fontSize: 30,
                                             color: Colors.white,

@@ -1,4 +1,4 @@
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 
 enum WeatherCode {
   noData(

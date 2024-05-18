@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/temperature_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
@@ -42,9 +43,21 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
     return isPageLoading
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              backgroundColor: WeacoColors.backgroundColor,
+              title: const Text(
+                'OOTD 검색',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: WeacoColors.greyColor90,
+                ),
+              ),
+            ),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -52,10 +65,10 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         dropDownButton(
-                            defaultText: '계절',
-                            borderColor: const Color(0xFFF2C347),
+                            defaultText: '🌸 계절',
+                            borderColor: WeacoColors.accentColor,
                             items: seasonItemList,
-                            width: 80,
+                            width: 110,
                             selectedValueIndex: 0,
                             onChanged: (value) {
                               log(value.toString(), name:'계절');
@@ -73,8 +86,8 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             },
                             fontSize: 13),
                         dropDownButton(
-                            defaultText: '날씨',
-                            borderColor: const Color(0xFF4C8DE6),
+                            defaultText: '☀️ 날씨',
+                            borderColor: WeacoColors.accentColor,
                             items: weatherItemList,
                             width: 110,
                             selectedValueIndex: 1,
@@ -94,10 +107,10 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             },
                             fontSize: 13),
                         dropDownButton(
-                            defaultText: '기온',
-                            borderColor: const Color(0xFFE2853F),
+                            defaultText: '🌡️ 온도',
+                            borderColor: WeacoColors.accentColor,
                             items: temperatureItemList,
-                            width: 130,
+                            width: 110,
                             selectedValueIndex: 2,
                             onChanged: (value) {
                               log(value.toString(), name:'기온');

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weaco/common/colors.dart';
+import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 
 class RecommandLoginBottomSheetWidget extends StatelessWidget {

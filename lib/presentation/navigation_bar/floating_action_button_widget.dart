@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 
 class FloatingActionButtonWidget extends StatefulWidget {
   const FloatingActionButtonWidget({super.key});
