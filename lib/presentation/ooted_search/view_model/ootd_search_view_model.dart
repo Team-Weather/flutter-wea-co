@@ -62,17 +62,16 @@ class OotdSearchViewModel with ChangeNotifier {
   Future<void> getInitialFeedList() async {
     changePageLoadingStatus(true);
     try {
-      await _getSearchFeedsUseCase
-          .execute(
+      final result = await _getSearchFeedsUseCase.execute(
         limit: _fetchCount,
-      )
-          .then((result) {
-        _searchFeedList = result;
-      }).then((_) {
-        changePageLoadingStatus(false);
-        setLastFeedDateTime();
-        notifyListeners();
-      });
+      );
+
+      _searchFeedList = result;
+
+      changePageLoadingStatus(false);
+      setLastFeedDateTime();
+
+      notifyListeners();
     } on Exception catch (e) {
       log(e.toString(), name: 'OotdSearchViewModel.fetchInitialFeedList()');
     }
@@ -92,25 +91,25 @@ class OotdSearchViewModel with ChangeNotifier {
     _clearFeedList();
     changeFeedListLoadingStatus(true);
 
-    await _getSearchFeedsUseCase
-        .execute(
-          limit: _fetchCount,
-          createdAt: null,
-          seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
-          weatherCode: weatherCode.value == 0 ? null : weatherCode.value,
-          minTemperature: temperatureCode.minTemperature == 0
-              ? null
-              : temperatureCode.minTemperature,
-          maxTemperature: temperatureCode.maxTemperature == 0
-              ? null
-              : temperatureCode.maxTemperature,
-        )
-        .then((result) => _searchFeedList.addAll(result))
-        .then((_) {
-      changeFeedListLoadingStatus(false);
-      setLastFeedDateTime();
-      notifyListeners();
-    });
+    final result = await _getSearchFeedsUseCase.execute(
+      limit: _fetchCount,
+      createdAt: null,
+      seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
+      weatherCode: weatherCode.value == 0 ? null : weatherCode.value,
+      minTemperature: temperatureCode.minTemperature == 0
+          ? null
+          : temperatureCode.minTemperature,
+      maxTemperature: temperatureCode.maxTemperature == 0
+          ? null
+          : temperatureCode.maxTemperature,
+    );
+
+    _searchFeedList.addAll(result);
+
+    changeFeedListLoadingStatus(false);
+    setLastFeedDateTime();
+
+    notifyListeners();
   }
 
   Future<void> fetchFeedWhenScroll(
@@ -131,8 +130,7 @@ class OotdSearchViewModel with ChangeNotifier {
     if (!_isFeedListLoading) {
       changeFeedListLoadingStatus(true);
 
-      await _getSearchFeedsUseCase
-          .execute(
+      final result = await _getSearchFeedsUseCase.execute(
         limit: _fetchCount,
         createdAt: _lastFeedDateTime,
         seasonCode: seasonCode.value == 0 ? null : seasonCode.value,
@@ -143,19 +141,19 @@ class OotdSearchViewModel with ChangeNotifier {
         maxTemperature: temperatureCode.maxTemperature == 0
             ? null
             : temperatureCode.maxTemperature,
-      )
-          .then((result) {
-        log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
-        if (result.length < _fetchCount) {
-          changeIsFeedListReachEndStatus(true);
-          log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
-        }
-        _searchFeedList.addAll(result);
-      }).then((_) {
-        setLastFeedDateTime();
-        changeFeedListLoadingStatus(false);
-        notifyListeners();
-      });
+      );
+
+      log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
+      if (result.length < _fetchCount) {
+        changeIsFeedListReachEndStatus(true);
+        log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
+      }
+      _searchFeedList.addAll(result);
+
+      setLastFeedDateTime();
+      changeFeedListLoadingStatus(false);
+
+      notifyListeners();
     }
   }
 }
