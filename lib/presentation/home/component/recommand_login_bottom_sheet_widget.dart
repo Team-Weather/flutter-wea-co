@@ -54,7 +54,7 @@ class RecommandLoginBottomSheetWidget extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                RouterStatic.goToSignUp(context);
+                RouterStatic.pushToSignUp(context);
                 context.pop();
               },
               child: const Text(
