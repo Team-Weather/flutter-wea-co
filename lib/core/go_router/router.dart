@@ -54,11 +54,8 @@ final router = GoRouter(
                             getIt<GetRecommendedFeedsUseCase>(),
                       )),
               ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
-              ChangeNotifierProvider(create: (_) => CameraViewModel()),
-              ChangeNotifierProvider(
-                create: (_) => getIt<OotdFeedViewModel>(),
-                // child: const OotdFeedScreen<OotdFeedViewModel>(),
-              ),
+              ChangeNotifierProvider(create: (_) => getIt<CameraViewModel>()),
+              ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
               ChangeNotifierProvider(
                   create: (context) => getIt<OotdSearchViewModel>()),
               ChangeNotifierProvider(
