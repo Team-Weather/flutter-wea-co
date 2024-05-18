@@ -13,7 +13,7 @@ enum WeatherCode {
   partlyCloudy(
     value: 2,
     iconPath: ImagePath.weatherPartlyCloudy,
-    description: '조금 흐림',
+    description: '흐림',
   ), // 조금 흐림
   fog(
     value: 3,
@@ -75,6 +75,7 @@ enum WeatherCode {
   const WeatherCode(
       {required this.value, required this.iconPath, required this.description});
 
+  // WeatherCode의 value 값으로 WeatherCode 매핑
   static WeatherCode fromValue(int value) {
     return switch (value) {
       0 => WeatherCode.noData,
@@ -95,21 +96,22 @@ enum WeatherCode {
     };
   }
 
+  // Api에서 받아온 데이터를 WeatherCode로 변경
   static WeatherCode fromDtoCode(int code) {
     return switch (code) {
       0 => WeatherCode.clearSky,
       1 || 2 || 3 => WeatherCode.partlyCloudy,
       45 || 48 => WeatherCode.fog,
-      51 || 53 || 55 => WeatherCode.drizzle,
-      56 || 57 => WeatherCode.freezingDrizzle,
-      61 || 63 || 65 => WeatherCode.rain,
+      51 || 53 || 55 || 56 || 57 => WeatherCode.drizzle,
+      // 56 || 57 => WeatherCode.freezingDrizzle,
+      61 || 63 || 65 || 66 || 67 => WeatherCode.rain,
       80 || 81 || 82 => WeatherCode.rainShower,
-      66 || 67 => WeatherCode.freezingRain,
+      // 66 || 67 => WeatherCode.freezingRain,
       71 || 73 || 75 => WeatherCode.snow,
       77 => WeatherCode.snowGrain,
       85 || 86 => WeatherCode.snowShower,
-      95 => WeatherCode.thunderStorm,
-      96 || 99 => WeatherCode.thunderStormHail,
+      95 || 96 || 99 => WeatherCode.thunderStorm,
+      // 96 || 99 => WeatherCode.thunderStormHail,
       _ => throw ArgumentError('Invalid value')
     };
   }

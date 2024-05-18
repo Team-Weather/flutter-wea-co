@@ -275,21 +275,9 @@ void main() {
             seasonCode: 0,
             highTemperature: 30,
             lowTemperature: 20,
-            weatherList: [
-              mockWeather,
-              mockWeather,
-              mockWeather,
-            ],
-            yesterDayWeatherList: [
-              mockWeather,
-              mockWeather,
-              mockWeather,
-            ],
-            tomorrowWeatherList: [
-              mockWeather,
-              mockWeather,
-              mockWeather,
-            ],
+            weatherList: List.generate(24, (index) => mockWeather),
+            yesterDayWeatherList: List.generate(24, (index) => mockWeather),
+            tomorrowWeatherList: List.generate(24, (index) => mockWeather),
             location: mockLocation,
             createdAt: DateTime.now(),
           );
