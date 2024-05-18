@@ -28,7 +28,7 @@ enum WeatherCode {
   freezingDrizzle(
       value: 5,
       iconPath: ImagePath.weatherDrizzle,
-      description: '얼어 붙은 이슬비'), // 얼어 붙은 이슬비
+      description: '진눈깨비'),
   rain(
     value: 6,
     iconPath: ImagePath.weatherRain,
@@ -65,7 +65,7 @@ enum WeatherCode {
   thunderStormHail(
     value: 13,
     iconPath: ImagePath.weatherThunderStormHail,
-    description: '우박을 동반한 뇌우',
+    description: '눈보라',
   ); // 우박을 동반한 뇌우
 
   final int value;
@@ -102,16 +102,15 @@ enum WeatherCode {
       0 => WeatherCode.clearSky,
       1 || 2 || 3 => WeatherCode.partlyCloudy,
       45 || 48 => WeatherCode.fog,
-      51 || 53 || 55 || 56 || 57 => WeatherCode.drizzle,
-      // 56 || 57 => WeatherCode.freezingDrizzle,
-      61 || 63 || 65 || 66 || 67 => WeatherCode.rain,
+      51 || 53 || 55 => WeatherCode.drizzle,
+      56 || 57 ||  66 || 67 => WeatherCode.freezingDrizzle,
+      61 || 63 || 65 => WeatherCode.rain,
       80 || 81 || 82 => WeatherCode.rainShower,
-      // 66 || 67 => WeatherCode.freezingRain,
       71 || 73 || 75 => WeatherCode.snow,
       77 => WeatherCode.snowGrain,
       85 || 86 => WeatherCode.snowShower,
-      95 || 96 || 99 => WeatherCode.thunderStorm,
-      // 96 || 99 => WeatherCode.thunderStormHail,
+      95 => WeatherCode.thunderStorm,
+      96 || 99 => WeatherCode.thunderStormHail,
       _ => throw ArgumentError('Invalid value')
     };
   }
