@@ -24,7 +24,6 @@ class WeatherByTimeWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 60,
             child: Text(
               time == '오전 00시' ? '내일' : time,
               textAlign: TextAlign.center,
