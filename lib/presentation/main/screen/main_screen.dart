@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,11 +101,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               ? Theme.of(context).canvasColor
               : Theme.of(context).primaryColor,
           child: (isExpanded)
-              ? Stack(
-                  children: [
-                    Stack(
-                      children: [
-                        GestureDetector(
+              ? SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
                           onTap: () {
                             _onPressedButton(
                               viewModel: viewModel,
@@ -112,19 +114,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               context: context,
                             );
                           },
-                          child: AnimatedPositioned(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            left: isExpanded ? 22 : 32,
-                            top: 16,
-                            child: const ImageIcon(
-                              AssetImage(ImagePath.imageIconCam),
-                              size: 40,
-                              color: Color(0xffF2C347),
-                            ),
+                          child: const ImageIcon(
+                            AssetImage(ImagePath.imageIconCam),
+                            size: 40,
+                            color: Color(0xffF2C347),
                           ),
                         ),
-                        GestureDetector(
+                      ),
+                      Expanded(
+                        child: GestureDetector(
                           onTap: () {
                             _onPressedButton(
                               viewModel: viewModel,
@@ -132,21 +130,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               context: context,
                             );
                           },
-                          child: AnimatedPositioned(
-                            duration: const Duration(milliseconds: 1000),
-                            curve: Curves.easeInOut,
-                            top: 16,
-                            right: isExpanded ? 22 : 32,
-                            child: const ImageIcon(
-                              AssetImage(ImagePath.imageIconPhoto),
-                              size: 40,
-                              color: Color(0xffF2C347),
-                            ),
+                          child: const ImageIcon(
+                            AssetImage(ImagePath.imageIconPhoto),
+                            size: 40,
+                            color: Color(0xffF2C347),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 )
               : const ImageIcon(
                   AssetImage(ImagePath.imageIconFeedAdd),
