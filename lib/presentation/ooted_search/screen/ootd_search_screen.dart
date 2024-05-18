@@ -1,10 +1,8 @@
 import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/enum/season_code.dart';
