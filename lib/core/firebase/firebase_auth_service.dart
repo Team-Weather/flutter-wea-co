@@ -15,6 +15,7 @@ class FirebaseAuthService {
 
   FirebaseAuthService() {
     _addAuthStateChangesListener();
+    _user = _firebaseAuth.currentUser;
   }
 
   // 회원가입
