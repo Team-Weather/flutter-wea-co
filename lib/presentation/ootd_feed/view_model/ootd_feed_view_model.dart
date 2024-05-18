@@ -1,28 +1,63 @@
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
-import 'package:weaco/domain/feed/use_case/get_search_feeds_use_case.dart';
+import 'package:weaco/domain/feed/use_case/get_ootd_feeds_use_case.dart';
+import 'package:weaco/domain/weather/model/daily_location_weather.dart';
+import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
+import 'package:weaco/presentation/common/component/base_change_notifier.dart';
+import 'package:weaco/presentation/common/enum/exception_alert_type.dart';
+import 'package:weaco/presentation/common/state/exception_status.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 
-class OotdFeedViewModel extends ChangeNotifier {
+class OotdFeedViewModel extends BaseChangeNotifier {
+  DailyLocationWeather? _dailyLocationWeather;
+  bool _isEndOfData = false;
   final List<OotdCard> _feedList = [];
   int _currentIndex = 0;
-  final GetSearchFeedsUseCase _getSearchFeedsUseCase;
+  final GetOotdFeedsUseCase _getOotdFeedsUseCase;
+  final GetDailyLocationWeatherUseCase _getDailyLocationWeatherUseCase;
 
-  OotdFeedViewModel({required GetSearchFeedsUseCase getSearchFeedsUseCase})
-      : _getSearchFeedsUseCase = getSearchFeedsUseCase {
-    _loadMorePage();
+  OotdFeedViewModel(
+      {required GetOotdFeedsUseCase getOotdFeedsUseCase,
+      required GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase})
+      : _getOotdFeedsUseCase = getOotdFeedsUseCase,
+        _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase {
+    // initPage();
   }
 
   List<OotdCard> get feedList => List.unmodifiable(_feedList);
+
   int get currentIndex => _currentIndex;
 
-  Future<void> _loadMorePage() async {
-    final dataList = (await _getSearchFeedsUseCase.execute(
-        createdAt: (_feedList.isEmpty) ? null : _feedList.last.feed.createdAt,
-        limit: 2));
-    _feedList.addAll(dataList.map((feed) => OotdCard(feed: feed)));
-    if (dataList.isNotEmpty) {
-      notifyListeners();
+  bool get isEndOfData => _isEndOfData;
+
+  Future<void> _getFeedList() async {
+    log('함수 호출', name: 'OotdFeedViewModel._getFeedList()');
+    if(_isEndOfData) return;
+    try {
+      log( _feedList.isNotEmpty ? _feedList.last.feed.createdAt.toString() : 'empty', name: 'OotdFeedViewModel._getFeedList()');
+      final dataList = (await _getOotdFeedsUseCase.execute(
+          createdAt:
+              _feedList.isNotEmpty ? _feedList.last.feed.createdAt : null,
+          dailyLocationWeather: _dailyLocationWeather!));
+      _feedList.addAll(dataList.map((feed) => OotdCard(feed: feed)));
+      if (dataList.length < 10) {
+        _isEndOfData = true;
+      }
+    } catch (e) {
+      notifyException(exception: e);
+    }
+    notifyListeners();
+  }
+
+  Future<void> initPage() async {
+    log('데이터 초기화', name: 'OotdFeedViewModel.initPage()');
+    try {
+      _currentIndex = 0;
+      _isEndOfData = false;
+      _dailyLocationWeather = (await _getDailyLocationWeatherUseCase.execute());
+      _feedList.clear();
+      _getFeedList();
+    } catch (e) {
+      notifyException(exception: e);
     }
   }
 
@@ -36,11 +71,22 @@ class OotdFeedViewModel extends ChangeNotifier {
       return nextIndex;
     }
     _currentIndex = nextIndex;
-    if (_currentIndex + 1 == _feedList.length) {
+    notifyListeners();
+    if (_currentIndex + 2 >= _feedList.length) {
       log('무한 스크롤: 데이터 요청', name: 'OotdFeedViewModel.moveIndex()');
-      _loadMorePage();
+      _getFeedList();
     }
-    Future.delayed(const Duration(milliseconds: 125)).then((value) => notifyListeners());
     return _currentIndex;
+  }
+
+  @override
+  ExceptionStatus exceptionToExceptionStatus({required Object? exception}) {
+    log(exception.toString(), name: 'OotdFeedViewModel.exceptionToExceptionStatus()');
+    switch (exception) {
+      case _:
+        ExceptionAlertType status = ExceptionAlertType.snackBar;
+        return ExceptionStatus(
+            message: '네트워크 오류', exceptionAlertType: status);
+    }
   }
 }

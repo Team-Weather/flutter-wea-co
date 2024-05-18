@@ -20,8 +20,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
   final List<String> seasonItemList =
       List.generate(4, (index) => SeasonCode.fromValue(index + 1).description);
 
-  final List<String> weatherItemList = List.generate(
-      12, (index) => WeatherCode.fromValue(index + 1).description);
+  final List<String> weatherItemList = [1, 2, 3, 4, 6, 7, 9, 10, 12].map((index) => WeatherCode.fromValue(index).description).toList();
   final List<String> temperatureItemList = List.generate(
       6, (index) => TemperatureCode.fromValue(index + 1).description);
 
@@ -74,7 +73,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                             defaultText: '날씨',
                             borderColor: const Color(0xFF4C8DE6),
                             items: weatherItemList,
-                            width: 120,
+                            width: 100,
                             selectedValueIndex: 1,
                             onChanged: (value) {
                               ootdSearchViewModel.fetchFeedWhenFilterChange(
@@ -155,7 +154,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                RouterStatic.goToOotdDetail(
+                                RouterStatic.pushToOotdDetail(
                                   context,
                                   id: searchFeedList[index].id ?? '',
                                   imagePath: searchFeedList[index].imagePath,

@@ -12,6 +12,7 @@ import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
 import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
+import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/camera_view_model.dart';
 import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
 
@@ -61,7 +62,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         controller: _tabController,
         children: const [
           HomeScreen(),
-          OotdFeedScreen(),
+          OotdFeedScreen<OotdFeedViewModel>(),
           // 피드 등록 버튼 자리의 화면 대체용
           SizedBox(),
           OotdSearchScreen(),

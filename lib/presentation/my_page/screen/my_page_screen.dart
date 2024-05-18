@@ -113,7 +113,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
     return GestureDetector(
       onTap: () {
-        RouterStatic.goToOotdDetail(
+        RouterStatic.pushToOotdDetail(
           context,
           id: currentFeed.id ?? '',
           imagePath: currentFeed.imagePath,
