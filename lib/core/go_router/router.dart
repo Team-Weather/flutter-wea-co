@@ -149,10 +149,9 @@ final router = GoRouter(
       builder: (context, state) {
         return ChangeNotifierProvider(
           create: (_) => getIt<OotdDetailViewModel>(
-              param1: state.uri.queryParameters['id'] ?? ''),
+              param1: (state.extra as Feed).id),
           child: OotdDetailScreen<OotdDetailViewModel>(
-            id: state.uri.queryParameters['id'] ?? '',
-            mainImagePath: state.uri.queryParameters['imagePath'] ?? '',
+            feed: state.extra as Feed,
           ),
         );
       },

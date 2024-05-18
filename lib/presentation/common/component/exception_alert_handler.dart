@@ -21,7 +21,7 @@ class ExceptionAlertHandler {
       case ExceptionAlertType.snackBar:
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(milliseconds: 500),
-          behavior: SnackBarBehavior.fixed,
+          behavior: SnackBarBehavior.floating,
           content: Text(message),
         ));
         break;
