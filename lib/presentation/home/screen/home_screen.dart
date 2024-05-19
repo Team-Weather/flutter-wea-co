@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/util/reaction_util.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
@@ -80,7 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: _reactHeight(40)),
+                          SizedBox(
+                              height: ReactionUtil.reactHeight(
+                            context: context,
+                            marginHeight: 40,
+                          )),
                           // city
                           Text(
                             viewModel.dailyLocationWeather!.location.city,
@@ -100,7 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: _reactHeight(20)),
+                          SizedBox(
+                              height: ReactionUtil.reactHeight(
+                            context: context,
+                            marginHeight: 20,
+                          )),
                           // current temperature
                           Text(
                             '${viewModel.currentWeather!.temperature}℃',
@@ -109,7 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 60,
                             ),
                           ),
-                          SizedBox(height: _reactHeight(20)),
+                          SizedBox(
+                              height: ReactionUtil.reactHeight(
+                            context: context,
+                            marginHeight: 20,
+                          )),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -190,7 +203,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: _reactHeight(40)),
+                          SizedBox(
+                            height: ReactionUtil.reactHeight(
+                              context: context,
+                              marginHeight: 40,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -201,7 +219,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     SliverToBoxAdapter(
-                      child: SizedBox(height: _reactHeight(20)),
+                      child: SizedBox(
+                        height: ReactionUtil.reactHeight(
+                          context: context,
+                          marginHeight: 20,
+                        ),
+                      ),
                     ),
 
                     // ootd list
@@ -216,11 +239,5 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
       },
     );
-  }
-
-  double _reactHeight(double marginHeight) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double heightPercentage = marginHeight / screenHeight;
-    return screenHeight * heightPercentage;
   }
 }

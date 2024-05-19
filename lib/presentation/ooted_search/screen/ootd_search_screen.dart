@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/util/reaction_util.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/temperature_code.dart';
@@ -56,12 +57,12 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
               ),
             ),
             body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Flexible(
@@ -87,7 +88,12 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                               },
                               fontSize: 13),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: ReactionUtil.reactWidget(
+                            context: context,
+                            marginWidth: 10,
+                          ),
+                        ),
                         Flexible(
                           flex: 1,
                           child: dropDownButton(
@@ -111,54 +117,64 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                               },
                               fontSize: 13),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: ReactionUtil.reactWidget(
+                            context: context,
+                            marginWidth: 10,
+                          ),
+                        ),
                         Flexible(
                           flex: 1,
                           child: dropDownButton(
-                              defaultText: '🌡️ 온도',
-                              borderColor: WeacoColors.accentColor,
-                              items: temperatureItemList,
-                              selectedValueIndex: 2,
-                              onChanged: (value) {
-                                log(value.toString(), name: '기온');
-                                ootdSearchViewModel.fetchFeedWhenFilterChange(
-                                  seasonCodeValue: seasonItemList
-                                      .indexOf(selectedData[0] ?? ''),
-                                  weatherCodeValue: weatherItemList
-                                      .indexOf(selectedData[1] ?? ''),
-                                  temperatureCodeValue:
-                                      temperatureItemList.indexOf(value ?? ''),
-                                );
-                                setState(() {
-                                  selectedData[2] = value;
-                                });
-                              },
-                              fontSize: 12),
+                            defaultText: '🌡️ 온도',
+                            borderColor: WeacoColors.accentColor,
+                            items: temperatureItemList,
+                            selectedValueIndex: 2,
+                            onChanged: (value) {
+                              log(value.toString(), name: '기온');
+                              ootdSearchViewModel.fetchFeedWhenFilterChange(
+                                seasonCodeValue: seasonItemList
+                                    .indexOf(selectedData[0] ?? ''),
+                                weatherCodeValue: weatherItemList
+                                    .indexOf(selectedData[1] ?? ''),
+                                temperatureCodeValue:
+                                    temperatureItemList.indexOf(value ?? ''),
+                              );
+                              setState(() {
+                                selectedData[2] = value;
+                              });
+                            },
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Divider(),
-                    ),
-                    NotificationListener<UserScrollNotification>(
-                      onNotification: (UserScrollNotification notification) {
-                        if (notification.direction == ScrollDirection.reverse &&
-                            notification.metrics.maxScrollExtent * 0.85 <
-                                notification.metrics.pixels) {
-                          ootdSearchViewModel.fetchFeedWhenScroll(
-                            seasonCodeValue:
-                                seasonItemList.indexOf(selectedData[0] ?? ''),
-                            weatherCodeValue:
-                                weatherItemList.indexOf(selectedData[1] ?? ''),
-                            temperatureCodeValue: temperatureItemList
-                                .indexOf(selectedData[2] ?? ''),
-                          );
-                        }
+                  ),
+                  const Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+                    child: Divider(),
+                  ),
+                  NotificationListener<UserScrollNotification>(
+                    onNotification: (UserScrollNotification notification) {
+                      if (notification.direction == ScrollDirection.reverse &&
+                          notification.metrics.maxScrollExtent * 0.85 <
+                              notification.metrics.pixels) {
+                        ootdSearchViewModel.fetchFeedWhenScroll(
+                          seasonCodeValue:
+                              seasonItemList.indexOf(selectedData[0] ?? ''),
+                          weatherCodeValue:
+                              weatherItemList.indexOf(selectedData[1] ?? ''),
+                          temperatureCodeValue: temperatureItemList
+                              .indexOf(selectedData[2] ?? ''),
+                        );
+                      }
 
-                        return false;
-                      },
-                      child: Expanded(
+                      return false;
+                    },
+                    child: Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: GridView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: searchFeedList.length,
@@ -172,10 +188,8 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                RouterStatic.pushToOotdDetail(
-                                  context,
-                                  feed: searchFeedList[index]
-                                );
+                                RouterStatic.pushToOotdDetail(context,
+                                    feed: searchFeedList[index]);
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
@@ -189,9 +203,9 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                           },
                         ),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ),
           );
