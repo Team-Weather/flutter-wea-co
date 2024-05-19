@@ -4,13 +4,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/core/util/reaction_util.dart';
-import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/temperature_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/core/util/reaction_util.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
 
 class OotdSearchScreen extends StatefulWidget {
@@ -46,7 +46,8 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
         : Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              backgroundColor: WeacoColors.backgroundColor,
+              scrolledUnderElevation: 0,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: const Text(
                 'OOTD 검색',
                 style: TextStyle(
