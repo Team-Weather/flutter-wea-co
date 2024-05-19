@@ -4,6 +4,13 @@ import 'package:weaco/core/go_router/router.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 
 class RouterStatic {
+  static void clearAndNavigate(BuildContext context, String path) {
+    while (router.canPop() == true) {
+      router.pop();
+    }
+    router.pushReplacement(path);
+  }
+
   static void goToDefault(BuildContext context) {
     router.go(RouterPath.defaultPage.path);
   }
@@ -11,6 +18,7 @@ class RouterStatic {
   static void replaceToDefault(BuildContext context) {
     router.replace(RouterPath.defaultPage.path);
   }
+
   static void goToHome(BuildContext context) {
     router.go(RouterPath.home.path);
   }
@@ -71,8 +79,7 @@ class RouterStatic {
     router.push(RouterPath.ootdFeed.path);
   }
 
-  static void pushToOotdDetail(BuildContext context,
-      {required Feed feed}) {
+  static void pushToOotdDetail(BuildContext context, {required Feed feed}) {
     router.push(RouterPath.ootdDetail.path, extra: feed);
   }
 
