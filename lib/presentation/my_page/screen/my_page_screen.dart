@@ -6,6 +6,7 @@ import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
+import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/my_page/screen/component/my_profile_widget.dart';
 import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/user_page/screen/component/feed_grid/feed_grid_empty_widget.dart';
@@ -18,6 +19,19 @@ class MyPageScreen extends StatefulWidget {
 }
 
 class _MyPageScreenState extends State<MyPageScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      if (context.read<UserProvider>().email == null) {
+        context.read<MyPageViewModel>().clearMyPageViewModelState();
+      } else {
+        context.read<MyPageViewModel>().initializePageData();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     MyPageViewModel myPageViewModel = context.watch<MyPageViewModel>();
@@ -45,7 +59,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       Icons.settings,
                     ),
                     onPressed: () {
-                      RouterStatic.pushToAppSetting(context);
+                      RouterStatic.goToAppSetting(context);
                     },
                   ),
                 ],
@@ -113,10 +127,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
     return GestureDetector(
       onTap: () {
-        RouterStatic.pushToOotdDetail(
-          context,
-          feed: currentFeed
-        );
+        RouterStatic.pushToOotdDetail(context, feed: currentFeed);
       },
       onLongPress: () {
         showModalBottomSheet(
