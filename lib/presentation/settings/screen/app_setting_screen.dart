@@ -38,58 +38,68 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextButton(
-                  onPressed: () =>
-                      RouterStatic.pushToAppSettingLicense(context),
-                  child: Text(
-                    '라이선스',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextButton(
-                  onPressed: () => RouterStatic.pushToAppSettingPolicy(context),
-                  child: Text(
-                    '개인정보처리방침',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextButton(
-                  onPressed: () => AlertUtil.showAlert(
-                    context: context,
-                    exceptionAlert: ExceptionAlert.dialogTwoButton,
-                    message: '로그아웃 하시겠습니까?',
-                    leftButtonText: '취소',
-                    rightButtonText: '확인',
-                    onPressedLeft: () => Navigator.of(context).pop(),
-                    onPressedRight: _logOutSubmit,
-                  ),
-                  child: Text(
-                    '로그아웃',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextButton(
-                  onPressed: () => AlertUtil.showAlert(
-                    context: context,
-                    exceptionAlert: ExceptionAlert.dialogTwoButton,
-                    message: '회원탈퇴 하시겠습니까?',
-                    leftButtonText: '취소',
-                    rightButtonText: '확인',
-                    onPressedLeft: () => Navigator.of(context).pop(),
-                    onPressedRight: _signOutSubmit,
-                  ),
-                  child: Text(
-                    '회원탈퇴',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-              ],
+            TextButton(
+              onPressed: () => RouterStatic.pushToAppSettingLicense(context),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(double.infinity, 18),
+                alignment: Alignment.centerLeft,
+              ),
+              child: Text(
+                '라이선스',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => RouterStatic.pushToAppSettingPolicy(context),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(double.infinity, 18),
+                alignment: Alignment.centerLeft,
+              ),
+              child: Text(
+                '개인정보처리방침',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => AlertUtil.showAlert(
+                context: context,
+                exceptionAlert: ExceptionAlert.dialogTwoButton,
+                message: '로그아웃 하시겠습니까?',
+                leftButtonText: '취소',
+                rightButtonText: '확인',
+                onPressedLeft: () => Navigator.of(context).pop(),
+                onPressedRight: _logOutSubmit,
+              ),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(double.infinity, 18),
+                alignment: Alignment.centerLeft,
+              ),
+              child: Text(
+                '로그아웃',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => AlertUtil.showAlert(
+                context: context,
+                exceptionAlert: ExceptionAlert.dialogTwoButton,
+                message: '회원탈퇴 하시겠습니까?',
+                leftButtonText: '취소',
+                rightButtonText: '확인',
+                onPressedLeft: () => Navigator.of(context).pop(),
+                onPressedRight: _signOutSubmit,
+              ),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(double.infinity, 18),
+                alignment: Alignment.centerLeft,
+              ),
+              child: Text(
+                '회원탈퇴',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             const Spacer(),
             Center(child: Text('버전 v ${versionInfo?.version ?? '0.0.0.'}')),

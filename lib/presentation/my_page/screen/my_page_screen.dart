@@ -59,7 +59,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       Icons.settings,
                     ),
                     onPressed: () {
-                      RouterStatic.goToAppSetting(context);
+                      RouterStatic.pushToAppSetting(context);
                     },
                   ),
                 ],
