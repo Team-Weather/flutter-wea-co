@@ -89,7 +89,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                               fontSize: 13),
                         ),
                         SizedBox(
-                          width: ReactionUtil.reactWidget(
+                          width: ReactionUtil.reactWidth(
                             context: context,
                             marginWidth: 10,
                           ),
@@ -118,7 +118,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                               fontSize: 13),
                         ),
                         SizedBox(
-                          width: ReactionUtil.reactWidget(
+                          width: ReactionUtil.reactWidth(
                             context: context,
                             marginWidth: 10,
                           ),
