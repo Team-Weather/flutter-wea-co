@@ -11,7 +11,7 @@ import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
-import 'package:weaco/presentation/ootd_post/ootd_post_view_model.dart';
+import 'package:weaco/presentation/ootd_post/view_model/ootd_post_view_model.dart';
 
 class OotdPostScreen extends StatefulWidget {
   final Feed? feed;
@@ -117,6 +117,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: IconButton(
                             onPressed: () {
+                              FocusScope.of(context).unfocus();
                               setState(() {
                                 _isScrolledUp = !_isScrolledUp;
                               });
