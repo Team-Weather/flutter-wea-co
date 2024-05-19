@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
-                image: AssetImage(viewModel.backgroundImagePath),
+                image: NetworkImage(viewModel.backgroundImagePath),
               ),
             ),
             child: SafeArea(
