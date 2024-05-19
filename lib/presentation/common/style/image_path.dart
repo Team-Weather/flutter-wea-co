@@ -50,8 +50,15 @@ class ImagePath {
 
   static const String imageIconPhoto = '$_iconPath/weaco_photo_icon.png';
 
-  static const String weacoLogo =
-      'https://firebasestorage.googleapis.com/v0/b/weaco-f9878.appspot.com/o/3.001.png?alt=media&token=da2ba52d-25b0-4095-8a31-246830c0d1fa';
+  /// 스플래시용 여백이 많이 들어간 로고 이미지(주황구름+타이포)
+  static const String weacoLogo = '$_imagePath/logo_simbol.png';
+
+  /// 앱바에 주로 사용 될 타이포 로고 이미지
   static const String weacoLogoAppBar = '$_imagePath/logo_app_bar.png';
-  static const String weacoLogoSplash = '$_imagePath/logo_splash.png';
+
+  /// 앱 아이콘 이미지
+  static const String weacoLogoAppIcon = '$_imagePath/logo_app_icon.png';
+
+  /// 주황 구름 + 타이포 로고 이미지
+  static const String weacoLogoWithTypo = '$_imagePath/logo_with_typo.png';
 }

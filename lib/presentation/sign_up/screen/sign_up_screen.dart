@@ -50,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,9 +77,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image(
-            image: Image.network(ImagePath.weacoLogo).image,
-            width: 40,
-            height: 40,
+            image: Image.asset(ImagePath.weacoLogoWithTypo).image,
+            width: 80,
+            height: 80,
           ),
           const SizedBox(height: 8),
           const Text(
