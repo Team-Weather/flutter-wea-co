@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
-import 'package:weaco/presentation/ootd_post/picture_crop/picutre_crop_view_model.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
+import 'package:weaco/presentation/ootd_post/view_model/picutre_crop_view_model.dart';
 
 class PictureCropScreen extends StatefulWidget {
   final String sourcePath;
@@ -38,15 +40,19 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
       aspectRatio: const CropAspectRatio(ratioX: 9, ratioY: 16),
       uiSettings: [
         AndroidUiSettings(
-          toolbarColor: Colors.deepOrange,
-          toolbarWidgetColor: Colors.white,
+          toolbarTitle: '이미지 자르기',
+          toolbarColor: Colors.white,
+          toolbarWidgetColor: const Color(0xFFFC8800),
           initAspectRatio: CropAspectRatioPreset.ratio16x9,
           lockAspectRatio: true, // 비율 고정
         ),
         IOSUiSettings(
           title: '이미지 자르기',
+          doneButtonTitle: '확인',
+          cancelButtonTitle: '취소',
           minimumAspectRatio: 1.0, // 비율 고정
           rotateButtonsHidden: true,
+          resetButtonHidden: true,
           aspectRatioPickerButtonHidden: true,
         ),
       ],
@@ -72,16 +78,14 @@ class _PictureCropScreenState extends State<PictureCropScreen> {
 
       await viewModel.saveCroppedImage(file: File(_croppedFile!.path));
 
-      if (viewModel.status.isSuccess) {
-        if (mounted) {
+      if (mounted) {
+        if (viewModel.status.isSuccess) {
           RouterStatic.goToOotdPost(context);
-        }
-      } else if (viewModel.status.isError) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('잠시 후 다시 시도해 주시기 바랍니다.'),
-            ),
+        } else if (viewModel.status.isError) {
+          AlertUtil.showAlert(
+            context: context,
+            exceptionAlert: ExceptionAlert.snackBar,
+            message: '다시 시도해 주세요.',
           );
         }
       }

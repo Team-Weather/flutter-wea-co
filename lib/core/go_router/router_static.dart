@@ -16,7 +16,7 @@ class RouterStatic {
     router.pop(RouterPath.home.path);
   }
 
-  static void goToSignUp(BuildContext context) {
+  static void pushToSignUp(BuildContext context) {
     router.push(RouterPath.signUp.path);
   }
 
@@ -69,8 +69,8 @@ class RouterStatic {
   }
 
   static void pushToOotdDetail(BuildContext context,
-      {required String id, required String imagePath}) {
-    router.push('${RouterPath.ootdDetail.path}?id=$id&imagePath=$imagePath');
+      {required Feed feed}) {
+    router.push(RouterPath.ootdDetail.path, extra: feed);
   }
 
   static void goToCamera(BuildContext context) {

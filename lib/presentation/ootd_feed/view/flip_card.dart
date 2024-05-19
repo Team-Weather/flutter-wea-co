@@ -104,7 +104,7 @@ class _FlipCardState extends State<FlipCard>
       },
       child: GestureDetector(
         onTap: () {
-          RouterStatic.pushToOotdDetail(context, id: _data.feed.id ?? '', imagePath: _data.feed.imagePath);
+          RouterStatic.pushToOotdDetail(context, feed: _data.feed);
         },
         onHorizontalDragStart: (details) {
           _swipeStartPoint = details.localPosition.dx;

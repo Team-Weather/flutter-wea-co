@@ -106,8 +106,7 @@ class _UserPageScreenState extends State<UserPageScreen> {
       onTap: () {
         RouterStatic.pushToOotdDetail(
           context,
-          id: currentFeed.id ?? '',
-          imagePath: currentFeed.imagePath,
+          feed: currentFeed
         );
       },
       child: ClipRRect(
