@@ -24,6 +24,7 @@ class MyPageViewModel with ChangeNotifier {
   }
 
   static const _fetchCount = 21;
+  static const _fetchMoreCount = 9;
 
   UserProfile? _profile;
   List<Feed> _feedList = [];
@@ -130,7 +131,7 @@ class MyPageViewModel with ChangeNotifier {
             .execute(
           email: profile!.email,
           createdAt: _lastFeedDateTime,
-          limit: _fetchCount,
+          limit: _fetchMoreCount,
         )
             .then((result) {
           if (result.length < _fetchCount) {

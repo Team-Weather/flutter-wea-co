@@ -16,6 +16,7 @@ class OotdSearchViewModel with ChangeNotifier {
   }
 
   static const _fetchCount = 21;
+  static const _fetchMoreCount = 9;
 
   List<Feed> _searchFeedList = [];
 
@@ -127,7 +128,7 @@ class OotdSearchViewModel with ChangeNotifier {
       changeFeedListLoadingStatus(true);
 
       final result = await _getSearchFeedsUseCase.execute(
-        limit: _fetchCount,
+        limit: _fetchMoreCount,
         createdAt: _lastFeedDateTime,
         seasonCode: seasonCode.value <= 0 ? null : seasonCode.value,
         weatherCode: weatherCode.value <= 0 ? null : weatherCode.value,
@@ -139,7 +140,7 @@ class OotdSearchViewModel with ChangeNotifier {
 
       log('feed fetched', name: 'UserPageViewModel.fetchFeed()');
 
-      if (result.length < _fetchCount) {
+      if (result.length < _fetchMoreCount) {
         changeIsFeedListReachEndStatus(true);
         log('feed list reaches end!', name: 'UserPageViewModel.fetchFeed()');
       }

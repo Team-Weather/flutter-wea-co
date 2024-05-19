@@ -23,6 +23,7 @@ class UserPageViewModel with ChangeNotifier {
   }
 
   static const _fetchCount = 21;
+  static const _fetchMoreCount = 9;
 
   UserProfile? _userProfile;
   List<Feed> _userFeedList = [];
@@ -131,7 +132,7 @@ class UserPageViewModel with ChangeNotifier {
         final result = await _getUserPageFeedsUseCase.execute(
           email: _email,
           createdAt: _lastFeedDateTime,
-          limit: _fetchCount,
+          limit: _fetchMoreCount,
         );
 
         if (result.length < _fetchCount) {
