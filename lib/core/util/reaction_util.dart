@@ -10,7 +10,7 @@ class ReactionUtil {
     return screenHeight * heightPercentage;
   }
 
-  static double reactWidget(
+  static double reactWidth(
       {required BuildContext context, required double marginWidth}) {
     double screenWidth = MediaQuery.of(context).size.width;
     double widthPercentage = marginWidth / screenWidth;
