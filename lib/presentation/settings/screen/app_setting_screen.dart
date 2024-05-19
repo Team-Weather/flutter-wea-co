@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
@@ -104,12 +105,13 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
     context.read<AppSettingViewModel>().logOut().then((value) {
       if (value) {
         context.read<UserProvider>().signOut();
-        RouterStatic.replaceToDefault(context);
 
         AlertUtil.showAlert(
             context: context,
             exceptionAlert: ExceptionAlert.snackBar,
             message: '로그아웃에 성공했습니다.');
+
+        RouterStatic.clearAndNavigate(context, RouterPath.defaultPage.path);
       } else {
         AlertUtil.showAlert(
             context: context,
@@ -125,11 +127,13 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
     context.read<AppSettingViewModel>().signOut().then((value) {
       if (value) {
         context.read<UserProvider>().signOut();
-        RouterStatic.replaceToDefault(context);
+
         AlertUtil.showAlert(
             context: context,
             exceptionAlert: ExceptionAlert.snackBar,
             message: '회원탈퇴에 성공했습니다.');
+
+        RouterStatic.clearAndNavigate(context, RouterPath.defaultPage.path);
       } else {
         AlertUtil.showAlert(
             context: context,
