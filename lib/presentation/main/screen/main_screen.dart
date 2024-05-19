@@ -84,7 +84,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           onPressed: () {
             if (context.read<UserProvider>().email == null) {
               _showBottomSheetForNonMember(
-                  '피드는 로그인 후 등록 할 수 있어요.\n회원가입 또는 로그인 후 이용해주세요 😎');
+                  '피드는 로그인 후 등록 할 수 있어요.\n회원가입 또는 로그인 후 이용해 주세요 😎');
               return;
             }
             _toggleFloatingActionButton();
