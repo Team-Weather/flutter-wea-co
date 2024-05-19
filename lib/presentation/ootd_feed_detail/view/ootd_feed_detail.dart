@@ -18,9 +18,7 @@ import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_
 class OotdDetailScreen<T extends BaseChangeNotifier> extends StatefulWidget {
   final Feed _feed;
 
-  const OotdDetailScreen(
-      {super.key, required Feed feed})
-      : _feed = feed;
+  const OotdDetailScreen({super.key, required Feed feed}) : _feed = feed;
 
   @override
   State<OotdDetailScreen> createState() => _OotdDetailScreenState<T>();
@@ -78,10 +76,10 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
     final profile = context.watch<OotdDetailViewModel>().userProfile;
     return SafeArea(
         child: Scaffold(
-          body: Stack(
-                fit: StackFit.expand,
-                alignment: Alignment.bottomCenter,
-                children: [
+      body: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.bottomCenter,
+        children: [
           PinchZoom(
             child: _loadingImageWidget(data: widget._feed.imagePath),
           ),
@@ -156,11 +154,17 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
                                         fontSize: 14,
                                         fontWeight: FontWeight.w800,
                                         color: Colors.white),
-                                    child: Text(feed?.createdAt.toFormat() ?? ''),
+                                    child:
+                                        Text(feed?.createdAt.toFormat() ?? ''),
                                   ),
                                   Visibility(
                                       maintainSize: false,
-                                      visible: context.read<UserProvider>().email != null && (context.read<UserProvider>().email == profile?.email),
+                                      visible: context
+                                                  .read<UserProvider>()
+                                                  .email !=
+                                              null &&
+                                          (context.read<UserProvider>().email ==
+                                              profile?.email),
                                       child: const Row(
                                         children: [
                                           SizedBox(
@@ -256,7 +260,10 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
                         right: 0,
                         child: Visibility(
                             maintainSize: false,
-                            visible: context.read<UserProvider>().email != null && (context.read<UserProvider>().email == profile?.email),
+                            visible:
+                                context.read<UserProvider>().email != null &&
+                                    (context.read<UserProvider>().email ==
+                                        profile?.email),
                             child: GestureDetector(
                               onTap: () => RouterStatic.pushToOotdPost(context,
                                   feed: feed),
@@ -307,6 +314,13 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
                             ),
                             DefaultTextStyle(
                               style: const TextStyle(
+                                  shadows: [
+                                    Shadow(
+                                        blurRadius: 10,
+                                        color: Color.fromARGB(
+                                            165, 80, 80, 80),
+                                        offset: Offset(0, 0)),
+                                  ],
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white),
@@ -318,6 +332,12 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
                       const Spacer(),
                       IconButton(
                         icon: const Icon(
+                          shadows: [
+                            Shadow(
+                                blurRadius: 5,
+                                color: Color.fromARGB(165, 0, 0, 0),
+                                offset: Offset(0, 0))
+                          ],
                           Icons.close,
                           size: 28,
                         ),
@@ -328,9 +348,9 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
                   );
                 }),
               ))
-                ],
-              ),
-        ));
+        ],
+      ),
+    ));
   }
 
   @override
