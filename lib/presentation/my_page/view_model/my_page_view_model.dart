@@ -19,9 +19,7 @@ class MyPageViewModel with ChangeNotifier {
     required RemoveMyPageFeedUseCase removeMyPageFeedUseCase,
   })  : _getMyPageUserProfileUseCase = getMyPageUserProfileUseCase,
         _getMyPageFeedsUseCase = getMyPageFeedsUseCase,
-        _removeMyPageFeedUseCase = removeMyPageFeedUseCase {
-    initializePageData();
-  }
+        _removeMyPageFeedUseCase = removeMyPageFeedUseCase;
 
   static const _fetchCount = 21;
   static const _fetchMoreCount = 9;
@@ -177,5 +175,12 @@ class MyPageViewModel with ChangeNotifier {
     if (_profile != null) {
       _profile = _profile!.copyWith(feedCount: _profile!.feedCount - 1);
     }
+  }
+
+  void clearMyPageViewModelState() {
+    _profile = null;
+    _feedList.clear();
+
+    notifyListeners();
   }
 }
