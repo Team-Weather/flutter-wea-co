@@ -15,7 +15,6 @@ class OotdPostViewModel with ChangeNotifier {
   final GetImageUseCase _getImageUseCase;
   final GetDailyLocationWeatherUseCase _getDailyLocationWeatherUseCase;
   final SaveEditFeedUseCase _saveEditFeedUseCase;
-  final SaveImageUseCase _saveImageUseCase;
   bool _showSpinner = false;
   bool _saveStatus = false;
   File? _originImage;
@@ -30,8 +29,7 @@ class OotdPostViewModel with ChangeNotifier {
     required SaveImageUseCase saveImageUseCase,
   })  : _getImageUseCase = getImageUseCase,
         _getDailyLocationWeatherUseCase = getDailyLocationWeatherUseCase,
-        _saveEditFeedUseCase = saveEditFeedUseCase,
-        _saveImageUseCase = saveImageUseCase {
+        _saveEditFeedUseCase = saveEditFeedUseCase {
     initOotdPost();
   }
 
@@ -54,12 +52,12 @@ class OotdPostViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveFeed(String description) async {
+  Future<void> saveFeed(String email, String description) async {
     final now = DateTime.now();
     final Feed feed = Feed(
       id: null,
       imagePath: _croppedImage!.path,
-      userEmail: 'abc@gmail.com',
+      userEmail: email,
       description: description,
       weather: Weather(
         temperature: _weather!.temperature,
@@ -98,16 +96,6 @@ class OotdPostViewModel with ChangeNotifier {
   Future<void> getOriginImage() async {
     _originImage = await _getImageUseCase.execute(isOrigin: true);
     if (_originImage == null) return;
-  }
-
-  void saveCroppedImage({
-    required File file,
-    required Function(bool) callback,
-  }) async {
-    final bool result =
-        await _saveImageUseCase.execute(isOrigin: false, file: file);
-
-    callback(result);
   }
 
   File? get originImage => _originImage;
