@@ -18,7 +18,7 @@ class CustomBottomSheet {
     bool? isExistCloseButton,
   }) async {
     final T? result = await showModalBottomSheet<T>(
-      backgroundColor: const Color(0xDDE5E5E5),
+      backgroundColor: WeacoColors.backgroundColor,
       isDismissible: barrierDismissible ?? true,
       enableDrag: enableDrag ?? true,
       useRootNavigator: useRootNavigator ?? false,
@@ -34,7 +34,7 @@ class CustomBottomSheet {
       builder: (BuildContext context) {
         return Container(
             padding: const EdgeInsets.only(top: 0, right: 20, left: 20),
-            height: heigth ?? 300,
+            height: heigth,
             decoration: const BoxDecoration(
               color: WeacoColors.backgroundColor,
               borderRadius: BorderRadius.only(
