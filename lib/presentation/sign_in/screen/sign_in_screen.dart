@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/sign_in/view_model/sign_in_view_model.dart';
@@ -38,104 +39,31 @@ class _SignInScreenState extends State<SignInScreen> {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildLogo(),
-                    _buildLoginTexts(),
-                    _buildLoginForm(),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          _buildBottomSheet(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLogo() {
-    return SizedBox(
-      width: double.infinity,
-      height: 360,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 244,
-            height: 244,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              color: const Color(0xFFFFF9EC),
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 22,
-                  top: 95,
-                  child: Container(
-                    width: 200,
-                    height: 54,
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: Image.asset(
+                          ImagePath.weacoLogoWithTypo,
+                          width: 180,
+                        ),
                       ),
-                      color: const Color(0xF5F5F5FF),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 18,
-                          height: 18,
-                          decoration: const ShapeDecoration(
-                            color: Color(0xFFD9D9D9),
-                            shape: OvalBorder(),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 48,
-                              height: 8,
-                              decoration: ShapeDecoration(
-                                color: const Color(0xFFD9D9D9),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 7),
-                            Container(
-                              width: 143,
-                              height: 8,
-                              decoration: ShapeDecoration(
-                                color: const Color(0xFFD9D9D9),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      _buildLoginTexts(),
+                      _buildLoginForm(),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+            _buildBottomSheet(),
+          ],
+        ),
       ),
     );
   }
@@ -144,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return const Column(
       children: [
         Text(
-          '로그인이 필요합니다',
+          '로그인이 필요합니다.',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFF1A1C29),
@@ -152,8 +80,9 @@ class _SignInScreenState extends State<SignInScreen> {
             fontWeight: FontWeight.w700,
           ),
         ),
+        SizedBox(height: 10),
         Text(
-          'Weaco 서비스를 더 이용하시려면\n로그인이 필요해요',
+          'Weaco 서비스를 더 이용하시려면\n로그인이 필요해요.',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFF7E7E7E),
@@ -225,9 +154,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     _isValidateForm();
                   },
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 TextFormField(
                   controller: passwordFormController,
                   focusNode: focusNode,

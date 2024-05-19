@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 
 class RecommandLoginBottomSheetWidget extends StatelessWidget {
   const RecommandLoginBottomSheetWidget({
@@ -17,7 +18,15 @@ class RecommandLoginBottomSheetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        Image.asset(
+          ImagePath.weacoLogoWithTypo,
+          width: 150,
+        ),
+        const SizedBox(
+          height: 30
+        ),
         Text(
           message ?? '회원 전용 서비스입니다.\n회원가입 또는 로그인 후 이용해주세요 😎',
           style: const TextStyle(
