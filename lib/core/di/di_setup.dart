@@ -48,9 +48,9 @@ void diSetup() {
   weatherDiSetup();
 
   // Provider
-  getIt.registerFactory<UserProvider>(() => UserProvider(
-        userAuthRepository: getIt<UserAuthRepository>(),
-      ));
+  getIt.registerSingleton<UserProvider>(UserProvider(
+    userAuthRepository: getIt<UserAuthRepository>(),
+  ));
 
   // ViewModel
   getIt.registerFactory<SignUpViewModel>(() => SignUpViewModel(

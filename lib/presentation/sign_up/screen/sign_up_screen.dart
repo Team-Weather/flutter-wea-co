@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/gender_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/validation_util.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';

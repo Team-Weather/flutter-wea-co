@@ -24,7 +24,6 @@ class WeatherByTimeWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 60,
             child: Text(
               time == '오전 00시' ? '내일' : time,
               textAlign: TextAlign.center,
@@ -41,7 +40,7 @@ class WeatherByTimeWidget extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '${weatherList![index].temperature}°',
+            '${weatherList![index].temperature}℃',
             style: const TextStyle(
               fontSize: 13,
               color: Colors.white,

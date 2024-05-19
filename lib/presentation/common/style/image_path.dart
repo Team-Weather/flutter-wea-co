@@ -52,4 +52,6 @@ class ImagePath {
 
   static const String weacoLogo =
       'https://firebasestorage.googleapis.com/v0/b/weaco-f9878.appspot.com/o/3.001.png?alt=media&token=da2ba52d-25b0-4095-8a31-246830c0d1fa';
+  static const String weacoLogoAppBar = '$_imagePath/logo_app_bar.png';
+  static const String weacoLogoSplash = '$_imagePath/logo_splash.png';
 }

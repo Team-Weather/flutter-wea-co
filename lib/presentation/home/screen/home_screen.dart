@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
@@ -49,9 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double heightPercentage = 30 / screenHeight;
-
     final viewModel = context.watch<HomeScreenViewModel>();
 
     final String temperatureGapPresentation = viewModel.temperatureGap! >= 0
@@ -83,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 40),
+                          SizedBox(height: _reactHeight(40)),
                           // city
                           Text(
                             viewModel.dailyLocationWeather!.location.city,
@@ -103,16 +100,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: _reactHeight(20)),
                           // current temperature
                           Text(
-                            '${viewModel.currentWeather!.temperature}°',
+                            '${viewModel.currentWeather!.temperature}℃',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 60,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: _reactHeight(20)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -120,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Column(
                                 children: [
                                   Text(
-                                    '최고 ${viewModel.dailyLocationWeather!.highTemperature}°',
+                                    '최고 ${viewModel.dailyLocationWeather!.highTemperature}℃',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -133,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Text(
-                                    '최저 ${viewModel.dailyLocationWeather!.lowTemperature}°',
+                                    '최저 ${viewModel.dailyLocationWeather!.lowTemperature}℃',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -180,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          '$temperatureGapPresentation°',
+                                          '$temperatureGapPresentation℃',
                                           style: const TextStyle(
                                             fontSize: 30,
                                             color: Colors.white,
@@ -193,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 40),
+                          SizedBox(height: _reactHeight(40)),
                         ],
                       ),
                     ),
@@ -204,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     SliverToBoxAdapter(
-                      child: SizedBox(height: screenHeight * heightPercentage),
+                      child: SizedBox(height: _reactHeight(20)),
                     ),
 
                     // ootd list
@@ -219,5 +216,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
       },
     );
+  }
+
+  double _reactHeight(double marginHeight) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double heightPercentage = marginHeight / screenHeight;
+    return screenHeight * heightPercentage;
   }
 }

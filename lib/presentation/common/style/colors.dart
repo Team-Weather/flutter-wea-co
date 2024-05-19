@@ -9,5 +9,6 @@ class WeacoColors {
   static const Color errorColor = Color(0xFFD00B0B);
   static const Color greyColor90 = Color.fromARGB(255, 90, 90, 90);
   static const Color greyColor80 = Color.fromARGB(255, 80, 80, 80);
+  static const Color greyColor50 = Color.fromARGB(255, 80, 80, 80);
   static const Color greyColor02 = Color(0xFFEEEEEE);
 }

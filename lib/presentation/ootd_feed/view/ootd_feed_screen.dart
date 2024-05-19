@@ -1,6 +1,6 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/presentation/common/component/base_change_notifier.dart';
 import 'package:weaco/presentation/common/component/base_state_widget.dart';
 import 'package:weaco/presentation/common/state/base_alert_data.dart';
@@ -19,7 +19,8 @@ class OotdFeedScreen<T extends BaseChangeNotifier> extends StatefulWidget {
   State<OotdFeedScreen> createState() => _OotdFeedScreenState<T>();
 }
 
-class _OotdFeedScreenState<T extends BaseChangeNotifier> extends BaseState<OotdFeedScreen, T> {
+class _OotdFeedScreenState<T extends BaseChangeNotifier>
+    extends BaseState<OotdFeedScreen, T> {
   late PageController _pageViewController;
 
   @override
@@ -37,24 +38,45 @@ class _OotdFeedScreenState<T extends BaseChangeNotifier> extends BaseState<OotdF
 
   @override
   Widget build(BuildContext context) {
-    log('전체 build() 호출', name: 'OotdFeedScreen.build()');
-    context.read<OotdFeedViewModel>().feedList.map((e) => precacheImage(Image.network(e.feed.imagePath).image, context));
+    context.read<OotdFeedViewModel>().feedList.map(
+        (e) => precacheImage(Image.network(e.feed.imagePath).image, context));
     return Scaffold(
-      body: PageView.builder(
-        controller: _pageViewController,
-        physics: const NeverScrollableScrollPhysics(),
-        pageSnapping: true,
-        itemCount: context.watch<OotdFeedViewModel>().feedList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Center(
-            child: SizedBox(
-              width: cardWidth,
-              height: cardHeight,
-              child: FlipCard(
-                  index: index, moveCallback: moveCard, flipCallback: flipCard),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: WeacoColors.backgroundColor,
+        title: const Text(
+          'OOTD 피드',
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: WeacoColors.greyColor90),
+        ),
+      ),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Divider(),
+          ),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageViewController,
+              physics: const NeverScrollableScrollPhysics(),
+              pageSnapping: true,
+              itemCount: context.watch<OotdFeedViewModel>().feedList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  width: cardWidth,
+                  height: cardHeight,
+                  child: FlipCard(
+                      index: index,
+                      moveCallback: moveCard,
+                      flipCallback: flipCard),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

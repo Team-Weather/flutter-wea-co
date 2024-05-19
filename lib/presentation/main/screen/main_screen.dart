@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:weaco/common/image_path.dart';
+import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/common/component/bottom_sheet/custom_bottom_sheet.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
@@ -33,9 +34,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(tabListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+    });
   }
 
   @override
@@ -98,11 +101,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               ? Theme.of(context).canvasColor
               : Theme.of(context).primaryColor,
           child: (isExpanded)
-              ? Stack(
-                  children: [
-                    Stack(
-                      children: [
-                        GestureDetector(
+              ? SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
                           onTap: () {
                             _onPressedButton(
                               viewModel: viewModel,
@@ -110,19 +114,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               context: context,
                             );
                           },
-                          child: AnimatedPositioned(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            left: isExpanded ? 22 : 32,
-                            top: 16,
-                            child: const ImageIcon(
-                              AssetImage(ImagePath.imageIconCam),
-                              size: 40,
-                              color: Color(0xffF2C347),
-                            ),
+                          child: const ImageIcon(
+                            AssetImage(ImagePath.imageIconCam),
+                            size: 40,
+                            color: Color(0xffF2C347),
                           ),
                         ),
-                        GestureDetector(
+                      ),
+                      Expanded(
+                        child: GestureDetector(
                           onTap: () {
                             _onPressedButton(
                               viewModel: viewModel,
@@ -130,21 +130,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               context: context,
                             );
                           },
-                          child: AnimatedPositioned(
-                            duration: const Duration(milliseconds: 1000),
-                            curve: Curves.easeInOut,
-                            top: 16,
-                            right: isExpanded ? 22 : 32,
-                            child: const ImageIcon(
-                              AssetImage(ImagePath.imageIconPhoto),
-                              size: 40,
-                              color: Color(0xffF2C347),
-                            ),
+                          child: const ImageIcon(
+                            AssetImage(ImagePath.imageIconPhoto),
+                            size: 40,
+                            color: Color(0xffF2C347),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 )
               : const ImageIcon(
                   AssetImage(ImagePath.imageIconFeedAdd),
@@ -164,7 +158,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             // 플로팅버튼 아래 빈 바텀아이템 클릭시 리턴처리
             if (value == 2) {
               return;
-            } else if (value == 4) {
+            } else if (value == 4 &&
+                context.read<UserProvider>().email == null) {
               // 로그인 하지 않고 마이페이지 진입 시 넛지 팝업 처리
               _showBottomSheetForNonMember(
                   '마이 페이지는 회원 전용 서비스입니다.\n회원가입 또는 로그인 후 이용해주세요 😎');

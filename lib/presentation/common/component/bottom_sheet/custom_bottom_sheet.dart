@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weaco/common/colors.dart';
+import 'package:weaco/presentation/common/style/colors.dart';
 
 class CustomBottomSheet {
   /// pop 할 때 리턴받을 값을 넣으면 호출 한 곳에서 값을 반환받을 수 있는 바텀시트

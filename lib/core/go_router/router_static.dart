@@ -8,6 +8,9 @@ class RouterStatic {
     router.go(RouterPath.defaultPage.path);
   }
 
+  static void replaceToDefault(BuildContext context) {
+    router.replace(RouterPath.defaultPage.path);
+  }
   static void goToHome(BuildContext context) {
     router.go(RouterPath.home.path);
   }
