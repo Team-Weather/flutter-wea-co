@@ -168,7 +168,6 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildLoginForm() {
     return SizedBox(
       width: double.infinity,
-      height: 170,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
