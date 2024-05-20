@@ -250,8 +250,6 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
     );
   }
 
-  Future<void> ss() async {}
-
   Widget _tags(String name) {
     return Container(
       margin: const EdgeInsets.only(right: 15),
