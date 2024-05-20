@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
@@ -38,8 +39,10 @@ class _OotdFeedScreenState<T extends BaseChangeNotifier>
 
   @override
   Widget build(BuildContext context) {
-    context.read<OotdFeedViewModel>().feedList.map(
-        (e) => precacheImage(Image.network(e.feed.imagePath).image, context));
+    context.read<OotdFeedViewModel>().feedList.map((e) => precacheImage(
+          CachedNetworkImageProvider(e.feed.imagePath),
+          context,
+        ));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

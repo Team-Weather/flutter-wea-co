@@ -10,6 +10,7 @@ import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/common/component/base_change_notifier.dart';
 import 'package:weaco/presentation/common/component/base_state_widget.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/state/base_alert_data.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view/pinch_zoom.dart';
@@ -56,11 +57,9 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
     return Builder(
       builder: (context) {
         if (data != null) {
-          return Image.network(
+          return CachedImageWidget(
             data,
-            fit: BoxFit.fitHeight,
-            errorBuilder: (context, error, stackTrace) =>
-                defaultWidget(opacity: opacity),
+            boxFit: BoxFit.fitHeight,
           );
         } else {
           return defaultWidget(opacity: opacity);
@@ -317,8 +316,7 @@ class _OotdDetailScreenState<T extends BaseChangeNotifier>
                                   shadows: [
                                     Shadow(
                                         blurRadius: 10,
-                                        color: Color.fromARGB(
-                                            165, 80, 80, 80),
+                                        color: Color.fromARGB(165, 80, 80, 80),
                                         offset: Offset(0, 0)),
                                   ],
                                   fontSize: 14,

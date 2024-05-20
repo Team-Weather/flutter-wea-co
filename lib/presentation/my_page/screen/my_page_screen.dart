@@ -6,6 +6,7 @@ import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/my_page/screen/component/my_profile_widget.dart';
 import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
@@ -190,10 +191,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Image(
-          image: NetworkImage(currentFeed.imagePath),
-          fit: BoxFit.cover,
-        ),
+        child: CachedImageWidget(currentFeed.imagePath),
       ),
     );
   }

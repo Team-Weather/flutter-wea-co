@@ -8,6 +8,7 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
@@ -70,7 +71,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                         widget.feed != null
                             ?
                             // 기존 피드 수정
-                            Image.network(widget.feed!.imagePath)
+                            CachedImageWidget(widget.feed!.imagePath)
                             :
                             // 새로운 피드 작성
                             Stack(
