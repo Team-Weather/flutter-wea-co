@@ -64,6 +64,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   dropdown_button2: ^2.3.9
   flutter_native_splash: ^2.3.1
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:
