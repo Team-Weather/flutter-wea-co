@@ -214,7 +214,7 @@ class _SignInScreenState extends State<SignInScreen> {
       width: double.infinity,
       height: !_isSignUpButtonVisible ? 62 : 116,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      color: const Color(0xF5F5F5FF),
+      color: const Color(0xffF5F5F5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

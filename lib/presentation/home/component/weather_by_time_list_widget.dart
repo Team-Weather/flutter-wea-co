@@ -19,7 +19,7 @@ class _WeatherByTimeListWidgetState extends State<WeatherByTimeListWidget> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double heightPercentage = 100 / screenHeight;
+    double heightPercentage = 105 / screenHeight;
 
     return SliverToBoxAdapter(
       child: Container(

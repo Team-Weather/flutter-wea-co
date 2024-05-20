@@ -269,7 +269,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildSignUpButtons() {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
-      color: const Color(0xF5F5F5FF),
+      color: const Color(0xffF5F5F5),
       child: InkWell(
         onTap: isSignUpButtonEnabled ? _signUpSubmit : null,
         child: Container(

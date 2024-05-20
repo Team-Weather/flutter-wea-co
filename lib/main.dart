@@ -38,6 +38,7 @@ class WeacoApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        debugShowCheckedModeBanner: false,
         supportedLocales: const [Locale('ko', 'KR')],
         locale: const Locale('ko'),
         title: 'WeaCo',
