@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'ootd_feed_screen.dart';
@@ -35,7 +36,7 @@ class FlipCard extends StatefulWidget {
 class _FlipCardState extends State<FlipCard>
     with SingleTickerProviderStateMixin {
   late final OotdCard _data;
-  final double _swipeThreshold = 100.0;
+  final double _swipeThreshold = 50.0;
   double _swipeStartPoint = 0.0;
   bool _isSwapping = false;
   final int _flipSpeed = 230;
@@ -208,9 +209,9 @@ class _FlipCardState extends State<FlipCard>
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
-        child: Image.network(
+        child: CachedImageWidget(
           _data.feed.imagePath,
-          fit: BoxFit.fitHeight,
+          // fit: BoxFit.fitHeight,
         ),
       ),
     );
