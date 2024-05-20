@@ -45,14 +45,7 @@ final router = GoRouter(
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                  create: (_) => HomeScreenViewModel(
-                        getDailyLocationWeatherUseCase:
-                            getIt<GetDailyLocationWeatherUseCase>(),
-                        getBackgroundImageListUseCase:
-                            getIt<GetBackgroundImageListUseCase>(),
-                        getRecommendedFeedsUseCase:
-                            getIt<GetRecommendedFeedsUseCase>(),
-                      )),
+                  create: (_) => getIt<HomeScreenViewModel>()),
               ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
               ChangeNotifierProvider(create: (_) => getIt<CameraViewModel>()),
               ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
@@ -68,13 +61,7 @@ final router = GoRouter(
       path: RouterPath.home.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => HomeScreenViewModel(
-            getDailyLocationWeatherUseCase:
-                getIt<GetDailyLocationWeatherUseCase>(),
-            getBackgroundImageListUseCase:
-                getIt<GetBackgroundImageListUseCase>(),
-            getRecommendedFeedsUseCase: getIt<GetRecommendedFeedsUseCase>(),
-          ),
+          create: (_) => getIt<HomeScreenViewModel>(),
           child: const HomeScreen(),
         );
       },
@@ -148,8 +135,8 @@ final router = GoRouter(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => getIt<OotdDetailViewModel>(
-              param1: (state.extra as Feed).id),
+          create: (_) =>
+              getIt<OotdDetailViewModel>(param1: (state.extra as Feed).id),
           child: OotdDetailScreen<OotdDetailViewModel>(
             feed: state.extra as Feed,
           ),
