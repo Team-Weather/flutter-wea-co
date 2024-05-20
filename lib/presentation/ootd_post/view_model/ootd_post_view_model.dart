@@ -53,6 +53,9 @@ class OotdPostViewModel with ChangeNotifier {
   }
 
   Future<void> saveFeed(String email, String description) async {
+    _showSpinner = true;
+    notifyListeners();
+
     final now = DateTime.now();
     final Feed feed = Feed(
       id: null,
@@ -76,9 +79,15 @@ class OotdPostViewModel with ChangeNotifier {
     );
 
     _saveStatus = await _saveEditFeedUseCase.execute(feed: feed);
+
+    _showSpinner = false;
+    notifyListeners();
   }
 
   Future<void> editFeed(Feed feed, String description) async {
+    _showSpinner = true;
+    notifyListeners();
+
     final editedFeed = Feed(
       id: feed.id,
       imagePath: feed.imagePath,
@@ -91,6 +100,9 @@ class OotdPostViewModel with ChangeNotifier {
     );
 
     _saveStatus = await _saveEditFeedUseCase.execute(feed: editedFeed);
+
+    _showSpinner = false;
+    notifyListeners();
   }
 
   Future<void> getOriginImage() async {
