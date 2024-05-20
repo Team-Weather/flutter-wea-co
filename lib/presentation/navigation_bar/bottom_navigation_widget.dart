@@ -13,42 +13,39 @@ class BottomNavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 72,
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 32,
-        currentIndex: currentIndex,
-        selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        unselectedIconTheme: const IconThemeData(color: Color(0xffd5d5d5)),
-        onTap: onTap,
-        mouseCursor: SystemMouseCursors.click,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage(ImagePath.imageIconHome)),
-            label: 'Home Weather',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage(ImagePath.imageIconFeed)),
-            label: 'OOTD Feed',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage(ImagePath.imageIconSearch)),
-            label: 'search',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage(ImagePath.imageIconMyPage)),
-            label: 'MyProfile',
-          ),
-        ],
-      ),
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      iconSize: 32,
+      currentIndex: currentIndex,
+      selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+      unselectedIconTheme: const IconThemeData(color: Color(0xffd5d5d5)),
+      onTap: onTap,
+      mouseCursor: SystemMouseCursors.click,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: ImageIcon(AssetImage(ImagePath.imageIconHome)),
+          label: 'Home Weather',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(AssetImage(ImagePath.imageIconFeed)),
+          label: 'OOTD Feed',
+        ),
+        BottomNavigationBarItem(
+          icon: SizedBox(),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(AssetImage(ImagePath.imageIconSearch)),
+          label: 'search',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(AssetImage(ImagePath.imageIconMyPage)),
+          label: 'MyProfile',
+        ),
+      ],
     );
   }
 }
