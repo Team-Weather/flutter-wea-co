@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PinchZoom extends StatefulWidget {
   final Widget child;
@@ -23,6 +24,7 @@ class _PinchZoomState extends State<PinchZoom>
   Timer? _endScrollTimer;
   bool? endHandled;
   final Matrix4 identity = Matrix4.identity();
+  double startPointDy = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,10 @@ class _PinchZoomState extends State<PinchZoom>
       key: widgetKey,
       maxScale: 3.0,
       onInteractionStart: (details) {
+        if (details.pointerCount == 1) {
+          startPointDy = details.localFocalPoint.dy;
+        }
+
         endHandled = null;
         if (details.pointerCount < 2) {
           endHandled = false;
@@ -40,6 +46,9 @@ class _PinchZoomState extends State<PinchZoom>
         }
       },
       onInteractionUpdate: (details) {
+        if (details.pointerCount == 1 && details.localFocalPoint.dy - startPointDy >= 100) {
+          context.pop();
+        }
         if (details.pointerCount < 2) {
           endHandled = false;
           _transformationController.value = identity;
