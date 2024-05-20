@@ -6,22 +6,32 @@ class CachedImageWidget extends StatelessWidget {
   final String _imageUrl;
   final Widget? _progressIndicatorBuilder;
   final Widget? _errorWidget;
+  final BoxFit? _boxFit;
 
-  CachedImageWidget(
-      String imageUrl, {Widget? progressIndicatorBuilder, Widget? errorWidget})
-      : _imageUrl = imageUrl,
+  const CachedImageWidget(
+    String imageUrl, {
+    super.key,
+    Widget? progressIndicatorBuilder,
+    Widget? errorWidget,
+    BoxFit? boxFit,
+  })  : _imageUrl = imageUrl,
         _progressIndicatorBuilder = progressIndicatorBuilder,
-        _errorWidget = errorWidget;
+        _errorWidget = errorWidget,
+        _boxFit = boxFit;
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      fit: BoxFit.cover,
+      fit: _boxFit ?? BoxFit.cover,
       imageUrl: _imageUrl,
       memCacheHeight: (16 * 35).cacheSize(context),
       progressIndicatorBuilder: (context, url, downloadProgress) =>
-          _progressIndicatorBuilder ?? Container(color: Colors.grey.withOpacity(0.05)),
-      errorWidget: (context, url, error) => _errorWidget ?? _progressIndicatorBuilder ?? Container(color: Colors.grey.withOpacity(0.1)),
+          _progressIndicatorBuilder ??
+          Container(color: Colors.grey.withOpacity(0.05)),
+      errorWidget: (context, url, error) =>
+          _errorWidget ??
+          _progressIndicatorBuilder ??
+          Container(color: Colors.grey.withOpacity(0.1)),
     );
   }
 }
