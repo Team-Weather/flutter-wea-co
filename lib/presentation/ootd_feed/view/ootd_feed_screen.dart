@@ -10,7 +10,7 @@ import 'flip_card.dart';
 double scale = 35;
 double cardWidth = 9 * scale;
 double cardHeight = 16 * scale;
-Duration cardMoveSpeed = const Duration(milliseconds: 250);
+Duration cardMoveSpeed = const Duration(milliseconds: 150);
 
 class OotdFeedScreen<T extends BaseChangeNotifier> extends StatefulWidget {
   const OotdFeedScreen({super.key});
