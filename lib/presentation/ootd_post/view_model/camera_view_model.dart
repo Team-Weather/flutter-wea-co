@@ -2,15 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+enum CameraImageStatus {
+  idle,
+  success,
+  error;
+
+  bool get isIdle => this == CameraImageStatus.idle;
+
+  bool get isSuccess => this == CameraImageStatus.success;
+
+  bool get isError => this == CameraImageStatus.error;
+}
+
 class CameraViewModel with ChangeNotifier {
   XFile? _imageFile;
+  CameraImageStatus _status = CameraImageStatus.idle;
 
   XFile? get imageFile => _imageFile;
 
+  CameraImageStatus get status => _status;
+
   /// 카메라 또는 사진첩에서 이미지 선택
-  void pickImage({
+  Future<void> pickImage({
     required ImageSource imageSource,
-    required Function(bool) callback,
   }) async {
     final ImagePicker picker = ImagePicker();
 
@@ -19,14 +33,11 @@ class CameraViewModel with ChangeNotifier {
 
       if (pickedFile != null) {
         _imageFile = pickedFile;
-      } else {
-        debugPrint('이미지 선택 안 함');
+        _status = CameraImageStatus.success;
       }
-      callback(true);
     } on PlatformException {
-      callback(false);
+      _status = CameraImageStatus.error;
     }
-
     notifyListeners();
   }
 }
