@@ -58,7 +58,7 @@ class Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
-      temperature: json['temperature'] as double,
+      temperature: (json['temperature'] as num).toDouble(),
       timeTemperature: DateTime.parse(json['time_temperature']),
       code: json['code'] as int,
       createdAt: DateTime.parse(json['created_at']),
