@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
-import 'package:weaco/presentation/home/component/recommand_ootd_widget.dart';
+import 'package:weaco/presentation/home/component/recommend_ootd_widget.dart';
 
-class RecommandOotdListWidget extends StatelessWidget {
-  const RecommandOotdListWidget({
+class RecommendOotdListWidget extends StatelessWidget {
+  const RecommendOotdListWidget({
     super.key,
     required this.dailyLocationWeather,
     required this.feedList,
@@ -49,7 +49,7 @@ class RecommandOotdListWidget extends StatelessWidget {
                             context,
                             feed: feedList[index]
                           ),
-                          child: RecommandOotdWidget(
+                          child: RecommendOotdWidget(
                             feedList: feedList,
                             index: index,
                           ),

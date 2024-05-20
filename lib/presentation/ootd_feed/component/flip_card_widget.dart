@@ -7,20 +7,14 @@ import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/ootd_feed/ootd_card.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
-import 'ootd_feed_screen.dart';
+import '../screen/ootd_feed_screen.dart';
 
-BoxShadow shadow = const BoxShadow(
-  color: Colors.black26,
-  blurRadius: 10.0, // soften the shadow
-  spreadRadius: 0.5, //extend the shadow
-);
-
-class FlipCard extends StatefulWidget {
+class FlipCardWidget extends StatefulWidget {
   final int _index;
   final void Function({required bool isToNext}) _moveCallback;
   final void Function() _flipCallback;
 
-  const FlipCard(
+  const FlipCardWidget(
       {super.key,
       required int index,
       required void Function({required bool isToNext}) moveCallback,
@@ -30,10 +24,10 @@ class FlipCard extends StatefulWidget {
         _flipCallback = flipCallback;
 
   @override
-  State<FlipCard> createState() => _FlipCardState();
+  State<FlipCardWidget> createState() => _FlipCardState();
 }
 
-class _FlipCardState extends State<FlipCard>
+class _FlipCardState extends State<FlipCardWidget>
     with SingleTickerProviderStateMixin {
   late final OotdCard _data;
   final double _swipeThreshold = 50.0;
@@ -211,7 +205,6 @@ class _FlipCardState extends State<FlipCard>
         borderRadius: BorderRadius.circular(30),
         child: CachedImageWidget(
           _data.feed.imagePath,
-          // fit: BoxFit.fitHeight,
         ),
       ),
     );

@@ -8,7 +8,7 @@ import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
-import 'package:weaco/presentation/my_page/screen/component/my_profile_widget.dart';
+import 'package:weaco/presentation/my_page/component/my_profile_widget.dart';
 import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/user_page/screen/component/feed_grid/feed_grid_empty_widget.dart';
 

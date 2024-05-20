@@ -6,7 +6,7 @@ import 'package:weaco/presentation/common/component/base_change_notifier.dart';
 import 'package:weaco/presentation/common/component/base_state_widget.dart';
 import 'package:weaco/presentation/common/state/base_alert_data.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
-import 'flip_card.dart';
+import '../component/flip_card_widget.dart';
 
 double scale = 35;
 double cardWidth = 9 * scale;
@@ -71,7 +71,7 @@ class _OotdFeedScreenState<T extends BaseChangeNotifier>
                 return SizedBox(
                   width: cardWidth,
                   height: cardHeight,
-                  child: FlipCard(
+                  child: FlipCardWidget(
                       index: index,
                       moveCallback: moveCard,
                       flipCallback: flipCard),

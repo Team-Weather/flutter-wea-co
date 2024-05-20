@@ -13,7 +13,7 @@ import 'package:weaco/presentation/common/component/base_state_widget.dart';
 import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/state/base_alert_data.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
-import 'package:weaco/presentation/ootd_feed_detail/view/pinch_zoom.dart';
+import 'package:weaco/presentation/ootd_feed_detail/screen/pinch_zoom.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 
 class OotdDetailScreen<T extends BaseChangeNotifier> extends StatefulWidget {

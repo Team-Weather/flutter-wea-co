@@ -12,7 +12,7 @@ import 'package:weaco/core/util/reaction_util.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
-import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
+import 'package:weaco/presentation/ootd_search/view_model/ootd_search_view_model.dart';
 
 class OotdSearchScreen extends StatefulWidget {
   const OotdSearchScreen({super.key});

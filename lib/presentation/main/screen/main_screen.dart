@@ -8,13 +8,13 @@ import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/common/component/bottom_sheet/custom_bottom_sheet.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
-import 'package:weaco/presentation/home/component/recommand_login_bottom_sheet_widget.dart';
+import 'package:weaco/presentation/home/component/recommend_login_bottom_sheet_widget.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/navigation_bar/bottom_navigation_widget.dart';
-import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
+import 'package:weaco/presentation/ootd_feed/screen/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
-import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
+import 'package:weaco/presentation/ootd_search/screen/ootd_search_screen.dart';
 
 import '../../ootd_post/view_model/camera_view_model.dart';
 
@@ -177,7 +177,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     CustomBottomSheet.showSelectBottomSheet(
       context: context,
       isScrollControlled: false,
-      child: RecommandLoginBottomSheetWidget(
+      child: RecommendLoginBottomSheetWidget(
         context: context,
         message: message,
       ),
