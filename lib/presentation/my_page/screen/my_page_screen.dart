@@ -7,7 +7,9 @@ import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/presentation/common/component/cached_image_widget.dart';
+import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
+import 'package:weaco/presentation/common/util/alert_util.dart';
 import 'package:weaco/presentation/my_page/component/my_profile_widget.dart';
 import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/user_page/screen/component/feed_grid/feed_grid_empty_widget.dart';
@@ -135,54 +137,106 @@ class _MyPageScreenState extends State<MyPageScreen> {
           context: context,
           builder: (context) {
             return SizedBox(
-              height: 120,
+              height: 240,
               width: double.maxFinite,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    height: 40,
-                    width: 360,
-                    child: FilledButton(
-                      onPressed: () {
-                        context.push(RouterPath.ootdPost.path,
-                            extra: currentFeed);
-                        context.pop();
-                      },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 4),
+                    child: SizedBox(
+                      height: 40,
+                      width: 360,
+                      child: Center(
+                          child: Text(
+                        '선택',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                    ),
+                  ),
+                  const Divider(),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 360,
+                        child: FilledButton(
+                          onPressed: () {
+                            context.push(RouterPath.ootdPost.path,
+                                extra: currentFeed);
+                            context.pop();
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            '수정',
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
                       ),
-                      child: const Text('수정'),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 360,
-                    child: FilledButton(
-                      onPressed: () {
-                        myPageViewModel.removeSelectedFeed(currentFeed.id!);
-                        context.pop();
-                      },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        height: 50,
+                        width: 360,
+                        child: FilledButton(
+                          onPressed: () {
+                            AlertUtil.showAlert(
+                              context: context,
+                              exceptionAlert: ExceptionAlert.dialogTwoButton,
+                              message: '삭제 하시겠습니까?',
+                              onPressedLeft: () {
+                                context.pop();
+                              },
+                              onPressedRight: () {
+                                myPageViewModel
+                                    .removeSelectedFeed(currentFeed.id!)
+                                    .then((result) {
+                                  if (result) {
+                                    AlertUtil.showAlert(
+                                      context: context,
+                                      exceptionAlert: ExceptionAlert.snackBar,
+                                      message: '피드가 삭제 되었습니다.',
+                                    );
+                                  } else {
+                                    AlertUtil.showAlert(
+                                      context: context,
+                                      exceptionAlert: ExceptionAlert.snackBar,
+                                      message: '피드가 삭제에 실패했습니다.',
+                                    );
+                                  }
+
+                                  context.pop();
+                                  context.pop();
+                                });
+                              },
+                            );
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: const Color(0xffB2B2B2),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            '삭제',
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
-                      ),
-                      child: const Text('삭제'),
-                    ),
-                  )
+                      )
+                    ],
+                  ),
                 ],
               ),
             );

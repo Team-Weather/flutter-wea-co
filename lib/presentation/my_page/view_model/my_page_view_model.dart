@@ -150,18 +150,21 @@ class MyPageViewModel with ChangeNotifier {
   }
 
   // Feed 리스트에서 특정 피드 삭제
-  Future<void> removeSelectedFeed(String feedId) async {
+  Future<bool> removeSelectedFeed(String feedId) async {
     try {
-      await _removeMyPageFeedUseCase.execute(id: feedId).then((result) {
-        if (result) {
-          _decreaseFeedCount();
-          _removeFeedFromList(feedId);
-        }
-      });
+      final result = await _removeMyPageFeedUseCase.execute(id: feedId);
+
+      if (result) {
+        _decreaseFeedCount();
+        _removeFeedFromList(feedId);
+      }
 
       notifyListeners();
+
+      return result;
     } on Exception catch (e) {
       log(e.toString(), name: 'MyPageViewModel.removeSelectedFeed()');
+      return false;
     }
   }
 

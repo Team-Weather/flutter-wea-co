@@ -42,18 +42,19 @@ class AlertUtil {
           context: context,
           builder: (context) {
             return TwoButtonDialog(
-                title: '',
-                content: message,
-                onPressedLeft: () => onPressedLeft == null
-                    ? Navigator.of(context).pop()
-                    : onPressedLeft(),
-                onPressedRight: () => onPressedRight == null
-                    ? Navigator.of(context).pop()
-                    : onPressedRight(),
-                leftButtonColor: const Color(0xffB2B2B2).value,
-                leftButtonText: '취소',
-                rightButtonColor: Theme.of(context).primaryColor.value,
-                rightButtonCancelText: '확인');
+              title: '',
+              content: message,
+              onPressedLeft: () => onPressedLeft == null
+                  ? Navigator.of(context).pop()
+                  : onPressedLeft(),
+              onPressedRight: () => onPressedRight == null
+                  ? Navigator.of(context).pop()
+                  : onPressedRight(),
+              leftButtonColor: const Color(0xffB2B2B2).value,
+              leftButtonText: leftButtonText ?? '취소',
+              rightButtonColor: Theme.of(context).primaryColor.value,
+              rightButtonCancelText: rightButtonText ?? '확인',
+            );
           },
         );
         break;
