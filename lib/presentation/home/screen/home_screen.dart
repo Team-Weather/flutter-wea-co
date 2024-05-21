@@ -78,159 +78,158 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: ReactionUtil.reactHeight(
-                            context: context,
-                            marginHeight: 40,
-                          )),
-                          // city
-                          Text(
-                            viewModel.dailyLocationWeather!.location.city,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          // weather code description
-                          Text(
-                            WeatherCode.fromValue(
-                                    viewModel.currentWeather!.code)
-                                .description,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                              height: ReactionUtil.reactHeight(
-                            context: context,
-                            marginHeight: 20,
-                          )),
-                          // current temperature
-                          Text(
-                            '${viewModel.currentWeather!.temperature}℃',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 60,
-                            ),
-                          ),
-                          SizedBox(
-                              height: ReactionUtil.reactHeight(
-                            context: context,
-                            marginHeight: 20,
-                          )),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              // max, min temperature
-                              Column(
-                                children: [
-                                  Text(
-                                    '최고 ${viewModel.dailyLocationWeather!.highTemperature}℃',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                      shadows: [
-                                        Shadow(
-                                            blurRadius: 4,
-                                            color: Color.fromARGB(165, 0, 0, 0),
-                                            offset: Offset(1, 1)),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '최저 ${viewModel.dailyLocationWeather!.lowTemperature}℃',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                      shadows: [
-                                        Shadow(
-                                            blurRadius: 4,
-                                            color: Color.fromARGB(165, 0, 0, 0),
-                                            offset: Offset(1, 1)),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // 전일 대비
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.2),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(15),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    const Text('전일대비',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                        )),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          (viewModel.temperatureGap! >= 0)
-                                              ? ImagePath.temperatureUpArrowIcon
-                                              : ImagePath
-                                                  .temperatureDownArrowIcon,
-                                          width: 16,
-                                          height: 16,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          '$temperatureGapPresentation℃',
-                                          style: const TextStyle(
-                                            fontSize: 30,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: ReactionUtil.reactHeight(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            kBottomNavigationBarHeight -
+                            MediaQuery.of(context).padding.top -
+                            MediaQuery.of(context).padding.bottom,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height: ReactionUtil.reactHeight(
                               context: context,
                               marginHeight: 40,
+                            )),
+                            // city
+                            Text(
+                              viewModel.dailyLocationWeather!.location.city,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // weathers by time
-                    WeatherByTimeListWidget(
-                      weatherList: viewModel.weatherByTimeList,
-                    ),
-
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: ReactionUtil.reactHeight(
-                          context: context,
-                          marginHeight: 20,
+                            const SizedBox(height: 4),
+                            // weather code description
+                            Text(
+                              WeatherCode.fromValue(
+                                      viewModel.currentWeather!.code)
+                                  .description,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                                height: ReactionUtil.reactHeight(
+                              context: context,
+                              marginHeight: 20,
+                            )),
+                            // current temperature
+                            Text(
+                              '${viewModel.currentWeather!.temperature}℃',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 60,
+                              ),
+                            ),
+                            SizedBox(
+                                height: ReactionUtil.reactHeight(
+                              context: context,
+                              marginHeight: 20,
+                            )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // max, min temperature
+                                Column(
+                                  children: [
+                                    Text(
+                                      '최고 ${viewModel.dailyLocationWeather!.highTemperature}℃',
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                              blurRadius: 4,
+                                              color:
+                                                  Color.fromARGB(165, 0, 0, 0),
+                                              offset: Offset(1, 1)),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      '최저 ${viewModel.dailyLocationWeather!.lowTemperature}℃',
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                              blurRadius: 4,
+                                              color:
+                                                  Color.fromARGB(165, 0, 0, 0),
+                                              offset: Offset(1, 1)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // 전일 대비
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.2),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(15),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const Text('전일대비',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.white,
+                                          )),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            (viewModel.temperatureGap! <= 0)
+                                                ? ImagePath
+                                                    .temperatureUpArrowIcon
+                                                : ImagePath
+                                                    .temperatureDownArrowIcon,
+                                            width: 16,
+                                            height: 16,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            '$temperatureGapPresentation℃',
+                                            style: const TextStyle(
+                                              fontSize: 30,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: ReactionUtil.reactHeight(
+                                context: context,
+                                marginHeight: 40,
+                              ),
+                            ),
+                            WeatherByTimeListWidget(
+                              weatherList: viewModel.weatherByTimeList,
+                            ),
+                            const Spacer(),
+                            // ootd list
+                            RecommendOotdListWidget(
+                              dailyLocationWeather:
+                                  viewModel.dailyLocationWeather,
+                              feedList: viewModel.feedList,
+                            )
+                          ],
                         ),
                       ),
-                    ),
-
-                    // ootd list
-                    RecommendOotdListWidget(
-                      dailyLocationWeather: viewModel.dailyLocationWeather,
-                      feedList: viewModel.feedList,
                     ),
                   ],
                 ),
