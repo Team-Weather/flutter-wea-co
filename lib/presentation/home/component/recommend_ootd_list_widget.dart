@@ -16,49 +16,52 @@ class RecommendOotdListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Container(
-        height: 250,
-        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '오늘은 이런 코디 어때요?',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            feedList.isEmpty
-                ? const Center(
-                    child: Text(
-                      '아직 등록된 코디가 없어요 :( \n 가장 먼저 OOTD를 올려보세요! :D',
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: feedList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => RouterStatic.pushToOotdDetail(
-                            context,
-                            feed: feedList[index]
-                          ),
-                          child: RecommendOotdWidget(
-                            feedList: feedList,
-                            index: index,
-                          ),
-                        );
-                      },
-                    ),
+    return Container(
+      height: 300,
+      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '오늘은 이런 코디 어때요?',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          // Expanded(child: const SizedBox(height: 20)),
+          feedList.isEmpty
+              ? const Center(
+                  child: Text(
+                    '아직 등록된 코디가 없어요 :( \n 가장 먼저 OOTD를 올려보세요! :D',
+                    textAlign: TextAlign.center,
                   ),
-          ],
-        ),
+                )
+              : SizedBox(
+                  height: 200,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: feedList.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => RouterStatic.pushToOotdDetail(context,
+                                  feed: feedList[index]),
+                              child: RecommendOotdWidget(
+                                feedList: feedList,
+                                index: index,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        ],
       ),
     );
   }
