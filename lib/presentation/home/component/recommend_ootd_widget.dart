@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 
-class RecommandOotdWidget extends StatelessWidget {
-  const RecommandOotdWidget({
+class RecommendOotdWidget extends StatelessWidget {
+  const RecommendOotdWidget({
     super.key,
     required this.feedList,
     required this.index,
@@ -27,10 +28,10 @@ class RecommandOotdWidget extends StatelessWidget {
           ]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Image.network(
+        child: CachedImageWidget(
           feedList[index].imagePath,
-          fit: BoxFit.cover,
         ),
+       
       ),
     );
   }

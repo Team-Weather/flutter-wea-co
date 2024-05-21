@@ -1,6 +1,8 @@
-import 'package:weaco/main.dart';
+import 'package:hive/hive.dart';
 
 class HiveWrapper {
+  static late Box<String> dataBox;
+
   Future<void> writeData(String key, String value) async {
     await dataBox.put(key, value);
   }

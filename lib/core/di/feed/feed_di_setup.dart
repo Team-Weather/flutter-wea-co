@@ -20,7 +20,7 @@ import 'package:weaco/domain/user/use_case/get_user_profile_use_case.dart';
 import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
-import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
+import 'package:weaco/presentation/ootd_search/view_model/ootd_search_view_model.dart';
 
 void feedDiSetup() {
   // DataSource

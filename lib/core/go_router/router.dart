@@ -6,23 +6,20 @@ import 'package:weaco/core/enum/router_path.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/use_case/log_out_use_case.dart';
 import 'package:weaco/domain/user/use_case/sign_out_use_case.dart';
-import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
-import 'package:weaco/domain/weather/use_case/get_background_image_list_use_case.dart';
-import 'package:weaco/domain/weather/use_case/get_daily_location_weather_use_case.dart';
 import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
-import 'package:weaco/presentation/ootd_feed/view/ootd_feed_screen.dart';
+import 'package:weaco/presentation/ootd_feed/screen/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
 import 'package:weaco/presentation/ootd_post/view_model/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/view_model/picutre_crop_view_model.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
-import 'package:weaco/presentation/ooted_search/screen/ootd_search_screen.dart';
-import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
-import 'package:weaco/presentation/settings/screen/app_setting_policy_web_view.dart';
+import 'package:weaco/presentation/ootd_search/screen/ootd_search_screen.dart';
+import 'package:weaco/presentation/ootd_search/view_model/ootd_search_view_model.dart';
+import 'package:weaco/presentation/settings/screen/app_setting_policy_screen.dart';
 import 'package:weaco/presentation/settings/screen/app_setting_screen.dart';
 import 'package:weaco/presentation/settings/view_model/app_setting_view_model.dart';
-import 'package:weaco/presentation/ootd_feed_detail/view/ootd_feed_detail.dart';
+import 'package:weaco/presentation/ootd_feed_detail/screen/ootd_detail_screen.dart';
 import 'package:weaco/presentation/ootd_feed_detail/view_model/ootd_detail_view_model.dart';
 import 'package:weaco/presentation/ootd_post/view_model/camera_view_model.dart';
 import 'package:weaco/presentation/ootd_post/screen/ootd_post_screen.dart';
@@ -44,14 +41,7 @@ final router = GoRouter(
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                  create: (_) => HomeScreenViewModel(
-                        getDailyLocationWeatherUseCase:
-                            getIt<GetDailyLocationWeatherUseCase>(),
-                        getBackgroundImageListUseCase:
-                            getIt<GetBackgroundImageListUseCase>(),
-                        getRecommendedFeedsUseCase:
-                            getIt<GetRecommendedFeedsUseCase>(),
-                      )),
+                  create: (_) => getIt<HomeScreenViewModel>()),
               ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
               ChangeNotifierProvider(create: (_) => getIt<CameraViewModel>()),
               ChangeNotifierProvider(create: (_) => getIt<OotdFeedViewModel>()),
@@ -67,13 +57,7 @@ final router = GoRouter(
       path: RouterPath.home.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => HomeScreenViewModel(
-            getDailyLocationWeatherUseCase:
-                getIt<GetDailyLocationWeatherUseCase>(),
-            getBackgroundImageListUseCase:
-                getIt<GetBackgroundImageListUseCase>(),
-            getRecommendedFeedsUseCase: getIt<GetRecommendedFeedsUseCase>(),
-          ),
+          create: (_) => getIt<HomeScreenViewModel>(),
           child: const HomeScreen(),
         );
       },
@@ -147,8 +131,8 @@ final router = GoRouter(
       path: RouterPath.ootdDetail.path,
       builder: (context, state) {
         return ChangeNotifierProvider(
-          create: (_) => getIt<OotdDetailViewModel>(
-              param1: (state.extra as Feed).id),
+          create: (_) =>
+              getIt<OotdDetailViewModel>(param1: (state.extra as Feed).id),
           child: OotdDetailScreen<OotdDetailViewModel>(
             feed: state.extra as Feed,
           ),

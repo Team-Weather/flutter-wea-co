@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/user_page/screen/component/feed_grid/feed_grid_deleted_user_widget.dart';
 import 'package:weaco/presentation/user_page/screen/component/feed_grid/feed_grid_empty_widget.dart';
 import 'package:weaco/presentation/user_page/screen/component/user_profile/user_profile_deleted_widget.dart';
@@ -104,17 +105,11 @@ class _UserPageScreenState extends State<UserPageScreen> {
   Widget _buildFeedCard(Feed currentFeed) {
     return GestureDetector(
       onTap: () {
-        RouterStatic.pushToOotdDetail(
-          context,
-          feed: currentFeed
-        );
+        RouterStatic.pushToOotdDetail(context, feed: currentFeed);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Image(
-          image: NetworkImage(currentFeed.imagePath),
-          fit: BoxFit.cover,
-        ),
+        child: CachedImageWidget(currentFeed.imagePath),
       ),
     );
   }

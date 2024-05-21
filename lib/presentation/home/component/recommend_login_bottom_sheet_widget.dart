@@ -4,8 +4,8 @@ import 'package:weaco/presentation/common/style/colors.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
 
-class RecommandLoginBottomSheetWidget extends StatelessWidget {
-  const RecommandLoginBottomSheetWidget({
+class RecommendLoginBottomSheetWidget extends StatelessWidget {
+  const RecommendLoginBottomSheetWidget({
     super.key,
     required this.context,
     this.message,
