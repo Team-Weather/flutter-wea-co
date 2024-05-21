@@ -21,7 +21,7 @@ class GetMyPageFeedsUseCase {
         limit: limit,
       );
     } catch (e) {
-      Exception(e);
+      throw Exception(e);
     }
     return feedList;
   }

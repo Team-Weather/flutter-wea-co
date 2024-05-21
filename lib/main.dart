@@ -7,16 +7,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/di/di_setup.dart';
 import 'package:weaco/core/go_router/router.dart';
+import 'package:weaco/core/hive/hive_wrapper.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'firebase_options.dart';
-
-late Box<String> dataBox;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Hive.initFlutter();
-  dataBox = await Hive.openBox('weacoBox');
+  HiveWrapper.dataBox = await Hive.openBox('weacoBox');
   await dotenv.load(fileName: '.env');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -10,8 +10,9 @@ import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/core/util/reaction_util.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/style/colors.dart';
-import 'package:weaco/presentation/ooted_search/view_model/ootd_search_view_model.dart';
+import 'package:weaco/presentation/ootd_search/view_model/ootd_search_view_model.dart';
 
 class OotdSearchScreen extends StatefulWidget {
   const OotdSearchScreen({super.key});
@@ -193,13 +194,10 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                                     feed: searchFeedList[index]);
                               },
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image(
-                                  image: NetworkImage(
-                                      searchFeedList[index].imagePath),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: CachedImageWidget(
+                                    searchFeedList[index].imagePath,
+                                  )),
                             );
                           },
                         ),

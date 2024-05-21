@@ -8,6 +8,7 @@ import 'package:weaco/core/enum/season_code.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
+import 'package:weaco/presentation/common/component/cached_image_widget.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/user_provider.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
@@ -70,7 +71,7 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
                         widget.feed != null
                             ?
                             // 기존 피드 수정
-                            Image.network(widget.feed!.imagePath)
+                            CachedImageWidget(widget.feed!.imagePath)
                             :
                             // 새로운 피드 작성
                             Stack(
@@ -215,30 +216,36 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       ),
       actions: [
         TextButton(
-          onPressed: () async {
-            if (widget.feed != null) {
-              await viewModel.editFeed(
-                  widget.feed!, _contentTextController.text);
-            } else {
-              await viewModel.saveFeed(_email, _contentTextController.text);
-            }
+          onPressed: viewModel.showSpinner
+              ? null
+              : () async {
+                  if (widget.feed != null) {
+                    await viewModel.editFeed(
+                        widget.feed!, _contentTextController.text);
+                  } else {
+                    await viewModel.saveFeed(
+                        _email, _contentTextController.text);
+                  }
 
-            if (mounted) {
-              if (viewModel.saveStatus) {
-                RouterStatic.goToDefault(context);
-              } else {
-                AlertUtil.showAlert(
-                  context: context,
-                  exceptionAlert: ExceptionAlert.snackBar,
-                  message: '다시 시도해 주세요.',
-                );
-              }
-            }
-          },
-          child: Text(
-            widget.feed != null ? '수정' : '저장',
-            style: const TextStyle(color: Color(0xFFFC8800), fontSize: 18),
-          ),
+                  if (mounted) {
+                    if (viewModel.saveStatus) {
+                      RouterStatic.goToDefault(context);
+                    } else {
+                      AlertUtil.showAlert(
+                        context: context,
+                        exceptionAlert: ExceptionAlert.snackBar,
+                        message: '다시 시도해 주세요.',
+                      );
+                    }
+                  }
+                },
+          child: viewModel.showSpinner
+              ? const Center(child: CircularProgressIndicator())
+              : Text(
+                  widget.feed != null ? '수정' : '저장',
+                  style:
+                      const TextStyle(color: Color(0xFFFC8800), fontSize: 18),
+                ),
         ),
       ],
     );
