@@ -10,7 +10,6 @@ import 'package:weaco/presentation/my_page/screen/my_page_screen.dart';
 import 'package:weaco/presentation/my_page/view_model/my_page_view_model.dart';
 import 'package:weaco/presentation/ootd_feed/screen/ootd_feed_screen.dart';
 import 'package:weaco/presentation/ootd_feed/view_model/ootd_feed_view_model.dart';
-import 'package:weaco/presentation/ootd_post/screen/camera_screen.dart';
 import 'package:weaco/presentation/ootd_post/view_model/ootd_post_view_model.dart';
 import 'package:weaco/presentation/ootd_post/view_model/picutre_crop_view_model.dart';
 import 'package:weaco/presentation/home/screen/home_screen.dart';
@@ -137,15 +136,6 @@ final router = GoRouter(
           child: OotdDetailScreen<OotdDetailViewModel>(
             feed: state.extra as Feed,
           ),
-        );
-      },
-    ),
-    GoRoute(
-      path: RouterPath.camera.path,
-      builder: (context, state) {
-        return ChangeNotifierProvider(
-          create: (_) => CameraViewModel(),
-          child: const CameraScreen(),
         );
       },
     ),

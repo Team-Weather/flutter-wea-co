@@ -216,30 +216,36 @@ class _OotdPostScreenState extends State<OotdPostScreen> {
       ),
       actions: [
         TextButton(
-          onPressed: () async {
-            if (widget.feed != null) {
-              await viewModel.editFeed(
-                  widget.feed!, _contentTextController.text);
-            } else {
-              await viewModel.saveFeed(_email, _contentTextController.text);
-            }
+          onPressed: viewModel.showSpinner
+              ? null
+              : () async {
+                  if (widget.feed != null) {
+                    await viewModel.editFeed(
+                        widget.feed!, _contentTextController.text);
+                  } else {
+                    await viewModel.saveFeed(
+                        _email, _contentTextController.text);
+                  }
 
-            if (mounted) {
-              if (viewModel.saveStatus) {
-                RouterStatic.goToDefault(context);
-              } else {
-                AlertUtil.showAlert(
-                  context: context,
-                  exceptionAlert: ExceptionAlert.snackBar,
-                  message: '다시 시도해 주세요.',
-                );
-              }
-            }
-          },
-          child: Text(
-            widget.feed != null ? '수정' : '저장',
-            style: const TextStyle(color: Color(0xFFFC8800), fontSize: 18),
-          ),
+                  if (mounted) {
+                    if (viewModel.saveStatus) {
+                      RouterStatic.goToDefault(context);
+                    } else {
+                      AlertUtil.showAlert(
+                        context: context,
+                        exceptionAlert: ExceptionAlert.snackBar,
+                        message: '다시 시도해 주세요.',
+                      );
+                    }
+                  }
+                },
+          child: viewModel.showSpinner
+              ? const Center(child: CircularProgressIndicator())
+              : Text(
+                  widget.feed != null ? '수정' : '저장',
+                  style:
+                      const TextStyle(color: Color(0xFFFC8800), fontSize: 18),
+                ),
         ),
       ],
     );

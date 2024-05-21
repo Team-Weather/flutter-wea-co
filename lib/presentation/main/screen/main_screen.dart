@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -232,13 +232,18 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     required CameraViewModel viewModel,
     required ImageSource imageSource,
     required BuildContext context,
-  }) {
-    viewModel.pickImage(
-      imageSource: imageSource,
-      callback: (result) {
-        if (result) {
+  }) async {
+    await viewModel.pickImage(imageSource: imageSource);
+    switch (viewModel.status) {
+      case CameraImageStatus.idle:
+        log('이미지 선택 없음', name: 'MainScreen._onPressedButton()');
+      case CameraImageStatus.success:
+        if (context.mounted) {
           RouterStatic.goToPictureCrop(context, viewModel.imageFile!.path);
-        } else {
+        }
+
+      case CameraImageStatus.error:
+        if (context.mounted) {
           showDialog(
             context: context,
             builder: (context) {
@@ -263,8 +268,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             },
           );
         }
-      },
-    );
+    }
   }
 
   void _toggleFloatingActionButton() {
