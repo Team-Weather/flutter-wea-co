@@ -21,21 +21,23 @@ class _WeatherByTimeListWidgetState extends State<WeatherByTimeListWidget> {
     double screenHeight = MediaQuery.of(context).size.height;
     double heightPercentage = 105 / screenHeight;
 
-    return Container(
-        alignment: Alignment.center,
-        height: screenHeight * heightPercentage,
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(136, 90, 152, 196),
-            borderRadius: BorderRadius.circular(15)),
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: widget.weatherList!.length,
-            itemBuilder: (context, index) {
-              return WeatherByTimeWidget(
-                weatherList: widget.weatherList,
-                index: index,
-              );
-            }));
+    return SliverToBoxAdapter(
+      child: Container(
+          alignment: Alignment.center,
+          height: screenHeight * heightPercentage,
+          decoration: BoxDecoration(
+              color: const Color.fromARGB(136, 90, 152, 196),
+              borderRadius: BorderRadius.circular(15)),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.weatherList!.length,
+              itemBuilder: (context, index) {
+                return WeatherByTimeWidget(
+                  weatherList: widget.weatherList,
+                  index: index,
+                );
+              })),
+    );
   }
 }
