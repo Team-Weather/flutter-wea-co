@@ -18,9 +18,4 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<UserProfile?> getUserProfile({required String email}) async {
     return await _remoteUserProfileDataSource.getUserProfile(email: email);
   }
-
-  @override
-  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
-    return await _remoteUserProfileDataSource.updateUserProfile(userProfile: userProfile);
-  }
 }
