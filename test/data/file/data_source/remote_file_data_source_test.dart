@@ -47,7 +47,7 @@ void main() {
 
         if (croppedImage != null && compressedImage != null) {
           final path =
-              await remoteFileDataSource.saveImage(croppedImage: croppedImage!, compressedImage: compressedImage!);
+              await remoteFileDataSource.saveImage(croppedImage: croppedImage, compressedImage: compressedImage);
 
           expect(path[0].startsWith('${bucketPath}feed_origin_images/$email'), true);
           expect(path[1].startsWith('${bucketPath}feed_thumbnail_images/$email'), true);
