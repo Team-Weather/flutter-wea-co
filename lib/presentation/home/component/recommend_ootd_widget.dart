@@ -29,7 +29,7 @@ class RecommendOotdWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: CachedImageWidget(
-          feedList[index].imagePath,
+          feedList[index].thumbnailImagePath,
         ),
        
       ),
