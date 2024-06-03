@@ -41,6 +41,7 @@ void main() {
             final mockFeed = Feed(
               id: 'id',
               imagePath: 'imagePath',
+              thumbnailImagePath: 'thumbnailImagePath',
               userEmail: 'test@email.com',
               description: 'This is a test feed',
               weather: mockWeather,
@@ -76,6 +77,7 @@ void main() {
               final mockFeed = Feed(
                 id: 'gyubro',
                 imagePath: 'imagePath',
+                thumbnailImagePath: 'thumbnailImagePath',
                 userEmail: 'test@email.com',
                 description: 'This is a test feed',
                 weather: mockWeather,
@@ -119,6 +121,7 @@ void main() {
           final mockFeed = Feed(
             id: testId,
             imagePath: 'imagePath',
+            thumbnailImagePath: 'thumbnailImagePath',
             userEmail: 'test@email.com',
             description: 'This is a test feed',
             weather: mockWeather,
@@ -147,18 +150,23 @@ void main() {
               'weather': {
                 'code': i, // 날씨 코드
                 'temperature': 22.0, // 온도
-                'time_temperature': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
-                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'time_temperature':
+                    DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'created_at':
+                    DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'location': {
                 'lat': 35.234,
                 'lng': 131.1,
                 'city': '서울시 구로구',
-                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'created_at':
+                    DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
               'image_path':
+                  'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+              'thumbnail_image_path':
                   'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
               'season_code': 0,
               'user_email': 'hoogom87@gmail.com',
@@ -185,18 +193,23 @@ void main() {
             'weather': {
               'code': 0, // 날씨 코드
               'temperature': 22.0, // 온도
-              'time_temperature': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
-              'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+              'time_temperature':
+                  DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+              'created_at':
+                  DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
             },
             'location': {
               'lat': 35.234,
               'lng': 131.1,
               'city': '서울시 구로구',
-              'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+              'created_at':
+                  DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
             },
             'created_at': DateTime.parse('2024-05-01 13:27:00'),
             'description': 'desc',
             'image_path':
+                'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+            'thumbnail_image_path':
                 'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
             'season_code': 0,
             'user_email': 'hoogom87@gmail.com',
@@ -222,18 +235,23 @@ void main() {
               'weather': {
                 'code': i, // 날씨 코드
                 'temperature': 22.0, // 온도
-                'time_temperature': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
-                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'time_temperature':
+                    DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'created_at':
+                    DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'location': {
                 'lat': 35.234,
                 'lng': 131.1,
                 'city': '서울시 구로구',
-                'created_at': DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
+                'created_at':
+                    DateTime.parse('2024-05-01 13:27:00').toIso8601String(),
               },
               'created_at': DateTime.parse('2024-05-01 13:27:00'),
               'description': 'desc',
               'image_path':
+                  'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+              'thumbnail_image_path':
                   'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
               'season_code': 0,
               'user_email': 'hoogom87@gmail.com',
@@ -287,9 +305,12 @@ void main() {
             await fakeFirestore.collection('feeds').add({
               'weather': mockWeather.toJson(),
               'location': mockLocation.toJson(),
-              'created_at': Timestamp.fromDate(DateTime.parse('2024-05-01 13:27:00')),
+              'created_at':
+                  Timestamp.fromDate(DateTime.parse('2024-05-01 13:27:00')),
               'description': 'desc',
               'image_path':
+                  'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
+              'thumbnail_image_path':
                   'https://health.chosun.com/site/data/img_dir/2024/01/22/2024012201607_0.jpg',
               'season_code': 0,
               'user_email': 'hoogom87@gmail.com',

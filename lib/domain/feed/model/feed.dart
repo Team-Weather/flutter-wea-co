@@ -4,6 +4,7 @@ import 'package:weaco/domain/weather/model/weather.dart';
 class Feed {
   final String? id;
   final String imagePath;
+  final String thumbnailImagePath;
   final String userEmail;
   final String description;
   final Weather weather;
@@ -15,6 +16,7 @@ class Feed {
   Feed({
     required this.id,
     required this.imagePath,
+    required this.thumbnailImagePath,
     required this.userEmail,
     required this.description,
     required this.weather,
@@ -26,7 +28,7 @@ class Feed {
 
   @override
   String toString() {
-    return 'Feed(id: $id, imagePath: $imagePath, userEmail: $userEmail, description: $description, weather: $weather, seasonCode: $seasonCode, location: $location, createdAt: $createdAt, deletedAt: $deletedAt)';
+    return 'Feed(id: $id, imagePath: $imagePath, thumbnailImagePath: $thumbnailImagePath, userEmail: $userEmail, description: $description, weather: $weather, seasonCode: $seasonCode, location: $location, createdAt: $createdAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -35,6 +37,7 @@ class Feed {
 
     return other.id == id &&
         other.imagePath == imagePath &&
+        other.thumbnailImagePath == thumbnailImagePath &&
         other.userEmail == userEmail &&
         other.description == description &&
         other.weather == weather &&
@@ -48,6 +51,7 @@ class Feed {
   int get hashCode {
     return id.hashCode ^
         imagePath.hashCode ^
+        thumbnailImagePath.hashCode ^
         userEmail.hashCode ^
         description.hashCode ^
         weather.hashCode ^
@@ -60,6 +64,7 @@ class Feed {
   Feed copyWith({
     String? id,
     String? imagePath,
+    String? thumbnailImagePath,
     String? userEmail,
     String? description,
     Weather? weather,
@@ -71,6 +76,7 @@ class Feed {
     return Feed(
       id: id ?? this.id,
       imagePath: imagePath ?? this.imagePath,
+      thumbnailImagePath: thumbnailImagePath ?? this.thumbnailImagePath,
       userEmail: userEmail ?? this.userEmail,
       description: description ?? this.description,
       weather: weather ?? this.weather,
@@ -85,6 +91,7 @@ class Feed {
     return {
       'id': id,
       'image_path': imagePath,
+      'thumbnail_image_path': thumbnailImagePath,
       'user_email': userEmail,
       'description': description,
       'weather': weather.toJson(),
@@ -99,6 +106,7 @@ class Feed {
     return Feed(
       id: map['id'] as String,
       imagePath: map['image_path'] as String,
+      thumbnailImagePath: map['thumbnail_image_path'] as String,
       userEmail: map['user_email'] as String,
       description: map['description'] as String,
       weather: Weather.fromJson(map['weather']),

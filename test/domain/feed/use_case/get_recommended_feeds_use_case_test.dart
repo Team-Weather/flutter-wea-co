@@ -93,6 +93,7 @@ void main() {
         final feed1 = Feed(
             id: '0',
             imagePath: '',
+            thumbnailImagePath: '',
             userEmail: 'hoogom87@gmail.com',
             description: '오늘의 OOTD',
             weather: Weather(

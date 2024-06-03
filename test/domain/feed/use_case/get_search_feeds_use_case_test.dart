@@ -58,6 +58,7 @@ void main() {
         final feed1 = Feed(
             id: '0',
             imagePath: '',
+            thumbnailImagePath: '',
             userEmail: 'qoophon@gmail.com',
             description: '오늘의 OOTD',
             weather: Weather(

@@ -34,6 +34,7 @@ void main() {
         final expectedFeed = Feed(
           id: 'id',
           imagePath: 'imagePath',
+          thumbnailImagePath: 'thumbnailImagePath',
           userEmail: 'userEmail',
           description: 'description',
           weather: Weather(

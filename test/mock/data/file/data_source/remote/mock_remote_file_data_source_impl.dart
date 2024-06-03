@@ -14,9 +14,9 @@ class MockRemoteFileDataSourceImpl implements RemoteFileDataSource {
   }
 
   @override
-  Future<String> saveImage({required File image}) async {
+  Future<List<String>> saveImage({required File croppedImage, required File compressedImage}) async {
     methodCallCount['saveImage'] = (methodCallCount['method'] ?? 0) + 1;
-    methodParameter['image'] = image;
+    methodParameter['image'] = croppedImage;
     return methodResult['saveImage'];
   }
 }

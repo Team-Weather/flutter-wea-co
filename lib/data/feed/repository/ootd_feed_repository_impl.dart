@@ -27,10 +27,10 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
 
   /// 피드 저장
   Future<bool> _save({required Feed feed}) async {
-    final String path = await _fileRepository.saveOotdImage();
+    final List<String> path = await _fileRepository.saveOotdImage();
 
     final saveResult = await _feedRepository.saveFeed(
-        editedFeed: feed.copyWith(imagePath: path));
+        editedFeed: feed.copyWith(imagePath: path[0], thumbnailImagePath: path[1]));
 
     await _updateMyFeedCount(1);
 
