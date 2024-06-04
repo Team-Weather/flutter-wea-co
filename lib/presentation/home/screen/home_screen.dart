@@ -28,11 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.microtask(
       () async {
         await context.read<HomeScreenViewModel>().initHomeScreen();
-        final tmp = context.read<HomeScreenViewModel>().precacheList;
         if (mounted) {
+          final tmp = context.read<HomeScreenViewModel>().precacheList;
           for (Feed e in tmp) {
             await precacheImage(CachedNetworkImageProvider(e.thumbnailImagePath), context);
-          };
+          }
         }
       },
     );
