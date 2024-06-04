@@ -14,15 +14,20 @@ class RemoteFileDataSourceImpl implements RemoteFileDataSource {
         _firebaseAuthService = firebaseAuthService;
 
   @override
-  Future<String> saveImage({required File image}) async {
+  Future<List<String>> saveImage({required File croppedImage, required File compressedImage}) async {
     final String? email = _firebaseAuthService.firebaseAuth.currentUser?.email;
     if (email == null) throw Exception();
-    final feedImageRef = _firebaseStorage.ref().child(
-        'feed_images/${email}_${DateTime
+    final feedOriginImageRef = _firebaseStorage.ref().child(
+        'feed_origin_images/${email}_${DateTime
             .now()
             .microsecondsSinceEpoch}.png');
-    await feedImageRef.putFile(image);
+    await feedOriginImageRef.putFile(croppedImage);
+    final feedThumbnailImageRef = _firebaseStorage.ref().child(
+        'feed_thumbnail_images/${email}_${DateTime
+            .now()
+            .microsecondsSinceEpoch}.png');
+    await feedThumbnailImageRef.putFile(compressedImage);
 
-    return await feedImageRef.getDownloadURL();
+    return  [await feedOriginImageRef.getDownloadURL(), await feedThumbnailImageRef.getDownloadURL()];
   }
 }

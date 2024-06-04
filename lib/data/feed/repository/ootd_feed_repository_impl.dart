@@ -39,11 +39,11 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
     required Transaction transaction,
     required Feed feed,
   }) async {
-    final String path = await _fileRepository.saveOotdImage();
+    final List<String> path = await _fileRepository.saveOotdImage();
 
     await _remoteFeedDataSource.saveFeed(
       transaction: transaction,
-      feed: feed.copyWith(imagePath: path),
+      feed: feed.copyWith(imagePath: path[0], thumbnailImagePath: path[1]),
     );
 
     await _updateMyFeedCount(

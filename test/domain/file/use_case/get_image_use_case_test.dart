@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/core/enum/image_type.dart';
 import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
 
 import '../../../mock/data/file/repository/mock_file_repository_impl.dart';
@@ -17,7 +18,7 @@ void main() {
         const expectCount = 1;
 
         // When
-        await useCase.execute(isOrigin: true);
+        await useCase.execute(imageType: ImageType.origin);
 
         // Then
         expect(mockFileRepository.getImageCallCount, expectCount);

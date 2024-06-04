@@ -2,13 +2,15 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weaco/domain/file/use_case/save_image_use_case.dart';
 
+import '../../../mock/core/util/mock_image_compressor_impl.dart';
 import '../../../mock/data/file/repository/mock_file_repository_impl.dart';
 
 void main() {
   group('SaveImageUseCase 클래스', () {
     final mockFileRepository = MockFileRepositoryImpl();
-    final SaveImageUseCase useCase =
-    SaveImageUseCase(fileRepository: mockFileRepository);
+    final SaveImageUseCase useCase = SaveImageUseCase(
+        fileRepository: mockFileRepository,
+        imageCompressor: MockImageCompressorImpl());
 
     setUp(() => mockFileRepository.initMockData());
 
@@ -43,7 +45,8 @@ void main() {
         mockFileRepository.saveImageResult = expectResult;
 
         // When
-        final result = await mockFileRepository.saveImage(isOrigin: true, file: data);
+        final result =
+            await mockFileRepository.saveImage(isOrigin: true, file: data);
 
         // Then
         expect(result, expectResult);

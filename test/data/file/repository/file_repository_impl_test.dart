@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/core/enum/image_type.dart';
 import 'package:weaco/data/file/repository/file_repository_impl.dart';
 import 'package:weaco/domain/file/repository/file_repository.dart';
 
@@ -22,21 +23,21 @@ void main() {
     group('getImage 메서드는', () {
       test('인자를 LocalFileDataSource.getImage()에 파라미터로 그대로 전달한다.', () async {
         // Given
-        const bool isOrigin = true;
+        const ImageType imageType = ImageType.origin;
 
         // When
-        await fileRepository.getImage(isOrigin: isOrigin);
+        await fileRepository.getImage(imageType: imageType);
 
         // Then
-        expect(mockLocalFileDataSource.methodParameter['isOrigin'], isOrigin);
+        expect(mockLocalFileDataSource.methodParameter['isOrigin'], imageType);
       });
 
       test('LocalFileDataSource.getImage()을 한번 호출한다.', () async {
         // Given
-        const bool isOrigin = true;
+        const ImageType imageType = ImageType.origin;
 
         // When
-        await fileRepository.getImage(isOrigin: isOrigin);
+        await fileRepository.getImage(imageType: imageType);
 
         // Then
         expect(mockLocalFileDataSource.methodCallCount['getImage'], 1);
@@ -44,12 +45,12 @@ void main() {
 
       test('LocalFileDataSource.getImage()의 반환 값을 그대로 반환한다.', () async {
         // Given
-        const bool isOrigin = true;
+        const ImageType imageType = ImageType.origin;
         final File expectResult = File('test/mock/assets/test_image.png');
         mockLocalFileDataSource.methodResult['getImage'] = expectResult;
 
         // When
-        await fileRepository.getImage(isOrigin: isOrigin);
+        await fileRepository.getImage(imageType: imageType);
 
         // Then
         expect(mockLocalFileDataSource.methodResult['getImage'], expectResult);
@@ -65,7 +66,7 @@ void main() {
         mockLocalFileDataSource.methodResult['saveImage'] = true;
 
         // When
-        await fileRepository.saveImage(isOrigin: isOrigin, file: file);
+        await fileRepository.saveImage(isOrigin: isOrigin, file: file, compressedImage: file.readAsBytesSync());
 
         // Then
         expect(mockLocalFileDataSource.methodParameter['isOrigin'], isOrigin);
@@ -79,7 +80,7 @@ void main() {
         mockLocalFileDataSource.methodResult['saveImage'] = true;
 
         // When
-        await fileRepository.saveImage(isOrigin: isOrigin, file: file);
+        await fileRepository.saveImage(isOrigin: isOrigin, file: file, compressedImage: file.readAsBytesSync());
 
         // Then
         expect(mockLocalFileDataSource.methodCallCount['saveImage'], 1);
@@ -93,7 +94,7 @@ void main() {
         mockLocalFileDataSource.methodResult['saveImage'] = expectResult;
 
         // When
-        await fileRepository.saveImage(isOrigin: isOrigin, file: file);
+        await fileRepository.saveImage(isOrigin: isOrigin, file: file, compressedImage: file.readAsBytesSync());
 
         // Then
         expect(mockLocalFileDataSource.methodResult['saveImage'], expectResult);
@@ -101,12 +102,12 @@ void main() {
     });
 
     group('saveOotdImage 메서드는', () {
-      test('LocalFileDataSource.getImage()의 isOrigin 파라미터 값으로 false를 전달한다.',
+      test('LocalFileDataSource.getImage()의 imageType 파라미터 값으로 ImageType.compressed를 전달한다.',
           () async {
         // Given
-        const bool expectedParameter = false;
+        const ImageType expectedParameter = ImageType.compressed;
         mockLocalFileDataSource.methodResult['getImage'] = File('test/mock/assets/test_image.png');
-        mockRemoteFileDataSource.methodResult['saveImage'] = 'test/mock/assets/test_image.png';
+        mockRemoteFileDataSource.methodResult['saveImage'] = ['test/mock/assets/test_image.png', 'test/mock/assets/test_image.png'];
 
         // When
         await fileRepository.saveOotdImage();
@@ -116,16 +117,16 @@ void main() {
             expectedParameter);
       });
 
-      test('LocalFileDataSource.getImage()을 한번 호출한다.', () async {
+      test('LocalFileDataSource.getImage()을 두번 호출한다.', () async {
         // Given
         mockLocalFileDataSource.methodResult['getImage'] = File('test/mock/assets/test_image.png');
-        mockRemoteFileDataSource.methodResult['saveImage'] = 'test/mock/assets/test_image.png';
+        mockRemoteFileDataSource.methodResult['saveImage'] = ['test/mock/assets/test_image.png', 'test/mock/assets/test_image.png'];
 
         // When
         await fileRepository.saveOotdImage();
 
         // Then
-        expect(mockLocalFileDataSource.methodCallCount['getImage'], 1);
+        expect(mockLocalFileDataSource.methodCallCount['getImage'], 2);
       });
 
       test('LocalFileDataSource.getImage()의 반환 값이 null이라면 Exception을 발생시킨다.', () async {
@@ -138,7 +139,7 @@ void main() {
 
       test('RemoteFileDataSource.saveImage()의 반환 값을 그대로 반환한다.', () async {
         // Given
-        const String expectResult = 'test/mock/assets/test_image.png';
+        const List<String> expectResult = ['test/mock/assets/test_image.png', 'test/mock/assets/test_image.png'];
         mockLocalFileDataSource.methodResult['getImage'] = File('test/mock/assets/test_image.png');
         mockRemoteFileDataSource.methodResult['saveImage'] = expectResult;
 

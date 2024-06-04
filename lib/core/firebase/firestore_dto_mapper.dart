@@ -8,6 +8,7 @@ Feed toFeed({required Map<String, dynamic> json, required String id}) {
   return Feed(
     id: id,
     imagePath: json['image_path'],
+    thumbnailImagePath: json['thumbnail_image_path'] ?? json['image_path'],
     userEmail: json['user_email'],
     description: json['description'],
     weather: Weather.fromJson(json['weather']),
@@ -23,6 +24,7 @@ Feed toFeed({required Map<String, dynamic> json, required String id}) {
 Map<String, dynamic> toFeedDto({required Feed feed}) {
   return {
     'image_path': feed.imagePath,
+    'thumbnail_image_path': feed.thumbnailImagePath,
     'user_email': feed.userEmail,
     'description': feed.description,
     'weather': feed.weather.toJson(),

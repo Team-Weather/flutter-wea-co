@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:weaco/core/enum/image_type.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source.dart';
 import 'package:weaco/data/file/data_source/remote/remote_file_data_source.dart';
 import 'package:weaco/domain/file/repository/file_repository.dart';
@@ -14,19 +15,22 @@ class FileRepositoryImpl implements FileRepository {
         _remoteFileDataSource = remoteFileDataSource;
 
   @override
-  Future<File?> getImage({required bool isOrigin}) async {
-    return await _localFileDataSource.getImage(isOrigin: isOrigin);
+  Future<File?> getImage({required ImageType imageType}) async {
+    return await _localFileDataSource.getImage(imageType: imageType);
   }
 
   @override
-  Future<bool> saveImage({required bool isOrigin, required File file}) async {
+  Future<bool> saveImage({required bool isOrigin, required File file, required List<int> compressedImage}) async {
+    await _localFileDataSource.saveCompressedImage(image: compressedImage);
     return await _localFileDataSource.saveImage(isOrigin: isOrigin, file: file);
   }
 
+
   @override
-  Future<String> saveOotdImage() async {
-    final File? image = await _localFileDataSource.getImage(isOrigin: false);
-    if (image == null) throw Exception();
-    return await _remoteFileDataSource.saveImage(image: image);
+  Future<List<String>> saveOotdImage() async {
+    final File? croppedImage = await _localFileDataSource.getImage(imageType: ImageType.cropped);
+    final File? compressedImage = await _localFileDataSource.getImage(imageType: ImageType.compressed);
+    if (croppedImage == null || compressedImage == null) throw Exception();
+    return await _remoteFileDataSource.saveImage(croppedImage: croppedImage, compressedImage: compressedImage);
   }
 }

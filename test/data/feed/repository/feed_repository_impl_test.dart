@@ -16,6 +16,7 @@ void main() {
     final mockFeed = Feed(
       id: 'id',
       imagePath: 'imagePath',
+      thumbnailImagePath: 'thumbnailImagePath',
       userEmail: 'userEmail',
       description: 'description',
       weather: Weather(
@@ -46,6 +47,7 @@ void main() {
       final mockFeed = Feed(
         id: 'id',
         imagePath: 'imagePath',
+        thumbnailImagePath: 'thumbnailImagePath',
         userEmail: 'userEmail',
         description: 'description',
         weather: Weather(
@@ -188,6 +190,7 @@ void main() {
       final mockFeed = Feed(
         id: 'id',
         imagePath: 'imagePath',
+        thumbnailImagePath: 'thumbnailImagePath',
         userEmail: 'userEmail',
         description: 'description',
         weather: Weather(

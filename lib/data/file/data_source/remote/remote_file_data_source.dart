@@ -1,5 +1,5 @@
 import 'dart:io';
 
 abstract interface class RemoteFileDataSource {
-  Future<String> saveImage({required File image});
+  Future<List<String>> saveImage({required File croppedImage, required File compressedImage});
 }

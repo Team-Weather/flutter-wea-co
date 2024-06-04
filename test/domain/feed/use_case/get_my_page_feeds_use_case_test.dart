@@ -39,6 +39,7 @@ void main() {
             id: '1',
             imagePath:
                 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
+            thumbnailImagePath: 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
             userEmail: 'yoonji5809@gmail.com',
             description: 'OOTD 설명',
             weather: Weather(
@@ -60,6 +61,7 @@ void main() {
             id: '2',
             imagePath:
                 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
+            thumbnailImagePath: 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
             userEmail: 'yoonji5809@gmail.com',
             description: 'OOTD 설명',
             weather: Weather(
@@ -80,6 +82,7 @@ void main() {
             id: '3',
             imagePath:
                 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
+            thumbnailImagePath: 'https://fastly.picsum.photos/id/813/200/300.jpg?hmac=D5xik3d3YUFq2gWtCzrQZs6zuAcmSvgqdZb063ezs4U',
             userEmail: 'yoonji5809@gmail.com',
             description: 'OOTD 설명',
             weather: Weather(
