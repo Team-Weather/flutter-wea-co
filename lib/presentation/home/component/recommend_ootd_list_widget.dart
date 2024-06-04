@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:weaco/core/go_router/router_static.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -40,21 +41,17 @@ class RecommendOotdListWidget extends StatelessWidget {
                     ),
                   )
                 : Expanded(
-                    child: ListView.builder(
+                    child: ListView(
                       scrollDirection: Axis.horizontal,
-                      itemCount: feedList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => RouterStatic.pushToOotdDetail(
+                      children: feedList.mapIndexed((index, element) => GestureDetector(
+                        onTap: () => RouterStatic.pushToOotdDetail(
                             context,
-                            feed: feedList[index]
-                          ),
-                          child: RecommendOotdWidget(
-                            feedList: feedList,
-                            index: index,
-                          ),
-                        );
-                      },
+                            feed: element),
+                        child: RecommendOotdWidget(
+                          feedList: feedList,
+                          index: index,
+                        ),
+                      )).toList()
                     ),
                   ),
           ],

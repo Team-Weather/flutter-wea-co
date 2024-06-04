@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weaco/core/util/reaction_util.dart';
+import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
@@ -26,6 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.microtask(
       () async {
         await context.read<HomeScreenViewModel>().initHomeScreen();
+        final tmp = context.read<HomeScreenViewModel>().precacheList;
+        if (mounted) {
+          for (Feed e in tmp) {
+            await precacheImage(CachedNetworkImageProvider(e.thumbnailImagePath), context);
+          };
+        }
       },
     );
   }

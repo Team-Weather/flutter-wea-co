@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:weaco/domain/feed/use_case/get_search_feeds_use_case.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
@@ -26,16 +28,19 @@ class HomeScreenViewModel with ChangeNotifier {
     required this.getDailyLocationWeatherUseCase,
     required this.getBackgroundImageListUseCase,
     required this.getRecommendedFeedsUseCase,
+    required this.getSearchFeedsUseCase,
   });
 
   final GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase;
   final GetBackgroundImageListUseCase getBackgroundImageListUseCase;
   final GetRecommendedFeedsUseCase getRecommendedFeedsUseCase;
+  final GetSearchFeedsUseCase getSearchFeedsUseCase;
 
   DailyLocationWeather? _dailyLocationWeather;
   Weather? _currentWeather;
   List<Weather> _weatherByTimeList = [];
   List<Feed> _feedList = [];
+  List<Feed> _precacheList = [];
   HomeScreenStatus _status = HomeScreenStatus.idle;
   // 전일 대비 온도차
   double? _temperatureGap;
@@ -45,6 +50,7 @@ class HomeScreenViewModel with ChangeNotifier {
   Weather? get currentWeather => _currentWeather;
   double? get temperatureGap => _temperatureGap ?? 0;
   List<Feed> get feedList => _feedList;
+  List<Feed> get precacheList => _precacheList;
   HomeScreenStatus get status => _status;
   String get backgroundImagePath =>
       _weatherBackgroundImage ?? ImagePath.homeBackgroundSunny;
@@ -62,6 +68,7 @@ class HomeScreenViewModel with ChangeNotifier {
       _feedList = await getRecommendedFeedsUseCase.execute(
         dailyLocationWeather: _dailyLocationWeather!,
       );
+      _precacheList = await getSearchFeedsUseCase.execute();
 
       if (_dailyLocationWeather != null) {
         // 현재 시간에 맞는 날씨 예보 빼내기

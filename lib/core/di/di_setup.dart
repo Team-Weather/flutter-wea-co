@@ -7,6 +7,7 @@ import 'package:weaco/core/di/user/user_di_setup.dart';
 import 'package:weaco/core/di/weather/weather_di_setup.dart';
 import 'package:weaco/domain/feed/use_case/get_my_page_feeds_use_case.dart';
 import 'package:weaco/domain/feed/use_case/get_recommended_feeds_use_case.dart';
+import 'package:weaco/domain/feed/use_case/get_search_feeds_use_case.dart';
 import 'package:weaco/domain/feed/use_case/remove_my_page_feed_use_case.dart';
 import 'package:weaco/domain/user/repository/user_auth_repository.dart';
 import 'package:weaco/domain/user/use_case/get_my_profile_use_case.dart';
@@ -61,6 +62,7 @@ void diSetup() {
       getDailyLocationWeatherUseCase: getIt<GetDailyLocationWeatherUseCase>(),
       getBackgroundImageListUseCase: getIt<GetBackgroundImageListUseCase>(),
       getRecommendedFeedsUseCase: getIt<GetRecommendedFeedsUseCase>(),
+      getSearchFeedsUseCase: getIt<GetSearchFeedsUseCase>(),
     ),
   );
 
