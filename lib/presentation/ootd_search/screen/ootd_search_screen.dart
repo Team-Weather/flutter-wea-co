@@ -196,7 +196,7 @@ class _OotdSearchScreenState extends State<OotdSearchScreen> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: CachedImageWidget(
-                                    searchFeedList[index].imagePath,
+                                    searchFeedList[index].thumbnailImagePath,
                                   )),
                             );
                           },

@@ -35,7 +35,8 @@ void main() {
     );
     final mockFeed = Feed(
       id: null,
-      imagePath: 'imagePath',
+      imagePath: '',
+      thumbnailImagePath: '',
       userEmail: 'test@email.com',
       description: 'This is a test feed',
       weather: mockWeather,
@@ -88,8 +89,8 @@ void main() {
           '파라미터로 받은 feed 에 FileRepository.saveOotdImage()로 받은 path 를 '
           '추가한 새로운 피드를 FeedRepository.saveFeed()에 전달한다.', () async {
         // Given
-        const String path = 'abc.jpg';
-        fileRepository.saveOotdImageResult = path;
+        const String path = '';
+        fileRepository.saveOotdImageResult = [path, path];
 
         // 예상 값
         final expectedFeed = mockFeed.copyWith(imagePath: path);
@@ -144,7 +145,6 @@ void main() {
       });
 
       test(
-          ''
           'FeedRepository.saveFeed, UserProfileRepository.updateMyFeedCount()를 '
           '정상적으로 호출한 뒤, true 를 반환한다.', () async {
         // Given

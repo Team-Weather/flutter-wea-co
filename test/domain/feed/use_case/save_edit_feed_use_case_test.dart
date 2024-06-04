@@ -21,6 +21,7 @@ void main() {
         final mockFeedNew = Feed(
           id: '',
           imagePath: 'imagePath',
+          thumbnailImagePath: 'thumbnailImagePath',
           userEmail: 'userEmail',
           description: 'description',
           weather: Weather(
@@ -53,6 +54,7 @@ void main() {
         final editedFeed = Feed(
           id: 'id',
           imagePath: 'imagePath',
+          thumbnailImagePath: 'thumbnailImagePath',
           userEmail: 'userEmail',
           description: 'description',
           weather: Weather(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:weaco/core/enum/image_type.dart';
 import 'package:weaco/domain/file/repository/file_repository.dart';
 
 class MockFileRepositoryImpl implements FileRepository {
@@ -7,7 +8,7 @@ class MockFileRepositoryImpl implements FileRepository {
   int saveOotdImageCallCount = 0;
   final Map<String, dynamic> methodParameterMap = {};
   File? getImageResult;
-  String saveOotdImageResult = '';
+  List<String> saveOotdImageResult = ['', ''];
   bool saveImageResult = false;
 
   void initMockData() {
@@ -15,24 +16,24 @@ class MockFileRepositoryImpl implements FileRepository {
     saveImageCallCount = 0;
     saveOotdImageCallCount = 0;
     methodParameterMap.clear();
-    saveOotdImageResult = '';
+    saveOotdImageResult = ['', ''];
   }
 
   @override
-  Future<File?> getImage({required bool isOrigin}) async {
+  Future<File?> getImage({required ImageType imageType}) async {
     getImageCallCount++;
     return getImageResult;
   }
 
   @override
-  Future<bool> saveImage({required bool isOrigin, required File file}) async {
+  Future<bool> saveImage({required bool isOrigin, required File file, List<int>? compressedImage}) async {
     saveImageCallCount++;
     methodParameterMap['data'] = file;
     return saveImageResult;
   }
 
   @override
-  Future<String> saveOotdImage() async {
+  Future<List<String>> saveOotdImage() async {
     saveOotdImageCallCount++;
     return saveOotdImageResult;
   }

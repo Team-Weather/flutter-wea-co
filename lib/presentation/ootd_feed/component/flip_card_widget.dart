@@ -204,7 +204,7 @@ class _FlipCardState extends State<FlipCardWidget>
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: CachedImageWidget(
-          _data.feed.imagePath,
+          _data.feed.thumbnailImagePath,
         ),
       ),
     );
