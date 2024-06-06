@@ -145,19 +145,22 @@ void main() {
       });
 
       test(
-          'FeedRepository.saveFeed, UserProfileRepository.updateMyFeedCount()를 '
-          '정상적으로 호출한 뒤, true 를 반환한다.', () async {
+          'FeedRepository.saveFeed(), UserProfileRepository.updateMyFeedCount()를 '
+          '정상적으로 한번 호출했는지 확인한다.', () async {
         // Given
-        const expected = true;
+        const int expected = 1;
 
         // When
-        final actual = await ootdFeedRepository.saveOotdFeed(feed: mockFeed);
+        await ootdFeedRepository.saveOotdFeed(feed: mockFeed);
 
         // Then
-        expect(actual, expected);
+        expect(feedRepository.saveFeedCallCount, expected);
+        expect(userProfileRepository.updateUserProfileCallCount, expected);
       });
 
-      test('파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 FeedRepository.saveFeed를 한번 호출한다.', () async {
+      test(
+          '파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 FeedRepository.saveFeed를 한번 호출한다.',
+          () async {
         // Given
         const int expected = 1;
 
@@ -168,7 +171,9 @@ void main() {
         expect(feedRepository.saveFeedCallCount, expected);
       });
 
-      test('파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 FileRepository.saveOotdImage()를 호출하지 않는다.', () async {
+      test(
+          '파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 FileRepository.saveOotdImage()를 호출하지 않는다.',
+          () async {
         // Given
         const int expected = 0;
 
@@ -179,7 +184,9 @@ void main() {
         expect(fileRepository.saveImageCallCount, expected);
       });
 
-      test('파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 UserProfileRepository.getMyProfile()를 호출하지 않는다.', () async {
+      test(
+          '파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써 UserProfileRepository.getMyProfile()를 호출하지 않는다.',
+          () async {
         // Given
         const int expected = 0;
 
@@ -246,16 +253,17 @@ void main() {
       });
 
       test(
-          'FeedRepository.deleteFeed(), OotdFeedRepositoryImpl.updateMyFeedCount()를 '
-          '정상적으로 호출한 뒤, true 를 반환한다.', () async {
+          'FeedRepository.deleteFeed(), UserProfileRepository.updateUserProfile()를 '
+          '정상적으로 한번 호출했는지 확인한다.', () async {
         // Given
-        const expected = true;
+        const expected = 1;
 
         // When
-        final actual = await ootdFeedRepository.removeOotdFeed(id: feedId);
+        await ootdFeedRepository.removeOotdFeed(id: feedId);
 
         // Then
-        expect(actual, expected);
+        expect(feedRepository.getDeleteFeedCallCount, expected);
+        expect(userProfileRepository.updateUserProfileCallCount, expected);
       });
     });
   });

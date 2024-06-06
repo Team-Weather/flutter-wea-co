@@ -24,7 +24,7 @@ void main() {
       group(
         'saveFeed()는',
         () {
-          test('Firestore에 Feed를 저장하고, true를 반환해야 한다', () async {
+          test('Firestore에 Feed를 저장 요청을 보낸다.', () async {
             // Given
             Weather mockWeather = Weather(
               temperature: 31,
@@ -51,10 +51,13 @@ void main() {
             );
 
             // When
-            final result = await dataSource.saveFeed(feed: mockFeed);
+            await dataSource.saveFeed(feed: mockFeed);
+
+            final snapshot =
+                fakeFirestore.collection('feeds').doc(mockFeed.id).get();
 
             // Then
-            expect(result, true);
+            expect(mockFeed, snapshot);
           });
           test(
             'Firestore에 데이터를 추가해야 한다.',
@@ -185,7 +188,7 @@ void main() {
         });
       });
       group('deletedFeed()는', () {
-        test('id값을 전달하면, 특정 Feed를 삭제하고 true를 반환해야 한다', () async {
+        test('id값을 전달하면, 특정 Feed를 삭제 요청을 한다.', () async {
           // Given
           const testId = 'testId';
 
@@ -216,7 +219,8 @@ void main() {
           });
 
           // When
-          final result = await dataSource.deleteFeed(id: testId);
+          await dataSource.deleteFeed(id: testId);
+
           final docResult =
               await fakeFirestore.collection('feeds').doc(testId).get();
 
@@ -224,7 +228,7 @@ void main() {
               toFeed(json: docResult.data()!, id: docResult.id).deletedAt;
 
           // Then
-          expect(result, feedDeletedAt != null);
+          expect(feedDeletedAt != null, true);
         });
       });
       group('getSearchFeedList()는', () {

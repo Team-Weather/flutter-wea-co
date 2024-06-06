@@ -33,11 +33,12 @@ void main() async {
         );
 
         // When
-        final bool res =
-            await dataSource.saveUserProfile(userProfile: expectedUserProfile);
+        await dataSource.saveUserProfile(userProfile: expectedUserProfile);
+
+        final actual = instance.collection('user_profiles').doc('email').get();
 
         // Then
-        expect(res, true);
+        expect(actual, expectedUserProfile.email);
       });
       test(
           'getUserProfile()은 firebase storage에서 파라미터로 받은 이메일과 동일한 유저 프로필 정보를 반환한다.',
@@ -123,7 +124,7 @@ void main() async {
           });
 
           final editedUserProfile = UserProfile(
-            email: 'test@gmail.com',
+            email: 'test123@gmail.com',
             nickname: '테스트123',
             gender: 1,
             profileImagePath:
@@ -133,11 +134,17 @@ void main() async {
           );
 
           // When
-          final bool res = await dataSource.updateUserProfile(
-              userProfile: editedUserProfile);
+          await dataSource.updateUserProfile(userProfile: editedUserProfile);
+
+          final actual = await instance
+              .collection('user_profiles')
+              .where('email', isEqualTo: 'test123@gmail.com')
+              .get();
+
+          final data = actual.docs.first.data()['feedCount'];
 
           // Then
-          expect(res, true);
+          expect(data, 1);
         },
       );
       test(
@@ -156,10 +163,16 @@ void main() async {
           });
 
           // When
-          final bool res = await dataSource.removeUserProfile();
+          await dataSource.removeUserProfile();
+          final actual = await instance
+              .collection('user_profiles')
+              .where('email', isEqualTo: 'test@gmail.com')
+              .get();
+
+          final data = actual.docs.first.data()['deleted_at'];
 
           // Then
-          expect(res, true);
+          expect(data != null, true);
         },
       );
 
@@ -179,10 +192,16 @@ void main() async {
           });
 
           // When
-          final bool res = await dataSource.removeUserProfile();
+          await dataSource.removeUserProfile();
+          final actual = await instance
+              .collection('user_profiles')
+              .where('email', isEqualTo: ' ${firebaseService.user?.email}')
+              .get();
+
+          final data = actual.docs.first.data()['deleted_at'];
 
           // Then
-          expect(res, true);
+          expect(data != null, true);
         },
       );
     },

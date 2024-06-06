@@ -42,7 +42,7 @@ void main() {
 
     tearDown(() => mockFeedDataSource.cleanUpMockData());
 
-    test('saveFeed는', () async {
+    test('saveFeed는 ', () async {
       // given
       final mockFeed = Feed(
         id: 'id',
@@ -69,10 +69,9 @@ void main() {
 
       mockFeedDataSource.saveFeedReturnValue = true;
       // when
-      final actual = await feedRepository.saveFeed(editedFeed: mockFeed);
+      await feedRepository.saveFeed(editedFeed: mockFeed);
 
       // then
-      expect(actual, true);
       expect(mockFeedDataSource.feedList.last, mockFeed);
     });
     test('deleteFeed는', () async {
@@ -83,11 +82,10 @@ void main() {
       mockFeedDataSource.deleteFeedReturnValue = expectedBool;
 
       // When
-      final actual = await feedRepository.deleteFeed(id: expectedId);
+      await feedRepository.deleteFeed(id: expectedId);
 
       // Then
       expect(mockFeedDataSource.deleteFeedParamId, expectedId);
-      expect(actual, expectedBool);
     });
     test('getUserFeedList는', () async {
       // Given
