@@ -15,7 +15,6 @@ class FirestoreService implements TransactionService {
     }).then(
       (value) => true,
       onError: (e) {
-        print("Error updating document $e");
         throw Exception('피드 업로드에 실패 하였습니다.');
       },
     );
