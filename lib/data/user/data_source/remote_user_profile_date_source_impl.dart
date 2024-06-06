@@ -45,27 +45,6 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
     return toUserProfile(json: snapshot.docs[0].data());
   }
 
-  // @override
-  // Future<bool> updateUserProfile({required UserProfile userProfile}) async {
-  //   try {
-  //     final originProfileDocument = await _firestore
-  //         .collection('user_profiles')
-  //         .where('email', isEqualTo: userProfile.email)
-  //         .get();
-  //
-  //     return await _firestore
-  //         .collection('user_profiles')
-  //         .doc(originProfileDocument.docs[0].reference.id)
-  //         .set(toUserProfileDto(userProfile: userProfile))
-  //         .then((value) => true)
-  //         .catchError(
-  //           (e) => false,
-  //         );
-  //   } catch (e) {
-  //     throw Exception(e);
-  //   }
-  // }
-
   @override
   Future<bool> updateUserProfile({
     required Transaction transaction,
