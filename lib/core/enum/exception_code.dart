@@ -3,4 +3,5 @@ enum ExceptionCode{
   internalServerException,
   notFoundException,
   locationException,
+  networkException,
 }
