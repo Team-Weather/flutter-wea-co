@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:weaco/core/enum/exception_code.dart';
 import 'package:weaco/core/exception/not_found_exception.dart';
 import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
@@ -41,7 +42,7 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
 
     if (docSnapshot.data() == null) {
       throw NotFoundException(
-        code: 500,
+        code: ExceptionCode.notFoundException,
         message: '피드가 존재하지 않습니다.',
       );
     }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:weaco/core/enum/exception_code.dart';
 import 'package:weaco/core/exception/not_found_exception.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/get_my_page_feeds_use_case.dart';
@@ -83,7 +84,7 @@ class MyPageViewModel with ChangeNotifier {
         (result) {
           if (result == null) {
             throw NotFoundException(
-              code: 404,
+              code: ExceptionCode.notFoundException,
               message: '이메일과 일치하는 사용자가 없습니다.',
             );
           }
