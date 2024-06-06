@@ -40,21 +40,17 @@ class RecommendOotdListWidget extends StatelessWidget {
                     ),
                   )
                 : Expanded(
-                    child: ListView.builder(
+                    child: ListView(
                       scrollDirection: Axis.horizontal,
-                      itemCount: feedList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => RouterStatic.pushToOotdDetail(
+                      children: feedList.indexed.map((e) => GestureDetector(
+                        onTap: () => RouterStatic.pushToOotdDetail(
                             context,
-                            feed: feedList[index]
-                          ),
-                          child: RecommendOotdWidget(
-                            feedList: feedList,
-                            index: index,
-                          ),
-                        );
-                      },
+                            feed: e.$2),
+                        child: RecommendOotdWidget(
+                          feedList: feedList,
+                          index: e.$1,
+                        ),
+                      )).toList()
                     ),
                   ),
           ],
