@@ -1,18 +1,23 @@
 enum ExceptionCode {
   unknownException(
     code: '500',
-    errorMessage: '',
-    alertMessage: '',
+    errorMessage: '알 수 없는 오류 발생',
+    alertMessage: '알 수 없는 오류가 발생했습니다.',
   ),
   internalServerException(
     code: '400',
-    errorMessage: '',
+    errorMessage: '서버 내부 오류',
     alertMessage: '',
   ),
   notFoundException(
     code: '404',
-    errorMessage: '',
+    errorMessage: '데이터 조회 실패',
     alertMessage: '',
+  ),
+  networkException(
+    code: '400',
+    errorMessage: '네트워크 요청 오류',
+    alertMessage: '네트워크 연결을 확인해주세요.',
   ),
   userNotFoundException(
     code: 'user-not-found',
@@ -52,16 +57,35 @@ enum ExceptionCode {
   invalidCredentialException(
       code: 'invalid-credential',
       errorMessage: '이메일과 비밀번호를 확인해주세요.',
-      alertMessage: '');
+      alertMessage: ''),
+
+  authenticationNotExistException(
+      code: 'authentication-not-exist',
+      errorMessage: 'FirebaseAuth 로그인 정보 없음',
+      alertMessage: notShowingMessage),
+
+  locationException(
+    code: 'no-location',
+    errorMessage: '위치 정보를 가져올 수 없습니다.',
+    alertMessage: notShowingMessage,
+  ),
+
+  kakaoGeoCoderApiException(
+    code: 'kakao-geo-coder-api-error',
+    errorMessage: 'Kakao Api 처리 오류',
+    alertMessage: notShowingMessage,
+  );
 
   final String code;
   final String errorMessage;
   final String alertMessage;
+  static const String notShowingMessage = '';
 
-  const ExceptionCode(
-      {required this.code,
-      required this.alertMessage,
-      required this.errorMessage});
+  const ExceptionCode({
+    required this.code,
+    required this.alertMessage,
+    required this.errorMessage,
+  });
 
   static ExceptionCode fromStatus(String status) {
     return switch (status) {
@@ -76,6 +100,9 @@ enum ExceptionCode {
       'network-request-failed' => ExceptionCode.networkRequestFailedException,
       'user-disabled' => ExceptionCode.userDisabledException,
       'invaild-credential' => ExceptionCode.invalidCredentialException,
+      'authentication-not-exist' => ExceptionCode.authenticationNotExistException,
+      'no-location' => ExceptionCode.locationException,
+      'kakao-geo-coder-api-error' => ExceptionCode.kakaoGeoCoderApiException,
       _ => ExceptionCode.unknownException,
     };
   }
