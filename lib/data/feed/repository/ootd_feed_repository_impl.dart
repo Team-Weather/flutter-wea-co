@@ -19,39 +19,32 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
 
   /// 피드 저장 및 수정
   @override
-  Future<bool> saveOotdFeed({required Feed feed}) async {
-    return feed.id == null
-        ? await _save(feed: feed)
-        : await _update(feed: feed);
+  Future<void> saveOotdFeed({required Feed feed}) async {
+    feed.id == null ? await _save(feed: feed) : await _update(feed: feed);
   }
 
   /// 피드 저장
-  Future<bool> _save({required Feed feed}) async {
+  Future<void> _save({required Feed feed}) async {
     final List<String> path = await _fileRepository.saveOotdImage();
 
-    final saveResult = await _feedRepository.saveFeed(
-        editedFeed: feed.copyWith(imagePath: path[0], thumbnailImagePath: path[1]));
+    await _feedRepository.saveFeed(
+        editedFeed:
+            feed.copyWith(imagePath: path[0], thumbnailImagePath: path[1]));
 
     await _updateMyFeedCount(1);
-
-    return saveResult;
   }
 
   /// 피드 수정
-  Future<bool> _update({required Feed feed}) async {
-    final updateResult = await _feedRepository.saveFeed(editedFeed: feed);
-
-    return updateResult;
+  Future<void> _update({required Feed feed}) async {
+    await _feedRepository.saveFeed(editedFeed: feed);
   }
 
   /// 피드 삭제
   @override
-  Future<bool> removeOotdFeed({required String id}) async {
+  Future<void> removeOotdFeed({required String id}) async {
     await _feedRepository.deleteFeed(id: id);
 
     await _updateMyFeedCount(-1);
-
-    return true;
   }
 
   /// 유저 피드 카운트 업데이트

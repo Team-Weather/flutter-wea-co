@@ -11,13 +11,13 @@ class FeedRepositoryImpl implements FeedRepository {
   });
 
   @override
-  Future<bool> saveFeed({required Feed editedFeed}) {
-    return remoteFeedDataSource.saveFeed(feed: editedFeed);
+  Future<void> saveFeed({required Feed editedFeed}) async {
+    remoteFeedDataSource.saveFeed(feed: editedFeed);
   }
 
   @override
-  Future<bool> deleteFeed({required String id}) async {
-    return await remoteFeedDataSource.deleteFeed(id: id);
+  Future<void> deleteFeed({required String id}) async {
+    await remoteFeedDataSource.deleteFeed(id: id);
   }
 
   /// 피드의 id 값을 전달 하여 Firebase 내의 해당 피드를 가져 와야 한다.
@@ -25,7 +25,7 @@ class FeedRepositoryImpl implements FeedRepository {
   /// @param id: 피드 id
   /// @return Feed: 피드
   @override
-  Future<Feed?> getFeed({required String id}) async {
+  Future<Feed> getFeed({required String id}) async {
     return await remoteFeedDataSource.getFeed(id: id);
   }
 
