@@ -30,14 +30,8 @@ class PictureCropViewModel with ChangeNotifier {
 
   /// 크롭 이미지 저장
   Future<void> saveCroppedImage({required File file}) async {
-    final bool result =
-        await _saveImageUseCase.execute(isOrigin: false, file: file);
+    await _saveImageUseCase.execute(isOrigin: false, file: file);
 
-    if (result) {
-      _status = PictureCropSaveStatus.success;
-    } else {
-      _status = PictureCropSaveStatus.error;
-    }
     notifyListeners();
   }
 
