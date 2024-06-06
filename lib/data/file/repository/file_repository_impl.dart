@@ -28,9 +28,8 @@ class FileRepositoryImpl implements FileRepository {
 
   @override
   Future<List<String>> saveOotdImage() async {
-    final File? croppedImage = await _localFileDataSource.getImage(imageType: ImageType.cropped);
-    final File? compressedImage = await _localFileDataSource.getImage(imageType: ImageType.compressed);
-    if (croppedImage == null || compressedImage == null) throw Exception();
+    final File croppedImage = await _localFileDataSource.getImage(imageType: ImageType.cropped);
+    final File compressedImage = await _localFileDataSource.getImage(imageType: ImageType.compressed);
     return await _remoteFileDataSource.saveImage(croppedImage: croppedImage, compressedImage: compressedImage);
   }
 }

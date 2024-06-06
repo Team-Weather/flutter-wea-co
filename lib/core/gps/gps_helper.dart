@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:geolocator/geolocator.dart';
 import 'package:weaco/core/enum/exception_code.dart';
-import 'package:weaco/core/exception/location_exception.dart';
 import 'package:weaco/core/gps/gps_permission_status.dart';
 import 'package:weaco/core/gps/gps_position.dart';
 
@@ -45,6 +44,6 @@ class GpsHelper {
       Position position = await Geolocator.getCurrentPosition();
       return GpsPosition(lat: position.latitude, lng: position.longitude);
     }
-    throw LocationException(code: ExceptionCode.locationException, message: '위치 정보를 가져올 수 없습니다.');
+    throw ExceptionCode.locationException;
   }
 }

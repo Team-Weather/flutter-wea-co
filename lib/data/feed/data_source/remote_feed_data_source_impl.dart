@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:weaco/core/enum/exception_code.dart';
 import 'package:weaco/core/exception/not_found_exception.dart';
 import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
@@ -127,38 +128,47 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
     int? minTemperature,
     int? maxTemperature,
   }) async {
-    Query<Map<String, dynamic>> query = _fireStore.collection('feeds');
-    // 날씨 코드 필터링
-    if (weatherCode != null) {
-      query = query.where('weather.code', isEqualTo: weatherCode);
+    try {
+      Query<Map<String, dynamic>> query = _fireStore.collection('feeds');
+      // 날씨 코드 필터링
+      if (weatherCode != null) {
+        query = query.where('weather.code', isEqualTo: weatherCode);
+      }
+
+      // 온도 범위 필터링
+      if (minTemperature != null && maxTemperature != null) {
+        query = query
+            .where('weather.temperature', isLessThanOrEqualTo: maxTemperature)
+            .where('weather.temperature',
+                isGreaterThanOrEqualTo: minTemperature);
+      }
+
+      // 계절 코드 필터링
+      if (seasonCode != null) {
+        query = query.where('season_code', isEqualTo: seasonCode);
+      }
+
+      // 생성일 기준으로 정렬하여 제한된 수의 문서 가져오기
+      final QuerySnapshot<Map<String, dynamic>> querySnapshot = await query
+          .where('created_at',
+              isLessThan: createdAt ?? Timestamp.fromDate(DateTime.now()))
+          .where('deleted_at', isNull: true)
+          .orderBy(
+            'created_at',
+            descending: true,
+          )
+          .limit(limit)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => toFeed(json: doc.data(), id: doc.id))
+          .toList();
+    } catch (e) {
+      throw switch (e) {
+        FirebaseException _ => ExceptionCode.internalServerException,
+        DioException _ => ExceptionCode.networkException,
+        _ => ExceptionCode.unknownException,
+      };
     }
-
-    // 온도 범위 필터링
-    if (minTemperature != null && maxTemperature != null) {
-      query = query
-          .where('weather.temperature', isLessThanOrEqualTo: maxTemperature)
-          .where('weather.temperature', isGreaterThanOrEqualTo: minTemperature);
-    }
-
-    // 계절 코드 필터링
-    if (seasonCode != null) {
-      query = query.where('season_code', isEqualTo: seasonCode);
-    }
-
-    // 생성일 기준으로 정렬하여 제한된 수의 문서 가져오기
-    final QuerySnapshot<Map<String, dynamic>> querySnapshot = await query
-        .where('created_at',
-            isLessThan: createdAt ?? Timestamp.fromDate(DateTime.now()))
-        .where('deleted_at', isNull: true)
-        .orderBy(
-          'created_at',
-          descending: true,
-        )
-        .limit(limit)
-        .get();
-
-    return querySnapshot.docs
-        .map((doc) => toFeed(json: doc.data(), id: doc.id))
-        .toList();
   }
 }

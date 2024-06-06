@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:weaco/core/enum/exception_code.dart';
 import 'package:weaco/core/enum/image_type.dart';
-import 'package:weaco/core/exception/internal_server_exception.dart';
-import 'package:weaco/core/exception/network_exception.dart';
 import 'package:weaco/core/path_provider/path_provider_service.dart';
 import 'local_file_data_source.dart';
 
@@ -73,17 +71,11 @@ class LocalFileDataSourceImpl implements LocalFileDataSource {
     }
   }
 
-  Exception _exceptionHandling(Object e) {
-    switch (e.runtimeType) {
-      case FirebaseException _:
-        return InternalServerException(
-            code: ExceptionCode.internalServerException, message: '서버 내부 오류');
-      case DioException _:
-        return NetworkException(
-            code: ExceptionCode.internalServerException,
-            message: '네트워크 오류 : $e');
-      default:
-        return e as Exception;
-    }
+  ExceptionCode _exceptionHandling(Object e) {
+    return switch (e) {
+      FirebaseException _ => ExceptionCode.internalServerException,
+      DioException _ => ExceptionCode.internalServerException,
+      _ => ExceptionCode.unknownException,
+    };
   }
 }

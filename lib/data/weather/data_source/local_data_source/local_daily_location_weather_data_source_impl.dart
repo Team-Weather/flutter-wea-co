@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:weaco/core/enum/exception_code.dart';
-import 'package:weaco/core/exception/not_found_exception.dart';
 import 'package:weaco/core/hive/hive_wrapper.dart';
 import 'package:weaco/data/weather/data_source/local_data_source/local_daily_location_weather_data_source.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -34,8 +33,7 @@ class LocalDailyLocationWeatherDataSourceImpl
 
       return DailyLocationWeather.fromJson(jsonDecode(data!));
     } catch (e) {
-      throw NotFoundException(
-          code: ExceptionCode.notFoundException, message: '데이터 없음');
+      throw ExceptionCode.notFoundException;
     }
   }
 }
