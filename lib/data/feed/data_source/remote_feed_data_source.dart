@@ -5,7 +5,7 @@ abstract interface class RemoteFeedDataSource {
   /// OOTD 피드 작성 성공 시 : 피드 업로드 요청(Feed) -> / 업로드 완료(bool) ← 파베
   /// OOTD 편집 완료 후 [상세 페이지]:  위와 동일.
   /// OOTD 편집 완료 후 [마이 페이지]: 위와 동일.*피드 업데이트
-  Future<bool> saveFeed({required Feed feed});
+  Future<void> saveFeed({required Feed feed});
 
   /// OOTD 피드 [상세 페이지] : 피드 데이터 요청 (id) -> 파베 / 피드 데이터 반환(json) ← 파베
   Future<Feed> getFeed({required String id});
@@ -18,7 +18,7 @@ abstract interface class RemoteFeedDataSource {
   });
 
   /// [마이페이지] 피드 삭제: 피드 삭제 요청(id) -> 파베/ 삭제 완료 (bool) from FB
-  Future<bool> deleteFeed({required String id});
+  Future<void> deleteFeed({required String id});
 
   /// [홈 화면] 하단 OOTD 추천 목록:
   ///
