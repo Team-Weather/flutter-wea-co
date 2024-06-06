@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weaco/data/feed/data_source/remote_feed_data_source.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/weather/model/daily_location_weather.dart';
@@ -10,6 +11,8 @@ class MockRemoteFeedDataSource implements RemoteFeedDataSource {
   String deleteFeedParamId = '';
   Map<String, dynamic> paramMap = {};
   String getFeedId = '';
+  int saveFeedMethodCallCount = 0;
+  int deleteFeedMethodCallCount = 0;
 
   void cleanUpMockData() {
     feedList = [];
@@ -18,11 +21,17 @@ class MockRemoteFeedDataSource implements RemoteFeedDataSource {
     deleteFeedReturnValue = false;
     getFeedId = '';
     paramMap.clear();
+    saveFeedMethodCallCount = 0;
+    deleteFeedMethodCallCount = 0;
   }
 
   @override
-  Future<bool> deleteFeed({required String id}) async {
+  Future<bool> deleteFeed({
+    required Transaction transaction,
+    required String id,
+  }) async {
     deleteFeedParamId = id;
+    deleteFeedMethodCallCount++;
     return deleteFeedReturnValue;
   }
 
@@ -67,7 +76,14 @@ class MockRemoteFeedDataSource implements RemoteFeedDataSource {
   }
 
   @override
-  Future<bool> saveFeed({required Feed feed}) async {
+  Future<bool> saveFeed({
+    required Transaction transaction,
+    required Feed feed,
+  }) async {
+    saveFeedMethodCallCount++;
+
+    paramMap['saveFeedParam'] = feed;
+
     if (saveFeedReturnValue) {
       feedList.add(feed);
     }
