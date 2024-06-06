@@ -1,5 +1,6 @@
 enum ExceptionCode{
   unknownException,
   internalServerException,
-  notFoundException
+  notFoundException,
+  locationException,
 }
