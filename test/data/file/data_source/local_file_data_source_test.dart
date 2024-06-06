@@ -35,7 +35,7 @@ void main() {
         File? file = await dataSource.getImage(imageType: imageType);
 
         // Then
-        expect(file?.readAsBytesSync(),
+        expect(file.readAsBytesSync(),
             File('test/mock/assets/origin.png').readAsBytesSync());
       });
 
@@ -49,7 +49,7 @@ void main() {
         File? file = await dataSource.getImage(imageType: imageType);
 
         // Then
-        expect(file?.readAsBytesSync(),
+        expect(file.readAsBytesSync(),
             File('test/mock/assets/cropped.png').readAsBytesSync());
       });
 
