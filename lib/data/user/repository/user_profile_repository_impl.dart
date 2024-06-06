@@ -20,7 +20,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
-    return await _remoteUserProfileDataSource.updateUserProfile(userProfile: userProfile);
+  Future<void> updateUserProfile({required UserProfile userProfile}) async {
+    await _remoteUserProfileDataSource.updateUserProfile(
+        userProfile: userProfile);
   }
 }

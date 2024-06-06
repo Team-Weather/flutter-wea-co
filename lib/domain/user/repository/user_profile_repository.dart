@@ -5,5 +5,5 @@ abstract interface class UserProfileRepository {
 
   Future<UserProfile?> getMyProfile();
 
-  Future<bool> updateUserProfile({required UserProfile userProfile});
+  Future<void> updateUserProfile({required UserProfile userProfile});
 }

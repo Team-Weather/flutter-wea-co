@@ -32,12 +32,12 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   }) async {
     await _userAuthDataSource.signUp(
         email: userAuth.email, password: userAuth.password);
-
-    final saveUserProfileResult = await _remoteUserProfileDataSource
-        .saveUserProfile(userProfile: userProfile);
-
-    if (saveUserProfileResult == false) {
+    try {
+      await _remoteUserProfileDataSource.saveUserProfile(
+          userProfile: userProfile);
+    } catch (e) {
       await _userAuthDataSource.signOut();
+      rethrow;
     }
   }
 

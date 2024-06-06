@@ -15,9 +15,9 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
         _firebaseService = firebaseService;
 
   @override
-  Future<bool> saveUserProfile({required UserProfile userProfile}) async {
+  Future<void> saveUserProfile({required UserProfile userProfile}) async {
     try {
-      return await _firestore
+       await _firestore
           .collection('user_profiles')
           .add(toUserProfileDto(userProfile: userProfile))
           .then((value) => true)
@@ -46,14 +46,14 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
+  Future<void> updateUserProfile({required UserProfile userProfile}) async {
     try {
       final originProfileDocument = await _firestore
           .collection('user_profiles')
           .where('email', isEqualTo: userProfile.email)
           .get();
 
-      return await _firestore
+       await _firestore
           .collection('user_profiles')
           .doc(originProfileDocument.docs[0].reference.id)
           .set(toUserProfileDto(userProfile: userProfile))
@@ -67,7 +67,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<bool> removeUserProfile({String? email}) async {
+  Future<void> removeUserProfile({String? email}) async {
     try {
       email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
 
@@ -76,7 +76,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
           .where('email', isEqualTo: email)
           .get();
 
-      return await _firestore
+       await _firestore
           .collection('user_profiles')
           .doc(originProfileDocument.docs[0].reference.id)
           .delete()
