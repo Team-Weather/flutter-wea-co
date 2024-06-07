@@ -11,6 +11,7 @@ class MockLocalFileDataSourceImpl implements LocalFileDataSource {
     methodResult.clear();
     methodParameter.clear();
     methodCallCount.clear();
+    methodResult['getImage'] = File('test/mock/assets/origin.png');
   }
 
   @override

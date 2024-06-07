@@ -15,7 +15,6 @@ void main() {
       test('한 번 호출 된다.', () async {
         // Given
         int expectedResult = 1;
-        await userAuthRepository.logOut();
 
         // When
         await useCase.execute();

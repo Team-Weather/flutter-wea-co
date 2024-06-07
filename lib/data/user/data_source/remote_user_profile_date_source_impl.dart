@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:weaco/core/enum/exception_code.dart';
+import 'package:weaco/core/exception/internal_server_exception.dart';
+import 'package:weaco/core/exception/network_exception.dart';
 import 'package:weaco/core/firebase/firebase_auth_service.dart';
 import 'package:weaco/core/firebase/firestore_dto_mapper.dart';
 import 'package:weaco/data/user/data_source/remote_user_profile_data_source.dart';
@@ -11,7 +15,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   const RemoteUserProfileDataSourceImpl({
     required FirebaseFirestore firestore,
     required FirebaseAuthService firebaseService,
-  })  : _firestore = firestore,
+  }) : _firestore = firestore,
         _firebaseService = firebaseService;
 
   @override
@@ -19,30 +23,26 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
     try {
       await _firestore
           .collection('user_profiles')
-          .add(toUserProfileDto(userProfile: userProfile))
-          .then((value) => true)
-          .catchError(
-            (e) => false,
-          );
+          .add(toUserProfileDto(userProfile: userProfile));
     } catch (e) {
-      throw Exception(e);
+      _exceptionHandling(e);
     }
   }
 
   @override
   Future<UserProfile> getUserProfile({String? email}) async {
-    email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
+    try {
+      email = email ?? _firebaseService.firebaseAuth.currentUser!.email;
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
-        .collection('user_profiles')
-        .where('email', isEqualTo: email)
-        .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('user_profiles')
+          .where('email', isEqualTo: email)
+          .get();
 
-    if (snapshot.docs.isEmpty) {
-      throw Exception('유저 프로필이 존재하지 않습니다.');
+      return toUserProfile(json: snapshot.docs[0].data());
+    } catch (e) {
+      throw _exceptionHandling(e);
     }
-
-    return toUserProfile(json: snapshot.docs[0].data());
   }
 
   @override
@@ -65,7 +65,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
       transaction.set(
           originProfileDocRef, toUserProfileDto(userProfile: userProfile));
     } catch (e) {
-      throw Exception(e);
+      _exceptionHandling(e);
     }
   }
 
@@ -82,13 +82,23 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
       await _firestore
           .collection('user_profiles')
           .doc(originProfileDocument.docs[0].reference.id)
-          .delete()
-          .then((value) => true)
-          .catchError(
-            (e) => false,
-          );
+          .set(toUserProfileDto(userProfile: toUserProfile(json: originProfileDocument.docs.first.data()).copyWith(deletedAt: DateTime.now())));
     } catch (e) {
-      throw Exception(e);
+      _exceptionHandling(e);
+    }
+  }
+
+  Exception _exceptionHandling(Object e) {
+    switch (e.runtimeType) {
+      case FirebaseException _:
+        return InternalServerException(
+            code: ExceptionCode.internalServerException, message: '서버 내부 오류');
+      case DioException _:
+        return NetworkException(
+            code: ExceptionCode.internalServerException,
+            message: '네트워크 오류 : $e');
+      default:
+        return Exception(e);
     }
   }
 }

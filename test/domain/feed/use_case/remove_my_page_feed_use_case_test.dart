@@ -7,11 +7,12 @@ void main() {
     final mockOotdFeedRepository = MockOotdFeedRepositoryImpl();
     final RemoveMyPageFeedUseCase useCase =
         RemoveMyPageFeedUseCase(ootdFeedRepository: mockOotdFeedRepository);
-
+    setUp(() => mockOotdFeedRepository.initMockData());
     group('execute 메소드는', () {
       test('파라미터로 전달받은 id를 OotdFeedRepository에 그대로 전달한다.', () async {
         // Given
         const expected = 'id';
+        // mockOotdFeedRepository.
 
         // When
         await useCase.execute(id: expected);

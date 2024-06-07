@@ -7,7 +7,7 @@ class MockFileRepositoryImpl implements FileRepository {
   int saveImageCallCount = 0;
   int saveOotdImageCallCount = 0;
   final Map<String, dynamic> methodParameterMap = {};
-  File? getImageResult;
+  File getImageResult = File('test/mock/assets/cropped.png');
   List<String> saveOotdImageResult = ['', ''];
   bool saveImageResult = false;
 
@@ -26,10 +26,9 @@ class MockFileRepositoryImpl implements FileRepository {
   }
 
   @override
-  Future<bool> saveImage({required bool isOrigin, required File file, List<int>? compressedImage}) async {
+  Future<void> saveImage({required bool isOrigin, required File file, List<int>? compressedImage}) async {
     saveImageCallCount++;
     methodParameterMap['data'] = file;
-    return saveImageResult;
   }
 
   @override

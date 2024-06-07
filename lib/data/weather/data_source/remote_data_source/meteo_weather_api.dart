@@ -30,8 +30,11 @@ class MeteoWeatherApi implements RemoteWeatherDataSource {
       if (response.statusCode != 200) {
         log('Code: ${response.statusCode}, Body: ${response.body}');
         throw ExceptionCode.fromStatus(response.statusCode.toString());
+        // throw InternalServerException(code: ExceptionCode.internalServerException, message: 'sdf');
       }
       return WeatherDto.fromJson(json: response.body);
+    } on ExceptionCode catch (_) {
+      rethrow;
     } catch (e) {
       throw ExceptionCode.unknownException;
     }

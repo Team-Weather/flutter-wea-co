@@ -189,6 +189,7 @@ void main() async {
         'removeUserProfile()은 userProfile 이 null 일 경우, 현재 유저 프로필 정보를 삭제한다.',
         () async {
           // Given
+          final tmp = firebaseService.user?.email;
           await instance.collection('user_profiles').add({
             'created_at': '2024-05-08 02:27:00',
             'deleted_at': null,
@@ -204,7 +205,7 @@ void main() async {
           await dataSource.removeUserProfile();
           final actual = await instance
               .collection('user_profiles')
-              .where('email', isEqualTo: ' ${firebaseService.user?.email}')
+              .where('email', isEqualTo: firebaseService.user?.email)
               .get();
 
           final data = actual.docs.first.data()['deleted_at'];

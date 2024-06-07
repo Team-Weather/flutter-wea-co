@@ -24,7 +24,7 @@ class LocalFileDataSourceImpl implements LocalFileDataSource {
         ImageType.cropped => _croppedImageFileName,
         ImageType.compressed => _compressedImageFileName,
       };
-      await File('$directory/$fileName').exists();
+      if (!await File('$directory/$fileName').exists()) throw ExceptionCode.notFoundException;
 
       return File('$directory/$fileName');
     } catch (e) {
@@ -75,6 +75,7 @@ class LocalFileDataSourceImpl implements LocalFileDataSource {
     return switch (e) {
       FirebaseException _ => ExceptionCode.internalServerException,
       DioException _ => ExceptionCode.internalServerException,
+      ExceptionCode _ => e,
       _ => ExceptionCode.unknownException,
     };
   }

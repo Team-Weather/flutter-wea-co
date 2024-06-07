@@ -58,10 +58,11 @@ void main() {
               );
             });
             final snapshot =
-                fakeFirestore.collection('feeds').doc(mockFeed.id).get();
+                await fakeFirestore.collection('feeds').doc(mockFeed.id).get();
             // Then
-            expect(mockFeed, snapshot);
+            expect(mockFeed.userEmail, snapshot['user_email']);
           });
+
           test(
             'Firestore에 데이터를 추가해야 한다.',
             () async {

@@ -5,8 +5,8 @@ class MockFirestoreServiceImpl implements TransactionService {
   final _fakeFirestore = FakeFirebaseFirestore();
 
   @override
-  Future<bool> run(Function callBack) async {
-    return await _fakeFirestore.runTransaction<bool>((transaction) async {
+  Future<void> run(Function callBack) async {
+    return await _fakeFirestore.runTransaction<void>((transaction) async {
       return await callBack(transaction);
     }).then(
       (value) => true,

@@ -1,4 +1,6 @@
-enum ExceptionCode {
+import 'dart:io';
+
+enum ExceptionCode implements Exception {
   unknownException(
     code: '500',
     errorMessage: '알 수 없는 오류 발생',
@@ -88,10 +90,8 @@ enum ExceptionCode {
   });
 
   static ExceptionCode fromStatus(String status) {
+    if (int.tryParse(status) != null) return ExceptionCode.internalServerException;
     return switch (status) {
-      '500' => ExceptionCode.unknownException,
-      '400' => ExceptionCode.internalServerException,
-      '404' => ExceptionCode.notFoundException,
       'user-not-found' => ExceptionCode.userNotFoundException,
       'wrong-password' => ExceptionCode.wrongPasswordException,
       'email-already-in-use' => ExceptionCode.emailAlreadyInUseException,

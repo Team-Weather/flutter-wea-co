@@ -151,7 +151,7 @@ void main() {
             expectedUseProfile);
       });
 
-      
+
       test(
           '파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써'
           'RemoteFeedDataSourceImpl.saveFeed()를 한번 호출한다.', () async {

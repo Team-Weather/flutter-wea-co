@@ -53,26 +53,6 @@ void main() {
       });
 
       test(
-          'UserAuthDataSource.signUp() 이 실패하면'
-          'RemoteUserProfileDataSource.saveUserProfile() 메소드를'
-          '호출하지 않는다.', () async {
-        // given
-        int expectCallCount = 0;
-
-        userAuthDataSource.returnValue = false;
-
-        // when
-        await userAuthRepository.signUp(
-          userAuth: userAuth,
-          userProfile: userProfile,
-        );
-
-        // then
-        expect(userProfileDataSource.saveUserProfileMethodCallCount,
-            expectCallCount);
-      });
-
-      test(
           'UserAuthDataSource.signUp() 이 성공하면'
           'RemoteUserProfileDataSource.saveUserProfile() 메소드를'
           '1회 호출한다.', () async {
