@@ -4,6 +4,4 @@ abstract interface class UserProfileRepository {
   Future<UserProfile?> getUserProfile({required String email});
 
   Future<UserProfile?> getMyProfile();
-
-  Future<void> updateUserProfile({required UserProfile userProfile});
 }

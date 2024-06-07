@@ -13,12 +13,6 @@ abstract interface class FeedRepository {
   /// 피드의 상세 정보를 가져옵니다.
   Future<Feed> getFeed({required String id});
 
-  /// 피드를 삭제합니다.
-  Future<void> deleteFeed({required String id});
-
-  /// 새 피드를 저장하거나 편집된 피드를 업데이트 합니다.
-  Future<void> saveFeed({required Feed editedFeed});
-
   /// [홈 하단]
   /// 추천 OOTD 목록을 불러옵니다.
   Future<List<Feed>> getRecommendedFeedList({

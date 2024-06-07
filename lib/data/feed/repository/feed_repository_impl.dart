@@ -10,16 +10,6 @@ class FeedRepositoryImpl implements FeedRepository {
     required this.remoteFeedDataSource,
   });
 
-  @override
-  Future<void> saveFeed({required Feed editedFeed}) async {
-    remoteFeedDataSource.saveFeed(feed: editedFeed);
-  }
-
-  @override
-  Future<void> deleteFeed({required String id}) async {
-    await remoteFeedDataSource.deleteFeed(id: id);
-  }
-
   /// 피드의 id 값을 전달 하여 Firebase 내의 해당 피드를 가져 와야 한다.
   /// GetDetailFeedDetailUseCase에서 사용
   /// @param id: 피드 id
@@ -59,7 +49,7 @@ class FeedRepositoryImpl implements FeedRepository {
   }) async {
     return await remoteFeedDataSource.getRecommendedFeedList(
       dailyLocationWeather: dailyLocationWeather,
-      createdAt: createdAt
+      createdAt: createdAt,
     );
   }
 

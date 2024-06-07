@@ -42,51 +42,6 @@ void main() {
 
     tearDown(() => mockFeedDataSource.cleanUpMockData());
 
-    test('saveFeed는 ', () async {
-      // given
-      final mockFeed = Feed(
-        id: 'id',
-        imagePath: 'imagePath',
-        thumbnailImagePath: 'thumbnailImagePath',
-        userEmail: 'userEmail',
-        description: 'description',
-        weather: Weather(
-          temperature: 1,
-          timeTemperature: DateTime.now(),
-          code: 1,
-          createdAt: DateTime.now(),
-        ),
-        seasonCode: 1,
-        location: Location(
-          lat: 1,
-          lng: 1,
-          city: 'city',
-          createdAt: DateTime.now(),
-        ),
-        createdAt: DateTime.now(),
-        deletedAt: null,
-      );
-
-      mockFeedDataSource.saveFeedReturnValue = true;
-      // when
-      await feedRepository.saveFeed(editedFeed: mockFeed);
-
-      // then
-      expect(mockFeedDataSource.feedList.last, mockFeed);
-    });
-    test('deleteFeed는', () async {
-      // Given
-      const expectedId = 'id';
-      const expectedBool = true;
-
-      mockFeedDataSource.deleteFeedReturnValue = expectedBool;
-
-      // When
-      await feedRepository.deleteFeed(id: expectedId);
-
-      // Then
-      expect(mockFeedDataSource.deleteFeedParamId, expectedId);
-    });
     test('getUserFeedList는', () async {
       // Given
       final expectedList = mockFeedDataSource.feedList;

@@ -153,19 +153,4 @@ class MockFeedRepositoryImpl implements FeedRepository {
     getOotdFeedsListCallCount++;
     return getOotdFeedsResult == null ? [] : [getOotdFeedsResult!];
   }
-
-  @override
-  Future<bool> deleteFeed({required String id}) async {
-    getDeleteFeedCallCount++;
-    feedMap.remove(id);
-    return deleteFeedReturnValue;
-  }
-
-  @override
-  Future<bool> saveFeed({required Feed editedFeed}) async {
-    saveFeedCallCount++;
-    feed = editedFeed;
-
-    return true;
-  }
 }

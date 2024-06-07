@@ -26,14 +26,19 @@ class RemoteFileDataSourceImpl implements RemoteFileDataSource {
       }
       final feedOriginImageRef = _firebaseStorage.ref().child(
           'feed_origin_images/${email}_${DateTime.now().microsecondsSinceEpoch}.png');
-      await feedOriginImageRef.putFile(croppedImage);
+
       final feedThumbnailImageRef = _firebaseStorage.ref().child(
           'feed_thumbnail_images/${email}_${DateTime.now().microsecondsSinceEpoch}.png');
-      await feedThumbnailImageRef.putFile(compressedImage);
-      return [
-        await feedOriginImageRef.getDownloadURL(),
-        await feedThumbnailImageRef.getDownloadURL()
-      ];
+
+      await Future.wait([
+        feedOriginImageRef.putFile(croppedImage),
+        feedThumbnailImageRef.putFile(compressedImage),
+      ]);
+
+      return await Future.wait([
+        feedOriginImageRef.getDownloadURL(),
+        feedThumbnailImageRef.getDownloadURL()
+      ]);
     } catch (e) {
       throw switch (e) {
         FirebaseException _ => ExceptionCode.internalServerException,

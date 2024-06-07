@@ -35,10 +35,15 @@ void main() async {
         // When
         await dataSource.saveUserProfile(userProfile: expectedUserProfile);
 
-        final actual = instance.collection('user_profiles').doc('email').get();
+        final actual = await instance
+            .collection('user_profiles')
+            .where('email', isEqualTo: 'test@gmail.com')
+            .get();
+
+        final data = actual.docs.first.data()['email'];
 
         // Then
-        expect(actual, expectedUserProfile.email);
+        expect(data, expectedUserProfile.email);
       });
       test(
           'getUserProfile()은 firebase storage에서 파라미터로 받은 이메일과 동일한 유저 프로필 정보를 반환한다.',
@@ -134,7 +139,12 @@ void main() async {
           );
 
           // When
-          await dataSource.updateUserProfile(userProfile: editedUserProfile);
+          await instance.runTransaction((transaction) async {
+            await dataSource.updateUserProfile(
+              transaction: transaction,
+              userProfile: editedUserProfile,
+            );
+          });
 
           final actual = await instance
               .collection('user_profiles')
@@ -142,7 +152,6 @@ void main() async {
               .get();
 
           final data = actual.docs.first.data()['feedCount'];
-
           // Then
           expect(data, 1);
         },

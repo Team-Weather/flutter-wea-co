@@ -68,7 +68,8 @@ void main() {
         );
 
         // then
-        expect(userProfileDataSource.methodCallCount, expectCallCount);
+        expect(userProfileDataSource.saveUserProfileMethodCallCount,
+            expectCallCount);
       });
 
       test(
@@ -87,7 +88,8 @@ void main() {
         );
 
         // then
-        expect(userProfileDataSource.methodCallCount, expectCallCount);
+        expect(userProfileDataSource.saveUserProfileMethodCallCount,
+            expectCallCount);
       });
 
       test(

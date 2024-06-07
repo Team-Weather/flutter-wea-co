@@ -17,7 +17,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   @override
   Future<void> saveUserProfile({required UserProfile userProfile}) async {
     try {
-       await _firestore
+      await _firestore
           .collection('user_profiles')
           .add(toUserProfileDto(userProfile: userProfile))
           .then((value) => true)
@@ -46,21 +46,24 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   }
 
   @override
-  Future<void> updateUserProfile({required UserProfile userProfile}) async {
+  Future<void> updateUserProfile({
+    required Transaction transaction,
+    required UserProfile userProfile,
+  }) async {
     try {
-      final originProfileDocument = await _firestore
+      // 기존 프로필 문서를 검색
+      final originProfileQuery = await _firestore
           .collection('user_profiles')
           .where('email', isEqualTo: userProfile.email)
           .get();
 
-       await _firestore
-          .collection('user_profiles')
-          .doc(originProfileDocument.docs[0].reference.id)
-          .set(toUserProfileDto(userProfile: userProfile))
-          .then((value) => true)
-          .catchError(
-            (e) => false,
-          );
+      if (originProfileQuery.docs.isEmpty) {
+        throw Exception('User profile not found');
+      }
+
+      final originProfileDocRef = originProfileQuery.docs[0].reference;
+      transaction.set(
+          originProfileDocRef, toUserProfileDto(userProfile: userProfile));
     } catch (e) {
       throw Exception(e);
     }
@@ -76,7 +79,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
           .where('email', isEqualTo: email)
           .get();
 
-       await _firestore
+      await _firestore
           .collection('user_profiles')
           .doc(originProfileDocument.docs[0].reference.id)
           .delete()
