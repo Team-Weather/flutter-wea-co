@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:weaco/domain/feed/use_case/get_search_feeds_use_case.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
