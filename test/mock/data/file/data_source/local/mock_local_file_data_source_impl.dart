@@ -14,7 +14,7 @@ class MockLocalFileDataSourceImpl implements LocalFileDataSource {
   }
 
   @override
-  Future<File?> getImage({required ImageType imageType}) async {
+  Future<File> getImage({required ImageType imageType}) async {
     methodCallCount['getImage'] = (methodCallCount['getImage'] ?? 0) + 1;
     methodParameter['isOrigin'] = imageType;
     return methodResult['getImage'];
@@ -29,7 +29,7 @@ class MockLocalFileDataSourceImpl implements LocalFileDataSource {
   }
 
   @override
-  Future<File?> getCompressedImage() {
+  Future<File> getCompressedImage() {
     methodCallCount['getImage'] = (methodCallCount['getImage'] ?? 0) + 1;
     return methodResult['getImage'];
   }
