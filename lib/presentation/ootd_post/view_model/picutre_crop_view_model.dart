@@ -17,7 +17,7 @@ enum PictureCropSaveStatus {
 
 class PictureCropViewModel with ChangeNotifier {
   final SaveImageUseCase _saveImageUseCase;
-  PictureCropSaveStatus _status = PictureCropSaveStatus.idle;
+  final PictureCropSaveStatus _status = PictureCropSaveStatus.idle;
 
   PictureCropViewModel({
     required SaveImageUseCase saveImageUseCase,
