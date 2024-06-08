@@ -51,7 +51,13 @@ void main() {
             );
 
             // When
-            final result = await dataSource.saveFeed(feed: mockFeed);
+            final result =
+                await fakeFirestore.runTransaction((transaction) async {
+              return await dataSource.saveFeed(
+                transaction: transaction,
+                feed: mockFeed,
+              );
+            });
 
             // Then
             expect(result, true);
@@ -85,7 +91,12 @@ void main() {
                 location: mockLocation,
                 createdAt: dateTime,
               );
-              await dataSource.saveFeed(feed: mockFeed);
+              await fakeFirestore.runTransaction((transaction) async {
+                return await dataSource.saveFeed(
+                  transaction: transaction,
+                  feed: mockFeed,
+                );
+              });
 
               // When
               final snapshot = await fakeFirestore.collection('feeds').get();
@@ -216,7 +227,13 @@ void main() {
           });
 
           // When
-          final result = await dataSource.deleteFeed(id: testId);
+          final result =
+              await fakeFirestore.runTransaction((transaction) async {
+            return await dataSource.deleteFeed(
+              transaction: transaction,
+              id: testId,
+            );
+          });
           final docResult =
               await fakeFirestore.collection('feeds').doc(testId).get();
 

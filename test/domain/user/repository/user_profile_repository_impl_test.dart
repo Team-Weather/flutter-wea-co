@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/data/user/repository/user_profile_repository_impl.dart';
 import 'package:weaco/domain/user/model/user_profile.dart';
 import 'package:weaco/domain/user/repository/user_profile_repository.dart';
-import 'package:weaco/data/user/repository/user_profile_repository_impl.dart';
 
 import '../../../mock/data/user/data_source/mock_remote_user_profile_data_source.dart';
 
@@ -37,7 +37,8 @@ void main() {
         await userProfileRepository.getMyProfile();
 
         // Then
-        expect(remoteUserProfileDataSource.methodCallCount, expectedCount);
+        expect(remoteUserProfileDataSource.getUserProfileMethodCallCount,
+            expectedCount);
       });
 
       test(
@@ -61,7 +62,8 @@ void main() {
         final actualUserProfile = await userProfileRepository.getMyProfile();
 
         // Then
-        expect(remoteUserProfileDataSource.methodCallCount, expectedCount);
+        expect(remoteUserProfileDataSource.getUserProfileMethodCallCount,
+            expectedCount);
         expect(actualUserProfile, expectedUserProfile);
       });
     });
@@ -91,7 +93,8 @@ void main() {
         await userProfileRepository.getUserProfile(email: userProfile.email);
 
         // Then
-        expect(remoteUserProfileDataSource.methodCallCount, expectedCount);
+        expect(remoteUserProfileDataSource.getUserProfileMethodCallCount,
+            expectedCount);
       });
 
       test(
@@ -116,7 +119,8 @@ void main() {
             email: expectedUserProfile.email);
 
         // Then
-        expect(remoteUserProfileDataSource.methodCallCount, expectedCount);
+        expect(remoteUserProfileDataSource.getUserProfileMethodCallCount,
+            expectedCount);
         expect(actualUserProfile, expectedUserProfile);
       });
     });
