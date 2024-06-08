@@ -15,7 +15,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
   const RemoteUserProfileDataSourceImpl({
     required FirebaseFirestore firestore,
     required FirebaseAuthService firebaseService,
-  }) : _firestore = firestore,
+  })  : _firestore = firestore,
         _firebaseService = firebaseService;
 
   @override
@@ -82,7 +82,7 @@ class RemoteUserProfileDataSourceImpl implements RemoteUserProfileDataSource {
       await _firestore
           .collection('user_profiles')
           .doc(originProfileDocument.docs[0].reference.id)
-          .set(toUserProfileDto(userProfile: toUserProfile(json: originProfileDocument.docs.first.data()).copyWith(deletedAt: DateTime.now())));
+          .update({'deleted_at': Timestamp.now()});
     } catch (e) {
       _exceptionHandling(e);
     }
