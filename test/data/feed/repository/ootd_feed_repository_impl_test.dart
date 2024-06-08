@@ -50,7 +50,7 @@ void main() {
     );
 
     final mockUserProfile = UserProfile(
-      email: 'email',
+      email: 'test@email.com',
       nickname: 'nickname',
       gender: 1,
       profileImagePath: 'profileImagePath',
@@ -62,7 +62,6 @@ void main() {
       fileRepository.initMockData();
       remoteFeedDataSource.cleanUpMockData();
       remoteUserProfileDatSource.initMockData();
-
       remoteUserProfileDatSource.getUserProfileResult = mockUserProfile;
     });
 
@@ -150,7 +149,6 @@ void main() {
         expect(remoteUserProfileDatSource.methodUserProfileParameter,
             expectedUseProfile);
       });
-
 
       test(
           '파라미터로 전달받은 Feed의 id값이 있으면 수정하는 Feed로써'
@@ -243,6 +241,7 @@ void main() {
             mockUserProfile.copyWith(feedCount: mockUserProfile.feedCount - 1);
 
         // When
+        // remove 메소드에 run transaction에 await 없었음
         await ootdFeedRepository.removeOotdFeed(id: feedId);
 
         // Then

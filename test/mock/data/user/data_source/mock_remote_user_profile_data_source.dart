@@ -30,10 +30,10 @@ class MockRemoteUserProfileDataSourceImpl
   }
 
   @override
-  Future<UserProfile> getUserProfile({String? email}) {
+  Future<UserProfile> getUserProfile({String? email}) async {
     getUserProfileMethodCallCount++;
     methodEmailParameter = email;
-    return Future.value(getUserProfileResult);
+    return getUserProfileResult!;
   }
 
   @override

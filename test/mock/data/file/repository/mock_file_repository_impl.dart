@@ -22,7 +22,7 @@ class MockFileRepositoryImpl implements FileRepository {
   @override
   Future<File> getImage({required ImageType imageType}) async {
     getImageCallCount++;
-    return getImageResult!;
+    return getImageResult;
   }
 
   @override

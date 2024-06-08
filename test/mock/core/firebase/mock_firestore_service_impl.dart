@@ -6,13 +6,15 @@ class MockFirestoreServiceImpl implements TransactionService {
 
   @override
   Future<void> run(Function callBack) async {
-    return await _fakeFirestore.runTransaction<void>((transaction) async {
-      return await callBack(transaction);
+    await _fakeFirestore.runTransaction<void>((transaction) async {
+      await callBack(transaction);
     }).then(
-      (value) => true,
+      (value) {
+        return;
+      },
       onError: (e) {
         // throw Exception('피드 업로드에 실패 하였습니다.');
-        throw Exception(e);
+        throw Exception('mockFireStore: $e');
       },
     );
   }
