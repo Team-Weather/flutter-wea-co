@@ -70,6 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ? viewModel.temperatureGap!.toStringAsFixed(1)
         : (-viewModel.temperatureGap!).toStringAsFixed(1);
 
+    bool _isNullValue(dynamic value) {
+      return value == null;
+    }
+
     return Scaffold(
       body: switch (viewModel.status) {
         HomeScreenStatus.error => const Center(child: Text('데이터를 불러올 수 없습니다.')),
@@ -100,35 +104,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             marginHeight: 40,
                           )),
                           // city
-                          viewModel.dailyLocationWeather != null
-                              ? HomeScreenCityTextWidget(
-                                  city: viewModel
-                                      .dailyLocationWeather!.location.city)
-                              : const HomeScreenCityTextWidget(city: '-'),
+                          HomeScreenCityTextWidget(
+                            city: _isNullValue(viewModel.dailyLocationWeather)
+                                ? '-'
+                                : viewModel.dailyLocationWeather!.location.city,
+                          ),
                           const SizedBox(height: 4),
                           // weather code description
-                          viewModel.currentWeather != null
-                              ? HomeScreenCurrentWeatherTextWidget(
-                                  currentWeather: WeatherCode.fromValue(
-                                          viewModel.currentWeather!.code)
-                                      .description)
-                              : const HomeScreenCurrentWeatherTextWidget(
-                                  currentWeather: '-',
-                                ),
+                          HomeScreenCurrentWeatherTextWidget(
+                              currentWeather:
+                                  _isNullValue(viewModel.currentWeather)
+                                      ? '-'
+                                      : WeatherCode.fromValue(
+                                              viewModel.currentWeather!.code)
+                                          .description),
                           SizedBox(
                               height: ReactionUtil.reactHeight(
                             context: context,
                             marginHeight: 20,
                           )),
                           // current temperature
-                          viewModel.currentWeather != null
-                              ? HomeScreenCurrentTemperatureTextWidget(
-                                  currentTemperature:
-                                      '${viewModel.currentWeather!.temperature}',
-                                )
-                              : const HomeScreenCurrentTemperatureTextWidget(
-                                  currentTemperature: '-',
-                                ),
+                          HomeScreenCurrentTemperatureTextWidget(
+                            currentTemperature: _isNullValue(
+                                    viewModel.currentWeather)
+                                ? '-'
+                                : '${viewModel.currentWeather!.temperature}',
+                          ),
                           SizedBox(
                               height: ReactionUtil.reactHeight(
                             context: context,
@@ -141,22 +142,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               Column(
                                 children: [
-                                  viewModel.dailyLocationWeather != null
-                                      ? HomeScreenDailyHighestTemperatureTextWidget(
-                                          highestTemperature:
-                                              '${viewModel.dailyLocationWeather!.highTemperature}',
-                                        )
-                                      : const HomeScreenDailyHighestTemperatureTextWidget(
-                                          highestTemperature: '-',
-                                        ),
-                                  viewModel.dailyLocationWeather != null
-                                      ? HomeScreenDailyLowestTemperatureTextWidget(
-                                          lowestTemperature:
-                                              '${viewModel.dailyLocationWeather!.lowTemperature}',
-                                        )
-                                      : const HomeScreenDailyLowestTemperatureTextWidget(
-                                          lowestTemperature: '-',
-                                        ),
+                                  HomeScreenDailyHighestTemperatureTextWidget(
+                                    highestTemperature: _isNullValue(
+                                            viewModel.dailyLocationWeather)
+                                        ? '-'
+                                        : '${viewModel.dailyLocationWeather!.highTemperature}',
+                                  ),
+                                  HomeScreenDailyLowestTemperatureTextWidget(
+                                    lowestTemperature: _isNullValue(
+                                            viewModel.dailyLocationWeather)
+                                        ? '-'
+                                        : '${viewModel.dailyLocationWeather!.lowTemperature}',
+                                  ),
                                 ],
                               ),
                               // 전일 대비
