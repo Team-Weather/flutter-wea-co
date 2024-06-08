@@ -27,7 +27,7 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
   /// 피드 저장 및 수정
   @override
   Future<void> saveOotdFeed({required Feed feed}) async {
-    _firestoreService.run((Transaction transaction) async {
+    await _firestoreService.run((Transaction transaction) async {
       feed.id == null
           ? await _save(transaction: transaction, feed: feed)
           : await _update(transaction: transaction, feed: feed);
@@ -66,7 +66,7 @@ class OotdFeedRepositoryImpl implements OotdFeedRepository {
   /// 피드 삭제
   @override
   Future<void> removeOotdFeed({required String id}) async {
-    _firestoreService.run((Transaction transaction) async {
+    await _firestoreService.run((Transaction transaction) async {
       await _remoteFeedDataSource.deleteFeed(
         transaction: transaction,
         id: id,
