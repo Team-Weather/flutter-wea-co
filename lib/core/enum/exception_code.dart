@@ -1,5 +1,3 @@
-import 'dart:io';
-
 enum ExceptionCode implements Exception {
   unknownException(
     code: '500',
