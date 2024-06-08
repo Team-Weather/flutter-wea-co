@@ -16,5 +16,5 @@ abstract interface class RemoteUserProfileDataSource {
   Future<void> saveUserProfile({required UserProfile userProfile});
 
   /// 유저 프로필 삭제
-  Future<void> removeUserProfile();
+  Future<void> removeUserProfile({String? email});
 }
