@@ -44,7 +44,7 @@ class RecommendOotdListWidget extends StatelessWidget {
                           linearGradient: _shimmerGradient,
                           child: ShimmerLoading(
                             isLoading: isLoading,
-                            child: const SkeletonRecommendOotdWidget(),
+                            child: const RecommendOotdWidget(),
                           ),
                         ),
                       ).toList(),
