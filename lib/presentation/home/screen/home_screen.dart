@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ? viewModel.temperatureGap!.toStringAsFixed(1)
         : (-viewModel.temperatureGap!).toStringAsFixed(1);
 
-    bool _isNullValue(dynamic value) {
+    bool isNullValue(dynamic value) {
       return value == null;
     }
 
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           )),
                           // city
                           HomeScreenCityTextWidget(
-                            city: _isNullValue(viewModel.dailyLocationWeather)
+                            city: isNullValue(viewModel.dailyLocationWeather)
                                 ? '-'
                                 : viewModel.dailyLocationWeather!.location.city,
                           ),
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           // weather code description
                           HomeScreenCurrentWeatherTextWidget(
                               currentWeather:
-                                  _isNullValue(viewModel.currentWeather)
+                                  isNullValue(viewModel.currentWeather)
                                       ? '-'
                                       : WeatherCode.fromValue(
                                               viewModel.currentWeather!.code)
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           )),
                           // current temperature
                           HomeScreenCurrentTemperatureTextWidget(
-                            currentTemperature: _isNullValue(
+                            currentTemperature: isNullValue(
                                     viewModel.currentWeather)
                                 ? '-'
                                 : '${viewModel.currentWeather!.temperature}',
@@ -143,13 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               Column(
                                 children: [
                                   HomeScreenDailyHighestTemperatureTextWidget(
-                                    highestTemperature: _isNullValue(
+                                    highestTemperature: isNullValue(
                                             viewModel.dailyLocationWeather)
                                         ? '-'
                                         : '${viewModel.dailyLocationWeather!.highTemperature}',
                                   ),
                                   HomeScreenDailyLowestTemperatureTextWidget(
-                                    lowestTemperature: _isNullValue(
+                                    lowestTemperature: isNullValue(
                                             viewModel.dailyLocationWeather)
                                         ? '-'
                                         : '${viewModel.dailyLocationWeather!.lowTemperature}',
