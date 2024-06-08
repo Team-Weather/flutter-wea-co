@@ -1,12 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/core/util/reaction_util.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
-import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
+import 'package:weaco/presentation/home/component/home_screen_city_text_widget.dart';
+import 'package:weaco/presentation/home/component/home_screen_current_temperature_text_widget.dart';
+import 'package:weaco/presentation/home/component/home_screen_current_weather_text_widget.dart';
+import 'package:weaco/presentation/home/component/home_screen_daily_highest_temperature_text_widget.dart';
+import 'package:weaco/presentation/home/component/home_screen_daily_lowest_temperature_text_widget.dart';
 import 'package:weaco/presentation/home/component/recommend_ootd_list_widget.dart';
 import 'package:weaco/presentation/home/component/weather_by_time_list_widget.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
@@ -236,118 +241,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
       },
-    );
-  }
-}
-
-class HomeScreenCityTextWidget extends StatelessWidget {
-  final String city;
-
-  const HomeScreenCityTextWidget({
-    super.key,
-    required this.city,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      city,
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.white,
-      ),
-    );
-  }
-}
-
-class HomeScreenCurrentWeatherTextWidget extends StatelessWidget {
-  const HomeScreenCurrentWeatherTextWidget({
-    super.key,
-    required this.currentWeather,
-  });
-
-  final String currentWeather;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      currentWeather,
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.white,
-      ),
-    );
-  }
-}
-
-class HomeScreenCurrentTemperatureTextWidget extends StatelessWidget {
-  const HomeScreenCurrentTemperatureTextWidget({
-    super.key,
-    required this.currentTemperature,
-  });
-
-  final String currentTemperature;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '$currentTemperature℃',
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 60,
-      ),
-    );
-  }
-}
-
-class HomeScreenDailyHighestTemperatureTextWidget extends StatelessWidget {
-  const HomeScreenDailyHighestTemperatureTextWidget({
-    super.key,
-    required this.highestTemperature,
-  });
-
-  final String highestTemperature;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '최고 $highestTemperature℃',
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.white,
-        shadows: [
-          Shadow(
-              blurRadius: 4,
-              color: Color.fromARGB(165, 0, 0, 0),
-              offset: Offset(1, 1)),
-        ],
-      ),
-    );
-  }
-}
-
-class HomeScreenDailyLowestTemperatureTextWidget extends StatelessWidget {
-  const HomeScreenDailyLowestTemperatureTextWidget({
-    super.key,
-    required this.lowestTemperature,
-  });
-
-  final String lowestTemperature;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '최저 $lowestTemperature℃',
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.white,
-        shadows: [
-          Shadow(
-              blurRadius: 4,
-              color: Color.fromARGB(165, 0, 0, 0),
-              offset: Offset(1, 1)),
-        ],
-      ),
     );
   }
 }
