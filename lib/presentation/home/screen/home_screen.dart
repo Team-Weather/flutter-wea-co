@@ -65,10 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ? viewModel.temperatureGap!.toStringAsFixed(1)
         : (-viewModel.temperatureGap!).toStringAsFixed(1);
 
-    bool isNullValue(dynamic value) {
-      return value == null;
-    }
-
     return Scaffold(
       body: switch (viewModel.status) {
         HomeScreenStatus.error => const Center(child: Text('데이터를 불러올 수 없습니다.')),
