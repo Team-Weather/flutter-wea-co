@@ -44,6 +44,7 @@ class HomeScreenViewModel with ChangeNotifier {
   // 전일 대비 온도차
   double? _temperatureGap;
   String? _weatherBackgroundImage;
+  bool _isRecommendOotdLoading = false;
 
   DailyLocationWeather? get dailyLocationWeather => _dailyLocationWeather;
   Weather? get currentWeather => _currentWeather;
@@ -56,18 +57,28 @@ class HomeScreenViewModel with ChangeNotifier {
   List<Weather> get weatherByTimeList => _weatherByTimeList;
   String get errorMesasge => _errorMessage;
   String _errorMessage = '';
+  bool get isRecommendOotdLoading => _isRecommendOotdLoading;
 
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
+    _isRecommendOotdLoading = true;
     notifyListeners();
 
     try {
       _dailyLocationWeather = await getDailyLocationWeatherUseCase.execute();
+      notifyListeners();
 
-      _feedList = await getRecommendedFeedsUseCase.execute(
-        dailyLocationWeather: _dailyLocationWeather!,
-      );
-      _precacheList = await getSearchFeedsUseCase.execute();
+      final [futureFeedList, futurePrecacheList] = await Future.wait([
+        getRecommendedFeedsUseCase.execute(
+          dailyLocationWeather: _dailyLocationWeather!,
+        ),
+        getSearchFeedsUseCase.execute(),
+      ]);
+
+      _feedList = futureFeedList;
+      _precacheList = futurePrecacheList;
+      _isRecommendOotdLoading = false;
+      notifyListeners();
 
       if (_dailyLocationWeather != null) {
         // 현재 시간에 맞는 날씨 예보 빼내기
