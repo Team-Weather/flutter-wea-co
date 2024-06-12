@@ -7,11 +7,6 @@ import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/presentation/common/enum/exception_alert.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/presentation/common/util/alert_util.dart';
-import 'package:weaco/presentation/home/component/home_screen_city_text_widget.dart';
-import 'package:weaco/presentation/home/component/home_screen_current_temperature_text_widget.dart';
-import 'package:weaco/presentation/home/component/home_screen_current_weather_text_widget.dart';
-import 'package:weaco/presentation/home/component/home_screen_daily_highest_temperature_text_widget.dart';
-import 'package:weaco/presentation/home/component/home_screen_daily_lowest_temperature_text_widget.dart';
 import 'package:weaco/presentation/home/component/recommend_ootd_list_widget.dart';
 import 'package:weaco/presentation/home/component/weather_by_time_list_widget.dart';
 import 'package:weaco/presentation/home/view_model/home_screen_view_model.dart';
@@ -104,31 +99,39 @@ class _HomeScreenState extends State<HomeScreen> {
                             marginHeight: 40,
                           )),
                           // city
-                          HomeScreenCityTextWidget(
-                            city: isNullValue(viewModel.dailyLocationWeather)
-                                ? '-'
-                                : viewModel.dailyLocationWeather!.location.city,
+                          Text(
+                            viewModel.dailyLocationWeather?.location.city ??
+                                '-',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           // weather code description
-                          HomeScreenCurrentWeatherTextWidget(
-                              currentWeather:
-                                  isNullValue(viewModel.currentWeather)
-                                      ? '-'
-                                      : WeatherCode.fromValue(
-                                              viewModel.currentWeather!.code)
-                                          .description),
+                          Text(
+                            viewModel.currentWeather != null
+                                ? WeatherCode.fromValue(
+                                        viewModel.currentWeather!.code)
+                                    .description
+                                : '-',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ),
                           SizedBox(
                               height: ReactionUtil.reactHeight(
                             context: context,
                             marginHeight: 20,
                           )),
                           // current temperature
-                          HomeScreenCurrentTemperatureTextWidget(
-                            currentTemperature: isNullValue(
-                                    viewModel.currentWeather)
-                                ? '-'
-                                : '${viewModel.currentWeather!.temperature}',
+                          Text(
+                            '${viewModel.currentWeather?.temperature ?? '-'}℃',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 60,
+                            ),
                           ),
                           SizedBox(
                               height: ReactionUtil.reactHeight(
@@ -139,20 +142,33 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               // max, min temperature
-
                               Column(
                                 children: [
-                                  HomeScreenDailyHighestTemperatureTextWidget(
-                                    highestTemperature: isNullValue(
-                                            viewModel.dailyLocationWeather)
-                                        ? '-'
-                                        : '${viewModel.dailyLocationWeather!.highTemperature}',
+                                  Text(
+                                    '최고 ${viewModel.dailyLocationWeather?.highTemperature ?? '-'}℃',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      shadows: [
+                                        Shadow(
+                                            blurRadius: 4,
+                                            color: Color.fromARGB(165, 0, 0, 0),
+                                            offset: Offset(1, 1)),
+                                      ],
+                                    ),
                                   ),
-                                  HomeScreenDailyLowestTemperatureTextWidget(
-                                    lowestTemperature: isNullValue(
-                                            viewModel.dailyLocationWeather)
-                                        ? '-'
-                                        : '${viewModel.dailyLocationWeather!.lowTemperature}',
+                                  Text(
+                                    '최저 ${viewModel.dailyLocationWeather?.lowTemperature ?? '-'}℃',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      shadows: [
+                                        Shadow(
+                                            blurRadius: 4,
+                                            color: Color.fromARGB(165, 0, 0, 0),
+                                            offset: Offset(1, 1)),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
