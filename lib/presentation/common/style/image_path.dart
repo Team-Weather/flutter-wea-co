@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ImagePath {
   static const String _iconPath = 'asset/icon';
   static const String _imagePath = 'asset/image';
@@ -34,7 +36,7 @@ class ImagePath {
   static const String weatherThunderStormHail =
       '$_iconPath/weather_thunder_storm_hail_icon.png';
 
-  static const String homeBackgroundSunny = '$_imagePath/home_bg_sunny.jpg';
+  static final String homeBackgroundSunny = ImageConfig.defaultBackgroundImage;
 
   static const String imageIconHome = '$_iconPath/weaco_home_weather_icon.png';
 
@@ -61,4 +63,8 @@ class ImagePath {
 
   /// 주황 구름 + 타이포 로고 이미지
   static const String weacoLogoWithTypo = '$_imagePath/logo_with_typo.png';
+}
+
+class ImageConfig {
+  static final String defaultBackgroundImage = dotenv.env['DEFAULT_BACKGROUND_IMAGE'] ?? 'undefined';
 }
