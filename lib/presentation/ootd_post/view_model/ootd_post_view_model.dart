@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+import 'package:weaco/core/enum/image_type.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
 import 'package:weaco/domain/feed/use_case/save_edit_feed_use_case.dart';
 import 'package:weaco/domain/file/use_case/get_image_use_case.dart';
@@ -38,7 +38,7 @@ class OotdPostViewModel with ChangeNotifier {
     notifyListeners();
 
     try {
-      _croppedImage = await _getImageUseCase.execute(isOrigin: false);
+      _croppedImage = await _getImageUseCase.execute(imageType: ImageType.cropped);
       _dailyLocationWeather = await _getDailyLocationWeatherUseCase.execute();
       // 현재 시간 날씨
       _weather = _dailyLocationWeather!.weatherList.firstWhere((element) {
@@ -59,7 +59,8 @@ class OotdPostViewModel with ChangeNotifier {
     final now = DateTime.now();
     final Feed feed = Feed(
       id: null,
-      imagePath: _croppedImage!.path,
+      imagePath: '',
+      thumbnailImagePath: '',
       userEmail: email,
       description: description,
       weather: Weather(
@@ -91,6 +92,7 @@ class OotdPostViewModel with ChangeNotifier {
     final editedFeed = Feed(
       id: feed.id,
       imagePath: feed.imagePath,
+      thumbnailImagePath: feed.thumbnailImagePath,
       userEmail: feed.userEmail,
       description: description,
       weather: feed.weather,
@@ -106,7 +108,7 @@ class OotdPostViewModel with ChangeNotifier {
   }
 
   Future<void> getOriginImage() async {
-    _originImage = await _getImageUseCase.execute(isOrigin: true);
+    _originImage = await _getImageUseCase.execute(imageType: ImageType.origin);
     if (_originImage == null) return;
   }
 

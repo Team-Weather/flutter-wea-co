@@ -24,6 +24,7 @@ class CachedImageWidget extends StatelessWidget {
     return CachedNetworkImage(
       fit: _boxFit ?? BoxFit.cover,
       imageUrl: _imageUrl,
+      // Flip Card 위젯 높이와 동일 = 16 * 35
       memCacheHeight: (16 * 35).cacheSize(context),
       progressIndicatorBuilder: (context, url, downloadProgress) =>
           _progressIndicatorBuilder ??

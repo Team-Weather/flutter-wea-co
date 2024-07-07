@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weaco/core/enum/image_type.dart';
 import 'package:weaco/core/path_provider/path_provider_service.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source.dart';
 import 'package:weaco/data/file/data_source/local/local_file_data_source_impl.dart';
@@ -24,28 +25,28 @@ void main() {
         }
       });
 
-      test('isOrigin 인자가 true일 경우, origin.png를 반환한다.', () async {
+      test('imageType 인자가 ImageType.origin일 경우, origin.png를 반환한다.', () async {
         // Given
-        const isOrigin = true;
+        const imageType = ImageType.origin;
         File('test/mock/assets/origin.png').writeAsBytesSync(
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
         // When
-        File? file = await dataSource.getImage(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(imageType: imageType);
 
         // Then
         expect(file?.readAsBytesSync(),
             File('test/mock/assets/origin.png').readAsBytesSync());
       });
 
-      test('isOrigin 인자가 false일 경우, cropped.png를 반환한다.', () async {
+      test('imageType 인자가 ImageType.cropped일 경우, cropped.png를 반환한다.', () async {
         // Given
-        const isOrigin = false;
+        const imageType = ImageType.cropped;
         File('test/mock/assets/cropped.png').writeAsBytesSync(
             File('test/mock/assets/test_image.png').readAsBytesSync());
 
         // When
-        File? file = await dataSource.getImage(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(imageType: imageType);
 
         // Then
         expect(file?.readAsBytesSync(),
@@ -54,10 +55,10 @@ void main() {
 
       test('찾으려는 파일이 없는 경우, null을 반환한다.', () async {
         // Given
-        const isOrigin = false;
+        const imageType = ImageType.cropped;
 
         // When
-        File? file = await dataSource.getImage(isOrigin: isOrigin);
+        File? file = await dataSource.getImage(imageType: imageType);
 
         // Then
         expect(file, null);

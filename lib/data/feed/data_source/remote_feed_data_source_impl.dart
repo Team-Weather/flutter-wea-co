@@ -14,23 +14,22 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
 
   /// OOTD 피드 작성 또는 편집 후 저장
   @override
-  Future<bool> saveFeed({required Feed feed}) async {
+  Future<bool> saveFeed({
+    required Transaction transaction,
+    required Feed feed,
+  }) async {
     final feedDto = toFeedDto(feed: feed);
 
-    // 피드를 수정 할 경우
     if (feed.id != null) {
-      return await _fireStore
-          .collection('feeds')
-          .doc(feed.id)
-          .set(feedDto)
-          .then((value) => true);
+      // 피드를 수정할 경우
+      final feedDocRef = _fireStore.collection('feeds').doc(feed.id);
+      transaction.set(feedDocRef, feedDto);
+    } else {
+      // 새 피드를 추가할 경우
+      final feedDocRef = _fireStore.collection('feeds').doc();
+      transaction.set(feedDocRef, feedDto);
     }
-
-    // 새 피드를 저장 할 경우
-    return await _fireStore
-        .collection('feeds')
-        .add(feedDto)
-        .then((value) => true);
+    return true;
   }
 
   /// [OOTD 피드 상세 페이지]:
@@ -75,11 +74,23 @@ class RemoteFeedDataSourceImpl implements RemoteFeedDataSource {
   /// [마이페이지] 피드 삭제
   /// soft delete 처리
   @override
-  Future<bool> deleteFeed({required String id}) async {
-    await _fireStore
-        .collection('feeds')
-        .doc(id)
-        .update({'deleted_at': Timestamp.fromDate(DateTime.now())});
+  Future<bool> deleteFeed({
+    required Transaction transaction,
+    required String id,
+  }) async {
+    final originalFeedDocRef = _fireStore.collection('feeds').doc(id);
+    final originalFeedDoc = await originalFeedDocRef.get();
+
+    if (originalFeedDoc.exists) {
+      final feed = toFeed(json: originalFeedDoc.data()!, id: id);
+      final deletedFeed = feed.copyWith(deletedAt: DateTime.now());
+
+      transaction.update(
+        originalFeedDocRef,
+        toFeedDto(feed: deletedFeed),
+      );
+    }
+
     return true;
   }
 

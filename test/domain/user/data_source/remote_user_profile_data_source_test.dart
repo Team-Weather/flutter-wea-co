@@ -133,8 +133,12 @@ void main() async {
           );
 
           // When
-          final bool res = await dataSource.updateUserProfile(
-              userProfile: editedUserProfile);
+          final res = await instance.runTransaction((transaction) async {
+            return await dataSource.updateUserProfile(
+              transaction: transaction,
+              userProfile: editedUserProfile,
+            );
+          });
 
           // Then
           expect(res, true);

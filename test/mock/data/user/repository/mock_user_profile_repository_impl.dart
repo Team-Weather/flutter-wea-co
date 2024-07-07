@@ -51,12 +51,4 @@ class MockUserProfileRepositoryImpl implements UserProfileRepository {
     getMyProfileCallCount++;
     return _fakeUserProfileMap['my'];
   }
-
-  @override
-  Future<bool> updateUserProfile({required UserProfile userProfile}) async {
-    ++updateUserProfileCallCount;
-    methodParameterMap['updateUserProfile'] = userProfile;
-    return updateUserProfileResult;
-  }
 }
-

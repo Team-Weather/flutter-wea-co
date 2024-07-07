@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weaco/domain/feed/use_case/get_search_feeds_use_case.dart';
 import 'package:weaco/presentation/common/style/image_path.dart';
 import 'package:weaco/core/enum/weather_code.dart';
 import 'package:weaco/domain/feed/model/feed.dart';
@@ -26,42 +27,58 @@ class HomeScreenViewModel with ChangeNotifier {
     required this.getDailyLocationWeatherUseCase,
     required this.getBackgroundImageListUseCase,
     required this.getRecommendedFeedsUseCase,
+    required this.getSearchFeedsUseCase,
   });
 
   final GetDailyLocationWeatherUseCase getDailyLocationWeatherUseCase;
   final GetBackgroundImageListUseCase getBackgroundImageListUseCase;
   final GetRecommendedFeedsUseCase getRecommendedFeedsUseCase;
+  final GetSearchFeedsUseCase getSearchFeedsUseCase;
 
   DailyLocationWeather? _dailyLocationWeather;
   Weather? _currentWeather;
   List<Weather> _weatherByTimeList = [];
   List<Feed> _feedList = [];
+  List<Feed> _precacheList = [];
   HomeScreenStatus _status = HomeScreenStatus.idle;
   // 전일 대비 온도차
   double? _temperatureGap;
   String? _weatherBackgroundImage;
+  bool _isRecommendOotdLoading = false;
 
   DailyLocationWeather? get dailyLocationWeather => _dailyLocationWeather;
   Weather? get currentWeather => _currentWeather;
   double? get temperatureGap => _temperatureGap ?? 0;
   List<Feed> get feedList => _feedList;
+  List<Feed> get precacheList => _precacheList;
   HomeScreenStatus get status => _status;
   String get backgroundImagePath =>
       _weatherBackgroundImage ?? ImagePath.homeBackgroundSunny;
   List<Weather> get weatherByTimeList => _weatherByTimeList;
   String get errorMesasge => _errorMessage;
   String _errorMessage = '';
+  bool get isRecommendOotdLoading => _isRecommendOotdLoading;
 
   Future<void> initHomeScreen() async {
     _status = HomeScreenStatus.loading;
+    _isRecommendOotdLoading = true;
     notifyListeners();
 
     try {
       _dailyLocationWeather = await getDailyLocationWeatherUseCase.execute();
+      notifyListeners();
 
-      _feedList = await getRecommendedFeedsUseCase.execute(
-        dailyLocationWeather: _dailyLocationWeather!,
-      );
+      final [futureFeedList, futurePrecacheList] = await Future.wait([
+        getRecommendedFeedsUseCase.execute(
+          dailyLocationWeather: _dailyLocationWeather!,
+        ),
+        getSearchFeedsUseCase.execute(),
+      ]);
+
+      _feedList = futureFeedList;
+      _precacheList = futurePrecacheList;
+      _isRecommendOotdLoading = false;
+      notifyListeners();
 
       if (_dailyLocationWeather != null) {
         // 현재 시간에 맞는 날씨 예보 빼내기

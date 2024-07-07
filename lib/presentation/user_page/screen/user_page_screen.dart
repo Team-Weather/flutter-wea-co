@@ -109,7 +109,7 @@ class _UserPageScreenState extends State<UserPageScreen> {
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: CachedImageWidget(currentFeed.imagePath),
+        child: CachedImageWidget(currentFeed.thumbnailImagePath),
       ),
     );
   }
