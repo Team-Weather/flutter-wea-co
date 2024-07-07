@@ -92,7 +92,7 @@ class OotdPostViewModel with ChangeNotifier {
     final editedFeed = Feed(
       id: feed.id,
       imagePath: feed.imagePath,
-      thumbnailImagePath: '',
+      thumbnailImagePath: feed.thumbnailImagePath,
       userEmail: feed.userEmail,
       description: description,
       weather: feed.weather,
